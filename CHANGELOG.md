@@ -5,12 +5,27 @@ documented here, in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format. The registry and site aren't independently versioned — they're
 covered under **Registry** below, dated by when they actually shipped.
 
-## [Unreleased]
+## [0.4.0] — 2026-08-29
 
 ### Added
 
 - `dsgn list --recipes` — list composed recipes separately from individual
-  components.
+  components. Plain `dsgn list` now also prints a footer hint about
+  `dsgn skill`.
+- A real automated test suite (29 tests, `node:test`) covering
+  `add`/`diff`/`update`/`doctor`/`list`/`skill`/`resolveItems` — the
+  package had zero regression protection before this.
+
+### Fixed
+
+- `resolveItems` could install a recipe's own file before one of its
+  dependencies, violating its own documented "a dependency is always
+  installed before the item that needs it" contract — the memoization
+  pre-inserted a placeholder for the parent before recursing, silently
+  locking in the wrong order. Found by the new test suite, not by hand.
+- `dsgn list` (no flag) was showing all 27 raw registry entries,
+  including the internal `utils` lib and the 3 recipes under their raw
+  keys, instead of the 23 real UI components.
 
 ## [0.3.0] — 2026-08-29
 

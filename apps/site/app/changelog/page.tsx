@@ -13,49 +13,89 @@ export const metadata: Metadata = {
 // is just the site's presentation of it. Update both when a new version
 // ships; this file doesn't read CHANGELOG.md at build time (a plain static
 // array is simpler than a markdown-parsing build step for ~5 entries).
-interface Release {
-  version: string;
-  date: string;
+interface Section {
   kind: "added" | "fixed";
   items: string[];
 }
 
+interface Release {
+  version: string;
+  date: string;
+  sections: Section[];
+}
+
 const RELEASES: Release[] = [
+  {
+    version: "0.4.0",
+    date: "2026-08-29",
+    sections: [
+      {
+        kind: "added",
+        items: [
+          "dsgn list --recipes — list composed recipes separately from individual components. Plain dsgn list now also hints at dsgn skill.",
+          "A real automated test suite (29 tests) covering add/diff/update/doctor/list/skill/resolveItems — the package had zero regression protection before this.",
+        ],
+      },
+      {
+        kind: "fixed",
+        items: [
+          "resolveItems could install a recipe's own file before one of its dependencies, violating its own documented install-order contract — found by the new test suite.",
+          "dsgn list (no flag) was showing all 27 raw registry entries instead of the 23 real UI components.",
+        ],
+      },
+    ],
+  },
   {
     version: "0.3.0",
     date: "2026-08-29",
-    kind: "added",
-    items: [
-      "dsgn skill --global / dsgn skill --project — installs the dsgn Claude Code Agent Skill (a router plus 5 style-persona sub-agents), bundled directly in the package so it works fully offline.",
+    sections: [
+      {
+        kind: "added",
+        items: [
+          "dsgn skill --global / dsgn skill --project — installs the dsgn Claude Code Agent Skill (a router plus 5 style-persona sub-agents), bundled directly in the package so it works fully offline.",
+        ],
+      },
     ],
   },
   {
     version: "0.2.0",
     date: "2026-08-28",
-    kind: "added",
-    items: [
-      "dsgn diff / dsgn update — every installed file's content hash is now tracked, so the CLI can tell “never touched since install” from “user edited this” without being a real runtime dependency.",
-      "dsgn add recipe:<name> — install a composed multi-component pattern (auth-form, settings-panel, pricing-tiers) plus every component it depends on, in one shot.",
-      "dsgn doctor — health-check installed files for drift and a couple of cheap, high-signal accessibility mistakes.",
-      "dsgn snippets — VS Code snippets for every registry component.",
+    sections: [
+      {
+        kind: "added",
+        items: [
+          "dsgn diff / dsgn update — every installed file's content hash is now tracked, so the CLI can tell “never touched since install” from “user edited this” without being a real runtime dependency.",
+          "dsgn add recipe:<name> — install a composed multi-component pattern (auth-form, settings-panel, pricing-tiers) plus every component it depends on, in one shot.",
+          "dsgn doctor — health-check installed files for drift and a couple of cheap, high-signal accessibility mistakes.",
+          "dsgn snippets — VS Code snippets for every registry component.",
+        ],
+      },
     ],
   },
   {
     version: "0.1.1",
     date: "2026-08-28",
-    kind: "fixed",
-    items: [
-      "Windows: replaced a shell:true spawn call (Node's DEP0190 warning) with cross-spawn, which resolves npm's .cmd shim correctly without ever needing shell:true.",
+    sections: [
+      {
+        kind: "fixed",
+        items: [
+          "Windows: replaced a shell:true spawn call (Node's DEP0190 warning) with cross-spawn, which resolves npm's .cmd shim correctly without ever needing shell:true.",
+        ],
+      },
     ],
   },
   {
     version: "0.1.0",
     date: "2026-08-28",
-    kind: "added",
-    items: [
-      "Initial publish as @dhruvchoudhary/dsgn (the unscoped name dsgn was already taken).",
-      "dsgn init, dsgn add <component...>, dsgn list.",
-      "Non-destructive by default: add never overwrites an existing file unless --overwrite is passed.",
+    sections: [
+      {
+        kind: "added",
+        items: [
+          "Initial publish as @dhruvchoudhary/dsgn (the unscoped name dsgn was already taken).",
+          "dsgn init, dsgn add <component...>, dsgn list.",
+          "Non-destructive by default: add never overwrites an existing file unless --overwrite is passed.",
+        ],
+      },
     ],
   },
 ];
@@ -112,17 +152,24 @@ export default function ChangelogPage() {
                   <h3 className="font-mono text-sm font-semibold text-accent">v{release.version}</h3>
                   <span className="font-mono text-xs text-muted-foreground">{release.date}</span>
                 </div>
-                <span className="mt-1 inline-block text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
-                  {release.kind}
-                </span>
-                <ul className="mt-3 space-y-2">
-                  {release.items.map((item) => (
-                    <li key={item} className="flex gap-2 text-sm text-muted-foreground">
-                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                {release.sections.map((section) => (
+                  <div key={section.kind} className="mt-3 first:mt-1">
+                    <span className="inline-block text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
+                      {section.kind}
+                    </span>
+                    <ul className="mt-2 space-y-2">
+                      {section.items.map((item) => (
+                        <li key={item} className="flex gap-2 text-sm text-muted-foreground">
+                          <span
+                            className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent"
+                            aria-hidden="true"
+                          />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </Frame>
             ))}
           </div>
