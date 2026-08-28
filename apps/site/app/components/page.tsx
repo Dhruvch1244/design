@@ -15,7 +15,6 @@ import { Textarea } from "@/components/dsgn/textarea";
 import { Switch } from "@/components/dsgn/switch";
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "@/components/dsgn/tooltip";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/dsgn/tabs";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/dsgn/select";
 import {
   Dialog,
   DialogTrigger,
@@ -51,6 +50,10 @@ import { Reveal } from "@/components/motion/reveal";
 import { CursorGlow } from "@/components/motion/cursor-glow";
 import { CopyButton } from "@/components/copy-button";
 import { ButtonPlayground } from "@/components/button-playground";
+import { BadgePlayground } from "@/components/badge-playground";
+import { SwitchPlayground } from "@/components/switch-playground";
+import { SelectPlayground } from "@/components/select-playground";
+import { CheckboxPlayground } from "@/components/checkbox-playground";
 import { TableOfContents, type TocEntry } from "@/components/table-of-contents";
 
 export const metadata: Metadata = {
@@ -401,15 +404,19 @@ export default function ComponentsPage() {
           </Section>
 
           <Section id="badge" index={3} title="Badge" name="badge">
-            <Frame>
-              <div className="flex flex-wrap items-center gap-3">
-                {BADGE_VARIANTS.map((variant) => (
-                  <Badge key={variant} variant={variant}>
-                    {variant}
-                  </Badge>
-                ))}
-              </div>
-            </Frame>
+            <div className="space-y-6">
+              <BadgePlayground />
+              <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">All variants</p>
+              <Frame>
+                <div className="flex flex-wrap items-center gap-3">
+                  {BADGE_VARIANTS.map((variant) => (
+                    <Badge key={variant} variant={variant}>
+                      {variant}
+                    </Badge>
+                  ))}
+                </div>
+              </Frame>
+            </div>
           </Section>
 
           <Section id="input" index={4} title="Input" name="input">
@@ -439,12 +446,15 @@ export default function ComponentsPage() {
           </Section>
 
           <Section id="switch" index={7} title="Switch" name="switch">
-            <Frame>
-              <div className="flex items-center gap-6">
-                <Switch defaultChecked aria-label="Enabled example" />
-                <Switch aria-label="Disabled example" disabled />
-              </div>
-            </Frame>
+            <div className="space-y-6">
+              <SwitchPlayground />
+              <Frame>
+                <div className="flex items-center gap-6">
+                  <Switch defaultChecked aria-label="Enabled example" />
+                  <Switch aria-label="Disabled example" disabled />
+                </div>
+              </Frame>
+            </div>
           </Section>
 
           <Section id="tooltip" index={8} title="Tooltip" name="tooltip">
@@ -480,18 +490,7 @@ export default function ComponentsPage() {
           </Section>
 
           <Section id="select" index={10} title="Select" name="select">
-            <Frame>
-              <Select defaultValue="lyric-viewer">
-                <SelectTrigger className="max-w-sm">
-                  <SelectValue placeholder="Choose an app" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="lyric-viewer">lyric-viewer</SelectItem>
-                  <SelectItem value="file-viewer">file-viewer</SelectItem>
-                  <SelectItem value="review-grader">review-grader</SelectItem>
-                </SelectContent>
-              </Select>
-            </Frame>
+            <SelectPlayground />
           </Section>
 
           <Section id="dialog" index={11} title="Dialog" name="dialog">
@@ -546,16 +545,19 @@ export default function ComponentsPage() {
           </Section>
 
           <Section id="checkbox" index={14} title="Checkbox" name="checkbox">
-            <Frame>
-              <div className="flex items-center gap-6">
-                <label className="flex items-center gap-2 text-sm">
-                  <Checkbox defaultChecked /> Non-destructive
-                </label>
-                <label className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Checkbox disabled /> Disabled
-                </label>
-              </div>
-            </Frame>
+            <div className="space-y-6">
+              <CheckboxPlayground />
+              <Frame>
+                <div className="flex items-center gap-6">
+                  <label className="flex items-center gap-2 text-sm">
+                    <Checkbox defaultChecked /> Non-destructive
+                  </label>
+                  <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Checkbox disabled /> Disabled
+                  </label>
+                </div>
+              </Frame>
+            </div>
           </Section>
 
           <Section id="radio-group" index={15} title="Radio Group" name="radio-group">

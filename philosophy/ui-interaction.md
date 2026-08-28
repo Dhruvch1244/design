@@ -26,6 +26,29 @@ The overlay shape, generalized from file-viewer's edit tracking:
   produce a new artifact. Until then, closing without saving is trivially
   correct — you just discard the overlay.
 
+Illustrative example of the mistake, and the fix:
+
+```ts
+// Anti-pattern — mutate the model directly. Undo has to be reconstructed
+// after the fact, and it breaks the first time an edit has no clean inverse.
+function onCellEdit(row: number, col: string, value: string) {
+  data[row][col] = value; // the original value is gone the instant this runs
+}
+```
+
+```ts
+// Fix — record the change; the original stays untouched until commit.
+// Undo is structurally guaranteed: there's nothing to reverse, only
+// something to stop applying.
+function onCellEdit(row: number, col: string, value: string) {
+  overlay.push({ target: [row, col], previous: data[row][col], next: value });
+}
+const view = applyOverlay(data, overlay); // render original + overlay, never a mutated copy
+function undo() {
+  overlay.pop();
+}
+```
+
 This generalizes past file editors:
 
 - **Forms/settings screens**: stage changes in local component state; only
@@ -65,6 +88,28 @@ Practical corollary: error messages for structural failures should be
 specific enough to act on ("missing required section marker at offset X",
 not "could not open file"), precisely because you're asking the user to
 trust that a real problem exists rather than an assumption of yours.
+
+Illustrative example of the mistake, and the fix:
+
+```ts
+// Anti-pattern — content gatekeeping disguised as validation. A row the
+// author didn't expect silently vanishes with no error the user can see.
+for (const row of rows) {
+  if (row.date > new Date()) continue; // "that can't be right" — drops it
+  render(row);
+}
+```
+
+```ts
+// Fix — structural check only. Unusual content still renders; it's
+// surfaced as information, never silently removed.
+for (const row of rows) {
+  if (!isWellFormedRow(row)) {
+    throw new ParseError(`row ${row.index}: missing required field "date"`);
+  }
+  render(row, { flagged: row.date > new Date() }); // future-dated, still shown
+}
+```
 
 ## Where these two pillars meet
 

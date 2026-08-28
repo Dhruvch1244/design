@@ -39,6 +39,34 @@ Where this shows up in practice, by stack:
   a long-lived app, and only survives cleanly if the logic never depended on
   the old framework to begin with.
 
+Illustrative example (not from any specific project — showing the shape of
+the mistake and the fix):
+
+```tsx
+// Anti-pattern — the "core" module reaches into React for convenience.
+// core/pricing.ts now needs React installed just to build or test.
+import { useEffect } from "react";
+
+export function usePricing(cart: CartItem[]) {
+  useEffect(() => {
+    /* recompute totals */
+  }, [cart]);
+}
+```
+
+```tsx
+// Fix — plain function, zero framework import. The component calls it;
+// it never calls back into component state.
+// core/pricing.ts
+export function computeTotal(cart: CartItem[]): number {
+  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+}
+
+// components/CartSummary.tsx
+import { computeTotal } from "../core/pricing";
+const total = computeTotal(cart);
+```
+
 ## The one narrow exception, and how to document it
 
 lyric-viewer has exactly one deliberate crossing of its Rust/renderer
@@ -98,6 +126,28 @@ kind of background work:
   logic. Keep "how do I recover after a crash" separable from "how do I
   decide what runs next" — they're different problems and conflating them
   makes both harder to reason about.
+
+Illustrative example of the mistake this section is about, and the fix:
+
+```ts
+// Anti-pattern — every call site invents its own answer to "what if this
+// gets requested twice." Two rapid calls for the same track race each other.
+async function refreshLyrics(trackId: string) {
+  const controller = new AbortController();
+  return fetch(`/api/lyrics/${trackId}`, { signal: controller.signal });
+}
+```
+
+```ts
+// Fix — one engine call sites route through; dedup and cancellation are
+// solved once, centrally, instead of reinvented at every call site.
+scheduler.submit({
+  lane: "io",
+  dedupKey: `lyrics:${trackId}`,
+  cancelToken: currentTrackToken,
+  run: () => fetchLyrics(trackId),
+});
+```
 
 ## When one scheduler isn't warranted yet
 

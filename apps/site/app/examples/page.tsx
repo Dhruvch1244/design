@@ -22,10 +22,28 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/dsgn/dropdown-menu";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@/components/dsgn/table";
+import { Skeleton } from "@/components/dsgn/skeleton";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from "@/components/dsgn/command";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
 import { CursorGlow } from "@/components/motion/cursor-glow";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Examples — Dhruv Choudhary",
@@ -38,13 +56,58 @@ const TEAM = [
   { name: "file-viewer", role: "Viewer", initials: "fv" },
 ] as const;
 
+// The registry's real component names (registry.json), so the search below
+// is filtering actual data instead of sample rows.
+const REGISTRY_COMPONENTS = [
+  "accordion", "alert", "avatar", "badge", "button", "card", "checkbox",
+  "command", "dialog", "dropdown-menu", "empty-state", "input", "popover",
+  "progress", "radio-group", "select", "separator", "skeleton", "switch",
+  "table", "tabs", "textarea", "tooltip",
+] as const;
+
 // Real numbers about this project, not placeholder dashboard data — a fake
 // "$1.2M revenue" stat tile would be exactly the kind of ungrounded demo
-// content the philosophy pages argue against.
+// content the philosophy pages argue against. Registry count is derived
+// from REGISTRY_COMPONENTS above rather than a second hardcoded literal,
+// so the two can't silently drift out of sync the way this one already did.
 const STATS = [
-  { label: "Registry components", value: "20" },
+  { label: "Registry components", value: String(REGISTRY_COMPONENTS.length) },
   { label: "Case studies", value: "3" },
   { label: "Philosophy pillars", value: "9" },
+] as const;
+
+// The 3 real case studies this philosophy was extracted from — same data
+// as apps/site/lib/case-studies.ts, not invented dashboard rows.
+const PROJECTS = [
+  { name: "lyric-viewer", stack: "Tauri 2 + Rust", status: "Shipped" },
+  { name: "file-viewer", stack: ".NET / WPF", status: "Shipped" },
+  { name: "review-grader", stack: "Angular 17.3", status: "Shipped" },
+] as const;
+
+// dsgn itself is MIT-licensed and free — this tier layout is illustrative
+// of the composition, not a real dsgn pricing plan.
+const PLANS = [
+  {
+    name: "Community",
+    price: "Free",
+    tagline: "Everything in the registry, MIT licensed.",
+    features: ["Full component registry", "npx @dhruvchoudhary/dsgn add", "Unlimited projects"],
+    featured: false,
+  },
+  {
+    name: "Team",
+    price: "Custom",
+    tagline: "For teams standardizing on one registry.",
+    features: ["Everything in Community", "Private component registry", "Shared token overrides"],
+    featured: true,
+  },
+  {
+    name: "Enterprise",
+    price: "Custom",
+    tagline: "SSO, audit logs, dedicated support.",
+    features: ["Everything in Team", "SSO / SAML", "Dedicated support channel"],
+    featured: false,
+  },
 ] as const;
 
 function ExampleFrame({
@@ -86,7 +149,8 @@ export default function ExamplesPage() {
           <p className="mt-4 max-w-2xl text-muted-foreground">
             A single Button or Switch in isolation doesn&rsquo;t tell you much about how it holds
             up in real layout. These are small, realistic compositions — a sign-in form, a
-            settings panel, a team list, a stat row — built entirely from the same{" "}
+            settings panel, a team list, a dashboard, pricing tiers, a live search — built
+            entirely from the same{" "}
             <Link href="/components" className="text-accent hover:underline">
               registry components
             </Link>{" "}
@@ -237,6 +301,123 @@ export default function ExamplesPage() {
               </p>
             </Frame>
           ))}
+        </div>
+      </ExampleFrame>
+
+      <ExampleFrame
+        index={5}
+        title="Project dashboard"
+        description="Table + Badge + Skeleton — the real 3 case studies, plus a loading row for contrast."
+      >
+        <Card className="w-full max-w-lg">
+          <CardHeader>
+            <CardTitle>Case studies</CardTitle>
+            <CardDescription>Every project this design philosophy was extracted from.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Project</TableHead>
+                  <TableHead>Stack</TableHead>
+                  <TableHead className="text-right">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {PROJECTS.map((project) => (
+                  <TableRow key={project.name}>
+                    <TableCell className="font-medium">{project.name}</TableCell>
+                    <TableCell className="text-muted-foreground">{project.stack}</TableCell>
+                    <TableCell className="text-right">
+                      <Badge variant="outline">{project.status}</Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                <TableRow>
+                  <TableCell>
+                    <Skeleton className="h-4 w-20" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-28" />
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Skeleton className="ml-auto h-4 w-14" />
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </ExampleFrame>
+
+      <ExampleFrame
+        index={6}
+        title="Pricing tiers"
+        description="Card + Badge + Button — a 3-tier plan layout (illustrative pattern, not an actual dsgn plan)."
+      >
+        <div className="grid w-full max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3">
+          {PLANS.map((plan) => (
+            <Card
+              key={plan.name}
+              className={cn("flex flex-col", plan.featured && "border-accent")}
+            >
+              <CardHeader>
+                {plan.featured && (
+                  <Badge variant="accent" className="mb-2 w-fit">
+                    Most popular
+                  </Badge>
+                )}
+                <CardTitle>{plan.name}</CardTitle>
+                <CardDescription>{plan.tagline}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1 space-y-3">
+                <p className="font-display text-3xl uppercase">{plan.price}</p>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className="mt-0.5 h-4 w-4 shrink-0 text-accent"
+                      >
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+              <CardFooter>
+                <Button variant={plan.featured ? "accent" : "outline"} className="w-full">
+                  {plan.price === "Free" ? "Get started" : "Talk to us"}
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      </ExampleFrame>
+
+      <ExampleFrame
+        index={7}
+        title="Component search"
+        description="Command — searching this registry's real component list, not sample data."
+      >
+        <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-border bg-card">
+          <Command loop>
+            <CommandInput placeholder="Search components..." />
+            <CommandList>
+              <CommandEmpty>No components found.</CommandEmpty>
+              <CommandGroup heading="Registry">
+                {REGISTRY_COMPONENTS.map((name) => (
+                  <CommandItem key={name} value={name}>
+                    {name}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
         </div>
       </ExampleFrame>
     </div>
