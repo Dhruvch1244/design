@@ -229,15 +229,26 @@
  * Fixed, pointer-events-none starfield — replaces an earlier ambient
  * gradient-blob background. Three layers of small radial-gradient dots at
  * different tile sizes (so it doesn't read as an obviously repeating
- * pattern), each twinkling on its own offset cycle. Only opacity is
- * animated (GPU-only, no layout cost) and it's fixed to the viewport, never
- * attached to a scrolling container. Stars are a night-sky motif, so they
- * fade out entirely in the light theme rather than rendering as dark
- * flecks on a cream background.
+ * pattern), each twinkling on its own offset cycle. It's also
+ * mouse-parallaxed (components/starfield.tsx writes --parallax-x/-y as the
+ * pointer moves; this file just reads them per layer at different
+ * multipliers) — deliberately uneven: the brightest cyan layer (this
+ * element's own background) barely moves, the two fainter dust layers
+ * drift more, so the "pole star" reads as the fixed point everything else
+ * shifts around, not just a background sliding as a single flat plane.
+ *
+ * inset is -30px, not 0 — a position:fixed element that exactly matches
+ * the viewport would reveal an empty strip at the trailing edge the moment
+ * it's translated for parallax; the negative inset gives it enough
+ * overhang that the max parallax offset (about ±20px) never uncovers an
+ * edge. Only opacity/transform are animated (GPU-only, no layout cost) and
+ * it's fixed to the viewport, never attached to a scrolling container.
+ * Stars are a night-sky motif, so they fade out entirely in the light
+ * theme rather than rendering as dark flecks on a cream background.
  */
 .starfield {
   position: fixed;
-  inset: 0;
+  inset: -30px;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
@@ -250,6 +261,8 @@
   animation: twinkle 7s ease-in-out infinite;
   opacity: 0.5;
   transition: opacity 500ms var(--ease-fluid);
+  transform: translate3d(calc(var(--parallax-x, 0px) * 0.15), calc(var(--parallax-y, 0px) * 0.15), 0);
+  will-change: transform;
 }
 
 .starfield::before,
@@ -258,6 +271,7 @@
   position: absolute;
   inset: 0;
   background-repeat: repeat;
+  will-change: transform;
 }
 
 .starfield::before {
@@ -270,6 +284,7 @@
     radial-gradient(1px 1px at 5% 60%, var(--star-color), transparent);
   background-size: 260px 260px;
   animation: twinkle 5s ease-in-out infinite;
+  transform: translate3d(calc(var(--parallax-x, 0px) * 0.5), calc(var(--parallax-y, 0px) * 0.5), 0);
   opacity: 0.5;
 }
 
@@ -282,6 +297,7 @@
   background-size: 380px 380px;
   animation: twinkle 9s ease-in-out infinite reverse;
   animation-delay: -3s;
+  transform: translate3d(calc(var(--parallax-x, 0px) * 0.8), calc(var(--parallax-y, 0px) * 0.8), 0);
   opacity: 0.35;
 }
 

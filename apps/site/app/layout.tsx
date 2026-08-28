@@ -4,6 +4,7 @@ import { Bebas_Neue, Hanken_Grotesk, Space_Mono } from "next/font/google";
 import { Nav } from "@/components/nav";
 import { Mark } from "@/components/brand/mark";
 import { CommandPalette } from "@/components/command-palette";
+import { Starfield } from "@/components/starfield";
 import "./globals.css";
 
 const bebasNeue = Bebas_Neue({
@@ -88,7 +89,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
-        <div className="starfield" />
+        <Starfield />
         <Nav />
         <CommandPalette />
         <main id="main-content" className="relative flex-1 pt-28">

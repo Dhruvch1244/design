@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Mark } from "@/components/brand/mark";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { PalettePicker } from "@/components/palette-picker";
+import { AppearanceMenu } from "@/components/appearance-menu";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -21,6 +22,13 @@ const GITHUB_URL = "https://github.com/dhruvch1244/design";
  * with a staggered link reveal. The search icon dispatches "cmdk:open" —
  * see components/command-palette.tsx, which owns the actual palette state
  * so this component doesn't need to know it exists beyond firing the event.
+ *
+ * The pill carries the logomark only, not a wordmark — "Dhruv Choudhary"
+ * at nav width wrapped to two lines and broke the pill's shape (a real
+ * reported bug, not a style preference); the name still appears in the
+ * footer and page title. Theme + accent color are behind one Appearance
+ * trigger (components/appearance-menu.tsx) instead of five separate
+ * controls living in the pill permanently.
  */
 export function Nav() {
   const [open, setOpen] = useState(false);
@@ -36,9 +44,8 @@ export function Nav() {
             "duration-500 ease-fluid",
           )}
         >
-          <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-            <Mark className="h-5 w-5 text-accent" />
-            <span className="font-display text-base tracking-wide">DHRUV CHOUDHARY</span>
+          <Link href="/" aria-label="Home" onClick={() => setOpen(false)} className="-m-1.5 p-1.5">
+            <Mark className="h-6 w-6 text-accent" />
           </Link>
 
           <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
@@ -77,8 +84,7 @@ export function Nav() {
               </svg>
               <kbd className="font-mono text-[10px]">⌘K</kbd>
             </button>
-            <PalettePicker className="hidden pl-1 md:flex" />
-            <ThemeToggle />
+            <AppearanceMenu />
             <button
               type="button"
               aria-label={open ? "Close menu" : "Open menu"}
@@ -128,13 +134,16 @@ export function Nav() {
             {link.label}
           </Link>
         ))}
-        <PalettePicker
+        <div
           className={cn(
-            "mt-6 transition-all duration-500 ease-fluid",
+            "mt-8 flex items-center gap-6 transition-all duration-500 ease-fluid",
             open ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0",
           )}
           style={{ transitionDelay: open ? "325ms" : "0ms" }}
-        />
+        >
+          <ThemeToggle />
+          <PalettePicker />
+        </div>
       </div>
     </>
   );
