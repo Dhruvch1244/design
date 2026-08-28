@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Button } from "@/components/dsgn/button";
 import {
   Card,
@@ -173,6 +174,12 @@ export default function ComponentsPage() {
             straight into your project, the same way it copied them into this site. Edit the file
             freely; there&rsquo;s nothing to eject later.
           </p>
+          <Link
+            href="/examples"
+            className="mt-4 inline-block text-sm text-accent hover:underline"
+          >
+            See these composed into small real apps →
+          </Link>
         </CursorGlow>
       </Reveal>
 
