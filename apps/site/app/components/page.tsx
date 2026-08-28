@@ -47,6 +47,7 @@ import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
 import { CursorGlow } from "@/components/motion/cursor-glow";
 import { CopyButton } from "@/components/copy-button";
+import { ButtonPlayground } from "@/components/button-playground";
 import { TableOfContents, type TocEntry } from "@/components/table-of-contents";
 
 export const metadata: Metadata = {
@@ -298,6 +299,11 @@ export default function ComponentsPage() {
 
         <div className="min-w-0 flex-1 space-y-16">
           <Section id="button" index={1} title="Button" name="button">
+            <div className="space-y-6">
+              <ButtonPlayground />
+              <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
+                All variants &amp; sizes
+              </p>
             <Frame>
               <div className="space-y-5">
                 <div className="flex flex-wrap items-center gap-3">
@@ -340,6 +346,7 @@ export default function ComponentsPage() {
                 </div>
               </div>
             </Frame>
+            </div>
           </Section>
 
           <Section id="card" index={2} title="Card" name="card">
