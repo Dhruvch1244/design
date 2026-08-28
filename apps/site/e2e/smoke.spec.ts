@@ -13,6 +13,7 @@ const ROUTES = [
   "/case-studies/lyric-viewer/",
   "/components/",
   "/examples/",
+  "/theming/",
 ];
 
 const THEMES = ["light", "dark"] as const;

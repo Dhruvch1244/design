@@ -65,6 +65,7 @@ const FOOTER_LINKS = [
   { href: "/case-studies", label: "Case Studies" },
   { href: "/components", label: "Components" },
   { href: "/examples", label: "Examples" },
+  { href: "/theming", label: "Theming" },
   { href: "https://github.com/dhruvch1244/design", label: "GitHub" },
 ];
 

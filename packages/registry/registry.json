@@ -212,6 +212,36 @@
       "files": [
         { "path": "src/components/dropdown-menu/dropdown-menu.tsx", "target": "components/dsgn/dropdown-menu.tsx", "type": "registry:ui" }
       ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "description": "Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption -- styled native <table> elements, no primitive dependency.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/table/table.tsx", "target": "components/dsgn/table.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "description": "A pulsing placeholder for content that hasn't loaded yet.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/skeleton/skeleton.tsx", "target": "components/dsgn/skeleton.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "description": "The \"no rows yet\" / \"no results\" state -- a dashed placeholder with an icon, title, description, and optional action.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/empty-state/empty-state.tsx", "target": "components/dsgn/empty-state.tsx", "type": "registry:ui" }
+      ]
     }
   ]
 }

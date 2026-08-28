@@ -42,6 +42,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/dsgn/dropdown-menu";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/dsgn/table";
+import { Skeleton } from "@/components/dsgn/skeleton";
+import { EmptyState } from "@/components/dsgn/empty-state";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
@@ -91,6 +94,9 @@ const SECTIONS: TocEntry[] = [
   { id: "accordion", text: "Accordion" },
   { id: "popover", text: "Popover" },
   { id: "dropdown-menu", text: "Dropdown Menu" },
+  { id: "table", text: "Table" },
+  { id: "skeleton", text: "Skeleton" },
+  { id: "empty-state", text: "Empty State" },
 ];
 
 function InstallCommand({ name }: { name: string }) {
@@ -180,6 +186,10 @@ export default function ComponentsPage() {
             className="mt-4 inline-block text-sm text-accent hover:underline"
           >
             See these composed into small real apps →
+          </Link>
+          <span className="mx-2 text-muted-foreground">·</span>
+          <Link href="/theming" className="text-sm text-accent hover:underline">
+            Reskin all of it for your own brand →
           </Link>
         </CursorGlow>
       </Reveal>
@@ -285,6 +295,27 @@ export default function ComponentsPage() {
           <GalleryTile id="dropdown-menu" label="Dropdown Menu">
             <svg {...ICON_PROPS} strokeLinecap="round">
               <path d="M4 7h16M4 12h16M4 17h10" />
+            </svg>
+          </GalleryTile>
+          <GalleryTile id="table" label="Table">
+            <div className="grid w-16 grid-cols-2 gap-0.5">
+              <div className="h-1.5 rounded-sm bg-muted-foreground/30" />
+              <div className="h-1.5 rounded-sm bg-muted-foreground/30" />
+              <div className="h-1.5 rounded-sm bg-muted-foreground/15" />
+              <div className="h-1.5 rounded-sm bg-muted-foreground/15" />
+              <div className="h-1.5 rounded-sm bg-muted-foreground/15" />
+              <div className="h-1.5 rounded-sm bg-muted-foreground/15" />
+            </div>
+          </GalleryTile>
+          <GalleryTile id="skeleton" label="Skeleton">
+            <div className="w-16 space-y-1.5">
+              <div className="h-1.5 w-full animate-pulse rounded-full bg-muted-foreground/25" />
+              <div className="h-1.5 w-2/3 animate-pulse rounded-full bg-muted-foreground/15" />
+            </div>
+          </GalleryTile>
+          <GalleryTile id="empty-state" label="Empty State">
+            <svg {...ICON_PROPS} strokeDasharray="3 3">
+              <rect x="4" y="4" width="16" height="16" rx="3" />
             </svg>
           </GalleryTile>
         </div>
@@ -602,6 +633,65 @@ export default function ComponentsPage() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </Frame>
+          </Section>
+
+          <Section id="table" index={21} title="Table" name="table">
+            <Frame>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Pillar</TableHead>
+                    <TableHead>Shipped in</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Physical separation</TableCell>
+                    <TableCell className="text-muted-foreground">lyric-viewer</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Non-destructive by default</TableCell>
+                    <TableCell className="text-muted-foreground">file-viewer</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Idioms stay current</TableCell>
+                    <TableCell className="text-muted-foreground">review-grader</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Frame>
+          </Section>
+
+          <Section id="skeleton" index={22} title="Skeleton" name="skeleton">
+            <Frame>
+              <div className="flex max-w-sm items-center gap-3">
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-3 w-full" />
+                  <Skeleton className="h-3 w-2/3" />
+                </div>
+              </div>
+            </Frame>
+          </Section>
+
+          <Section id="empty-state" index={23} title="Empty State" name="empty-state">
+            <div className="max-w-sm">
+              <EmptyState
+                icon={
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-8 w-8">
+                    <rect x="4" y="4" width="16" height="16" rx="3" />
+                    <path d="M9 9h6M9 15h3" />
+                  </svg>
+                }
+                title="No results"
+                description="Nothing matches that filter yet."
+                action={
+                  <Button variant="outline" size="sm">
+                    Clear filter
+                  </Button>
+                }
+              />
+            </div>
           </Section>
         </div>
       </div>

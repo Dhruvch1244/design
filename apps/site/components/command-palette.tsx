@@ -22,6 +22,7 @@ const PAGES = [
   ...CASE_STUDIES.map((study) => ({ href: `/case-studies/${study.slug}`, label: `Case Study — ${study.name}` })),
   { href: "/components", label: "Components" },
   { href: "/examples", label: "Examples" },
+  { href: "/theming", label: "Theming" },
 ];
 
 /**
