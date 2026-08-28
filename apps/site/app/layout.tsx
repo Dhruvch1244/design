@@ -67,6 +67,7 @@ const FOOTER_LINKS = [
   { href: "/components", label: "Components" },
   { href: "/examples", label: "Examples" },
   { href: "/theming", label: "Theming" },
+  { href: "/skill", label: "Skill" },
   { href: "https://github.com/dhruvch1244/design", label: "GitHub" },
 ];
 
@@ -83,6 +84,9 @@ const THEME_SCRIPT = `(function () {
     document.documentElement.setAttribute('data-accent', accent);
     var radius = localStorage.getItem('radius-scale');
     if (radius) document.documentElement.style.setProperty('--radius-scale', radius);
+    var variants = ['a', 'b', 'c', 'd', 'e'];
+    var variant = variants[Math.floor(Math.random() * variants.length)];
+    document.documentElement.setAttribute('data-glow-variant', variant);
   } catch (e) {}
 })();`;
 

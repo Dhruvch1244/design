@@ -109,18 +109,18 @@ export default function Home() {
       </CursorGlow>
 
       <Reveal>
-        <Frame glow={false} className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm font-medium">Embed the live component count</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Backed by the real registry — updates itself on every build, never a stale number.
-            </p>
-          </div>
-          <div className="flex items-center gap-3 rounded-full border border-border bg-background/60 py-1.5 pl-4 pr-1.5">
-            <code className="max-w-[min(60vw,26rem)] overflow-x-auto whitespace-nowrap font-mono text-xs text-accent">
-              {BADGE_MARKDOWN}
-            </code>
-            <CopyButton text={BADGE_MARKDOWN} />
+        <Frame glow={false} className="mt-4">
+          <p className="text-sm font-medium">Embed the live component count</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Backed by the real registry — updates itself on every build, never a stale number.
+          </p>
+          <div className="relative mt-4">
+            <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-14 font-mono text-xs text-accent">
+              <code>{BADGE_MARKDOWN}</code>
+            </pre>
+            <div className="absolute right-3 top-3">
+              <CopyButton text={BADGE_MARKDOWN} />
+            </div>
           </div>
         </Frame>
       </Reveal>

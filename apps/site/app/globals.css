@@ -25,6 +25,27 @@
   --magenta: #ff2e7e;
   --violet: #9a6bff;
 
+  /*
+   * Decorative glow colors, deliberately NOT redefined under
+   * [data-theme="light"] the way --cyan/--violet/--magenta/--warm are.
+   * Confirmed by inspecting dhruvchoudhary.com's own light-mode hero glow
+   * directly (getComputedStyle on its gradient-text name): it uses
+   * rgb(154,107,255) — this project's dark-mode --violet, #9a6bff — as the
+   * drop-shadow color even on the light page, not its own muted light-mode
+   * violet. Text/border colors need to mute for light-background contrast;
+   * a decorative background wash has no such constraint and reads as
+   * washed-out if it mutes along with everything else. These four stay at
+   * full saturation in both themes so the mesh-gradient below doesn't need
+   * a separate light-mode color pass, only an opacity one.
+   */
+  --glow-cyan: #28e0ec;
+  --glow-violet: #9a6bff;
+  --glow-magenta: #ff2e7e;
+  --glow-warm: #f2b45e;
+  /* Tracks the palette-picker's choice the same way --accent does, but at
+     full saturation regardless of theme — see [data-accent="..."] below. */
+  --glow-accent-color: var(--glow-cyan);
+
   --glass: #07080c99;
   --glass-strong: #0d0f16e0;
   --star-color: var(--ink);
@@ -81,15 +102,19 @@
  */
 [data-accent="cyan"] {
   --accent: var(--cyan);
+  --glow-accent-color: var(--glow-cyan);
 }
 [data-accent="violet"] {
   --accent: var(--violet);
+  --glow-accent-color: var(--glow-violet);
 }
 [data-accent="magenta"] {
   --accent: var(--magenta);
+  --glow-accent-color: var(--glow-magenta);
 }
 [data-accent="warm"] {
   --accent: var(--warm);
+  --glow-accent-color: var(--glow-warm);
 }
 
 [data-theme="light"] {
@@ -293,6 +318,14 @@
  * source but render motionless. One slow 70s pan moves the whole
  * five-color composition together rather than each blob independently,
  * which is simpler and just as convincing at this speed.
+ *
+ * Colors come from the --glow-* tokens (full-saturation, theme-invariant),
+ * not --cyan/--violet/--magenta/--warm directly — those mute for light-mode
+ * text/border contrast, which made this same gradient read as a barely
+ * visible tint once its opacity was also turned down for light mode. A
+ * decorative wash has no contrast requirement, so it can and should stay at
+ * full saturation in both themes; only the opacity below still differs per
+ * theme, tuned by eye rather than derived.
  */
 .mesh-gradient {
   position: fixed;
@@ -300,11 +333,11 @@
   z-index: 0;
   pointer-events: none;
   background-image:
-    radial-gradient(38% 38% at 15% 20%, color-mix(in srgb, var(--cyan) 55%, transparent), transparent 70%),
-    radial-gradient(42% 42% at 85% 15%, color-mix(in srgb, var(--violet) 50%, transparent), transparent 70%),
-    radial-gradient(40% 40% at 90% 85%, color-mix(in srgb, var(--magenta) 45%, transparent), transparent 70%),
-    radial-gradient(36% 36% at 10% 90%, color-mix(in srgb, var(--warm) 45%, transparent), transparent 70%),
-    radial-gradient(50% 50% at 50% 50%, color-mix(in srgb, var(--accent) 25%, transparent), transparent 65%);
+    radial-gradient(38% 38% at 15% 20%, color-mix(in srgb, var(--glow-cyan) 55%, transparent), transparent 70%),
+    radial-gradient(42% 42% at 85% 15%, color-mix(in srgb, var(--glow-violet) 50%, transparent), transparent 70%),
+    radial-gradient(40% 40% at 90% 85%, color-mix(in srgb, var(--glow-magenta) 45%, transparent), transparent 70%),
+    radial-gradient(36% 36% at 10% 90%, color-mix(in srgb, var(--glow-warm) 45%, transparent), transparent 70%),
+    radial-gradient(50% 50% at 50% 50%, color-mix(in srgb, var(--glow-accent-color) 25%, transparent), transparent 65%);
   background-size: 130% 130%;
   background-repeat: no-repeat;
   opacity: 0.35;
@@ -320,8 +353,54 @@
   }
 }
 
+/*
+ * Light mode can run noticeably more opaque than before now that the
+ * colors underneath stay saturated (see the token comment above) — 0.26 is
+ * roughly 2x the old 0.14 and was tuned by eye against real page content
+ * (case-studies prose, the components gallery) so it reads as a genuine
+ * glow rather than either a flat tint or something that fights body text.
+ */
 [data-theme="light"] .mesh-gradient {
-  opacity: 0.14;
+  opacity: 0.26;
+}
+
+/*
+ * Compositional variety — picked once per full page load by the pre-paint
+ * script in layout.tsx (same mechanism that already seeds data-theme/
+ * data-accent before first paint, so there's no flash-of-different-glow on
+ * hydration) and written as data-glow-variant on <html>. "a" is the
+ * original five-blob balanced layout above; b–e are genuinely different
+ * blob counts/positions/color pairings, not just a-with-different-numbers,
+ * so a revisit actually reads as a different composition rather than the
+ * same shape recolored.
+ */
+[data-glow-variant="b"] .mesh-gradient {
+  background-image:
+    radial-gradient(46% 46% at 25% 15%, color-mix(in srgb, var(--glow-violet) 55%, transparent), transparent 72%),
+    radial-gradient(44% 44% at 78% 20%, color-mix(in srgb, var(--glow-magenta) 50%, transparent), transparent 72%),
+    radial-gradient(34% 34% at 60% 92%, color-mix(in srgb, var(--glow-cyan) 45%, transparent), transparent 68%);
+}
+
+[data-glow-variant="c"] .mesh-gradient {
+  background-image:
+    radial-gradient(48% 48% at 88% 12%, color-mix(in srgb, var(--glow-cyan) 55%, transparent), transparent 70%),
+    radial-gradient(46% 46% at 8% 88%, color-mix(in srgb, var(--glow-warm) 50%, transparent), transparent 70%),
+    radial-gradient(30% 30% at 50% 45%, color-mix(in srgb, var(--glow-magenta) 35%, transparent), transparent 65%);
+}
+
+[data-glow-variant="d"] .mesh-gradient {
+  background-image:
+    radial-gradient(50% 50% at 50% 18%, color-mix(in srgb, var(--glow-accent-color) 50%, transparent), transparent 72%),
+    radial-gradient(32% 32% at 10% 75%, color-mix(in srgb, var(--glow-cyan) 40%, transparent), transparent 68%),
+    radial-gradient(32% 32% at 92% 80%, color-mix(in srgb, var(--glow-violet) 40%, transparent), transparent 68%);
+}
+
+[data-glow-variant="e"] .mesh-gradient {
+  background-image:
+    radial-gradient(40% 40% at 82% 22%, color-mix(in srgb, var(--glow-cyan) 55%, transparent), transparent 70%),
+    radial-gradient(36% 36% at 95% 45%, color-mix(in srgb, var(--glow-violet) 50%, transparent), transparent 70%),
+    radial-gradient(32% 32% at 75% 5%, color-mix(in srgb, var(--glow-magenta) 45%, transparent), transparent 68%),
+    radial-gradient(24% 24% at 15% 90%, color-mix(in srgb, var(--glow-warm) 40%, transparent), transparent 65%);
 }
 
 @media (prefers-reduced-motion: reduce) {

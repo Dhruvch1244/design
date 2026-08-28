@@ -15,6 +15,7 @@ const NAV_LINKS = [
   { href: "/components", label: "Components" },
   { href: "/examples", label: "Examples" },
   { href: "/theming", label: "Theming" },
+  { href: "/skill", label: "Skill" },
 ];
 
 const GITHUB_URL = "https://github.com/dhruvch1244/design";
@@ -42,7 +43,7 @@ export function Nav() {
       <header className="fixed inset-x-0 top-6 z-50 px-4">
         <div
           className={cn(
-            "mx-auto flex w-full max-w-3xl items-center justify-between gap-3 rounded-full border",
+            "mx-auto flex w-full max-w-4xl items-center justify-between gap-3 rounded-full border",
             "border-border bg-glass px-4 py-2.5 shadow-ambient backdrop-blur-xl transition-shadow",
             "duration-500 ease-fluid",
           )}
@@ -51,7 +52,7 @@ export function Nav() {
             <Mark className="h-6 w-6 text-accent" />
           </Link>
 
-          <nav className="hidden items-center gap-5 text-sm whitespace-nowrap text-muted-foreground md:flex">
+          <nav className="hidden items-center gap-4 text-sm whitespace-nowrap text-muted-foreground md:flex">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}

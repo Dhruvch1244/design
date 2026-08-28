@@ -14,6 +14,7 @@ const ROUTES = [
   "/components/",
   "/examples/",
   "/theming/",
+  "/skill/",
 ];
 
 const THEMES = ["light", "dark"] as const;

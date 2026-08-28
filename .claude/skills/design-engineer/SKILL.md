@@ -1,6 +1,6 @@
 ---
 name: design-engineer
-description: Use when building or reworking real UI — a page, component, dashboard, marketing site, or design system — and the bar is "ship something that reads as expensive and works," not just "make it compile." Covers choosing the right library for the job (styling, components, motion, 3D, charts, forms, icons, type) and using each one the way a senior design engineer would, not the way its README demos it. Trigger on: "build a landing page," "make this look premium," "add animation/motion," "pick a component library," "add charts," "3D/WebGL," "design system," "this looks generic/cheap," or any request naming a specific design library (Tailwind, shadcn, Radix, GSAP, Motion/Framer Motion, Three.js/R3F, D3, visx, React Hook Form, Zod).
+description: 'Use when building or reworking real UI — a page, component, dashboard, marketing site, or design system — and the bar is "ship something that reads as expensive and works," not just "make it compile." Covers choosing the right library for the job (styling, components, motion, 3D, charts, forms, icons, type) and using each one the way a senior design engineer would, not the way its README demos it. Trigger on: "build a landing page," "make this look premium," "add animation/motion," "pick a component library," "add charts," "3D/WebGL," "design system," "this looks generic/cheap," or any request naming a specific design library (Tailwind, shadcn, Radix, GSAP, Motion/Framer Motion, Three.js/R3F, D3, visx, React Hook Form, Zod).'
 ---
 
 # Design Engineer
