@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Mark } from "@/components/brand/mark";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { PalettePicker } from "@/components/palette-picker";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -76,6 +77,7 @@ export function Nav() {
               </svg>
               <kbd className="font-mono text-[10px]">⌘K</kbd>
             </button>
+            <PalettePicker className="hidden pl-1 md:flex" />
             <ThemeToggle />
             <button
               type="button"
@@ -126,6 +128,13 @@ export function Nav() {
             {link.label}
           </Link>
         ))}
+        <PalettePicker
+          className={cn(
+            "mt-6 transition-all duration-500 ease-fluid",
+            open ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0",
+          )}
+          style={{ transitionDelay: open ? "325ms" : "0ms" }}
+        />
       </div>
     </>
   );

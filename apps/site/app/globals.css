@@ -27,6 +27,7 @@
 
   --glass: #07080c99;
   --glass-strong: #0d0f16e0;
+  --star-color: var(--ink);
 
   --background: var(--void);
   --foreground: var(--ink);
@@ -50,12 +51,34 @@
   --destructive-foreground: var(--void);
 
   --border: var(--rule);
-  --ring: color-mix(in srgb, var(--cyan) 55%, transparent);
+  --ring: color-mix(in srgb, var(--accent) 55%, transparent);
 
-  --glow-cyan: 0 0 0 1px color-mix(in srgb, var(--cyan) 25%, transparent),
-    0 8px 40px -8px color-mix(in srgb, var(--cyan) 35%, transparent);
+  --glow-accent: 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent),
+    0 8px 40px -8px color-mix(in srgb, var(--accent) 35%, transparent);
   --shadow-ambient-raw: 0 1px 0 color-mix(in srgb, white 4%, transparent) inset,
     0 24px 48px -16px color-mix(in srgb, black 60%, transparent);
+}
+
+/*
+ * Accent palette picker (components/palette-picker.tsx): data-accent
+ * repoints --accent at one of the four swatch variables. Everything that
+ * should follow the picked color already reads var(--accent) rather than
+ * var(--cyan) directly (--ring, --glow-accent, ::selection, buttons,
+ * links, focus rings) so this is the one place the picker needs to touch.
+ * Cyan is included explicitly, not just left as the :root default, so the
+ * picker's four options are symmetric in the markup/data model.
+ */
+[data-accent="cyan"] {
+  --accent: var(--cyan);
+}
+[data-accent="violet"] {
+  --accent: var(--violet);
+}
+[data-accent="magenta"] {
+  --accent: var(--magenta);
+}
+[data-accent="warm"] {
+  --accent: var(--warm);
 }
 
 [data-theme="light"] {
@@ -71,14 +94,23 @@
   --magenta: #d21266;
   --violet: #6a3ce0;
 
-  --glass: #ffffffa6;
-  --glass-strong: #ffffffe0;
+  /*
+   * Translucent "glass" only reads as glass when there's something rich
+   * behind it to blur — over the void background that's the starfield and
+   * saturated darkness; over a plain cream page the same low-opacity white
+   * just looks like a slightly-off-white flat div. Light mode compensates
+   * by going much more opaque (closer to a solid card) and leaning on
+   * shadow-ambient for depth instead of on translucency.
+   */
+  --glass: #ffffffe6;
+  --glass-strong: #fffffff2;
+  --star-color: #c9c2b4;
 
   --secondary: #eeece6;
   --muted: #efede7;
   --destructive: #c81e46;
 
-  --ring: color-mix(in srgb, var(--cyan) 45%, transparent);
+  --ring: color-mix(in srgb, var(--accent) 45%, transparent);
   --shadow-ambient-raw: 0 1px 0 white inset,
     0 24px 48px -16px color-mix(in srgb, black 12%, transparent);
 }
@@ -123,7 +155,7 @@
   --color-glass-strong: var(--glass-strong);
 
   --shadow-ambient: var(--shadow-ambient-raw);
-  --shadow-glow: var(--glow-cyan);
+  --shadow-glow: var(--glow-accent);
 
   --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
 
@@ -162,7 +194,7 @@
   }
 
   ::selection {
-    background: color-mix(in srgb, var(--cyan) 30%, transparent);
+    background: color-mix(in srgb, var(--accent) 30%, transparent);
     color: var(--foreground);
   }
 
@@ -230,12 +262,12 @@
 
 .starfield::before {
   background-image:
-    radial-gradient(1px 1px at 20% 30%, var(--ink), transparent),
-    radial-gradient(1px 1px at 60% 70%, var(--ink), transparent),
-    radial-gradient(1px 1px at 80% 15%, var(--ink), transparent),
-    radial-gradient(1px 1px at 33% 88%, var(--ink), transparent),
-    radial-gradient(1px 1px at 45% 45%, var(--ink), transparent),
-    radial-gradient(1px 1px at 5% 60%, var(--ink), transparent);
+    radial-gradient(1px 1px at 20% 30%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 60% 70%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 80% 15%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 33% 88%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 45% 45%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 5% 60%, var(--star-color), transparent);
   background-size: 260px 260px;
   animation: twinkle 5s ease-in-out infinite;
   opacity: 0.5;
@@ -243,10 +275,10 @@
 
 .starfield::after {
   background-image:
-    radial-gradient(1px 1px at 15% 55%, var(--ink), transparent),
-    radial-gradient(1px 1px at 70% 25%, var(--ink), transparent),
-    radial-gradient(1px 1px at 90% 80%, var(--ink), transparent),
-    radial-gradient(1px 1px at 25% 10%, var(--ink), transparent);
+    radial-gradient(1px 1px at 15% 55%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 70% 25%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 90% 80%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 25% 10%, var(--star-color), transparent);
   background-size: 380px 380px;
   animation: twinkle 9s ease-in-out infinite reverse;
   animation-delay: -3s;
@@ -263,11 +295,25 @@
   }
 }
 
-/* display:none, not opacity:0 — the twinkle keyframes continuously drive
-   opacity while the animation is running, which would otherwise fight a
-   static opacity override every frame instead of actually turning off. */
+/*
+ * Light mode keeps the same starfield mechanism (it's cheap and already
+ * built) but repurposed as a faint warm-taupe dot grid via --star-color —
+ * a paper-grain texture rather than a night sky, so the page isn't just a
+ * blank void in light mode. Only the base layer's own cyan-tinted "bright
+ * star" background is turned off (display:none on .starfield itself would
+ * also hide its ::before/::after pseudo-elements, since those are part of
+ * the same box — background-image/animation:none removes just this
+ * element's own layer while leaving its two pseudo-element layers, which
+ * already read --star-color, untouched).
+ */
 [data-theme="light"] .starfield {
-  display: none;
+  background-image: none;
+  animation: none;
+}
+
+[data-theme="light"] .starfield::before,
+[data-theme="light"] .starfield::after {
+  opacity: 0.45;
 }
 
 /* Scroll-linked reading progress bar for the philosophy prose pages. Pure

@@ -67,6 +67,8 @@ const THEME_SCRIPT = `(function () {
     var stored = localStorage.getItem('theme');
     var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
     document.documentElement.setAttribute('data-theme', theme);
+    var accent = localStorage.getItem('accent') || 'cyan';
+    document.documentElement.setAttribute('data-accent', accent);
   } catch (e) {}
 })();`;
 

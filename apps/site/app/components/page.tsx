@@ -13,6 +13,7 @@ import { Input } from "@/components/dsgn/input";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
+import { CursorGlow } from "@/components/motion/cursor-glow";
 import { CopyButton } from "@/components/copy-button";
 
 export const metadata: Metadata = {
@@ -78,15 +79,17 @@ export default function ComponentsPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-16 px-6 pb-32">
       <Reveal>
-        <Eyebrow>Registry · dsgn</Eyebrow>
-        <h1 className="mt-6 max-w-2xl font-display text-4xl uppercase leading-tight tracking-wide sm:text-5xl">
-          Components you own the moment they land.
-        </h1>
-        <p className="mt-4 max-w-2xl text-muted-foreground">
-          These aren&rsquo;t imported from a package at runtime — the dsgn CLI copies the source
-          straight into your project, the same way it copied them into this site. Edit the file
-          freely; there&rsquo;s nothing to eject later.
-        </p>
+        <CursorGlow className="rounded-[2rem] py-4">
+          <Eyebrow>Registry · dsgn</Eyebrow>
+          <h1 className="mt-6 max-w-2xl font-display text-4xl uppercase leading-tight tracking-wide sm:text-5xl">
+            Components you own the moment they land.
+          </h1>
+          <p className="mt-4 max-w-2xl text-muted-foreground">
+            These aren&rsquo;t imported from a package at runtime — the dsgn CLI copies the source
+            straight into your project, the same way it copied them into this site. Edit the file
+            freely; there&rsquo;s nothing to eject later.
+          </p>
+        </CursorGlow>
       </Reveal>
 
       <Section index={1} title="Button" name="button">
