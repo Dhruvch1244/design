@@ -19,7 +19,15 @@ const outDir = join(packageRoot, "dist", "r");
 // a consumer project at a different relative depth, it must be rewritten to
 // the alias instead.
 function rewriteImportsForConsumers(source) {
-  return source.replace(/from\s+["'](?:\.\.\/)+lib\/utils["']/g, 'from "@/lib/utils"');
+  return source
+    .replace(/from\s+["'](?:\.\.\/)+lib\/utils["']/g, 'from "@/lib/utils"')
+    // Recipes (src/recipes/*) import sibling registry components by their
+    // src/ location (e.g. "../components/card/card"); once copied into a
+    // consumer project those live at components/dsgn/<name> instead.
+    .replace(
+      /from\s+["'](?:\.\.\/)+components\/([a-z-]+)\/\1["']/g,
+      'from "@/components/dsgn/$1"',
+    );
 }
 
 async function main() {

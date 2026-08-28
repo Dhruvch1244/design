@@ -21,6 +21,10 @@
 /.next/
 /out/
 
+# regenerated every build by scripts/generate-badge-data.mjs (prebuild) —
+# never stale in git history, always fresh from the actual registry count
+/public/badge-data.json
+
 # production
 /build
 

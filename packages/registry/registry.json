@@ -242,6 +242,36 @@
       "files": [
         { "path": "src/components/empty-state/empty-state.tsx", "target": "components/dsgn/empty-state.tsx", "type": "registry:ui" }
       ]
+    },
+    {
+      "name": "recipe-auth-form",
+      "type": "registry:block",
+      "description": "Recipe -- a real sign-in form composed from Card + Input + Checkbox + Button. Installed via `dsgn add recipe:auth-form`.",
+      "dependencies": [],
+      "registryDependencies": ["card", "input", "checkbox", "button"],
+      "files": [
+        { "path": "src/recipes/auth-form.tsx", "target": "components/dsgn/recipes/auth-form.tsx", "type": "registry:block" }
+      ]
+    },
+    {
+      "name": "recipe-settings-panel",
+      "type": "registry:block",
+      "description": "Recipe -- a preferences panel composed from Card + Switch + Select + Separator + Button. Installed via `dsgn add recipe:settings-panel`.",
+      "dependencies": [],
+      "registryDependencies": ["card", "switch", "select", "separator", "button"],
+      "files": [
+        { "path": "src/recipes/settings-panel.tsx", "target": "components/dsgn/recipes/settings-panel.tsx", "type": "registry:block" }
+      ]
+    },
+    {
+      "name": "recipe-pricing-tiers",
+      "type": "registry:block",
+      "description": "Recipe -- a 3-tier pricing layout composed from Card + Badge + Button. Installed via `dsgn add recipe:pricing-tiers`.",
+      "dependencies": [],
+      "registryDependencies": ["card", "badge", "button"],
+      "files": [
+        { "path": "src/recipes/pricing-tiers.tsx", "target": "components/dsgn/recipes/pricing-tiers.tsx", "type": "registry:block" }
+      ]
     }
   ]
 }

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/dsgn/button";
 import { Input } from "@/components/dsgn/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/dsgn/select";
 import { CopyButton } from "@/components/copy-button";
+import { useUrlParam } from "@/lib/use-url-param";
 
 const VARIANTS = [
   "primary",
@@ -28,11 +29,44 @@ type Size = (typeof SIZES)[number];
  * updates and stays copy-pasteable. This is what turns a component gallery
  * into an actual reference tool: you can compose the exact instance you
  * need instead of eyeballing a fixed demo and hand-writing the props.
+ *
+ * State also round-trips through the URL query string (button_variant,
+ * button_size, button_label) so a configured instance is a shareable link,
+ * not just a screenshot. Reads use useUrlParam (useSyncExternalStore) so
+ * the hydration-matching render always sees the static-exported default —
+ * the real value from the URL, if any, is applied via the guarded
+ * render-phase setState below, never inside a useEffect body, matching
+ * this codebase's existing theme/accent pattern (theme-toggle.tsx).
  */
 export function ButtonPlayground() {
   const [variant, setVariant] = useState<Variant>("accent");
   const [size, setSize] = useState<Size>("md");
   const [label, setLabel] = useState("Button");
+  const skipFirstWrite = useRef(true);
+  const [urlApplied, setUrlApplied] = useState(false);
+
+  const urlVariant = useUrlParam("button_variant");
+  const urlSize = useUrlParam("button_size");
+  const urlLabel = useUrlParam("button_label");
+
+  if (!urlApplied && (urlVariant !== null || urlSize !== null || urlLabel !== null)) {
+    setUrlApplied(true);
+    if (urlVariant && (VARIANTS as readonly string[]).includes(urlVariant)) setVariant(urlVariant as Variant);
+    if (urlSize && (SIZES as readonly string[]).includes(urlSize)) setSize(urlSize as Size);
+    if (urlLabel) setLabel(urlLabel.slice(0, 24));
+  }
+
+  useEffect(() => {
+    if (skipFirstWrite.current) {
+      skipFirstWrite.current = false;
+      return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    params.set("button_variant", variant);
+    params.set("button_size", size);
+    params.set("button_label", label || "Button");
+    window.history.replaceState(null, "", `${window.location.pathname}?${params}${window.location.hash}`);
+  }, [variant, size, label]);
 
   const code = `<Button variant="${variant}" size="${size}">${label || "Button"}</Button>`;
 
@@ -88,10 +122,17 @@ export function ButtonPlayground() {
       </div>
 
       <div className="relative">
-        <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-12 font-mono text-xs text-accent">
+        <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-20 font-mono text-xs text-accent">
           <code>{code}</code>
         </pre>
-        <CopyButton text={code} className="absolute right-3 top-3" />
+        <div className="absolute right-3 top-3 flex items-center gap-1">
+          <CopyButton
+            text={typeof window !== "undefined" ? window.location.href : ""}
+            icon="link"
+            label="Copy link to this configuration"
+          />
+          <CopyButton text={code} label="Copy code" />
+        </div>
       </div>
     </div>
   );

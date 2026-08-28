@@ -14,13 +14,18 @@
 // across all six. This script is what stops it from quietly coming back as
 // the registry keeps growing past 20 items — see philosophy/code-style.md's
 // std-first section on writing down a footgun once it's been hit, not just
-// fixing it in place.
+// fixing it in place. Also covers registry/src/recipes — composed multi-
+// component patterns installed via `dsgn add recipe:<name>` — since those
+// ship to consumer projects the same way individual components do.
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const repoRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const componentsDir = path.join(repoRoot, "packages", "registry", "src", "components");
+const registrySrcDir = path.join(repoRoot, "packages", "registry", "src");
+// Both components/ and recipes/ ship to consumer projects via the CLI, so
+// both need to stay free of tokens that only exist in apps/site's own theme.
+const SCAN_DIRS = ["components", "recipes"].map((name) => path.join(registrySrcDir, name));
 
 // Each pattern is a site-specific token that has no meaning outside
 // apps/site's own globals.css. If a registry component needs a shadow, use
@@ -47,7 +52,10 @@ async function walk(dir) {
 }
 
 async function main() {
-  const files = await walk(componentsDir);
+  const dirLists = await Promise.all(
+    SCAN_DIRS.map((dir) => walk(dir).catch((err) => (err.code === "ENOENT" ? [] : Promise.reject(err)))),
+  );
+  const files = dirLists.flat();
   const violations = [];
 
   for (const file of files) {

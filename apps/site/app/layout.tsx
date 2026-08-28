@@ -5,6 +5,7 @@ import { Nav } from "@/components/nav";
 import { Mark } from "@/components/brand/mark";
 import { CommandPalette } from "@/components/command-palette";
 import { Starfield } from "@/components/starfield";
+import { RemixPanel } from "@/components/remix-panel";
 import "./globals.css";
 
 const bebasNeue = Bebas_Neue({
@@ -80,6 +81,8 @@ const THEME_SCRIPT = `(function () {
     document.documentElement.setAttribute('data-theme', theme);
     var accent = localStorage.getItem('accent') || 'cyan';
     document.documentElement.setAttribute('data-accent', accent);
+    var radius = localStorage.getItem('radius-scale');
+    if (radius) document.documentElement.style.setProperty('--radius-scale', radius);
   } catch (e) {}
 })();`;
 
@@ -137,6 +140,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </nav>
           </div>
         </footer>
+        <RemixPanel />
       </body>
     </html>
   );

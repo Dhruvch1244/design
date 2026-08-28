@@ -1,14 +1,15 @@
 {
   "name": "@dhruvchoudhary/dsgn",
-  "version": "0.1.1",
-  "description": "CLI that copies dsgn design-system components into your project's own source tree — no runtime dependency on this package, in the shadcn/ui tradition. Works in any React + Tailwind project.",
+  "version": "0.2.0",
+  "description": "CLI that copies dsgn design-system components into your project's own source tree — no runtime dependency on this package, in the shadcn/ui tradition. Works in any React + Tailwind project. Includes diff/update for tracking upstream changes, composed recipes, a doctor health-check, and VS Code snippets.",
   "type": "module",
   "bin": {
     "dsgn": "bin/dsgn.js"
   },
   "files": [
     "bin",
-    "src"
+    "src",
+    "snippets"
   ],
   "engines": {
     "node": ">=18"

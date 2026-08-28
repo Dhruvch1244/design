@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/dsgn/badge";
 import { Input } from "@/components/dsgn/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/dsgn/select";
 import { CopyButton } from "@/components/copy-button";
+import { useUrlParam } from "@/lib/use-url-param";
 
 const VARIANTS = ["primary", "secondary", "accent", "outline", "destructive"] as const;
 type Variant = (typeof VARIANTS)[number];
@@ -12,6 +13,28 @@ type Variant = (typeof VARIANTS)[number];
 export function BadgePlayground() {
   const [variant, setVariant] = useState<Variant>("accent");
   const [label, setLabel] = useState("Badge");
+  const skipFirstWrite = useRef(true);
+  const [urlApplied, setUrlApplied] = useState(false);
+
+  const urlVariant = useUrlParam("badge_variant");
+  const urlLabel = useUrlParam("badge_label");
+
+  if (!urlApplied && (urlVariant !== null || urlLabel !== null)) {
+    setUrlApplied(true);
+    if (urlVariant && (VARIANTS as readonly string[]).includes(urlVariant)) setVariant(urlVariant as Variant);
+    if (urlLabel) setLabel(urlLabel.slice(0, 20));
+  }
+
+  useEffect(() => {
+    if (skipFirstWrite.current) {
+      skipFirstWrite.current = false;
+      return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    params.set("badge_variant", variant);
+    params.set("badge_label", label || "Badge");
+    window.history.replaceState(null, "", `${window.location.pathname}?${params}${window.location.hash}`);
+  }, [variant, label]);
 
   const code = `<Badge variant="${variant}">${label || "Badge"}</Badge>`;
 
@@ -48,10 +71,17 @@ export function BadgePlayground() {
       </div>
 
       <div className="relative">
-        <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-12 font-mono text-xs text-accent">
+        <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-20 font-mono text-xs text-accent">
           <code>{code}</code>
         </pre>
-        <CopyButton text={code} className="absolute right-3 top-3" />
+        <div className="absolute right-3 top-3 flex items-center gap-1">
+          <CopyButton
+            text={typeof window !== "undefined" ? window.location.href : ""}
+            icon="link"
+            label="Copy link to this configuration"
+          />
+          <CopyButton text={code} label="Copy code" />
+        </div>
       </div>
     </div>
   );

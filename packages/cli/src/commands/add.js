@@ -1,8 +1,9 @@
 import { mkdir, writeFile, access } from "node:fs/promises";
 import path from "node:path";
 import spawn from "cross-spawn";
-import { readConfig, DEFAULT_CONFIG, detectPackageManager, installCommand } from "../config.js";
+import { readConfig, writeConfig, DEFAULT_CONFIG, detectPackageManager, installCommand } from "../config.js";
 import { resolveItems, DEFAULT_REGISTRY } from "../registry.js";
+import { resolveTarget, rewriteAlias, hashContent, resolveItemName } from "../paths.js";
 
 async function exists(filePath) {
   try {
@@ -11,23 +12,6 @@ async function exists(filePath) {
   } catch {
     return false;
   }
-}
-
-function resolveTarget(config, target) {
-  if (target.startsWith("components/dsgn/")) {
-    return path.join(config.componentsDir, target.slice("components/dsgn/".length));
-  }
-  if (target.startsWith("lib/")) {
-    return path.join(config.utilsDir, target.slice("lib/".length));
-  }
-  return target;
-}
-
-function rewriteAlias(content, config) {
-  if (config.alias === DEFAULT_CONFIG.alias && config.utilsDir === DEFAULT_CONFIG.utilsDir) {
-    return content;
-  }
-  return content.replace(/@\/lib\/utils/g, `${config.alias}/${config.utilsDir}/utils`);
 }
 
 function runInstall(cwd, packageManager, deps) {
@@ -52,11 +36,15 @@ export async function add(cwd, names, { registry, overwrite, skipInstall } = {})
   const config = (await readConfig(cwd)) ?? DEFAULT_CONFIG;
   const registryBase = registry ?? process.env.DSGN_REGISTRY ?? DEFAULT_REGISTRY;
 
-  const items = await resolveItems(registryBase, names);
+  const items = await resolveItems(registryBase, names.map(resolveItemName));
 
   const written = [];
   const skipped = [];
   const npmDeps = new Set();
+  // Content hash recorded per installed file, so `dsgn diff`/`dsgn update`
+  // can later tell "never touched since install" from "user edited this"
+  // without needing to keep a full copy of every old version around.
+  const installed = { ...(config.installed ?? {}) };
 
   for (const item of items) {
     for (const dep of item.dependencies ?? []) npmDeps.add(dep);
@@ -70,9 +58,11 @@ export async function add(cwd, names, { registry, overwrite, skipInstall } = {})
         continue;
       }
 
+      const content = rewriteAlias(file.content, config);
       await mkdir(path.dirname(targetPath), { recursive: true });
-      await writeFile(targetPath, rewriteAlias(file.content, config));
+      await writeFile(targetPath, content);
       written.push(targetRelative);
+      installed[targetRelative.split(path.sep).join("/")] = { item: item.name, hash: hashContent(content) };
     }
   }
 
@@ -83,6 +73,13 @@ export async function add(cwd, names, { registry, overwrite, skipInstall } = {})
   if (skipped.length > 0) {
     console.log("\nSkipped (already exists — pass --overwrite to replace):");
     for (const file of skipped) console.log(`  ${file}`);
+  }
+
+  if (written.length > 0) {
+    // Persisted even if the project never ran `dsgn init` — without a
+    // recorded install hash, diff/update/doctor have nothing to compare
+    // against, so tracking has to start at the first successful `add`.
+    await writeConfig(cwd, { ...config, installed });
   }
 
   if (!skipInstall && npmDeps.size > 0) {

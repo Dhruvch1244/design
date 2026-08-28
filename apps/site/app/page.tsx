@@ -49,6 +49,13 @@ const PILLARS = [
 
 const INSTALL_CMD = "npx @dhruvchoudhary/dsgn add button card";
 
+// Real, live badge data — apps/site/scripts/generate-badge-data.mjs writes
+// this from the actual registry item count at every build, so this markdown
+// snippet can't drift the way a hardcoded stat already did once on this
+// site (see /examples's Registry components stat fix).
+const BADGE_MARKDOWN =
+  "[![dsgn components](https://img.shields.io/endpoint?url=https://design.dhruvchoudhary.com/badge-data.json)](https://design.dhruvchoudhary.com/components)";
+
 export default function Home() {
   return (
     <div className="mx-auto max-w-5xl px-6 pb-32">
@@ -101,7 +108,24 @@ export default function Home() {
         </Reveal>
       </CursorGlow>
 
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-6">
+      <Reveal>
+        <Frame glow={false} className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-medium">Embed the live component count</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Backed by the real registry — updates itself on every build, never a stale number.
+            </p>
+          </div>
+          <div className="flex items-center gap-3 rounded-full border border-border bg-background/60 py-1.5 pl-4 pr-1.5">
+            <code className="max-w-[min(60vw,26rem)] overflow-x-auto whitespace-nowrap font-mono text-xs text-accent">
+              {BADGE_MARKDOWN}
+            </code>
+            <CopyButton text={BADGE_MARKDOWN} />
+          </div>
+        </Frame>
+      </Reveal>
+
+      <section className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-6">
         {PILLARS.map((pillar, i) => (
           <Reveal key={pillar.title} delay={i * 60} className={pillar.span}>
             <Frame className="h-full">

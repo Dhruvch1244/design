@@ -1,9 +1,11 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
 import { CopyButton } from "@/components/copy-button";
+import { ThemeExporter } from "@/components/theme-exporter";
 
 export const metadata: Metadata = {
   title: "Theming — Dhruv Choudhary",
@@ -28,6 +30,10 @@ const TOKENS = [
   { name: "--border", role: "Every component's border color" },
   { name: "--ring", role: "Focus-visible ring color" },
 ] as const;
+
+// Kept in sync by hand with COMPONENTS in scripts/capture-screenshots.mjs —
+// small, fixed list, not worth a shared-import round-trip for.
+const SCREENSHOT_COMPONENTS = ["button", "card", "badge", "dialog", "table", "accordion"] as const;
 
 const SNIPPET = `:root {
   --background: #ffffff;
@@ -85,6 +91,17 @@ export default function ThemingPage() {
         </div>
       </Reveal>
 
+      <Reveal delay={120}>
+        <div className="mt-10 space-y-4">
+          <h2 className="font-display text-xl uppercase tracking-wide">Try it live</h2>
+          <p className="text-sm text-muted-foreground">
+            Drag any swatch below — this page (and the site&rsquo;s <Link href="/" className="text-accent hover:underline">Remix panel</Link>{" "}
+            in the bottom-right corner of every page) reads from the exact same tokens.
+          </p>
+          <ThemeExporter />
+        </div>
+      </Reveal>
+
       <Reveal delay={150}>
         <div className="mt-10 space-y-4">
           <h2 className="font-display text-xl uppercase tracking-wide">A minimal starting palette</h2>
@@ -118,6 +135,45 @@ export default function ThemingPage() {
             about the components themselves changes — they only ever reference the variable names,
             never a specific theme.
           </p>
+        </div>
+      </Reveal>
+
+      <Reveal delay={220}>
+        <div className="mt-10 space-y-4">
+          <h2 className="font-display text-xl uppercase tracking-wide">Proof, not a promise</h2>
+          <p className="text-sm text-muted-foreground">
+            These aren&rsquo;t hand-maintained mockups — they&rsquo;re real screenshots of the live
+            registry, captured with Playwright straight from a running build (see{" "}
+            <code className="font-mono text-accent">apps/site/scripts/capture-screenshots.mjs</code>).
+            If a component looked wrong in one theme, this gallery would show it.
+          </p>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {SCREENSHOT_COMPONENTS.map((name) => (
+              <div key={name} className="space-y-2 rounded-lg border border-border bg-card p-3">
+                <span className="text-xs font-medium uppercase tracking-[0.15em] text-muted-foreground">
+                  {name}
+                </span>
+                <div className="grid grid-cols-2 gap-2">
+                  {(["light", "dark"] as const).map((theme) => (
+                    <div key={theme} className="space-y-1">
+                      <Image
+                        src={`/screenshots/${name}-${theme}.png`}
+                        alt={`${name} in ${theme} mode`}
+                        width={400}
+                        height={200}
+                        unoptimized
+                        className="w-full rounded-md border border-border object-contain"
+                        style={theme === "light" ? { background: "#f7f5f2" } : { background: "#07080c" }}
+                      />
+                      <span className="block text-center text-[10px] uppercase tracking-wide text-muted-foreground">
+                        {theme}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </Reveal>
 

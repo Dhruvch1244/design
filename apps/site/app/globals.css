@@ -57,6 +57,17 @@
     0 8px 40px -8px color-mix(in srgb, var(--accent) 35%, transparent);
   --shadow-ambient-raw: 0 1px 0 color-mix(in srgb, white 4%, transparent) inset,
     0 24px 48px -16px color-mix(in srgb, black 60%, transparent);
+
+  /*
+   * A single multiplier, not a token per size — components/remix-panel.tsx
+   * writes this one value to reshape every rounded-{sm,md,lg,xl,2xl,3xl}
+   * utility site-wide at once, via the @theme inline block below re-reading
+   * it live. rounded-full is deliberately left alone: buttons, badges, and
+   * avatars are pills as a brand choice (see nav.tsx, button.tsx), not a
+   * scaled corner radius, so a "sharp" remix shouldn't turn them into
+   * squares.
+   */
+  --radius-scale: 1;
 }
 
 /*
@@ -157,6 +168,13 @@
   --shadow-ambient: var(--shadow-ambient-raw);
   --shadow-glow: var(--glow-accent);
 
+  --radius-sm: calc(0.25rem * var(--radius-scale));
+  --radius-md: calc(0.5rem * var(--radius-scale));
+  --radius-lg: calc(0.75rem * var(--radius-scale));
+  --radius-xl: calc(1rem * var(--radius-scale));
+  --radius-2xl: calc(1.25rem * var(--radius-scale));
+  --radius-3xl: calc(1.5rem * var(--radius-scale));
+
   --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
 
   --font-sans: var(--font-hanken);
@@ -250,7 +268,12 @@
   .reveal-in {
     opacity: 1;
     transform: translateY(0);
-    filter: blur(0);
+    /* Not blur(0) — lightningcss's minifier compiles a zero-argument blur()
+       to invalid empty-parens CSS (`filter:blur()`), silently dropping the
+       whole declaration in some Chrome builds and leaving .reveal-in unable
+       to ever un-blur. `none` sidesteps that minifier bug entirely and
+       animates from blur(6px) identically. */
+    filter: none;
   }
 }
 
