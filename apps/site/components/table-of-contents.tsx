@@ -2,11 +2,24 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import type { TocEntry } from "@/lib/philosophy";
 
 /**
- * Scrollspy sidebar nav for a single long doc — this is the "site view"
- * piece: instead of one undifferentiated wall of text, each doc becomes a
+ * Deliberately not imported from lib/philosophy — this component has no
+ * business knowing "philosophy doc" is a concept; it just tracks whatever
+ * ids/labels it's handed. lib/philosophy.ts's own TocEntry shape happens to
+ * match structurally, so passing one straight through works without a
+ * shared import (both /philosophy/[slug] and /components use this same
+ * component with their own data).
+ */
+export interface TocEntry {
+  id: string;
+  text: string;
+  level?: 2 | 3;
+}
+
+/**
+ * Scrollspy sidebar nav for a single long page — this is the "site view"
+ * piece: instead of one undifferentiated wall of content, a page becomes a
  * set of jump-to sections with the current one tracked as you scroll.
  *
  * Tracks every heading's intersection with a thin band near the top of the
