@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import Link from "next/link";
+import { Link } from "@/components/link";
 import { Bebas_Neue, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import { Nav } from "@/components/nav";
 import { Mark } from "@/components/brand/mark";
@@ -68,6 +68,7 @@ const FOOTER_LINKS = [
   { href: "/examples", label: "Examples" },
   { href: "/theming", label: "Theming" },
   { href: "/skill", label: "Skill" },
+  { href: "/changelog", label: "Changelog" },
   { href: "https://github.com/dhruvch1244/design", label: "GitHub" },
 ];
 

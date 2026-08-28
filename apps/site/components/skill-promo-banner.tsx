@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/link";
 import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
 

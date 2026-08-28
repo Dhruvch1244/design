@@ -56,7 +56,7 @@ export function CheckboxPlayground() {
             State
           </label>
           <Select value={state} onValueChange={(v) => setState(v as State)}>
-            <SelectTrigger>
+            <SelectTrigger aria-label="State">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

@@ -46,7 +46,7 @@ export function SelectPlayground() {
     <div className="space-y-6 rounded-2xl border border-border bg-glass p-6 backdrop-blur-xl">
       <div className="flex min-h-28 items-center justify-center rounded-xl border border-dashed border-border">
         <Select value={value} onValueChange={setValue}>
-          <SelectTrigger className="w-56">
+          <SelectTrigger className="w-56" aria-label="Choose an app">
             <SelectValue placeholder="Choose an app" />
           </SelectTrigger>
           <SelectContent>

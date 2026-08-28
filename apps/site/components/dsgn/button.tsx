@@ -94,8 +94,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const isIconOnly = typeof size === "string" && size.startsWith("icon");
+    // opacity-0, not invisible (visibility:hidden) — visibility:hidden
+    // strips content from the accessible-name computation entirely, so a
+    // loading button would announce no name at all to screen readers.
+    // opacity-0 hides it visually while keeping the same layout-preserving
+    // behavior, without that side effect.
     const content = (
-      <span className={cn("inline-flex items-center gap-2", loading && "invisible")}>
+      <span className={cn("inline-flex items-center gap-2", loading && "opacity-0")}>
         {leftIcon}
         {children}
         {!isIconOnly && rightIcon}

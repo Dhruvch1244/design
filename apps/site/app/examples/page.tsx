@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/link";
 import type { Metadata } from "next";
 import { Button } from "@/components/dsgn/button";
 import {
@@ -224,7 +224,7 @@ export default function ExamplesPage() {
             <div className="flex items-center justify-between">
               <span className="text-sm">Theme</span>
               <Select defaultValue="system">
-                <SelectTrigger className="w-32">
+                <SelectTrigger className="w-32" aria-label="Theme">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

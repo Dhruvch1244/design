@@ -25,9 +25,14 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 );
 Alert.displayName = "Alert";
 
+// Not a heading element on purpose: the container already has role="alert"
+// (a live region), so screen readers announce it without needing a heading
+// landmark — and a hardcoded heading level would force every consumer's
+// document outline to have exactly this many levels above wherever they
+// place an Alert, regardless of their actual page structure.
 export const AlertTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
   ({ className, ...props }, ref) => (
-    <h5 ref={ref} className={cn("mb-1 font-medium leading-none tracking-tight", className)} {...props} />
+    <div ref={ref} className={cn("mb-1 font-medium leading-none tracking-tight", className)} {...props} />
   ),
 );
 AlertTitle.displayName = "AlertTitle";

@@ -84,7 +84,7 @@ export function ButtonPlayground() {
             Variant
           </label>
           <Select value={variant} onValueChange={(v) => setVariant(v as Variant)}>
-            <SelectTrigger>
+            <SelectTrigger aria-label="Variant">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -101,7 +101,7 @@ export function ButtonPlayground() {
             Size
           </label>
           <Select value={size} onValueChange={(v) => setSize(v as Size)}>
-            <SelectTrigger>
+            <SelectTrigger aria-label="Size">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -114,10 +114,18 @@ export function ButtonPlayground() {
           </Select>
         </div>
         <div className="space-y-1.5">
-          <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <label
+            htmlFor="button-playground-label"
+            className="text-xs font-medium uppercase tracking-wide text-muted-foreground"
+          >
             Label
           </label>
-          <Input value={label} onChange={(e) => setLabel(e.target.value)} maxLength={24} />
+          <Input
+            id="button-playground-label"
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+            maxLength={24}
+          />
         </div>
       </div>
 

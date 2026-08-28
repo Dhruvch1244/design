@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { Eyebrow } from "@/components/brand/eyebrow";

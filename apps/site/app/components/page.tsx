@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/components/link";
 import { SkillPromoBanner } from "@/components/skill-promo-banner";
 import { Button } from "@/components/dsgn/button";
 import {
@@ -154,7 +154,16 @@ function GalleryTile({ id, label, children }: { id: string; label: string; child
         glow={false}
         className="flex h-28 flex-col items-center justify-center gap-3 transition-colors duration-300 ease-fluid group-hover:border-accent"
       >
-        <div className="flex h-8 items-center justify-center text-muted-foreground group-hover:text-accent">
+        {/* inert: these mini previews are real interactive widgets (Switch,
+            Checkbox, Select, Progress) rendered purely for visual demo — the
+            actual interactive/navigable element is the outer <a>, whose text
+            content is the label span below. Without inert, a screen reader
+            or keyboard user would still tab into an unlabeled toggle/checkbox
+            that does nothing meaningful here. */}
+        <div
+          inert
+          className="flex h-8 items-center justify-center text-muted-foreground group-hover:text-accent"
+        >
           {children}
         </div>
         <span className="text-xs text-muted-foreground group-hover:text-foreground">{label}</span>
@@ -587,7 +596,7 @@ export default function ComponentsPage() {
 
           <Section id="progress" index={17} title="Progress" name="progress">
             <Frame>
-              <Progress value={66} className="max-w-sm" />
+              <Progress value={66} aria-label="Progress" className="max-w-sm" />
             </Frame>
           </Section>
 

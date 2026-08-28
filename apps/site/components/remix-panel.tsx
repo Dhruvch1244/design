@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import Link from "next/link";
+import { Link } from "@/components/link";
 import { PalettePicker } from "@/components/palette-picker";
 import { cn } from "@/lib/utils";
 

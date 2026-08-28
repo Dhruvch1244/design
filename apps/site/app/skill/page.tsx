@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/components/link";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Frame } from "@/components/brand/frame";
 import { Button } from "@/components/dsgn/button";
@@ -19,6 +19,22 @@ const CLONE_COMMAND =
   "git clone --depth 1 https://github.com/dhruvch1244/design /tmp/dsgn-skill && cp -r /tmp/dsgn-skill/skills/dsgn ~/.claude/skills/dsgn && rm -rf /tmp/dsgn-skill";
 const CLI_SKILL_GLOBAL = "npx @dhruvchoudhary/dsgn skill --global";
 const CLI_SKILL_PROJECT = "npx @dhruvchoudhary/dsgn skill --project";
+
+// Real registry components (Card/CardHeader/CardTitle/CardDescription/
+// CardContent, Button variant="soft") — soft-minimal's own doc says to drop
+// borders for a soft ambient shadow and favor rounded-full soft-fill
+// buttons; this is that rule applied, not invented example code.
+const WORKED_EXAMPLE_CODE = `<Card className="border-0 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)]">
+  <CardHeader>
+    <CardTitle>Tonight's session</CardTitle>
+    <CardDescription>18 minutes · Sleep story</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Button variant="soft" className="w-full rounded-full">
+      Start again
+    </Button>
+  </CardContent>
+</Card>`;
 
 // The router file's key sections, verbatim from skills/dsgn/SKILL.md — not
 // paraphrased. Full file is longer (source-of-truth footer, handoff
@@ -789,6 +805,65 @@ export default function SkillPage() {
                 </AccordionItem>
               ))}
             </Accordion>
+          </Frame>
+        </div>
+      </Reveal>
+
+      <Reveal delay={180}>
+        <div className="mt-10 space-y-4">
+          <h2 className="font-display text-xl uppercase tracking-wide">A worked example</h2>
+          <p className="text-sm text-muted-foreground">
+            Illustrative, not a screenshot of a real session — but every claim in it (the routing
+            rule applied, the persona&rsquo;s stated behavior, the code produced) is real, pulled
+            from the actual files above.
+          </p>
+          <Frame glow={false} className="space-y-5">
+            <div>
+              <div className="mb-1.5 font-mono text-xs text-muted-foreground">you</div>
+              <p className="rounded-lg border border-border bg-card p-4 text-sm">
+                I&rsquo;m starting a new project — a sleep and meditation tracker. No design system
+                yet, just a blank Next.js + Tailwind app. Build me a session-summary card.
+              </p>
+            </div>
+
+            <div>
+              <div className="mb-1.5 font-mono text-xs text-muted-foreground">
+                router — skill.md, applied in order
+              </div>
+              <div className="space-y-1.5 rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground">
+                <p>
+                  <span className="font-mono text-accent">1. explicit request</span> — no style
+                  named. Skip.
+                </p>
+                <p>
+                  <span className="font-mono text-accent">2. existing brand cues</span> — fresh
+                  scaffold, nothing to match. Skip.
+                </p>
+                <p>
+                  <span className="font-mono text-accent">3. project type</span> — a sleep/
+                  meditation tracker is a wellness product →{" "}
+                  <span className="text-foreground">Soft / Minimal</span>.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-1.5 font-mono text-xs text-muted-foreground">
+                soft-minimal — component builder facet
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Its own file: &ldquo;Cards drop borders entirely in favor of a soft ambient shadow
+                for separation. Buttons favor fully rounded (
+                <code className="font-mono text-accent">rounded-full</code>) shapes with soft
+                fills.&rdquo; Applied to the real registry components:
+              </p>
+              <div className="relative mt-2">
+                <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-12 font-mono text-xs text-accent">
+                  <code>{WORKED_EXAMPLE_CODE}</code>
+                </pre>
+                <CopyButton text={WORKED_EXAMPLE_CODE} className="absolute right-3 top-3" />
+              </div>
+            </div>
           </Frame>
         </div>
       </Reveal>

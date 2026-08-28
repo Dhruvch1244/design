@@ -14,6 +14,7 @@ Usage:
   npx @dhruvchoudhary/dsgn add <component...>   Copy one or more components into your project
   npx @dhruvchoudhary/dsgn add recipe:<name>    Copy a composed multi-component pattern (e.g. recipe:auth-form)
   npx @dhruvchoudhary/dsgn list                 Show every component available in the registry
+  npx @dhruvchoudhary/dsgn list --recipes       Show every composed recipe available in the registry
   npx @dhruvchoudhary/dsgn diff <component...>  Show how an installed component differs from the registry
   npx @dhruvchoudhary/dsgn update <component...> Pull the current registry version into your project
   npx @dhruvchoudhary/dsgn doctor               Health-check installed files (missing, modified, a11y)
@@ -28,6 +29,7 @@ Options:
   --force                       Overwrite locally-modified files (update only, default: skip them)
   --global                      Install to ~/.claude/skills/dsgn (skill only)
   --project                     Install to ./.claude/skills/dsgn (skill only)
+  --recipes                     Show recipes instead of components (list only)
   -h, --help                    Show this help
 `;
 
@@ -47,6 +49,8 @@ function parseArgs(argv) {
       args.flags.global = true;
     } else if (arg === "--project") {
       args.flags.project = true;
+    } else if (arg === "--recipes") {
+      args.flags.recipes = true;
     } else if (arg === "-h" || arg === "--help") {
       args.flags.help = true;
     } else {

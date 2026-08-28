@@ -50,7 +50,7 @@ export function BadgePlayground() {
             Variant
           </label>
           <Select value={variant} onValueChange={(v) => setVariant(v as Variant)}>
-            <SelectTrigger>
+            <SelectTrigger aria-label="Variant">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -63,10 +63,18 @@ export function BadgePlayground() {
           </Select>
         </div>
         <div className="space-y-1.5">
-          <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <label
+            htmlFor="badge-playground-label"
+            className="text-xs font-medium uppercase tracking-wide text-muted-foreground"
+          >
             Label
           </label>
-          <Input value={label} onChange={(e) => setLabel(e.target.value)} maxLength={20} />
+          <Input
+            id="badge-playground-label"
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+            maxLength={20}
+          />
         </div>
       </div>
 

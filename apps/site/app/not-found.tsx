@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/link";
 import { Mark } from "@/components/brand/mark";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Button } from "@/components/dsgn/button";
