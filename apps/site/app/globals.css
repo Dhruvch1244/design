@@ -1,27 +1,94 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/*
+ * Editorial Ink — the site's identity.
+ *
+ * Warm ivory paper + espresso ink + one ember accent. Chosen over a
+ * shadcn-neutral palette deliberately: this site is prose-heavy (the
+ * philosophy docs), so a variable serif display face and a paper-toned
+ * ground read as "considered document" rather than "app chrome."
+ *
+ * "Dhruv" (ध्रुव) is Sanskrit for the pole star — the fixed point everything
+ * else is measured against. The mark and the ember accent both trace back
+ * to that: see components/brand/mark.tsx.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
+  --ink-950: #14100d;
+  --ink-900: #1a1614;
+  --ink-700: #3d3630;
+  --ink-500: #6b6058;
+  --ink-300: #a89e93;
 
-  --card: #ffffff;
-  --card-foreground: #0a0a0a;
+  --ivory-050: #fbf9f5;
+  --ivory-100: #f5f1e9;
+  --ivory-200: #ece5d8;
 
-  --primary: #171717;
-  --primary-foreground: #fafafa;
+  --ember-500: #b4530a;
+  --ember-600: #973f05;
+  --ember-100: #f7e4d2;
 
-  --secondary: #f4f4f5;
-  --secondary-foreground: #171717;
+  --background: var(--ivory-050);
+  --foreground: var(--ink-900);
 
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
+  --card: var(--ivory-100);
+  --card-foreground: var(--ink-900);
 
-  --destructive: #dc2626;
-  --destructive-foreground: #fafafa;
+  --primary: var(--ink-900);
+  --primary-foreground: var(--ivory-050);
 
-  --border: #e4e4e7;
-  --ring: #a1a1aa;
+  --secondary: var(--ivory-200);
+  --secondary-foreground: var(--ink-900);
+
+  --accent: var(--ember-500);
+  --accent-foreground: var(--ivory-050);
+
+  --muted: var(--ivory-100);
+  --muted-foreground: var(--ink-500);
+
+  --destructive: #b3261e;
+  --destructive-foreground: var(--ivory-050);
+
+  --border: color-mix(in srgb, var(--ink-900) 10%, transparent);
+  --ring: color-mix(in srgb, var(--ember-500) 45%, transparent);
+
+  --shadow-ambient-raw: 0 1px 2px color-mix(in srgb, var(--ink-900) 4%, transparent),
+    0 24px 48px -16px color-mix(in srgb, var(--ink-900) 16%, transparent);
+  --shadow-ambient-lg-raw: 0 2px 4px color-mix(in srgb, var(--ink-900) 5%, transparent),
+    0 48px 96px -24px color-mix(in srgb, var(--ink-900) 22%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--ink-950);
+    --foreground: var(--ivory-100);
+
+    --card: #1f1a16;
+    --card-foreground: var(--ivory-100);
+
+    --primary: var(--ivory-050);
+    --primary-foreground: var(--ink-950);
+
+    --secondary: #2a231d;
+    --secondary-foreground: var(--ivory-100);
+
+    --accent: #d9701f;
+    --accent-foreground: var(--ink-950);
+
+    --muted: #241f1a;
+    --muted-foreground: var(--ink-300);
+
+    --destructive: #e5564a;
+    --destructive-foreground: var(--ink-950);
+
+    --border: color-mix(in srgb, var(--ivory-050) 12%, transparent);
+    --ring: color-mix(in srgb, var(--accent) 55%, transparent);
+
+    --shadow-ambient-raw: 0 1px 2px color-mix(in srgb, black 30%, transparent),
+      0 24px 48px -16px color-mix(in srgb, black 55%, transparent);
+    --shadow-ambient-lg-raw: 0 2px 4px color-mix(in srgb, black 35%, transparent),
+      0 48px 96px -24px color-mix(in srgb, black 60%, transparent);
+  }
 }
 
 @theme inline {
@@ -37,6 +104,9 @@
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
 
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
 
@@ -46,37 +116,84 @@
   --color-border: var(--border);
   --color-ring: var(--ring);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink-950: var(--ink-950);
+  --color-ink-900: var(--ink-900);
+  --color-ink-700: var(--ink-700);
+  --color-ink-500: var(--ink-500);
+  --color-ink-300: var(--ink-300);
+  --color-ivory-050: var(--ivory-050);
+  --color-ivory-100: var(--ivory-100);
+  --color-ivory-200: var(--ivory-200);
+  --color-ember-100: var(--ember-100);
+  --color-ember-500: var(--ember-500);
+  --color-ember-600: var(--ember-600);
+
+  --shadow-ambient: var(--shadow-ambient-raw);
+  --shadow-ambient-lg: var(--shadow-ambient-lg-raw);
+
+  /* Spring-flavored cubic-bezier — used everywhere in place of ease/linear
+     so motion has weight instead of feeling like a CSS default. */
+  --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --font-sans: var(--font-jakarta);
+  --font-display: var(--font-fraunces);
+  --font-mono: var(--font-jetbrains);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  }
 
-    --card: #141414;
-    --card-foreground: #ededed;
+  ::selection {
+    background: var(--ember-100);
+    color: var(--ember-600);
+  }
 
-    --primary: #ededed;
-    --primary-foreground: #171717;
-
-    --secondary: #27272a;
-    --secondary-foreground: #ededed;
-
-    --muted: #27272a;
-    --muted-foreground: #a1a1aa;
-
-    --destructive: #ef4444;
-    --destructive-foreground: #0a0a0a;
-
-    --border: #27272a;
-    --ring: #52525b;
+  /* Respect reduced-motion: every entrance animation in this app is driven
+     by the .reveal utility below, so disabling it here is a single choke
+     point rather than a per-component concern. */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      transition-duration: 1ms !important;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Scroll-entry animation. Starts hidden+offset; a class toggle (from the
+     Reveal client component's IntersectionObserver) adds .reveal-in, which
+     resolves it. Transform+opacity only — no layout-triggering properties,
+     so this never costs a reflow while scrolling. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(2.5rem);
+    filter: blur(6px);
+    transition: opacity 900ms var(--ease-fluid), transform 900ms var(--ease-fluid),
+      filter 900ms var(--ease-fluid);
+  }
+
+  .reveal-in {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/*
+ * Fixed, pointer-events-none film-grain layer. SVG feTurbulence baked into a
+ * data-URI so it costs one paint, not a network request. Applied only to a
+ * fixed full-viewport pseudo-element (never to a scrolling container) so it
+ * can't trigger repaints while scrolling.
+ */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
