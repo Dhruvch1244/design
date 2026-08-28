@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck registry
+        run: npm run typecheck
+
+      - name: Lint site
+        working-directory: apps/site
+        run: npm run lint
+
+      # apps/site's own prebuild script rebuilds packages/registry and syncs
+      # it into apps/site/public/r, so this also exercises build:registry and
+      # sync-registry, not just next build.
+      - name: Build site
+        working-directory: apps/site
+        run: npm run build
