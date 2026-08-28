@@ -10,6 +10,21 @@ import {
 } from "@/components/dsgn/card";
 import { Badge } from "@/components/dsgn/badge";
 import { Input } from "@/components/dsgn/input";
+import { Textarea } from "@/components/dsgn/textarea";
+import { Switch } from "@/components/dsgn/switch";
+import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "@/components/dsgn/tooltip";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/dsgn/tabs";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/dsgn/select";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/dsgn/dialog";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
@@ -186,6 +201,92 @@ export default function ComponentsPage() {
             <kbd className="rounded border border-border px-1.5 py-0.5 font-mono text-xs">⌘K</kbd>{" "}
             anywhere on this site to see it in use.
           </p>
+        </Frame>
+      </Section>
+
+      <Section index={6} title="Textarea" name="textarea">
+        <Frame>
+          <Textarea placeholder="Write something..." className="max-w-sm" />
+        </Frame>
+      </Section>
+
+      <Section index={7} title="Switch" name="switch">
+        <Frame>
+          <div className="flex items-center gap-6">
+            <Switch defaultChecked aria-label="Enabled example" />
+            <Switch aria-label="Disabled example" disabled />
+          </div>
+        </Frame>
+      </Section>
+
+      <Section index={8} title="Tooltip" name="tooltip">
+        <Frame>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="outline" size="sm">
+                  Hover me
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Non-destructive by default.</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </Frame>
+      </Section>
+
+      <Section index={9} title="Tabs" name="tabs">
+        <Frame>
+          <Tabs defaultValue="philosophy" className="max-w-sm">
+            <TabsList>
+              <TabsTrigger value="philosophy">Philosophy</TabsTrigger>
+              <TabsTrigger value="registry">Registry</TabsTrigger>
+            </TabsList>
+            <TabsContent value="philosophy" className="text-sm text-muted-foreground">
+              Every rule traces to a real, named, shipped decision.
+            </TabsContent>
+            <TabsContent value="registry" className="text-sm text-muted-foreground">
+              Components you own the moment the CLI copies them in.
+            </TabsContent>
+          </Tabs>
+        </Frame>
+      </Section>
+
+      <Section index={10} title="Select" name="select">
+        <Frame>
+          <Select defaultValue="lyric-viewer">
+            <SelectTrigger className="max-w-sm">
+              <SelectValue placeholder="Choose an app" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="lyric-viewer">lyric-viewer</SelectItem>
+              <SelectItem value="file-viewer">file-viewer</SelectItem>
+              <SelectItem value="review-grader">review-grader</SelectItem>
+            </SelectContent>
+          </Select>
+        </Frame>
+      </Section>
+
+      <Section index={11} title="Dialog" name="dialog">
+        <Frame>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="accent">Open dialog</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Non-destructive by default</DialogTitle>
+                <DialogDescription>
+                  Edits are modeled as an overlay over an untouched original, so undo is
+                  structural, not reconstructed after the fact.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button variant="outline">Close</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </Frame>
       </Section>
     </div>
