@@ -62,8 +62,8 @@ export default function Home() {
           </h1>
           <p className="mt-6 max-w-md text-lg text-muted-foreground">
             Every rule here was extracted from a decision that actually shipped in a real app —
-            named, with the commit it came from. Read it as a portable file any AI tool can load,
-            or install the components it produced with one command.
+            named, with the file it lives in. Read it as a portable file any AI tool can load, or
+            install the components it produced with one command.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Magnetic>
@@ -110,9 +110,12 @@ export default function Home() {
                 <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
               </div>
               <p className="mt-3 text-sm text-muted-foreground">{pillar.body}</p>
-              <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.15em] text-accent">
-                shipped in {pillar.app}
-              </p>
+              <Link
+                href={`/case-studies/${pillar.app}`}
+                className="mt-5 inline-block font-mono text-[11px] uppercase tracking-[0.15em] text-accent hover:underline"
+              >
+                shipped in {pillar.app} →
+              </Link>
             </Frame>
           </Reveal>
         ))}

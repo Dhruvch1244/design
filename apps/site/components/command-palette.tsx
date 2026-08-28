@@ -12,11 +12,14 @@ import {
   CommandShortcut,
 } from "@/components/dsgn/command";
 import { PHILOSOPHY_DOCS } from "@/lib/philosophy-docs";
+import { CASE_STUDIES } from "@/lib/case-studies";
 
 const PAGES = [
   { href: "/", label: "Home" },
   { href: "/philosophy", label: "Philosophy — root file" },
   ...PHILOSOPHY_DOCS.map((doc) => ({ href: `/philosophy/${doc.slug}`, label: `Philosophy — ${doc.title}` })),
+  { href: "/case-studies", label: "Case Studies" },
+  ...CASE_STUDIES.map((study) => ({ href: `/case-studies/${study.slug}`, label: `Case Study — ${study.name}` })),
   { href: "/components", label: "Components" },
 ];
 

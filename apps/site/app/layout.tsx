@@ -55,6 +55,7 @@ export const viewport: Viewport = {
 
 const FOOTER_LINKS = [
   { href: "/philosophy", label: "Philosophy" },
+  { href: "/case-studies", label: "Case Studies" },
   { href: "/components", label: "Components" },
   { href: "https://github.com/dhruvch1244/design", label: "GitHub" },
 ];
