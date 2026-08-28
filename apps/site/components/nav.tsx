@@ -15,8 +15,12 @@ const NAV_LINKS = [
   { href: "/components", label: "Components" },
   { href: "/examples", label: "Examples" },
   { href: "/theming", label: "Theming" },
-  { href: "/skill", label: "Skill" },
 ];
+
+// Rendered as a filled accent pill, not a plain text link — the Agent Skill
+// is the site's top promoted feature, so its nav entry carries real visual
+// weight instead of blending into the rest of the list.
+const SKILL_LINK = { href: "/skill", label: "Skill" };
 
 const GITHUB_URL = "https://github.com/dhruvch1244/design";
 
@@ -53,6 +57,15 @@ export function Nav() {
           </Link>
 
           <nav className="hidden items-center gap-4 text-sm whitespace-nowrap text-muted-foreground md:flex">
+            <Link
+              href={SKILL_LINK.href}
+              className={cn(
+                "rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground",
+                "transition-transform duration-300 ease-fluid hover:scale-105",
+              )}
+            >
+              Skill
+            </Link>
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -121,8 +134,9 @@ export function Nav() {
         )}
       >
         {[
-          ...NAV_LINKS.map((link) => ({ ...link, external: false })),
-          { href: GITHUB_URL, label: "GitHub ↗", external: true },
+          { ...SKILL_LINK, external: false, featured: true },
+          ...NAV_LINKS.map((link) => ({ ...link, external: false, featured: false })),
+          { href: GITHUB_URL, label: "GitHub ↗", external: true, featured: false },
         ].map((link, i) => (
           <Link
             key={link.href}
@@ -132,6 +146,7 @@ export function Nav() {
             style={{ transitionDelay: open ? `${100 + i * 75}ms` : "0ms" }}
             className={cn(
               "font-display text-4xl tracking-wide transition-all duration-500 ease-fluid",
+              link.featured && "text-accent",
               open ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0",
             )}
           >

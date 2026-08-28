@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "node ../../scripts/sync-registry.mjs && node scripts/generate-badge-data.mjs",
+    "predev": "node ../../scripts/sync-registry.mjs && node scripts/generate-badge-data.mjs && node scripts/generate-skill-zip.mjs",
     "dev": "next dev",
-    "prebuild": "node ../../scripts/sync-registry.mjs && node scripts/generate-badge-data.mjs",
+    "prebuild": "node ../../scripts/sync-registry.mjs && node scripts/generate-badge-data.mjs && node scripts/generate-skill-zip.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -37,6 +37,7 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "archiver": "^8.0.0",
     "@playwright/test": "^1.48.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

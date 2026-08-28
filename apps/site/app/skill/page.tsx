@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Frame } from "@/components/brand/frame";
+import { Button } from "@/components/dsgn/button";
 import { Reveal } from "@/components/motion/reveal";
 import { CopyButton } from "@/components/copy-button";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/dsgn/accordion";
@@ -661,15 +662,25 @@ export default function SkillPage() {
           </Link>
           .
         </p>
+        <div className="mt-6">
+          <Button asChild variant="accent" size="lg" className="rounded-full px-7 shadow-glow">
+            <a href="/downloads/dsgn-skill.zip" download="dsgn-skill.zip">
+              Download .zip
+            </a>
+          </Button>
+        </div>
       </Reveal>
 
       <Reveal delay={80}>
         <div className="mt-10 space-y-4">
           <h2 className="font-display text-xl uppercase tracking-wide">Install it</h2>
           <p className="text-sm text-muted-foreground">
-            The skill is a folder of markdown, nothing to build. Pull just{" "}
+            No terminal? The download above unzips straight into a{" "}
+            <code className="font-mono text-accent">dsgn/</code> folder — drop it into your Claude
+            Code skills directory and you&rsquo;re done. Prefer a one-liner instead? The skill is a
+            folder of markdown, nothing to build — pull just{" "}
             <code className="font-mono text-accent">skills/dsgn</code> out of the repo (no full
-            clone needed) into your Claude Code skills directory.
+            clone needed).
           </p>
           <div className="space-y-3">
             <div>

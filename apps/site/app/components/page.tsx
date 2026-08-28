@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SkillPromoBanner } from "@/components/skill-promo-banner";
 import { Button } from "@/components/dsgn/button";
 import {
   Card,
@@ -173,6 +174,9 @@ const ICON_PROPS = {
 export default function ComponentsPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 pb-32">
+      <div className="pt-6">
+        <SkillPromoBanner />
+      </div>
       <Reveal>
         <CursorGlow className="rounded-[2rem] py-4">
           <Eyebrow>Registry · dsgn</Eyebrow>

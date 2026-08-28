@@ -5,6 +5,7 @@ import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
 import { CursorGlow } from "@/components/motion/cursor-glow";
 import { CASE_STUDIES } from "@/lib/case-studies";
+import { SkillPromoBanner } from "@/components/skill-promo-banner";
 
 export const metadata: Metadata = {
   title: "Case studies — Dhruv Choudhary",
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
 export default function CaseStudiesPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 pb-32">
+      <div className="pt-6">
+        <SkillPromoBanner />
+      </div>
       <Reveal>
         <CursorGlow className="rounded-[2rem] py-4">
           <Eyebrow>Proof, not just labels</Eyebrow>

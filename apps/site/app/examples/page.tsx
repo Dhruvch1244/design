@@ -43,6 +43,7 @@ import { Eyebrow } from "@/components/brand/eyebrow";
 import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
 import { CursorGlow } from "@/components/motion/cursor-glow";
+import { SkillPromoBanner } from "@/components/skill-promo-banner";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -140,6 +141,9 @@ function ExampleFrame({
 export default function ExamplesPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 pb-32">
+      <div className="pt-6">
+        <SkillPromoBanner />
+      </div>
       <Reveal>
         <CursorGlow className="rounded-[2rem] py-4">
           <Eyebrow>Examples · dsgn</Eyebrow>

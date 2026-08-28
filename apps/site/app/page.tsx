@@ -59,6 +59,19 @@ const BADGE_MARKDOWN =
 export default function Home() {
   return (
     <div className="mx-auto max-w-5xl px-6 pb-32">
+      <Reveal>
+        <Link
+          href="/skill"
+          className="group mx-auto flex w-fit items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 text-xs font-medium text-accent transition-colors duration-300 ease-fluid hover:bg-accent/20"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+          New — a Claude Code Agent Skill: 5 style agents, one router
+          <span className="transition-transform duration-300 ease-fluid group-hover:translate-x-0.5">
+            →
+          </span>
+        </Link>
+      </Reveal>
+
       <CursorGlow className="grid gap-12 rounded-[2rem] py-16 sm:py-24 md:grid-cols-2 md:items-center">
         <Reveal>
           <Eyebrow>Philosophy · 001</Eyebrow>
@@ -69,21 +82,27 @@ export default function Home() {
           </h1>
           <p className="mt-6 max-w-md text-lg text-muted-foreground">
             Every rule here was extracted from a decision that actually shipped in a real app —
-            named, with the file it lives in. Read it as a portable file any AI tool can load, or
-            install the components it produced with one command.
+            named, with the file it lives in. Read it as a portable file any AI tool can load,
+            hand it to Claude as a Skill, or install the components it produced with one command.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Magnetic>
               <Button asChild variant="accent" size="lg" className="rounded-full px-7 shadow-glow">
-                <Link href="/philosophy">Read the philosophy</Link>
+                <Link href="/skill">Install the Skill</Link>
               </Button>
             </Magnetic>
             <Magnetic>
               <Button asChild variant="outline" size="lg" className="rounded-full px-7">
-                <Link href="/components">Browse components</Link>
+                <Link href="/philosophy">Read the philosophy</Link>
               </Button>
             </Magnetic>
           </div>
+          <Link
+            href="/components"
+            className="mt-4 inline-block text-sm text-muted-foreground hover:text-accent hover:underline"
+          >
+            or browse components →
+          </Link>
         </Reveal>
 
         <Reveal delay={150}>

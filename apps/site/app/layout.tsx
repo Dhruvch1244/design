@@ -35,12 +35,12 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Dhruv Choudhary — a design philosophy, made usable",
   description:
-    "A cross-AI design philosophy extracted from real shipped apps, plus dsgn: a component registry you install with one command.",
+    "A Claude Code Agent Skill built on a cross-AI design philosophy extracted from real shipped apps, plus dsgn: a component registry you install with one command.",
   metadataBase: new URL("https://design.dhruvchoudhary.com"),
   openGraph: {
     title: "Dhruv Choudhary — a design philosophy, made usable",
     description:
-      "A cross-AI design philosophy extracted from real shipped apps, plus dsgn: a component registry you install with one command.",
+      "A Claude Code Agent Skill built on a cross-AI design philosophy extracted from real shipped apps, plus dsgn: a component registry you install with one command.",
     url: "https://design.dhruvchoudhary.com",
     siteName: "Dhruv Choudhary",
     type: "website",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "Dhruv Choudhary — a design philosophy, made usable",
     description:
-      "A cross-AI design philosophy extracted from real shipped apps, plus dsgn: a component registry you install with one command.",
+      "A Claude Code Agent Skill built on a cross-AI design philosophy extracted from real shipped apps, plus dsgn: a component registry you install with one command.",
   },
 };
 
@@ -128,7 +128,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="transition-colors duration-300 ease-fluid hover:text-accent"
+                  className={
+                    link.href === "/skill"
+                      ? "font-semibold text-accent transition-colors duration-300 ease-fluid hover:text-accent/80"
+                      : "transition-colors duration-300 ease-fluid hover:text-accent"
+                  }
                 >
                   {link.label}
                 </Link>
