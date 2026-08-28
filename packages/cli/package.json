@@ -1,10 +1,10 @@
 {
-  "name": "dsgn",
+  "name": "@dhruvchoudhary/dsgn",
   "version": "0.1.0",
   "description": "CLI that copies dsgn design-system components into your project's own source tree — no runtime dependency on this package, in the shadcn/ui tradition. Works in any React + Tailwind project.",
   "type": "module",
   "bin": {
-    "dsgn": "./bin/dsgn.js"
+    "dsgn": "bin/dsgn.js"
   },
   "files": [
     "bin",
@@ -13,5 +13,24 @@
   "engines": {
     "node": ">=18"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "author": "Dhruv Choudhary",
+  "homepage": "https://design.dhruvchoudhary.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhruvch1244/design.git",
+    "directory": "packages/cli"
+  },
+  "bugs": "https://github.com/dhruvch1244/design/issues",
+  "keywords": [
+    "design-system",
+    "components",
+    "cli",
+    "shadcn",
+    "tailwind",
+    "react"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

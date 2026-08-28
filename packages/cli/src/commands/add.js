@@ -44,7 +44,7 @@ function runInstall(cwd, packageManager, deps) {
 
 export async function add(cwd, names, { registry, overwrite, skipInstall } = {}) {
   if (names.length === 0) {
-    console.error("Usage: dsgn add <component> [component...]");
+    console.error("Usage: npx @dhruvchoudhary/dsgn add <component> [component...]");
     process.exitCode = 1;
     return;
   }

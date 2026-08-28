@@ -5,9 +5,9 @@ import { list } from "./commands/list.js";
 const HELP = `dsgn — install design-system components as source, into your own project
 
 Usage:
-  dsgn init                     Create dsgn.config.json in the current project
-  dsgn add <component...>       Copy one or more components into your project
-  dsgn list                     Show every component available in the registry
+  npx @dhruvchoudhary/dsgn init                 Create dsgn.config.json in the current project
+  npx @dhruvchoudhary/dsgn add <component...>   Copy one or more components into your project
+  npx @dhruvchoudhary/dsgn list                 Show every component available in the registry
 
 Options:
   --registry <url-or-path>      Registry to read from (default: ${`https://design.dhruvchoudhary.com/r`})

@@ -52,7 +52,7 @@ const ICON_SIZES = ["icon-sm", "icon", "icon-lg"] as const;
 const BADGE_VARIANTS = ["primary", "secondary", "accent", "outline", "destructive"] as const;
 
 function InstallCommand({ name }: { name: string }) {
-  const cmd = `npx dsgn add ${name}`;
+  const cmd = `npx @dhruvchoudhary/dsgn add ${name}`;
   return (
     <div className="flex items-center gap-2 rounded-full border border-border bg-glass px-5 py-2.5 backdrop-blur-xl">
       <pre className="overflow-x-auto font-mono text-sm text-accent">

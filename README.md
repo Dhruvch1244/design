@@ -10,9 +10,10 @@ This repo has two halves that reinforce each other:
    actually shipped in one of three real apps — named, so it stays
    falsifiable. Start at [`philosophy/AGENTS.md`](philosophy/AGENTS.md).
 2. **A component registry + CLI** that put the philosophy's non-destructive,
-   copy-don't-depend instincts into the tooling itself: `npx dsgn add button`
-   copies real component source into *your* project — you own the file the
-   moment it lands, same as any shadcn/ui-style registry.
+   copy-don't-depend instincts into the tooling itself:
+   `npx @dhruvchoudhary/dsgn add button` copies real component source into
+   *your* project — you own the file the moment it lands, same as any
+   shadcn/ui-style registry.
 
 The site at `apps/site` (deployed to `design.dhruvchoudhary.com`) renders the
 philosophy and doubles as the live component showcase — it's built using its
@@ -23,7 +24,7 @@ own `dsgn add` output, not a separate hand-maintained demo.
 ```
 philosophy/            The portable philosophy docs (read AGENTS.md first)
 packages/registry/      Source-of-truth components (React + Tailwind + CVA)
-packages/cli/            The `dsgn` CLI — copies registry components into a project
+packages/cli/            The dsgn CLI (npm: @dhruvchoudhary/dsgn) — copies registry components into a project
 apps/site/                Next.js site: renders philosophy/, showcases components,
                             and serves the registry as static JSON at /r/*.json
 scripts/sync-registry.mjs  Builds the registry and copies it into apps/site/public/r
@@ -48,8 +49,8 @@ Once `apps/site` is deployed, this works in any React + Tailwind project,
 no clone of this repo required:
 
 ```sh
-npx dsgn init                 # writes dsgn.config.json (paths + import alias)
-npx dsgn add button card       # copies component source + installs npm deps
+npx @dhruvchoudhary/dsgn init                 # writes dsgn.config.json (paths + import alias)
+npx @dhruvchoudhary/dsgn add button card       # copies component source + installs npm deps
 ```
 
 `dsgn add` never overwrites a file that already exists unless you pass

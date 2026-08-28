@@ -47,7 +47,7 @@ const PILLARS = [
   },
 ] as const;
 
-const INSTALL_CMD = "npx dsgn add button card";
+const INSTALL_CMD = "npx @dhruvchoudhary/dsgn add button card";
 
 export default function Home() {
   return (
