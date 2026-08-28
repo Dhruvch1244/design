@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
@@ -39,10 +40,30 @@ export interface ButtonProps
    * resizes or reflows neighboring elements when a loading state toggles.
    */
   loading?: boolean;
+  /**
+   * Renders the child element instead of a <button>, merging Button's
+   * classes/props onto it via Radix Slot — e.g. `<Button asChild><Link
+   * .../></Button>`. Required for composing with `<a>`/`<Link>`, since
+   * nesting an anchor inside a <button> is invalid HTML. Not compatible
+   * with `loading` (the spinner overlay assumes a <button>'s box model).
+   */
+  asChild?: boolean;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, loading, disabled, children, ...props }, ref) => {
+  ({ className, variant, size, loading, disabled, asChild, children, ...props }, ref) => {
+    if (asChild) {
+      return (
+        <Slot
+          ref={ref}
+          className={cn(buttonVariants({ variant, size }), className)}
+          {...props}
+        >
+          {children}
+        </Slot>
+      );
+    }
+
     return (
       <button
         ref={ref}

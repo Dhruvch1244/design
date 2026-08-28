@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { buttonVariants } from "@/components/dsgn/button";
+import { Button } from "@/components/dsgn/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/dsgn/card";
 
 const PILLARS = [
@@ -42,12 +42,12 @@ export default function Home() {
           or install the components it produced with one command.
         </p>
         <div className="mt-8 flex flex-wrap gap-4">
-          <Link href="/philosophy" className={buttonVariants({ size: "lg" })}>
-            Read the philosophy
-          </Link>
-          <Link href="/components" className={buttonVariants({ variant: "outline", size: "lg" })}>
-            Browse components
-          </Link>
+          <Button asChild size="lg">
+            <Link href="/philosophy">Read the philosophy</Link>
+          </Button>
+          <Button asChild variant="outline" size="lg">
+            <Link href="/components">Browse components</Link>
+          </Button>
         </div>
         <pre className="mt-8 w-fit overflow-x-auto rounded-md bg-muted px-4 py-3 text-sm">
           <code>npx dsgn add button card</code>
