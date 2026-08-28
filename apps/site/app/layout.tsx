@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { Bebas_Neue, Hanken_Grotesk, Space_Mono } from "next/font/google";
 import { Nav } from "@/components/nav";
@@ -27,6 +27,29 @@ export const metadata: Metadata = {
   title: "Dhruv Choudhary — a design philosophy, made usable",
   description:
     "A cross-AI design philosophy extracted from real shipped apps, plus dsgn: a component registry you install with one command.",
+  metadataBase: new URL("https://design.dhruvchoudhary.com"),
+  openGraph: {
+    title: "Dhruv Choudhary — a design philosophy, made usable",
+    description:
+      "A cross-AI design philosophy extracted from real shipped apps, plus dsgn: a component registry you install with one command.",
+    url: "https://design.dhruvchoudhary.com",
+    siteName: "Dhruv Choudhary",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Dhruv Choudhary — a design philosophy, made usable",
+    description:
+      "A cross-AI design philosophy extracted from real shipped apps, plus dsgn: a component registry you install with one command.",
+  },
+};
+
+// Matches dhruvchoudhary.com's own theme-color (#07080c, the void token) so
+// the mobile browser chrome tints consistently across both properties
+// instead of defaulting to white.
+export const viewport: Viewport = {
+  themeColor: "#07080c",
+  colorScheme: "dark light",
 };
 
 const FOOTER_LINKS = [
@@ -57,10 +80,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
       <body className="min-h-full flex flex-col">
-        <div className="ambient-glow" />
+        <a
+          href="#main-content"
+          className="fixed left-4 top-4 z-[70] -translate-y-24 rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-transform duration-300 ease-fluid focus:translate-y-0"
+        >
+          Skip to content
+        </a>
+        <div className="starfield" />
         <Nav />
         <CommandPalette />
-        <main className="relative flex-1 pt-28">{children}</main>
+        <main id="main-content" className="relative flex-1 pt-28">
+          {children}
+        </main>
         <footer className="relative border-t border-border">
           <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 py-12 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-wrap items-center gap-2">

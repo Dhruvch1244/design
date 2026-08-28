@@ -20,8 +20,19 @@ export const metadata: Metadata = {
   description: "Live components from the dsgn registry, installed with the dsgn CLI.",
 };
 
-const VARIANTS = ["primary", "secondary", "accent", "outline", "ghost", "destructive"] as const;
-const SIZES = ["sm", "md", "lg"] as const;
+const VARIANTS = [
+  "primary",
+  "secondary",
+  "accent",
+  "glow",
+  "soft",
+  "outline",
+  "ghost",
+  "link",
+  "destructive",
+] as const;
+const SIZES = ["xs", "sm", "md", "lg", "xl"] as const;
+const ICON_SIZES = ["icon-sm", "icon", "icon-lg"] as const;
 const BADGE_VARIANTS = ["primary", "secondary", "accent", "outline", "destructive"] as const;
 
 function InstallCommand({ name }: { name: string }) {
@@ -94,10 +105,27 @@ export default function ComponentsPage() {
                   size {size}
                 </Button>
               ))}
+              {ICON_SIZES.map((size) => (
+                <Button key={size} size={size} variant="outline" aria-label={`icon ${size}`}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </Button>
+              ))}
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <Button loading>Loading</Button>
               <Button disabled>Disabled</Button>
+              <Button
+                variant="accent"
+                leftIcon={
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
+                    <path d="M12 4v16M4 12h16" />
+                  </svg>
+                }
+              >
+                leftIcon
+              </Button>
               <Button variant="accent" className="rounded-full px-6 shadow-glow">
                 asChild + pill
               </Button>

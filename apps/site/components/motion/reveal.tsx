@@ -33,7 +33,13 @@ export function Reveal({
           observer.disconnect();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -10% 0px" },
+      // threshold is a fraction of the target's own AREA, not the
+      // viewport's — a 0.15 threshold silently never fires for an element
+      // taller than ~6-7x the viewport (a long prose page, say), because
+      // 15% of its area can never be on-screen at once. threshold:0 fires
+      // on the first pixel instead, which is what "has this scrolled into
+      // view yet" actually means regardless of the target's height.
+      { threshold: 0, rootMargin: "0px 0px -10% 0px" },
     );
     observer.observe(node);
     return () => observer.disconnect();

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default async function PhilosophyIndexPage() {
   const markdown = await readPhilosophyMarkdown("AGENTS.md");
-  const html = await renderMarkdown(markdown);
+  const { html, toc } = await renderMarkdown(markdown);
 
-  return <PhilosophyShell html={html} />;
+  return <PhilosophyShell html={html} toc={toc} />;
 }

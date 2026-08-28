@@ -133,6 +133,23 @@
 }
 
 @layer base {
+  /* One rule instead of per-component focus classes: every link and
+     button on the site gets a consistent, brand-colored focus ring
+     instead of the browser default (often a mismatched blue that's easy
+     to lose against a dark background). */
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
   body {
     background: var(--background);
     color: var(--foreground);
@@ -176,45 +193,81 @@
   }
 }
 
-/* Fixed, pointer-events-none radial glow blobs behind the hero — the
-   "Ethereal Glass" texture: deep void ground, soft color bleeding in from
-   the edges rather than a flat background. Never on a scrolling container. */
-.ambient-glow {
+/*
+ * Fixed, pointer-events-none starfield — replaces an earlier ambient
+ * gradient-blob background. Three layers of small radial-gradient dots at
+ * different tile sizes (so it doesn't read as an obviously repeating
+ * pattern), each twinkling on its own offset cycle. Only opacity is
+ * animated (GPU-only, no layout cost) and it's fixed to the viewport, never
+ * attached to a scrolling container. Stars are a night-sky motif, so they
+ * fade out entirely in the light theme rather than rendering as dark
+ * flecks on a cream background.
+ */
+.starfield {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 22%, var(--cyan-soft), transparent),
+    radial-gradient(1.5px 1.5px at 68% 8%, var(--cyan-soft), transparent),
+    radial-gradient(1.5px 1.5px at 85% 55%, var(--cyan-soft), transparent),
+    radial-gradient(1.5px 1.5px at 30% 78%, var(--cyan-soft), transparent);
+  background-size: 600px 600px;
+  animation: twinkle 7s ease-in-out infinite;
+  opacity: 0.5;
+  transition: opacity 500ms var(--ease-fluid);
 }
 
-.ambient-glow::before,
-.ambient-glow::after {
+.starfield::before,
+.starfield::after {
   content: "";
   position: absolute;
-  width: 60vw;
-  height: 60vw;
-  max-width: 720px;
-  max-height: 720px;
-  border-radius: 9999px;
-  filter: blur(120px);
-  opacity: 0.22;
+  inset: 0;
+  background-repeat: repeat;
 }
 
-.ambient-glow::before {
-  top: -10%;
-  left: -10%;
-  background: var(--cyan);
+.starfield::before {
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, var(--ink), transparent),
+    radial-gradient(1px 1px at 60% 70%, var(--ink), transparent),
+    radial-gradient(1px 1px at 80% 15%, var(--ink), transparent),
+    radial-gradient(1px 1px at 33% 88%, var(--ink), transparent),
+    radial-gradient(1px 1px at 45% 45%, var(--ink), transparent),
+    radial-gradient(1px 1px at 5% 60%, var(--ink), transparent);
+  background-size: 260px 260px;
+  animation: twinkle 5s ease-in-out infinite;
+  opacity: 0.5;
 }
 
-.ambient-glow::after {
-  bottom: -15%;
-  right: -10%;
-  background: var(--violet);
+.starfield::after {
+  background-image:
+    radial-gradient(1px 1px at 15% 55%, var(--ink), transparent),
+    radial-gradient(1px 1px at 70% 25%, var(--ink), transparent),
+    radial-gradient(1px 1px at 90% 80%, var(--ink), transparent),
+    radial-gradient(1px 1px at 25% 10%, var(--ink), transparent);
+  background-size: 380px 380px;
+  animation: twinkle 9s ease-in-out infinite reverse;
+  animation-delay: -3s;
+  opacity: 0.35;
 }
 
-[data-theme="light"] .ambient-glow::before,
-[data-theme="light"] .ambient-glow::after {
-  opacity: 0.14;
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* display:none, not opacity:0 — the twinkle keyframes continuously drive
+   opacity while the animation is running, which would otherwise fight a
+   static opacity override every frame instead of actually turning off. */
+[data-theme="light"] .starfield {
+  display: none;
 }
 
 /* Scroll-linked reading progress bar for the philosophy prose pages. Pure

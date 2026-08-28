@@ -23,7 +23,7 @@ export default async function PhilosophyDocPage({
   if (!doc) notFound();
 
   const markdown = await readPhilosophyMarkdown(doc.file);
-  const html = await renderMarkdown(markdown);
+  const { html, toc } = await renderMarkdown(markdown);
 
-  return <PhilosophyShell activeSlug={slug} html={html} />;
+  return <PhilosophyShell activeSlug={slug} html={html} toc={toc} />;
 }

@@ -16,7 +16,7 @@
     {
       "name": "button",
       "type": "registry:ui",
-      "description": "Button with variant/size props via class-variance-authority, a non-reflowing loading state, and asChild composition via Radix Slot.",
+      "description": "Button with 9 variants (primary/secondary/accent/glow/soft/outline/ghost/link/destructive) and 8 sizes (xs-xl plus 3 icon sizes) via class-variance-authority, left/right icon slots, a non-reflowing loading state, and asChild composition via Radix Slot.",
       "dependencies": ["class-variance-authority", "@radix-ui/react-slot"],
       "registryDependencies": ["utils"],
       "files": [
