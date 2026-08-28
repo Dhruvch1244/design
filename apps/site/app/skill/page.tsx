@@ -17,6 +17,8 @@ const DEGIT_COMMAND = "npx degit dhruvch1244/design/skills/dsgn ~/.claude/skills
 const DEGIT_COMMAND_PROJECT = "npx degit dhruvch1244/design/skills/dsgn .claude/skills/dsgn";
 const CLONE_COMMAND =
   "git clone --depth 1 https://github.com/dhruvch1244/design /tmp/dsgn-skill && cp -r /tmp/dsgn-skill/skills/dsgn ~/.claude/skills/dsgn && rm -rf /tmp/dsgn-skill";
+const CLI_SKILL_GLOBAL = "npx @dhruvchoudhary/dsgn skill --global";
+const CLI_SKILL_PROJECT = "npx @dhruvchoudhary/dsgn skill --project";
 
 // The router file's key sections, verbatim from skills/dsgn/SKILL.md — not
 // paraphrased. Full file is longer (source-of-truth footer, handoff
@@ -683,6 +685,21 @@ export default function SkillPage() {
             clone needed).
           </p>
           <div className="space-y-3">
+            <div>
+              <div className="mb-1.5 font-mono text-xs text-muted-foreground">
+                already using the dsgn CLI? — bundled, works offline
+              </div>
+              <div className="relative">
+                <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-12 font-mono text-xs text-accent">
+                  <code>{CLI_SKILL_GLOBAL}</code>
+                </pre>
+                <CopyButton text={CLI_SKILL_GLOBAL} className="absolute right-3 top-3" />
+              </div>
+              <p className="mt-1.5 text-xs text-muted-foreground">
+                or <code className="font-mono text-accent">{CLI_SKILL_PROJECT}</code> for this
+                project only — same CLI that installs components, now installs the skill too.
+              </p>
+            </div>
             <div>
               <div className="mb-1.5 font-mono text-xs text-muted-foreground">
                 global — every project

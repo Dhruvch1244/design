@@ -5,6 +5,7 @@ import { diff } from "./commands/diff.js";
 import { update } from "./commands/update.js";
 import { doctor } from "./commands/doctor.js";
 import { snippets } from "./commands/snippets.js";
+import { skill } from "./commands/skill.js";
 
 const HELP = `dsgn — install design-system components as source, into your own project
 
@@ -17,12 +18,16 @@ Usage:
   npx @dhruvchoudhary/dsgn update <component...> Pull the current registry version into your project
   npx @dhruvchoudhary/dsgn doctor               Health-check installed files (missing, modified, a11y)
   npx @dhruvchoudhary/dsgn snippets             Add VS Code snippets for every registry component
+  npx @dhruvchoudhary/dsgn skill --global       Install the dsgn Agent Skill for Claude Code, every project
+  npx @dhruvchoudhary/dsgn skill --project      Install the dsgn Agent Skill for this project only
 
 Options:
   --registry <url-or-path>      Registry to read from (default: ${`https://design.dhruvchoudhary.com/r`})
-  --overwrite                   Replace files that already exist (add only, default: skip them)
+  --overwrite                   Replace files that already exist (add/skill, default: skip them)
   --skip-install                Don't run the package manager after copying files (add only)
   --force                       Overwrite locally-modified files (update only, default: skip them)
+  --global                      Install to ~/.claude/skills/dsgn (skill only)
+  --project                     Install to ./.claude/skills/dsgn (skill only)
   -h, --help                    Show this help
 `;
 
@@ -38,6 +43,10 @@ function parseArgs(argv) {
       args.flags.skipInstall = true;
     } else if (arg === "--force") {
       args.flags.force = true;
+    } else if (arg === "--global") {
+      args.flags.global = true;
+    } else if (arg === "--project") {
+      args.flags.project = true;
     } else if (arg === "-h" || arg === "--help") {
       args.flags.help = true;
     } else {
@@ -79,6 +88,9 @@ export async function run(argv) {
         break;
       case "snippets":
         await snippets(cwd);
+        break;
+      case "skill":
+        await skill(cwd, flags);
         break;
       default:
         console.error(`Unknown command: ${command}\n`);

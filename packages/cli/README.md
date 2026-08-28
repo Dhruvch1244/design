@@ -67,6 +67,22 @@ npx @dhruvchoudhary/dsgn snippets
 Drops `.vscode/dsgn.code-snippets` into your project — one snippet per
 registry component (`dsgn-button`, `dsgn-card`, `dsgn-dialog`, ...).
 
+## Agent Skill
+
+```sh
+npx @dhruvchoudhary/dsgn skill --global    # ~/.claude/skills/dsgn — every project
+npx @dhruvchoudhary/dsgn skill --project   # ./.claude/skills/dsgn — this project only
+```
+
+Installs the dsgn Claude Code Agent Skill: a router plus 5 style-persona
+sub-agents (glass-dark-cyan, editorial-warm, brutalist-mono, soft-minimal,
+neon-cyberpunk), each grounded in the real philosophy docs, registry, and
+token system — so Claude builds UI using this project's actual design
+philosophy instead of invented conventions. Bundled directly in this
+package, so it works offline. Full package, browsable and downloadable
+without the CLI, at
+[design.dhruvchoudhary.com/skill](https://design.dhruvchoudhary.com/skill).
+
 ## Commands
 
 | Command | What it does |
@@ -79,15 +95,18 @@ registry component (`dsgn-button`, `dsgn-card`, `dsgn-dialog`, ...).
 | `update <component...>` | Pull the current registry version into your project |
 | `doctor` | Health-check installed files (missing, modified, a11y) |
 | `snippets` | Add VS Code snippets for every registry component |
+| `skill --global` / `--project` | Install the dsgn Claude Code Agent Skill |
 
 ## Options
 
 | Flag | Effect |
 |---|---|
 | `--registry <url-or-path>` | Registry to read from (default: `https://design.dhruvchoudhary.com/r`) |
-| `--overwrite` | Replace files that already exist (`add` only) |
+| `--overwrite` | Replace files that already exist (`add`/`skill`, default: skip them) |
 | `--skip-install` | Don't run the package manager after copying files (`add` only) |
 | `--force` | Overwrite locally-modified files (`update` only) |
+| `--global` | Install to `~/.claude/skills/dsgn` (`skill` only) |
+| `--project` | Install to `./.claude/skills/dsgn` (`skill` only) |
 | `-h, --help` | Show help |
 
 ## What's in the registry

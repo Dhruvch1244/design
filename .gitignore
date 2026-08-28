@@ -7,3 +7,7 @@ node_modules/
 # predev/prebuild), never edited directly.
 packages/registry/dist/
 apps/site/public/r/
+
+# Synced from skills/dsgn (the real source) by scripts/sync-skill.mjs, also
+# run automatically via prepublishOnly — never edited directly.
+packages/cli/skill/
