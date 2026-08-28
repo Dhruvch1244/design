@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Source-of-truth component registry for the dsgn design system. Not meant to be installed as a runtime dependency — components are copied into consumer projects by the dsgn CLI.",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
