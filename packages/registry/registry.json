@@ -122,6 +122,96 @@
       "files": [
         { "path": "src/components/dialog/dialog.tsx", "target": "components/dsgn/dialog.tsx", "type": "registry:ui" }
       ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "description": "Alert, AlertTitle, AlertDescription with default/destructive variants via class-variance-authority.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/alert/alert.tsx", "target": "components/dsgn/alert.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "description": "Avatar, AvatarImage, AvatarFallback built on Radix Avatar.",
+      "dependencies": ["@radix-ui/react-avatar"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/avatar/avatar.tsx", "target": "components/dsgn/avatar.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "description": "Checkbox built on Radix Checkbox.",
+      "dependencies": ["@radix-ui/react-checkbox"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/checkbox/checkbox.tsx", "target": "components/dsgn/checkbox.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "description": "RadioGroup, RadioGroupItem built on Radix Radio Group.",
+      "dependencies": ["@radix-ui/react-radio-group"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/radio-group/radio-group.tsx", "target": "components/dsgn/radio-group.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "description": "Separator (horizontal or vertical divider) built on Radix Separator.",
+      "dependencies": ["@radix-ui/react-separator"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/separator/separator.tsx", "target": "components/dsgn/separator.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "description": "Progress bar built on Radix Progress.",
+      "dependencies": ["@radix-ui/react-progress"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/progress/progress.tsx", "target": "components/dsgn/progress.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "description": "Accordion, AccordionItem, AccordionTrigger, AccordionContent built on Radix Accordion. Needs two keyframes + theme tokens in your global CSS for the expand/collapse animation (accordion-down/accordion-up, animating to/from Radix's --radix-accordion-content-height) — see design.dhruvchoudhary.com's own apps/site/app/globals.css for the Tailwind v4 --animate-* block to copy.",
+      "dependencies": ["@radix-ui/react-accordion"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/accordion/accordion.tsx", "target": "components/dsgn/accordion.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "description": "Popover, PopoverTrigger, PopoverContent, PopoverAnchor built on Radix Popover.",
+      "dependencies": ["@radix-ui/react-popover"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/popover/popover.tsx", "target": "components/dsgn/popover.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "description": "DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuCheckboxItem, DropdownMenuRadioItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut built on Radix Dropdown Menu.",
+      "dependencies": ["@radix-ui/react-dropdown-menu"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/dropdown-menu/dropdown-menu.tsx", "target": "components/dsgn/dropdown-menu.tsx", "type": "registry:ui" }
+      ]
     }
   ]
 }

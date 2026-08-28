@@ -42,7 +42,24 @@ export function Reveal({
       { threshold: 0, rootMargin: "0px 0px -10% 0px" },
     );
     observer.observe(node);
-    return () => observer.disconnect();
+
+    // Safety net, confirmed necessary by direct testing, not hypothetical:
+    // IntersectionObserver callbacks are tied to the rendering pipeline, and
+    // Chrome suspends them entirely for a backgrounded/hidden tab — verified
+    // by observing document.body (always 100% visible) in a backgrounded
+    // tab and getting zero callbacks. Content that only reveals on an
+    // observer firing has no floor: if the tab starts hidden (opened in the
+    // background, a permission prompt stealing focus during load, some
+    // automation/embedding contexts) the entire page can stay invisible
+    // indefinitely. Force it visible after a short delay regardless, so the
+    // reveal animation is a progressive enhancement in the common case, not
+    // a single point of failure for whether content shows up at all.
+    const fallback = setTimeout(() => setVisible(true), 1200);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallback);
+    };
   }, []);
 
   return (

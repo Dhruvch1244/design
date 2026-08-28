@@ -30,7 +30,7 @@ export const DialogContent = React.forwardRef<
       ref={ref}
       className={cn(
         "fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-2xl",
-        "border border-border bg-card p-6 shadow-ambient",
+        "border border-border bg-card p-6 shadow-lg",
         className,
       )}
       {...props}

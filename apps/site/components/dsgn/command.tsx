@@ -52,7 +52,7 @@ export function CommandDialog({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-glass-strong shadow-ambient backdrop-blur-2xl"
+        className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-card shadow-lg backdrop-blur-xl"
       >
         <Command shouldFilter loop>
           {children}

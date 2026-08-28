@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { Bebas_Neue, Hanken_Grotesk, Space_Mono } from "next/font/google";
+import { Bebas_Neue, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import { Nav } from "@/components/nav";
 import { Mark } from "@/components/brand/mark";
 import { CommandPalette } from "@/components/command-palette";
@@ -18,8 +18,15 @@ const hanken = Hanken_Grotesk({
   subsets: ["latin"],
 });
 
-const spaceMono = Space_Mono({
-  variable: "--font-space-mono",
+// JetBrains Mono, not Space Mono, despite this site otherwise matching
+// dhruvchoudhary.com's exact font stack — confirmed by directly rendering
+// both side by side that Space Mono's "@" glyph is a near-flat shape
+// almost indistinguishable from "a", which makes the site's own primary
+// CTA ("npx @dhruvchoudhary/dsgn ...") read as garbled text. Legibility of
+// a scoped npm package name in the hero beats exact brand-font parity on
+// the mono face specifically.
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains",
   weight: ["400", "700"],
   subsets: ["latin"],
 });
@@ -78,7 +85,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${hanken.variable} ${spaceMono.variable} h-full antialiased`}
+      className={`${bebasNeue.variable} ${hanken.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
@@ -90,7 +97,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
+        <div className="mesh-gradient" />
         <Starfield />
+        <div className="grain-overlay" />
         <Nav />
         <CommandPalette />
         <main id="main-content" className="relative flex-1 pt-28">

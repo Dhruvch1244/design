@@ -25,6 +25,22 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/dsgn/dialog";
+import { Alert, AlertTitle, AlertDescription } from "@/components/dsgn/alert";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/dsgn/avatar";
+import { Checkbox } from "@/components/dsgn/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/dsgn/radio-group";
+import { Separator } from "@/components/dsgn/separator";
+import { Progress } from "@/components/dsgn/progress";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/dsgn/accordion";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/dsgn/popover";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/dsgn/dropdown-menu";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
@@ -287,6 +303,123 @@ export default function ComponentsPage() {
               </DialogFooter>
             </DialogContent>
           </Dialog>
+        </Frame>
+      </Section>
+
+      <Section index={12} title="Alert" name="alert">
+        <div className="space-y-3">
+          <Alert>
+            <AlertTitle>Non-destructive by default</AlertTitle>
+            <AlertDescription>Edits are an overlay over an untouched original.</AlertDescription>
+          </Alert>
+          <Alert variant="destructive">
+            <AlertTitle>Structural failure</AlertTitle>
+            <AlertDescription>Missing required section marker at offset 0x4A2.</AlertDescription>
+          </Alert>
+        </div>
+      </Section>
+
+      <Section index={13} title="Avatar" name="avatar">
+        <Frame>
+          <div className="flex items-center gap-3">
+            <Avatar>
+              <AvatarImage src="https://github.com/dhruvch1244.png" alt="Dhruv Choudhary" />
+              <AvatarFallback>DC</AvatarFallback>
+            </Avatar>
+            <Avatar>
+              <AvatarFallback>lv</AvatarFallback>
+            </Avatar>
+          </div>
+        </Frame>
+      </Section>
+
+      <Section index={14} title="Checkbox" name="checkbox">
+        <Frame>
+          <div className="flex items-center gap-6">
+            <label className="flex items-center gap-2 text-sm">
+              <Checkbox defaultChecked /> Non-destructive
+            </label>
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Checkbox disabled /> Disabled
+            </label>
+          </div>
+        </Frame>
+      </Section>
+
+      <Section index={15} title="Radio Group" name="radio-group">
+        <Frame>
+          <RadioGroup defaultValue="lyric-viewer" className="text-sm">
+            <label className="flex items-center gap-2">
+              <RadioGroupItem value="lyric-viewer" id="rg-lv" /> lyric-viewer
+            </label>
+            <label className="flex items-center gap-2">
+              <RadioGroupItem value="file-viewer" id="rg-fv" /> file-viewer
+            </label>
+          </RadioGroup>
+        </Frame>
+      </Section>
+
+      <Section index={16} title="Separator" name="separator">
+        <Frame>
+          <p className="text-sm text-muted-foreground">Above</p>
+          <Separator className="my-4" />
+          <p className="text-sm text-muted-foreground">Below</p>
+        </Frame>
+      </Section>
+
+      <Section index={17} title="Progress" name="progress">
+        <Frame>
+          <Progress value={66} className="max-w-sm" />
+        </Frame>
+      </Section>
+
+      <Section index={18} title="Accordion" name="accordion">
+        <Frame>
+          <Accordion type="single" collapsible className="max-w-sm">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Non-destructive by default</AccordionTrigger>
+              <AccordionContent>
+                Edits are an overlay over an untouched original. Undo is structural.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Trust the data</AccordionTrigger>
+              <AccordionContent>Gatekeep structure, never content.</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </Frame>
+      </Section>
+
+      <Section index={19} title="Popover" name="popover">
+        <Frame>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline">Open popover</Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <p className="text-sm text-muted-foreground">
+                Anchored, dismissible content — the base primitive Command&rsquo;s dialog and
+                Select&rsquo;s dropdown are both built from the same idea.
+              </p>
+            </PopoverContent>
+          </Popover>
+        </Frame>
+      </Section>
+
+      <Section index={20} title="Dropdown Menu" name="dropdown-menu">
+        <Frame>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Actions</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Case studies</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>lyric-viewer</DropdownMenuItem>
+              <DropdownMenuItem>file-viewer</DropdownMenuItem>
+              <DropdownMenuItem>review-grader</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </Frame>
       </Section>
     </div>

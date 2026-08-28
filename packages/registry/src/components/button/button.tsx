@@ -15,7 +15,7 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         accent: "bg-accent text-accent-foreground hover:bg-accent/90",
         /** Permanently-glowing accent — for the one CTA per view that should read as "the" action. */
-        glow: "bg-accent text-accent-foreground shadow-glow hover:bg-accent/90",
+        glow: "bg-accent text-accent-foreground shadow-[0_0_30px_-6px_var(--accent)] hover:bg-accent/90",
         /** Low-emphasis tinted fill — a step down from `accent` without dropping to a bare outline. */
         soft: "bg-accent/12 text-accent hover:bg-accent/20",
         outline: "border border-border bg-transparent hover:bg-muted",
