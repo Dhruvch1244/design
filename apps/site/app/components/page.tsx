@@ -8,6 +8,8 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/dsgn/card";
+import { Badge } from "@/components/dsgn/badge";
+import { Input } from "@/components/dsgn/input";
 
 export const metadata: Metadata = {
   title: "Components — dsgn",
@@ -16,6 +18,7 @@ export const metadata: Metadata = {
 
 const VARIANTS = ["primary", "secondary", "outline", "ghost", "destructive"] as const;
 const SIZES = ["sm", "md", "lg"] as const;
+const BADGE_VARIANTS = ["primary", "secondary", "outline", "destructive"] as const;
 
 function InstallCommand({ name }: { name: string }) {
   return (
@@ -86,6 +89,29 @@ export default function ComponentsPage() {
             </Button>
           </CardFooter>
         </Card>
+      </section>
+
+      <section className="space-y-6">
+        <h2 className="text-xl font-medium">Badge</h2>
+        <InstallCommand name="badge" />
+
+        <div className="flex flex-wrap items-center gap-3">
+          {BADGE_VARIANTS.map((variant) => (
+            <Badge key={variant} variant={variant}>
+              {variant}
+            </Badge>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-6">
+        <h2 className="text-xl font-medium">Input</h2>
+        <InstallCommand name="input" />
+
+        <div className="max-w-sm space-y-3">
+          <Input placeholder="Email address" />
+          <Input placeholder="Disabled" disabled />
+        </div>
       </section>
     </div>
   );

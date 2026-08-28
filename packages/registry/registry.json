@@ -32,6 +32,26 @@
       "files": [
         { "path": "src/components/card/card.tsx", "target": "components/dsgn/card.tsx", "type": "registry:ui" }
       ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "description": "Badge with variant props via class-variance-authority.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/badge/badge.tsx", "target": "components/dsgn/badge.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "description": "Styled text input wrapping the native <input> element.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/input/input.tsx", "target": "components/dsgn/input.tsx", "type": "registry:ui" }
+      ]
     }
   ]
 }
