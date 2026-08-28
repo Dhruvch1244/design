@@ -1,6 +1,6 @@
 import { mkdir, writeFile, access } from "node:fs/promises";
 import path from "node:path";
-import { spawn } from "node:child_process";
+import spawn from "cross-spawn";
 import { readConfig, DEFAULT_CONFIG, detectPackageManager, installCommand } from "../config.js";
 import { resolveItems, DEFAULT_REGISTRY } from "../registry.js";
 
@@ -36,7 +36,7 @@ function runInstall(cwd, packageManager, deps) {
   const [cmd, args] = command;
   console.log(`\nInstalling: ${cmd} ${args.join(" ")}`);
   return new Promise((resolve, reject) => {
-    const child = spawn(cmd, args, { cwd, stdio: "inherit", shell: process.platform === "win32" });
+    const child = spawn(cmd, args, { cwd, stdio: "inherit" });
     child.on("exit", (code) => (code === 0 ? resolve() : reject(new Error(`${cmd} exited with code ${code}`))));
     child.on("error", reject);
   });
