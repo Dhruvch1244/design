@@ -1,0 +1,25 @@
+{
+  "name": "@dsgn/registry",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Source-of-truth component registry for the dsgn design system. Not meant to be installed as a runtime dependency — components are copied into consumer projects by the dsgn CLI.",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build:registry": "node scripts/build-registry.mjs"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.5.0"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.0"
+  }
+}

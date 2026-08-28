@@ -1,0 +1,6 @@
+{
+  "$schema": "https://design.dhruvchoudhary.com/schema/config.json",
+  "componentsDir": "components/dsgn",
+  "utilsDir": "lib",
+  "alias": "@"
+}

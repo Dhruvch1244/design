@@ -1,0 +1,37 @@
+{
+  "$schema": "https://design.dhruvchoudhary.com/schema/registry.json",
+  "name": "dsgn",
+  "homepage": "https://design.dhruvchoudhary.com",
+  "items": [
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "description": "cn() class-name merge helper used by every component in the registry.",
+      "dependencies": ["clsx", "tailwind-merge"],
+      "registryDependencies": [],
+      "files": [
+        { "path": "src/lib/utils.ts", "target": "lib/utils.ts", "type": "registry:lib" }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "description": "Button with variant/size props via class-variance-authority and a non-reflowing loading state.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/button/button.tsx", "target": "components/dsgn/button.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "description": "Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/card/card.tsx", "target": "components/dsgn/card.tsx", "type": "registry:ui" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "dsgn-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace site",
+    "build:registry": "npm run build:registry --workspace @dsgn/registry",
+    "sync-registry": "node scripts/sync-registry.mjs",
+    "typecheck": "npm run typecheck --workspace @dsgn/registry"
+  }
+}

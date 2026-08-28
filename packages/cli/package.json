@@ -1,0 +1,17 @@
+{
+  "name": "dsgn",
+  "version": "0.1.0",
+  "description": "CLI that copies dsgn design-system components into your project's own source tree — no runtime dependency on this package, in the shadcn/ui tradition. Works in any React + Tailwind project.",
+  "type": "module",
+  "bin": {
+    "dsgn": "./bin/dsgn.js"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
