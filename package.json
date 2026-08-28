@@ -11,6 +11,7 @@
     "dev": "npm run dev --workspace site",
     "build:registry": "npm run build:registry --workspace @dsgn/registry",
     "sync-registry": "node scripts/sync-registry.mjs",
-    "typecheck": "npm run typecheck --workspace @dsgn/registry"
+    "typecheck": "npm run typecheck --workspace @dsgn/registry",
+    "lint:registry-tokens": "node scripts/lint-registry-tokens.mjs"
   }
 }

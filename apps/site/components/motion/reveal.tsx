@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -9,6 +9,19 @@ import { cn } from "@/lib/utils";
  * .reveal comment) so it costs one callback per element, not one per
  * scroll frame. `delay` staggers a group of siblings without needing a
  * parent orchestrator.
+ *
+ * Deliberately does NOT use React state to drive the "revealed" class —
+ * confirmed by direct testing (not hypothetical) that routing this through
+ * setState is itself a reliability problem: on a page mounting ~20 of these
+ * at once (a component gallery, say), the observer/timeout callbacks'
+ * setState calls could get scheduled at low priority and never actually
+ * commit — content stayed invisible indefinitely on a fresh load, and only
+ * "unstuck" after an unrelated click forced React to flush a render. A
+ * single user interaction shouldn't be required to make a page's own
+ * content appear. Toggling the class directly on the DOM node via the ref
+ * removes React's scheduler from this path entirely: visibility here is a
+ * pure visual concern with no other component depending on it, so there's
+ * nothing lost by not modeling it as state.
  */
 export function Reveal({
   children,
@@ -20,16 +33,19 @@ export function Reveal({
   delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
 
+    function show() {
+      node!.classList.add("reveal-in");
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
+          show();
           observer.disconnect();
         }
       },
@@ -43,18 +59,13 @@ export function Reveal({
     );
     observer.observe(node);
 
-    // Safety net, confirmed necessary by direct testing, not hypothetical:
-    // IntersectionObserver callbacks are tied to the rendering pipeline, and
-    // Chrome suspends them entirely for a backgrounded/hidden tab — verified
-    // by observing document.body (always 100% visible) in a backgrounded
-    // tab and getting zero callbacks. Content that only reveals on an
-    // observer firing has no floor: if the tab starts hidden (opened in the
-    // background, a permission prompt stealing focus during load, some
-    // automation/embedding contexts) the entire page can stay invisible
-    // indefinitely. Force it visible after a short delay regardless, so the
-    // reveal animation is a progressive enhancement in the common case, not
-    // a single point of failure for whether content shows up at all.
-    const fallback = setTimeout(() => setVisible(true), 1200);
+    // Safety net, confirmed necessary by direct testing: IntersectionObserver
+    // callbacks are tied to the rendering pipeline, and Chrome suspends them
+    // entirely for a backgrounded/hidden tab. Force it visible after a short
+    // delay regardless, so the reveal animation is a progressive
+    // enhancement, never a single point of failure for whether content
+    // shows up at all.
+    const fallback = setTimeout(show, 1200);
 
     return () => {
       observer.disconnect();
@@ -66,7 +77,7 @@ export function Reveal({
     <div
       ref={ref}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
-      className={cn("reveal", visible && "reveal-in", className)}
+      className={cn("reveal", className)}
     >
       {children}
     </div>
