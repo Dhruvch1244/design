@@ -2,93 +2,85 @@
 @plugin "@tailwindcss/typography";
 
 /*
- * Editorial Ink — the site's identity.
- *
- * Warm ivory paper + espresso ink + one ember accent. Chosen over a
- * shadcn-neutral palette deliberately: this site is prose-heavy (the
- * philosophy docs), so a variable serif display face and a paper-toned
- * ground read as "considered document" rather than "app chrome."
- *
- * "Dhruv" (ध्रुव) is Sanskrit for the pole star — the fixed point everything
- * else is measured against. The mark and the ember accent both trace back
- * to that: see components/brand/mark.tsx.
+ * This site's identity is deliberately the same brand system as
+ * dhruvchoudhary.com, not an invented one: void/surface/ink neutrals, an
+ * electric-cyan accent, magenta/violet secondary accents, glass cards. The
+ * exact hex values below are pulled from that site's compiled CSS so this
+ * subdomain reads as the same person's work, not a competing aesthetic.
+ * Theme is a real light/dark toggle (data-theme attribute, set pre-paint —
+ * see the inline script in layout.tsx), not just a prefers-color-scheme
+ * media query, matching the toggle already on the main site.
  */
 :root {
-  --ink-950: #14100d;
-  --ink-900: #1a1614;
-  --ink-700: #3d3630;
-  --ink-500: #6b6058;
-  --ink-300: #a89e93;
+  --void: #07080c;
+  --surface: #0d0f16;
+  --ink: #f2f4f8;
+  --ink-soft: #a8afc0;
+  --ink-faint: #666e82;
+  --rule: #1d2130;
 
-  --ivory-050: #fbf9f5;
-  --ivory-100: #f5f1e9;
-  --ivory-200: #ece5d8;
+  --cyan: #28e0ec;
+  --cyan-soft: #7aecf4;
+  --warm: #f2b45e;
+  --magenta: #ff2e7e;
+  --violet: #9a6bff;
 
-  --ember-500: #b4530a;
-  --ember-600: #973f05;
-  --ember-100: #f7e4d2;
+  --glass: #07080c99;
+  --glass-strong: #0d0f16e0;
 
-  --background: var(--ivory-050);
-  --foreground: var(--ink-900);
+  --background: var(--void);
+  --foreground: var(--ink);
 
-  --card: var(--ivory-100);
-  --card-foreground: var(--ink-900);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
 
-  --primary: var(--ink-900);
-  --primary-foreground: var(--ivory-050);
+  --primary: var(--ink);
+  --primary-foreground: var(--void);
 
-  --secondary: var(--ivory-200);
-  --secondary-foreground: var(--ink-900);
+  --secondary: #151822;
+  --secondary-foreground: var(--ink);
 
-  --accent: var(--ember-500);
-  --accent-foreground: var(--ivory-050);
+  --accent: var(--cyan);
+  --accent-foreground: var(--void);
 
-  --muted: var(--ivory-100);
-  --muted-foreground: var(--ink-500);
+  --muted: #12141c;
+  --muted-foreground: var(--ink-soft);
 
-  --destructive: #b3261e;
-  --destructive-foreground: var(--ivory-050);
+  --destructive: #ff5470;
+  --destructive-foreground: var(--void);
 
-  --border: color-mix(in srgb, var(--ink-900) 10%, transparent);
-  --ring: color-mix(in srgb, var(--ember-500) 45%, transparent);
+  --border: var(--rule);
+  --ring: color-mix(in srgb, var(--cyan) 55%, transparent);
 
-  --shadow-ambient-raw: 0 1px 2px color-mix(in srgb, var(--ink-900) 4%, transparent),
-    0 24px 48px -16px color-mix(in srgb, var(--ink-900) 16%, transparent);
-  --shadow-ambient-lg-raw: 0 2px 4px color-mix(in srgb, var(--ink-900) 5%, transparent),
-    0 48px 96px -24px color-mix(in srgb, var(--ink-900) 22%, transparent);
+  --glow-cyan: 0 0 0 1px color-mix(in srgb, var(--cyan) 25%, transparent),
+    0 8px 40px -8px color-mix(in srgb, var(--cyan) 35%, transparent);
+  --shadow-ambient-raw: 0 1px 0 color-mix(in srgb, white 4%, transparent) inset,
+    0 24px 48px -16px color-mix(in srgb, black 60%, transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: var(--ink-950);
-    --foreground: var(--ivory-100);
+[data-theme="light"] {
+  --void: #f7f5f2;
+  --surface: #ffffff;
+  --ink: #14151a;
+  --ink-soft: #43454f;
+  --ink-faint: #6c6f7c;
+  --rule: #e0ded8;
 
-    --card: #1f1a16;
-    --card-foreground: var(--ivory-100);
+  --cyan: #0e8b96;
+  --cyan-soft: #0a6a73;
+  --magenta: #d21266;
+  --violet: #6a3ce0;
 
-    --primary: var(--ivory-050);
-    --primary-foreground: var(--ink-950);
+  --glass: #ffffffa6;
+  --glass-strong: #ffffffe0;
 
-    --secondary: #2a231d;
-    --secondary-foreground: var(--ivory-100);
+  --secondary: #eeece6;
+  --muted: #efede7;
+  --destructive: #c81e46;
 
-    --accent: #d9701f;
-    --accent-foreground: var(--ink-950);
-
-    --muted: #241f1a;
-    --muted-foreground: var(--ink-300);
-
-    --destructive: #e5564a;
-    --destructive-foreground: var(--ink-950);
-
-    --border: color-mix(in srgb, var(--ivory-050) 12%, transparent);
-    --ring: color-mix(in srgb, var(--accent) 55%, transparent);
-
-    --shadow-ambient-raw: 0 1px 2px color-mix(in srgb, black 30%, transparent),
-      0 24px 48px -16px color-mix(in srgb, black 55%, transparent);
-    --shadow-ambient-lg-raw: 0 2px 4px color-mix(in srgb, black 35%, transparent),
-      0 48px 96px -24px color-mix(in srgb, black 60%, transparent);
-  }
+  --ring: color-mix(in srgb, var(--cyan) 45%, transparent);
+  --shadow-ambient-raw: 0 1px 0 white inset,
+    0 24px 48px -16px color-mix(in srgb, black 12%, transparent);
 }
 
 @theme inline {
@@ -116,28 +108,28 @@
   --color-border: var(--border);
   --color-ring: var(--ring);
 
-  --color-ink-950: var(--ink-950);
-  --color-ink-900: var(--ink-900);
-  --color-ink-700: var(--ink-700);
-  --color-ink-500: var(--ink-500);
-  --color-ink-300: var(--ink-300);
-  --color-ivory-050: var(--ivory-050);
-  --color-ivory-100: var(--ivory-100);
-  --color-ivory-200: var(--ivory-200);
-  --color-ember-100: var(--ember-100);
-  --color-ember-500: var(--ember-500);
-  --color-ember-600: var(--ember-600);
+  --color-void: var(--void);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-cyan: var(--cyan);
+  --color-cyan-soft: var(--cyan-soft);
+  --color-warm: var(--warm);
+  --color-magenta: var(--magenta);
+  --color-violet: var(--violet);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
 
   --shadow-ambient: var(--shadow-ambient-raw);
-  --shadow-ambient-lg: var(--shadow-ambient-lg-raw);
+  --shadow-glow: var(--glow-cyan);
 
-  /* Spring-flavored cubic-bezier — used everywhere in place of ease/linear
-     so motion has weight instead of feeling like a CSS default. */
   --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
 
-  --font-sans: var(--font-jakarta);
-  --font-display: var(--font-fraunces);
-  --font-mono: var(--font-jetbrains);
+  --font-sans: var(--font-hanken);
+  --font-display: var(--font-bebas);
+  --font-mono: var(--font-space-mono);
 }
 
 @layer base {
@@ -145,28 +137,30 @@
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    color-scheme: dark;
+  }
+
+  [data-theme="light"] body {
+    color-scheme: light;
   }
 
   ::selection {
-    background: var(--ember-100);
-    color: var(--ember-600);
+    background: color-mix(in srgb, var(--cyan) 30%, transparent);
+    color: var(--foreground);
   }
 
-  /* Respect reduced-motion: every entrance animation in this app is driven
-     by the .reveal utility below, so disabling it here is a single choke
-     point rather than a per-component concern. */
+
   @media (prefers-reduced-motion: reduce) {
     .reveal {
       transition-duration: 1ms !important;
+    }
+    .progress-bar {
+      animation: none !important;
     }
   }
 }
 
 @layer utilities {
-  /* Scroll-entry animation. Starts hidden+offset; a class toggle (from the
-     Reveal client component's IntersectionObserver) adds .reveal-in, which
-     resolves it. Transform+opacity only — no layout-triggering properties,
-     so this never costs a reflow while scrolling. */
   .reveal {
     opacity: 0;
     transform: translateY(2.5rem);
@@ -182,18 +176,61 @@
   }
 }
 
-/*
- * Fixed, pointer-events-none film-grain layer. SVG feTurbulence baked into a
- * data-URI so it costs one paint, not a network request. Applied only to a
- * fixed full-viewport pseudo-element (never to a scrolling container) so it
- * can't trigger repaints while scrolling.
- */
-.grain-overlay {
+/* Fixed, pointer-events-none radial glow blobs behind the hero — the
+   "Ethereal Glass" texture: deep void ground, soft color bleeding in from
+   the edges rather than a flat background. Never on a scrolling container. */
+.ambient-glow {
   position: fixed;
   inset: 0;
-  z-index: 30;
+  z-index: 0;
   pointer-events: none;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  overflow: hidden;
+}
+
+.ambient-glow::before,
+.ambient-glow::after {
+  content: "";
+  position: absolute;
+  width: 60vw;
+  height: 60vw;
+  max-width: 720px;
+  max-height: 720px;
+  border-radius: 9999px;
+  filter: blur(120px);
+  opacity: 0.22;
+}
+
+.ambient-glow::before {
+  top: -10%;
+  left: -10%;
+  background: var(--cyan);
+}
+
+.ambient-glow::after {
+  bottom: -15%;
+  right: -10%;
+  background: var(--violet);
+}
+
+[data-theme="light"] .ambient-glow::before,
+[data-theme="light"] .ambient-glow::after {
+  opacity: 0.14;
+}
+
+/* Scroll-linked reading progress bar for the philosophy prose pages. Pure
+   CSS via the scroll-timeline spec (no scroll listener, no layout cost —
+   transform only). Degrades to a static 0-width bar in browsers that don't
+   support animation-timeline yet, which is an acceptable progressive
+   enhancement, not a broken state. */
+.progress-bar {
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: progress-grow linear both;
+  animation-timeline: scroll(root);
+}
+
+@keyframes progress-grow {
+  to {
+    transform: scaleX(1);
+  }
 }

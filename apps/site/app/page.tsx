@@ -4,6 +4,9 @@ import { Badge } from "@/components/dsgn/badge";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
+import { Magnetic } from "@/components/motion/magnetic";
+import { CursorGlow } from "@/components/motion/cursor-glow";
+import { CopyButton } from "@/components/copy-button";
 
 const PILLARS = [
   {
@@ -44,16 +47,18 @@ const PILLARS = [
   },
 ] as const;
 
+const INSTALL_CMD = "npx dsgn add button card";
+
 export default function Home() {
   return (
     <div className="mx-auto max-w-5xl px-6 pb-32">
-      {/* Editorial split: massive display type on the left, a floating
-          terminal "island" on the right instead of a hero image. */}
-      <section className="grid gap-12 py-16 sm:py-24 md:grid-cols-2 md:items-center">
+      <CursorGlow className="grid gap-12 rounded-[2rem] py-16 sm:py-24 md:grid-cols-2 md:items-center">
         <Reveal>
           <Eyebrow>Philosophy · 001</Eyebrow>
-          <h1 className="mt-6 font-display text-5xl italic leading-[1.05] tracking-tight sm:text-6xl">
-            A fixed point for design decisions.
+          <h1 className="mt-6 font-display text-6xl uppercase leading-[0.95] tracking-wide sm:text-7xl">
+            A fixed point
+            <br />
+            for design decisions.
           </h1>
           <p className="mt-6 max-w-md text-lg text-muted-foreground">
             Every rule here was extracted from a decision that actually shipped in a real app —
@@ -61,20 +66,27 @@ export default function Home() {
             or install the components it produced with one command.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Button asChild variant="accent" size="lg" className="rounded-full px-7">
-              <Link href="/philosophy">Read the philosophy</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-full px-7">
-              <Link href="/components">Browse components</Link>
-            </Button>
+            <Magnetic>
+              <Button asChild variant="accent" size="lg" className="rounded-full px-7 shadow-glow">
+                <Link href="/philosophy">Read the philosophy</Link>
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button asChild variant="outline" size="lg" className="rounded-full px-7">
+                <Link href="/components">Browse components</Link>
+              </Button>
+            </Magnetic>
           </div>
         </Reveal>
 
         <Reveal delay={150}>
-          <Frame className="mx-auto max-w-sm rotate-1 transition-transform duration-700 ease-fluid hover:rotate-0">
-            <p className="font-mono text-xs text-muted-foreground">terminal</p>
+          <Frame className="mx-auto max-w-sm">
+            <div className="flex items-center justify-between">
+              <p className="font-mono text-xs text-muted-foreground">terminal</p>
+              <CopyButton text={INSTALL_CMD} />
+            </div>
             <pre className="mt-3 overflow-x-auto font-mono text-sm text-accent">
-              <code>$ npx dsgn add button card</code>
+              <code>$ {INSTALL_CMD}</code>
             </pre>
             <div className="mt-6 flex flex-wrap gap-2">
               <Badge variant="accent">non-destructive</Badge>
@@ -87,19 +99,15 @@ export default function Home() {
             </p>
           </Frame>
         </Reveal>
-      </section>
+      </CursorGlow>
 
-      {/* Asymmetric bento: the nine pillars don't all carry equal weight, so
-          the grid doesn't pretend they do. */}
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-6">
         {PILLARS.map((pillar, i) => (
           <Reveal key={pillar.title} delay={i * 60} className={pillar.span}>
             <Frame className="h-full">
               <div className="flex items-start justify-between gap-4">
-                <h2 className="font-display text-xl italic">{pillar.title}</h2>
-                <span className="font-mono text-xs text-muted-foreground">
-                  0{i + 1}
-                </span>
+                <h2 className="font-display text-xl uppercase tracking-wide">{pillar.title}</h2>
+                <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
               </div>
               <p className="mt-3 text-sm text-muted-foreground">{pillar.body}</p>
               <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.15em] text-accent">

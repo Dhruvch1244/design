@@ -52,6 +52,16 @@
       "files": [
         { "path": "src/components/input/input.tsx", "target": "components/dsgn/input.tsx", "type": "registry:ui" }
       ]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "description": "A ⌘K command palette (Command, CommandDialog, CommandInput, CommandList, CommandGroup, CommandItem, CommandShortcut) built on cmdk, with its own dialog chrome so it doesn't require a separate Dialog primitive.",
+      "dependencies": ["cmdk"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/command/command.tsx", "target": "components/dsgn/command.tsx", "type": "registry:ui" }
+      ]
     }
   ]
 }
