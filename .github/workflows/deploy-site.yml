@@ -1,0 +1,54 @@
+name: Deploy site to GitHub Pages
+
+on:
+  push:
+    # TODO: once this branch merges, trigger on the repo's actual default
+    # branch (e.g. `main`) instead of this feature branch.
+    branches:
+      - claude/design-philosophy-ai-repo-jmwo7j
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # apps/site's own prebuild script (scripts/sync-registry.mjs) rebuilds
+      # packages/registry and copies it into apps/site/public/r before
+      # `next build` runs, so the deployed registry is never stale.
+      - name: Build static export
+        working-directory: apps/site
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/site/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
