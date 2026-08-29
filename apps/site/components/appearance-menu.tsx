@@ -51,7 +51,7 @@ export function AppearanceMenu() {
 
       <div
         className={cn(
-          "absolute right-0 top-full mt-3 w-48 space-y-4 rounded-2xl border border-border bg-glass-strong p-4",
+          "absolute right-0 top-full mt-3 w-56 space-y-4 rounded-2xl border border-border bg-glass-strong p-4",
           "backdrop-blur-2xl shadow-ambient transition-all duration-300 ease-fluid",
           open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0",
         )}
@@ -62,11 +62,11 @@ export function AppearanceMenu() {
           </span>
           <ThemeToggle />
         </div>
-        <div className="flex items-center justify-between">
+        <div className="space-y-2">
           <span className="text-xs font-medium uppercase tracking-[0.15em] text-muted-foreground">
             Accent
           </span>
-          <PalettePicker />
+          <PalettePicker className="flex-wrap" />
         </div>
       </div>
     </div>
