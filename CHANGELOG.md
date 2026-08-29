@@ -194,3 +194,10 @@ doesn't require a CLI release to take effect for `dsgn add`.
   edge inflated `document.documentElement.scrollWidth`) and a stale
   `favicon.ico` left over from the original scaffold that read as
   Vercel's logo.
+- **2026-08-29** — `/components` gained real second examples for the 6
+  sections that previously showed only one static case: Card (a compact
+  stat-tile composition alongside the original), Command (an actual
+  working jump-to-section palette instead of descriptive text), Tooltip
+  (all 4 `side` positions), Dialog (a destructive-confirm variant next to
+  the original), Separator (vertical orientation), and Progress (3
+  values). `/best-practices` added to the main nav.

@@ -56,6 +56,7 @@ import { SwitchPlayground } from "@/components/switch-playground";
 import { SelectPlayground } from "@/components/select-playground";
 import { CheckboxPlayground } from "@/components/checkbox-playground";
 import { TableOfContents, type TocEntry } from "@/components/table-of-contents";
+import { ComponentJumpCommand } from "@/components/component-jump-command";
 
 export const metadata: Metadata = {
   title: "Components — Dhruv Choudhary",
@@ -397,23 +398,33 @@ export default function ComponentsPage() {
           </Section>
 
           <Section id="card" index={2} title="Card" name="card">
-            <Card className="max-w-sm">
-              <CardHeader>
-                <CardTitle>Non-destructive by default</CardTitle>
-                <CardDescription>Pillar #3 of the philosophy.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Edits are modeled as an overlay over an untouched original, so undo is
-                  structural, not reconstructed after the fact.
-                </p>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" size="sm">
-                  Read the pillar
-                </Button>
-              </CardFooter>
-            </Card>
+            <div className="flex flex-wrap items-start gap-4">
+              <Card className="max-w-sm">
+                <CardHeader>
+                  <CardTitle>Non-destructive by default</CardTitle>
+                  <CardDescription>Pillar #3 of the philosophy.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Edits are modeled as an overlay over an untouched original, so undo is
+                    structural, not reconstructed after the fact.
+                  </p>
+                </CardContent>
+                <CardFooter>
+                  <Button variant="outline" size="sm">
+                    Read the pillar
+                  </Button>
+                </CardFooter>
+              </Card>
+              <Card className="w-40 text-center">
+                <CardContent className="pt-6">
+                  <p className="font-display text-4xl uppercase text-accent">{SECTIONS.length}</p>
+                  <p className="mt-2 text-xs uppercase tracking-[0.15em] text-muted-foreground">
+                    Components
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           </Section>
 
           <Section id="badge" index={3} title="Badge" name="badge">
@@ -442,14 +453,15 @@ export default function ComponentsPage() {
           </Section>
 
           <Section id="command" index={5} title="Command" name="command">
-            <Frame>
+            <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                A ⌘K command palette (Radix-adjacent, built on{" "}
-                <code className="font-mono text-accent">cmdk</code>) — press{" "}
+                Built on <code className="font-mono text-accent">cmdk</code> — press{" "}
                 <kbd className="rounded border border-border px-1.5 py-0.5 font-mono text-xs">⌘K</kbd>{" "}
-                anywhere on this site to see it in use.
+                anywhere on this site for the real thing. This one actually jumps to a section —
+                type a component name and select it.
               </p>
-            </Frame>
+              <ComponentJumpCommand sections={SECTIONS} />
+            </div>
           </Section>
 
           <Section id="textarea" index={6} title="Textarea" name="textarea">
@@ -473,14 +485,18 @@ export default function ComponentsPage() {
           <Section id="tooltip" index={8} title="Tooltip" name="tooltip">
             <Frame>
               <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      Hover me
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Non-destructive by default.</TooltipContent>
-                </Tooltip>
+                <div className="flex flex-wrap items-center justify-center gap-6 py-6">
+                  {(["top", "right", "bottom", "left"] as const).map((side) => (
+                    <Tooltip key={side}>
+                      <TooltipTrigger asChild>
+                        <Button variant="outline" size="sm">
+                          {side}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent side={side}>Non-destructive by default.</TooltipContent>
+                    </Tooltip>
+                  ))}
+                </div>
               </TooltipProvider>
             </Frame>
           </Section>
@@ -508,25 +524,44 @@ export default function ComponentsPage() {
 
           <Section id="dialog" index={11} title="Dialog" name="dialog">
             <Frame>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="accent">Open dialog</Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Non-destructive by default</DialogTitle>
-                    <DialogDescription>
-                      Edits are modeled as an overlay over an untouched original, so undo is
-                      structural, not reconstructed after the fact.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <Button variant="outline">Close</Button>
-                    </DialogClose>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+              <div className="flex flex-wrap items-center gap-3">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="accent">Open dialog</Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Non-destructive by default</DialogTitle>
+                      <DialogDescription>
+                        Edits are modeled as an overlay over an untouched original, so undo is
+                        structural, not reconstructed after the fact.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <DialogClose asChild>
+                        <Button variant="outline">Close</Button>
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="destructive">Delete project</Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Delete lyric-viewer?</DialogTitle>
+                      <DialogDescription>This removes the case study and its assets.</DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <DialogClose asChild>
+                        <Button variant="outline">Cancel</Button>
+                      </DialogClose>
+                      <Button variant="destructive">Delete</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </Frame>
           </Section>
 
@@ -591,12 +626,21 @@ export default function ComponentsPage() {
               <p className="text-sm text-muted-foreground">Above</p>
               <Separator className="my-4" />
               <p className="text-sm text-muted-foreground">Below</p>
+              <div className="mt-6 flex h-5 items-center gap-3 text-sm text-muted-foreground">
+                <span>Left</span>
+                <Separator orientation="vertical" />
+                <span>Right</span>
+              </div>
             </Frame>
           </Section>
 
           <Section id="progress" index={17} title="Progress" name="progress">
             <Frame>
-              <Progress value={66} aria-label="Progress" className="max-w-sm" />
+              <div className="max-w-sm space-y-4">
+                <Progress value={25} aria-label="25%" />
+                <Progress value={66} aria-label="66%" />
+                <Progress value={100} aria-label="100%" />
+              </div>
             </Frame>
           </Section>
 

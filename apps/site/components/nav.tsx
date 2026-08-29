@@ -15,6 +15,7 @@ const NAV_LINKS = [
   { href: "/components", label: "Components" },
   { href: "/examples", label: "Examples" },
   { href: "/theming", label: "Theming" },
+  { href: "/best-practices", label: "Best Practices" },
 ];
 
 // Rendered as a filled accent pill, not a plain text link — the Agent Skill
