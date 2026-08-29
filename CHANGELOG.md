@@ -5,7 +5,7 @@ documented here, in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format. The registry and site aren't independently versioned — they're
 covered under **Registry** below, dated by when they actually shipped.
 
-## [Unreleased]
+## [0.6.0] — 2026-08-29
 
 ### Changed
 
