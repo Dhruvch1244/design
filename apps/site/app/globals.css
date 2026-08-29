@@ -288,11 +288,33 @@
     }
   }
 
+  /*
+   * .mesh-gradient (and the starfield) are `position: fixed` with a
+   * negative `inset` so their radial-gradient wash bleeds past the
+   * viewport edge on purpose — real content is never meant to reach out
+   * there. Chromium still counts a fixed element's box toward the
+   * document's scrollable overflow even though it's clipped to the
+   * viewport visually, which was producing a real (if invisible-looking)
+   * horizontal scrollbar on every mobile width, confirmed via
+   * document.documentElement.scrollWidth staying fixed at ~408px
+   * regardless of viewport width. document.documentElement is <html>, not
+   * <body> — overflow-x has to be set here too, setting it on body alone
+   * doesn't stop html's own scrollWidth from growing. This is the standard
+   * fix for exactly that class of bug, not a workaround for a specific
+   * one-off case — nothing on this site has real horizontally-scrolling
+   * content at the document level (the two intentionally-scrollable code
+   * blocks use their own local overflow-x-auto, unaffected by this).
+   */
+  html {
+    overflow-x: hidden;
+  }
+
   body {
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
     color-scheme: dark;
+    overflow-x: hidden;
   }
 
   [data-theme="light"] body {
