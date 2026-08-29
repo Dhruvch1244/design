@@ -289,32 +289,44 @@
   }
 
   /*
-   * .mesh-gradient (and the starfield) are `position: fixed` with a
-   * negative `inset` so their radial-gradient wash bleeds past the
-   * viewport edge on purpose — real content is never meant to reach out
-   * there. Chromium still counts a fixed element's box toward the
-   * document's scrollable overflow even though it's clipped to the
-   * viewport visually, which was producing a real (if invisible-looking)
-   * horizontal scrollbar on every mobile width, confirmed via
-   * document.documentElement.scrollWidth staying fixed at ~408px
-   * regardless of viewport width. document.documentElement is <html>, not
-   * <body> — overflow-x has to be set here too, setting it on body alone
-   * doesn't stop html's own scrollWidth from growing. This is the standard
-   * fix for exactly that class of bug, not a workaround for a specific
-   * one-off case — nothing on this site has real horizontally-scrolling
-   * content at the document level (the two intentionally-scrollable code
-   * blocks use their own local overflow-x-auto, unaffected by this).
+   * .mesh-gradient and .starfield are position:fixed with a negative inset
+   * so their wash bleeds past the viewport edge on purpose — the bled edge
+   * is never actually on-screen. Chromium still counts a fixed element's
+   * layout box toward document.documentElement.scrollWidth even though
+   * it's invisible, producing a real horizontal scrollbar on every mobile
+   * width (confirmed: scrollWidth stayed fixed at ~408px regardless of
+   * actual viewport width).
+   *
+   * Getting this right took several wrong turns, kept here so nobody
+   * re-walks them: `overflow-x: hidden` fixes the scrollWidth bug but only
+   * when set on BOTH html and body — and doing that breaks
+   * position:sticky site-wide (philosophy-shell.tsx's sidebar stopped
+   * pinning and scrolled away with the page), because `hidden` forces the
+   * *other* axis to `auto` per the CSS overflow spec, turning html/body
+   * into their own scroll container distinct from the viewport. Neither a
+   * viewport-exact overflow-hidden wrapper around just the two bleeding
+   * layers, nor replacing their oversized inset with an equivalent
+   * `transform: scale()` (transforms are normally excluded from
+   * scrollable-overflow calculations), stopped the scrollWidth growth
+   * either — position:fixed elements apparently don't get that exclusion
+   * at the document root. `overflow-x: clip` on both html AND body is the
+   * one combination that's actually verified to fix both at once: unlike
+   * `hidden`, `clip` explicitly forbids scrolling (even
+   * programmatically), which is why it doesn't trigger the same
+   * visible->auto coupling that broke sticky. Verified via Playwright:
+   * scrollWidth matches clientWidth at 360/375/390px in both themes, and
+   * the philosophy sidebar stays pinned across a 3000px scroll.
    */
   html {
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   body {
+    overflow-x: clip;
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
     color-scheme: dark;
-    overflow-x: hidden;
   }
 
   [data-theme="light"] body {
