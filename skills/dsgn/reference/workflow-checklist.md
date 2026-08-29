@@ -19,10 +19,18 @@ real registry, tokens, and motion primitives — not generic advice.
   portal/positioning logic is exactly the kind of "small, well-understood
   problem" pillar #7 does *not* cover; it's a whole subsystem with an
   accessibility spec behind it.
-- Style values (colors, radius, shadows) come from the token system in
-  `reference/tokens.md` via semantic class names (`bg-accent`,
-  `border-border`) — never a raw hex value hardcoded into a component.
-  Hardcoding breaks the reskin story for every consumer of that component.
+- Style values (colors, radius, shadows, **fonts**) come from the token
+  system in `reference/tokens.md` via semantic class names (`bg-accent`,
+  `border-border`, `font-display`) — never a raw hex value or a hardcoded
+  font stack in a component. Hardcoding breaks the reskin story for every
+  consumer of that component.
+- Get the display/body/mono split right: `font-display` on headings and
+  short emphatic UI text only, `font-sans` for anything meant to be read
+  at paragraph length, `font-mono` for code/meta/keyboard hints. Putting
+  body copy in the display face (or the reverse) is one of the fastest
+  ways to make an otherwise-correct build read as amateur — typography is
+  usually the first thing a visitor registers about a page, before color
+  or layout.
 
 ## 2. Page Composer
 
@@ -55,6 +63,13 @@ real registry, tokens, and motion primitives — not generic advice.
   repo's `cyan`/`violet`/`magenta`/`warm`), derive shadows and glows from
   `var(--accent)` via `color-mix()`, not a hardcoded color, so they follow
   whichever preset is active automatically.
+- Typography is part of the theme, not a separate decision made once and
+  forgotten: each style agent's own "Typography" section names the exact
+  `--font-display`/`--font-sans`/`--font-mono` choice for that voice (e.g.
+  Bebas Neue for glass-dark-cyan's condensed display headings, a serif for
+  editorial-warm). Switching voices means switching fonts too, not just
+  the color palette — a reskin that keeps the old voice's typeface but
+  swaps colors hasn't actually changed voice.
 
 ## 4. Accessibility Reviewer
 

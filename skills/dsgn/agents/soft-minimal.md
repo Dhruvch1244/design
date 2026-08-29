@@ -92,6 +92,8 @@ blur radius large, so the effect reads as "floating," not "framed."
 ## 9. Pre-output checklist
 
 - [ ] Background is silver-grey/white, no warmth or darkness
+- [ ] Headings use a bold geometric sans, not the condensed display face
+      other voices use — "big, round, friendly," not "tall and technical"
 - [ ] Separation between elements uses soft shadow, not hard borders
 - [ ] Accent color is muted, used only as a small highlight
 - [ ] Every text/background and icon/background pairing checked against

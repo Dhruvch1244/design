@@ -96,10 +96,17 @@ differs.
 1. Read `reference/component-registry.md` for the real component list, real
    variant names, and real dependencies — never invent a prop or variant
    that isn't listed there.
-2. Read `reference/tokens.md` before writing any color, spacing, radius, or
-   motion-timing value. The chosen style agent tells you what *values* to
-   put in these tokens; it should never introduce new CSS variable names
-   that don't exist in the token system, since that breaks the "reskin
+2. Read `reference/tokens.md` before writing any color, spacing, radius,
+   motion-timing, **or font** value — typography is not an afterthought
+   here. A visitor registers a site's typeface before they register almost
+   anything else about it; picking the wrong one (or the right one used
+   wrong — body copy in the display face, or vice versa) undercuts every
+   other correct decision in the build. The chosen style agent's own
+   "Typography" section names the exact `--font-display`/`--font-sans`/
+   `--font-mono` roles for that voice — apply them exactly as specified,
+   never substitute a system font or introduce a new one. It should never
+   introduce new CSS variable names that don't exist in the token system
+   either, for fonts or anything else, since that breaks the "reskin
    without touching component source" promise the whole registry is built
    around.
 3. Install real components with `npx @dhruvchoudhary/dsgn add <name>` (or

@@ -108,6 +108,7 @@ const VOICES: Voice[] = [
     ],
     checklist: [
       "Background is silver-grey/white, no warmth or darkness",
+      "Headings use a bold geometric sans, not the condensed display face other voices use — \"big, round, friendly,\" not \"tall and technical\"",
       "Separation between elements uses soft shadow, not hard borders",
       "Accent color is muted, used only as a small highlight",
       "Every text/background and icon/background pairing checked against WCAG AA — don't assume, verify",
@@ -130,6 +131,7 @@ const VOICES: Voice[] = [
     checklist: [
       "Multiple accent hues are layered as glow, not flattened into one muddy mixed color",
       "Only the single most important headline per view gets a glow/shadow text effect",
+      "Headings use tight-tracked, bold, condensed display type — bolder than the flagship voice's Bebas Neue, never a plain sans/serif",
       "Every pulsing/glowing animation has a prefers-reduced-motion fallback",
       "Glow effects never fully obscure text at any point in their cycle",
       "Semantic --accent token still points to one primary hue for component-level consistency",

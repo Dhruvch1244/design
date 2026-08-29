@@ -104,6 +104,8 @@ than being a plain flat line.
       muddy mixed color
 - [ ] Only the single most important headline per view gets a glow/shadow
       text effect
+- [ ] Headings use tight-tracked, bold, condensed display type — bolder
+      than the flagship voice's Bebas Neue, never a plain sans/serif
 - [ ] Every pulsing/glowing animation has a `prefers-reduced-motion`
       fallback
 - [ ] Glow effects never fully obscure text at any point in their cycle

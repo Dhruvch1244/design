@@ -63,7 +63,30 @@ import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
 import { CursorGlow } from "@/components/motion/cursor-glow";
 import { SkillPromoBanner } from "@/components/skill-promo-banner";
+import { TableOfContents, type TocEntry } from "@/components/table-of-contents";
 import { cn } from "@/lib/utils";
+
+const slugify = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+// Same title strings as the ExampleFrame calls below — kept as one list so
+// the sidebar can't silently drift out of sync with the actual sections the
+// way two independently-maintained lists eventually do.
+const EXAMPLE_TITLES = [
+  "Sign in",
+  "Settings panel",
+  "Team list",
+  "Stat row",
+  "Project dashboard",
+  "Pricing tiers",
+  "Component search",
+  "Delete confirmation",
+  "FAQ",
+  "Feedback form",
+  "Install flow: in progress, then empty",
+  "Toolbar with tooltips + filter popover",
+] as const;
+
+const SECTIONS: TocEntry[] = EXAMPLE_TITLES.map((title) => ({ id: slugify(title), text: title }));
 
 export const metadata: Metadata = {
   title: "Examples — Dhruv Choudhary",
@@ -164,7 +187,7 @@ function ExampleFrame({
 }) {
   return (
     <Reveal>
-      <section className="space-y-6 border-t border-border pt-12">
+      <section id={slugify(title)} className="scroll-mt-28 space-y-6 border-t border-border pt-12">
         <div className="flex items-baseline gap-3">
           <span className="font-mono text-xs text-muted-foreground">0{index}</span>
           <div>
@@ -180,7 +203,7 @@ function ExampleFrame({
 
 export default function ExamplesPage() {
   return (
-    <div className="mx-auto max-w-5xl px-6 pb-32">
+    <div className="mx-auto max-w-6xl px-6 pb-32">
       <div className="pt-6">
         <SkillPromoBanner />
       </div>
@@ -203,8 +226,16 @@ export default function ExamplesPage() {
         </CursorGlow>
       </Reveal>
 
-      <ExampleFrame
-        index={1}
+      <div className="mt-16 flex gap-16">
+        <aside className="hidden w-48 shrink-0 lg:block">
+          <div className="sticky top-28">
+            <TableOfContents toc={SECTIONS} />
+          </div>
+        </aside>
+
+        <div className="min-w-0 flex-1">
+          <ExampleFrame
+            index={1}
         title="Sign in"
         description="Card + Input + Checkbox + Button — a real auth form, not a lorem-ipsum mockup."
       >
@@ -629,7 +660,9 @@ export default function ExamplesPage() {
             </Popover>
           </div>
         </TooltipProvider>
-      </ExampleFrame>
+          </ExampleFrame>
+        </div>
+      </div>
     </div>
   );
 }

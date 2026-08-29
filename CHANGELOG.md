@@ -54,6 +54,14 @@ covered under **Registry** below, dated by when they actually shipped.
   to use — leading with an actual recommendation and 1-2 alternatives, via
   a structured choice tool (e.g. `AskUserQuestion`) where the host supports
   one — instead of only saying "ask" with no guidance on how.
+- Typography now gets explicit, checkable weight in the skill instead of
+  being folded silently into "theming": `SKILL.md`'s build workflow lists
+  font alongside color/spacing/radius/motion as something to read
+  `reference/tokens.md` for before writing any UI, `workflow-checklist.md`
+  gained an explicit typography checkpoint in both the Component Builder
+  and Theming Specialist facets, and the two style-voice pre-output
+  checklists that had no font line at all (`soft-minimal`,
+  `neon-cyberpunk` — the other three already did) now do.
 
 ## [0.5.0] — 2026-08-29
 
@@ -178,3 +186,11 @@ doesn't require a CLI release to take effect for `dsgn add`.
   math, not by hand. A new `/best-practices` page surfaces the real
   Do/Don't + pre-output checklist from each of the 5 style-voice skill
   files.
+- **2026-08-29** — `/examples` gained a sticky "on this page" sidebar
+  (same scrollspy `TableOfContents` component `/components` and
+  `/philosophy` already use) now that the page has 12 sections. Also fixed
+  two real site bugs found this session: a horizontal-scroll bug on every
+  mobile width (decorative background elements bleeding past the viewport
+  edge inflated `document.documentElement.scrollWidth`) and a stale
+  `favicon.ico` left over from the original scaffold that read as
+  Vercel's logo.
