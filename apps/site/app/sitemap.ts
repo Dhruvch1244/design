@@ -20,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/examples/`, priority: 0.8 },
     { url: `${BASE}/theming/`, priority: 0.7 },
     { url: `${BASE}/skill/`, priority: 0.7 },
+    { url: `${BASE}/best-practices/`, priority: 0.6 },
     { url: `${BASE}/changelog/`, priority: 0.5 },
     { url: `${BASE}/case-studies/`, priority: 0.8 },
     ...CASE_STUDIES.map((study) => ({

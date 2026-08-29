@@ -6,6 +6,7 @@ import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
 import { CopyButton } from "@/components/copy-button";
 import { ThemeExporter } from "@/components/theme-exporter";
+import { PaletteGenerator } from "@/components/palette-generator";
 
 export const metadata: Metadata = {
   title: "Theming — Dhruv Choudhary",
@@ -88,6 +89,21 @@ export default function ThemingPage() {
               ))}
             </div>
           </Frame>
+        </div>
+      </Reveal>
+
+      <Reveal delay={110}>
+        <div className="mt-10 space-y-4">
+          <h2 className="font-display text-xl uppercase tracking-wide">Palette generator</h2>
+          <p className="text-sm text-muted-foreground">
+            7 curated accent presets — not a random generator, each hand-picked and contrast-checked
+            for both themes. Pick one to re-theme the whole site live, same as the{" "}
+            <Link href="/" className="text-accent hover:underline">
+              Remix panel
+            </Link>
+            .
+          </p>
+          <PaletteGenerator />
         </div>
       </Reveal>
 

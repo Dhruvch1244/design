@@ -5,6 +5,56 @@ documented here, in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format. The registry and site aren't independently versioned — they're
 covered under **Registry** below, dated by when they actually shipped.
 
+## [Unreleased]
+
+### Changed
+
+- `dsgn skill`'s non-Claude targets no longer install one flattened file —
+  each now gets the real multi-file structure its own format supports:
+  - `--cursor` installs `.cursor/rules/dsgn/` (router.mdc + 5 agents/*.mdc +
+    4 reference/*.mdc), each with its own `description` frontmatter Cursor
+    reads to auto-attach the relevant file — the closest real equivalent to
+    Claude Code's sub-agent dispatch any of these tools has.
+  - `--windsurf` installs 10 flat `dsgn-*.md` files into `.windsurf/rules/`,
+    merging alongside any rules already there rather than treating the
+    whole directory as a conflict.
+  - `--gemini` installs `GEMINI.md` + `.gemini/dsgn/{agents,reference}/`,
+    using Gemini CLI's real `@file.md` import syntax rather than
+    copy-pasted content.
+  - `--copilot` installs `.github/copilot-instructions.md` (router +
+    inlined reference docs) plus 5
+    `.github/instructions/dsgn-<voice>.instructions.md` files — Copilot has
+    no description-based routing, so all 5 apply together whenever their
+    `applyTo` glob matches; documented rather than papered over.
+  - `AGENTS.md` alone stays single-file, since that convention genuinely is
+    single-file by design — not a shortcut applied to the others.
+  - Every per-tool file has its internal `agents/*.md`/`reference/*.md`
+    cross-references rewritten to that tool's actual paths (Cursor's
+    `.mdc`, Windsurf's flat `dsgn-*.md`, Gemini's `dsgn/` subdirectory,
+    Copilot's inlined sections) instead of pointing at files that don't
+    exist in that install.
+
+### Added
+
+- `--windsurf-global` (`~/.windsurf/global_rules.md`) and `--gemini-global`
+  (`~/.gemini/GEMINI.md` + `~/.gemini/dsgn/`) — global installs for the two
+  tools that have a real file-based global mechanism. Cursor and Copilot
+  don't (Cursor's global is Settings-UI-only; Copilot's only file-based
+  global is JetBrains-specific), so no `--cursor-global`/`--copilot-global`
+  exist — documented as a real constraint, not an oversight.
+- A hand-written condensed doc (`skills/dsgn/global-summary.md`, under
+  6,000 characters) for `--windsurf-global` — Windsurf's global slot is
+  hard-capped at 6,000 characters, so the full skill (~40k characters)
+  cannot fit there regardless of file layout.
+- Multi-file targets (`--copilot`, `--gemini[-global]`) now check every
+  file they'd write for conflicts *before* writing any of them, so a
+  blocked install never lands half-applied.
+- The router logic in `SKILL.md` (and every per-tool build derived from it)
+  now tells the agent to *ask* when it's genuinely unsure which style voice
+  to use — leading with an actual recommendation and 1-2 alternatives, via
+  a structured choice tool (e.g. `AskUserQuestion`) where the host supports
+  one — instead of only saying "ask" with no guidance on how.
+
 ## [0.5.0] — 2026-08-29
 
 ### Added
@@ -118,3 +168,13 @@ doesn't require a CLI release to take effect for `dsgn add`.
 - **2026-08-28, ~23:49** — 3 composed recipes added (`auth-form`,
   `settings-panel`, `pricing-tiers`), installable via `dsgn add
   recipe:<name>`.
+- **2026-08-29** — `/examples` gained 5 more real compositions (delete
+  confirmation, FAQ, feedback form, install-flow progress/empty states,
+  tooltip+popover toolbar), covering the 10 registry components that had no
+  example yet. `/theming` gained a real palette generator: 3 new curated
+  accent presets (Emerald, Blue, Rose) plus a fix for `--warm`'s light-mode
+  value, which had no override at all and was landing at 1.68:1 contrast
+  (now 5.43:1) — both caught by the generator's own live WCAG contrast
+  math, not by hand. A new `/best-practices` page surfaces the real
+  Do/Don't + pre-output checklist from each of the 5 style-voice skill
+  files.

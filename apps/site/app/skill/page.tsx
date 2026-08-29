@@ -24,18 +24,55 @@ interface OtherTool {
   flag: string;
   tool: string;
   target: string;
+  note?: string;
 }
 
-// Same router + 5 personas + reference docs as the Claude Code skill,
-// flattened into skill/flat/dsgn.md by scripts/sync-skill.mjs — these tools
-// read one instructions file rather than a multi-file skill package with
-// sub-agent dispatch.
+// Same router + 5 personas + reference docs as the Claude Code skill, built
+// per-tool by scripts/sync-skill.mjs into the real structure each format
+// actually supports — not one flattened file everywhere. Cursor gets real
+// sibling .mdc files Cursor auto-attaches by description; Gemini gets real
+// @file.md imports; Windsurf and Copilot get split files too, shaped around
+// what each format documents. AGENTS.md alone stays single-file, since
+// that convention genuinely is single-file by design.
 const OTHER_TOOLS: OtherTool[] = [
-  { flag: "--agents-md", tool: "Codex CLI, Amp, and other AGENTS.md-aware tools", target: "./AGENTS.md" },
-  { flag: "--cursor", tool: "Cursor", target: "./.cursor/rules/dsgn.mdc" },
-  { flag: "--windsurf", tool: "Windsurf", target: "./.windsurf/rules/dsgn.md" },
-  { flag: "--copilot", tool: "GitHub Copilot", target: "./.github/copilot-instructions.md" },
-  { flag: "--gemini", tool: "Gemini CLI / Gemini Code Assist", target: "./GEMINI.md" },
+  {
+    flag: "--cursor",
+    tool: "Cursor",
+    target: "./.cursor/rules/dsgn/ (router + 5 agents + 4 reference docs)",
+    note: "Cursor reads each file's description and auto-attaches the relevant one. No file-based global — Cursor's only global mechanism is its Settings UI.",
+  },
+  {
+    flag: "--windsurf",
+    tool: "Windsurf (this project)",
+    target: "./.windsurf/rules/dsgn-*.md (10 files)",
+  },
+  {
+    flag: "--windsurf-global",
+    tool: "Windsurf (every workspace)",
+    target: "~/.windsurf/global_rules.md",
+    note: "A condensed summary, not the full skill — Windsurf caps this file at 6,000 characters.",
+  },
+  {
+    flag: "--copilot",
+    tool: "GitHub Copilot",
+    target: "./.github/copilot-instructions.md + .github/instructions/dsgn-*.instructions.md (5 files)",
+    note: "Copilot has no description-based routing — all 5 voices apply together; delete the ones you don't want.",
+  },
+  {
+    flag: "--gemini",
+    tool: "Gemini CLI (this project)",
+    target: "./GEMINI.md + ./.gemini/dsgn/ (real @file.md imports)",
+  },
+  {
+    flag: "--gemini-global",
+    tool: "Gemini CLI (every project)",
+    target: "~/.gemini/GEMINI.md + ~/.gemini/dsgn/",
+  },
+  {
+    flag: "--agents-md",
+    tool: "Codex CLI, Amp, and other AGENTS.md-aware tools",
+    target: "./AGENTS.md (single flattened file — the correct shape for this convention)",
+  },
 ];
 
 // Real registry components (Card/CardHeader/CardTitle/CardDescription/
@@ -84,8 +121,10 @@ Apply these signals in order — the first one that matches decides:
    direction rather than introducing a new voice on top of an established one.
 3. Project type is the fallback default — a SaaS dashboard, a portfolio, a
    dev tool, a wellness app, a game each map to one of the five voices below.
-4. When genuinely unsure between two candidates, ask. A wrong visual
-   direction is expensive to unwind after a dozen components are built in it.`;
+4. When genuinely unsure — two candidates, or no strong signal at all —
+   stop and ask, don't silently pick. Lead with your actual recommendation
+   and why, offer 1-2 alternatives, and use a structured choice tool
+   (e.g. AskUserQuestion) if the host has one.`;
 
 interface Agent {
   slug: string;
@@ -775,11 +814,12 @@ export default function SkillPage() {
         <div className="mt-10 space-y-4">
           <h2 className="font-display text-xl uppercase tracking-wide">Not using Claude Code?</h2>
           <p className="text-sm text-muted-foreground">
-            Same router, five personas, and reference docs — flattened into one file for tools that
-            read a single instructions file instead of a multi-file skill package.
+            Same router, five personas, and reference docs — built as real multi-file structure for
+            tools that support it (Cursor, Windsurf, Gemini CLI), shaped around what each format
+            actually documents rather than one flattened file everywhere.
           </p>
           <div className="space-y-3">
-            {OTHER_TOOLS.map(({ flag, tool, target }) => {
+            {OTHER_TOOLS.map(({ flag, tool, target, note }) => {
               const command = `npx @dhruvchoudhary/dsgn skill ${flag}`;
               return (
                 <div key={flag}>
@@ -792,6 +832,7 @@ export default function SkillPage() {
                     </pre>
                     <CopyButton text={command} className="absolute right-3 top-3" />
                   </div>
+                  {note ? <p className="mt-1.5 text-xs text-muted-foreground">{note}</p> : null}
                 </div>
               );
             })}
@@ -955,6 +996,9 @@ export default function SkillPage() {
           </a>
           <Link href="/components" className="text-sm text-accent hover:underline">
             ← See the components this skill installs
+          </Link>
+          <Link href="/best-practices" className="text-sm text-accent hover:underline">
+            Each voice&rsquo;s Do/Don&rsquo;t + checklist →
           </Link>
         </div>
       </Reveal>

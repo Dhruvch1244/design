@@ -16,6 +16,25 @@ import { Separator } from "@/components/dsgn/separator";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/dsgn/select";
 import { Avatar, AvatarFallback } from "@/components/dsgn/avatar";
 import { Badge } from "@/components/dsgn/badge";
+import { Textarea } from "@/components/dsgn/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/dsgn/radio-group";
+import { Progress } from "@/components/dsgn/progress";
+import { EmptyState } from "@/components/dsgn/empty-state";
+import { Alert, AlertTitle, AlertDescription } from "@/components/dsgn/alert";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/dsgn/accordion";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/dsgn/tabs";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/dsgn/dialog";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/dsgn/tooltip";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/dsgn/popover";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -108,6 +127,27 @@ const PLANS = [
     tagline: "SSO, audit logs, dedicated support.",
     features: ["Everything in Team", "SSO / SAML", "Dedicated support channel"],
     featured: false,
+  },
+] as const;
+
+// Real, checkable answers pulled from this repo's own README/CHANGELOG —
+// same rule as everywhere else on this page: no invented copy.
+const FAQ = [
+  {
+    q: "Does dsgn add a runtime dependency?",
+    a: "No — components are copied into your project's own source tree. Once installed, this package isn't imported anywhere in your code, the same as any shadcn/ui-style registry.",
+  },
+  {
+    q: "Will `dsgn add` or `dsgn skill` overwrite my files?",
+    a: "No, not by default. Both skip a file that already exists unless you explicitly pass --overwrite.",
+  },
+  {
+    q: "Can I point the CLI at a different registry?",
+    a: "Yes — this monorepo's own build, or a fork, via --registry <url-or-local-path> or the DSGN_REGISTRY env var.",
+  },
+  {
+    q: "Does the Agent Skill only work with Claude Code?",
+    a: "No — dsgn skill also installs for Cursor, Windsurf, GitHub Copilot, and Gemini CLI, each in that tool's own real format, plus a plain AGENTS.md.",
   },
 ] as const;
 
@@ -423,6 +463,172 @@ export default function ExamplesPage() {
             </CommandList>
           </Command>
         </div>
+      </ExampleFrame>
+
+      <ExampleFrame
+        index={8}
+        title="Delete confirmation"
+        description="Dialog + Alert — a destructive action that explains its consequence before committing."
+      >
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="destructive">Delete project</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete lyric-viewer?</DialogTitle>
+              <DialogDescription>This removes the case study and its assets.</DialogDescription>
+            </DialogHeader>
+            <Alert variant="destructive">
+              <AlertTitle>This can&rsquo;t be undone</AlertTitle>
+              <AlertDescription>
+                The philosophy&rsquo;s non-destructive-by-default pillar governs component code, not
+                every UI action a component can be used to build.
+              </AlertDescription>
+            </Alert>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button variant="destructive">Delete</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </ExampleFrame>
+
+      <ExampleFrame
+        index={9}
+        title="FAQ"
+        description="Accordion — real, checkable answers about this project, not filler copy."
+      >
+        <Frame className="w-full max-w-lg" glow={false}>
+          <Accordion type="single" collapsible className="w-full">
+            {FAQ.map(({ q, a }) => (
+              <AccordionItem key={q} value={q}>
+                <AccordionTrigger>{q}</AccordionTrigger>
+                <AccordionContent>{a}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </Frame>
+      </ExampleFrame>
+
+      <ExampleFrame
+        index={10}
+        title="Feedback form"
+        description="Tabs + Textarea + RadioGroup — a two-mode form, not just a single text field (illustrative UI, doesn't submit anywhere real)."
+      >
+        <Card className="w-full max-w-sm">
+          <CardHeader>
+            <CardTitle>Send feedback</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="bug">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="bug">Bug report</TabsTrigger>
+                <TabsTrigger value="feature">Feature request</TabsTrigger>
+              </TabsList>
+              <TabsContent value="bug" className="mt-4 space-y-4">
+                <div className="space-y-1.5">
+                  <span className="text-xs font-medium text-muted-foreground">Severity</span>
+                  <RadioGroup defaultValue="minor" className="grid-flow-col">
+                    <label className="flex items-center gap-2 text-sm">
+                      <RadioGroupItem value="minor" id="sev-minor" /> Minor
+                    </label>
+                    <label className="flex items-center gap-2 text-sm">
+                      <RadioGroupItem value="blocking" id="sev-blocking" /> Blocking
+                    </label>
+                  </RadioGroup>
+                </div>
+                <Textarea placeholder="What happened, and what did you expect instead?" rows={3} />
+              </TabsContent>
+              <TabsContent value="feature" className="mt-4">
+                <Textarea placeholder="What would this let you do that you can't today?" rows={4} />
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+          <CardFooter>
+            <Button variant="accent" className="w-full">
+              Submit
+            </Button>
+          </CardFooter>
+        </Card>
+      </ExampleFrame>
+
+      <ExampleFrame
+        index={11}
+        title="Install flow: in progress, then empty"
+        description="Progress + EmptyState — the two states either side of `dsgn add`, not a static screenshot of one."
+      >
+        <div className="grid w-full max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
+          <Frame glow={false} className="space-y-3">
+            <p className="text-sm font-medium">Installing button...</p>
+            <Progress value={65} />
+            <p className="font-mono text-xs text-muted-foreground">
+              npx @dhruvchoudhary/dsgn add button
+            </p>
+          </Frame>
+          <Frame glow={false}>
+            <EmptyState
+              title="No components installed yet"
+              description="Run dsgn add to copy your first component into this project."
+              action={
+                <Button variant="outline" size="sm">
+                  npx @dhruvchoudhary/dsgn add button
+                </Button>
+              }
+            />
+          </Frame>
+        </div>
+      </ExampleFrame>
+
+      <ExampleFrame
+        index={12}
+        title="Toolbar with tooltips + filter popover"
+        description="Tooltip + Popover — icon-only actions that stay legible, and a filter panel that doesn't need a full dialog."
+      >
+        <TooltipProvider>
+          <div className="flex items-center gap-2 rounded-full border border-border bg-card p-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon-sm" aria-label="Refresh">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
+                    <path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6" />
+                  </svg>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Refresh</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon-sm" aria-label="Copy link">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
+                    <path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.5" />
+                    <path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07l1.36-1.36" />
+                  </svg>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Copy link</TooltipContent>
+            </Tooltip>
+            <Separator orientation="vertical" className="h-5" />
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm">
+                  Filter
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56 space-y-3">
+                <p className="text-xs font-medium text-muted-foreground">Show</p>
+                <label className="flex items-center gap-2 text-sm">
+                  <Checkbox defaultChecked /> Pinned
+                </label>
+                <label className="flex items-center gap-2 text-sm">
+                  <Checkbox /> Archived
+                </label>
+              </PopoverContent>
+            </Popover>
+          </div>
+        </TooltipProvider>
       </ExampleFrame>
     </div>
   );

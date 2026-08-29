@@ -24,6 +24,9 @@
   --warm: #f2b45e;
   --magenta: #ff2e7e;
   --violet: #9a6bff;
+  --emerald: #2be6a3;
+  --blue: #5b9dff;
+  --rose: #ff6b8a;
 
   /*
    * Decorative glow colors, deliberately NOT redefined under
@@ -42,6 +45,9 @@
   --glow-violet: #9a6bff;
   --glow-magenta: #ff2e7e;
   --glow-warm: #f2b45e;
+  --glow-emerald: #2be6a3;
+  --glow-blue: #5b9dff;
+  --glow-rose: #ff6b8a;
   /* Tracks the palette-picker's choice the same way --accent does, but at
      full saturation regardless of theme — see [data-accent="..."] below. */
   --glow-accent-color: var(--glow-cyan);
@@ -116,6 +122,18 @@
   --accent: var(--warm);
   --glow-accent-color: var(--glow-warm);
 }
+[data-accent="emerald"] {
+  --accent: var(--emerald);
+  --glow-accent-color: var(--glow-emerald);
+}
+[data-accent="blue"] {
+  --accent: var(--blue);
+  --glow-accent-color: var(--glow-blue);
+}
+[data-accent="rose"] {
+  --accent: var(--rose);
+  --glow-accent-color: var(--glow-rose);
+}
 
 [data-theme="light"] {
   --void: #f7f5f2;
@@ -129,6 +147,19 @@
   --cyan-soft: #0a6a73;
   --magenta: #d21266;
   --violet: #6a3ce0;
+  /*
+   * Unlike cyan/magenta/violet above, --warm had no light-mode override at
+   * all until this — the dark-mode #f2b45e amber (10.93:1 against the dark
+   * --void) drops to 1.68:1 against the light --void, badly failing WCAG AA
+   * (4.5:1). Darkened the same way the other three are: same hue, enough
+   * value dropped to hold contrast on a light background. Verified via the
+   * relative-luminance formula in components/palette-generator.tsx, not
+   * eyeballed — 5.43:1.
+   */
+  --warm: #8a5a12;
+  --emerald: #0a7a52;
+  --blue: #1d4fd8;
+  --rose: #b3123f;
 
   /*
    * Translucent "glass" only reads as glass when there's something rich
@@ -187,6 +218,9 @@
   --color-warm: var(--warm);
   --color-magenta: var(--magenta);
   --color-violet: var(--violet);
+  --color-emerald: var(--emerald);
+  --color-blue: var(--blue);
+  --color-rose: var(--rose);
   --color-glass: var(--glass);
   --color-glass-strong: var(--glass-strong);
 

@@ -15,6 +15,7 @@ const ROUTES = [
   "/examples/",
   "/theming/",
   "/skill/",
+  "/best-practices/",
   "/changelog/",
 ];
 

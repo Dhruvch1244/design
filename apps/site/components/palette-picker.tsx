@@ -3,11 +3,14 @@
 import { useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 
-const PALETTES = [
+export const PALETTES = [
   { id: "cyan", label: "Cyan", swatch: "var(--cyan)" },
   { id: "violet", label: "Violet", swatch: "var(--violet)" },
   { id: "magenta", label: "Magenta", swatch: "var(--magenta)" },
   { id: "warm", label: "Warm", swatch: "var(--warm)" },
+  { id: "emerald", label: "Emerald", swatch: "var(--emerald)" },
+  { id: "blue", label: "Blue", swatch: "var(--blue)" },
+  { id: "rose", label: "Rose", swatch: "var(--rose)" },
 ] as const;
 
 // Same pattern as theme-toggle.tsx: the data-accent attribute (set

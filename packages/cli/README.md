@@ -89,21 +89,41 @@ without the CLI, at
 
 ### Other AI tools
 
-The same router, personas, and reference docs, flattened into one file for
-tools that read a single instructions file instead of Claude Code's
-multi-file skill format:
+The same router, personas, and reference docs, built as the real structure
+each tool's own format actually supports — not one flattened file
+everywhere:
 
 ```sh
-npx @dhruvchoudhary/dsgn skill --agents-md   # ./AGENTS.md — Codex CLI, Amp, Cursor, ...
-npx @dhruvchoudhary/dsgn skill --cursor      # ./.cursor/rules/dsgn.mdc
-npx @dhruvchoudhary/dsgn skill --windsurf    # ./.windsurf/rules/dsgn.md
-npx @dhruvchoudhary/dsgn skill --copilot     # ./.github/copilot-instructions.md
-npx @dhruvchoudhary/dsgn skill --gemini      # ./GEMINI.md
+npx @dhruvchoudhary/dsgn skill --cursor           # ./.cursor/rules/dsgn/ (router + 5 agents + 4 reference docs)
+npx @dhruvchoudhary/dsgn skill --windsurf         # ./.windsurf/rules/dsgn-*.md (this project)
+npx @dhruvchoudhary/dsgn skill --windsurf-global  # ~/.windsurf/global_rules.md (every workspace, condensed)
+npx @dhruvchoudhary/dsgn skill --copilot          # ./.github/copilot-instructions.md + .github/instructions/dsgn-*.instructions.md
+npx @dhruvchoudhary/dsgn skill --gemini           # ./GEMINI.md + ./.gemini/dsgn/ (this project)
+npx @dhruvchoudhary/dsgn skill --gemini-global    # ~/.gemini/GEMINI.md + ~/.gemini/dsgn/ (every project)
+npx @dhruvchoudhary/dsgn skill --agents-md        # ./AGENTS.md — Codex CLI, Amp, ... (single flattened file)
 ```
 
-Each is non-destructive by default like every other `dsgn` install command —
-pass `--overwrite` if the target file already exists and you want it
-replaced.
+- **Cursor** reads each file's own `description` frontmatter and
+  auto-attaches the relevant one automatically — the closest real
+  equivalent to Claude Code's sub-agent dispatch any of these tools has.
+  There's no `--cursor-global`: Cursor's only global mechanism is its
+  Settings UI, not a file.
+- **Windsurf** project rules merge into `.windsurf/rules/` alongside any
+  rules you already have there. The global variant is a hand-written
+  condensed summary, not the full skill — Windsurf caps `global_rules.md`
+  at 6,000 characters, and the full skill can't fit.
+- **Copilot** has no description-based routing, so all 5 style-voice
+  instruction files apply together whenever their `applyTo` glob matches —
+  delete the ones you don't want if you'd rather keep one voice active.
+  There's no cross-editor global file (only JetBrains has an IDE-specific
+  one, which isn't a fit for a generic installer).
+- **Gemini CLI** gets real `@file.md` imports, not copy-pasted content —
+  `GEMINI.md` imports the agent/reference files rather than inlining them.
+
+Every target is non-destructive by default like every other `dsgn` install
+command — pass `--overwrite` if a target already exists and you want it
+replaced. Multi-file targets (Copilot, Gemini) check every file they'd
+write *before* writing any of them, so an install never lands half-applied.
 
 ## Commands
 
@@ -118,7 +138,7 @@ replaced.
 | `doctor` | Health-check installed files (missing, modified, a11y) |
 | `snippets` | Add VS Code snippets for every registry component |
 | `skill --global` / `--project` | Install the dsgn Claude Code Agent Skill |
-| `skill --agents-md` / `--cursor` / `--windsurf` / `--copilot` / `--gemini` | Install the flattened skill doc for another AI tool |
+| `skill --cursor` / `--windsurf[-global]` / `--copilot` / `--gemini[-global]` / `--agents-md` | Install the skill for another AI tool |
 
 ## Options
 
@@ -130,11 +150,13 @@ replaced.
 | `--force` | Overwrite locally-modified files (`update` only) |
 | `--global` | Install to `~/.claude/skills/dsgn` (`skill` only) |
 | `--project` | Install to `./.claude/skills/dsgn` (`skill` only) |
+| `--cursor` | Install to `./.cursor/rules/dsgn/` — no global variant exists (`skill` only) |
+| `--windsurf` | Install to `./.windsurf/rules/` (`skill` only) |
+| `--windsurf-global` | Install condensed doc to `~/.windsurf/global_rules.md` (`skill` only) |
+| `--copilot` | Install to `./.github/copilot-instructions.md` + `./.github/instructions/` (`skill` only) |
+| `--gemini` | Install to `./GEMINI.md` + `./.gemini/dsgn/` (`skill` only) |
+| `--gemini-global` | Install to `~/.gemini/GEMINI.md` + `~/.gemini/dsgn/` (`skill` only) |
 | `--agents-md` | Install to `./AGENTS.md` (`skill` only) |
-| `--cursor` | Install to `./.cursor/rules/dsgn.mdc` (`skill` only) |
-| `--windsurf` | Install to `./.windsurf/rules/dsgn.md` (`skill` only) |
-| `--copilot` | Install to `./.github/copilot-instructions.md` (`skill` only) |
-| `--gemini` | Install to `./GEMINI.md` (`skill` only) |
 | `-h, --help` | Show help |
 
 ## What's in the registry

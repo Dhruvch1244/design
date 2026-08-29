@@ -19,26 +19,30 @@ Usage:
   npx @dhruvchoudhary/dsgn update <component...> Pull the current registry version into your project
   npx @dhruvchoudhary/dsgn doctor               Health-check installed files (missing, modified, a11y)
   npx @dhruvchoudhary/dsgn snippets             Add VS Code snippets for every registry component
-  npx @dhruvchoudhary/dsgn skill --global       Install the dsgn Agent Skill for Claude Code, every project
-  npx @dhruvchoudhary/dsgn skill --project      Install the dsgn Agent Skill for this project only
-  npx @dhruvchoudhary/dsgn skill --agents-md    Write a flattened skill doc to ./AGENTS.md (Codex, Amp, ...)
-  npx @dhruvchoudhary/dsgn skill --cursor       Install as a Cursor rule at .cursor/rules/dsgn.mdc
-  npx @dhruvchoudhary/dsgn skill --windsurf     Install as a Windsurf rule at .windsurf/rules/dsgn.md
-  npx @dhruvchoudhary/dsgn skill --copilot      Install to .github/copilot-instructions.md
-  npx @dhruvchoudhary/dsgn skill --gemini       Install to ./GEMINI.md
+  npx @dhruvchoudhary/dsgn skill --global         Claude Code Agent Skill, every project (~/.claude/skills/dsgn)
+  npx @dhruvchoudhary/dsgn skill --project        Claude Code Agent Skill, this project only (./.claude/skills/dsgn)
+  npx @dhruvchoudhary/dsgn skill --cursor         Cursor rules, this project (./.cursor/rules/dsgn/) — no Cursor global exists
+  npx @dhruvchoudhary/dsgn skill --windsurf       Windsurf rules, this project (./.windsurf/rules/dsgn-*.md)
+  npx @dhruvchoudhary/dsgn skill --windsurf-global  Windsurf rules, every workspace (condensed, ~/.windsurf/global_rules.md)
+  npx @dhruvchoudhary/dsgn skill --copilot        GitHub Copilot instructions, this repo (./.github/...)
+  npx @dhruvchoudhary/dsgn skill --gemini         Gemini CLI context, this project (./GEMINI.md + ./.gemini/dsgn/)
+  npx @dhruvchoudhary/dsgn skill --gemini-global  Gemini CLI context, every project (~/.gemini/GEMINI.md + ~/.gemini/dsgn/)
+  npx @dhruvchoudhary/dsgn skill --agents-md      Flattened skill doc, this project (./AGENTS.md — Codex CLI, Amp, ...)
 
 Options:
   --registry <url-or-path>      Registry to read from (default: ${`https://design.dhruvchoudhary.com/r`})
   --overwrite                   Replace files that already exist (add/skill, default: skip them)
   --skip-install                Don't run the package manager after copying files (add only)
   --force                       Overwrite locally-modified files (update only, default: skip them)
-  --global                      Install to ~/.claude/skills/dsgn (skill only)
-  --project                     Install to ./.claude/skills/dsgn (skill only)
-  --agents-md                   Install to ./AGENTS.md (skill only)
-  --cursor                      Install to ./.cursor/rules/dsgn.mdc (skill only)
-  --windsurf                    Install to ./.windsurf/rules/dsgn.md (skill only)
-  --copilot                     Install to ./.github/copilot-instructions.md (skill only)
-  --gemini                      Install to ./GEMINI.md (skill only)
+  --global                      Claude Code, every project (skill only)
+  --project                     Claude Code, this project (skill only)
+  --cursor                      Cursor, this project — Cursor has no file-based global rules (skill only)
+  --windsurf                    Windsurf, this project (skill only)
+  --windsurf-global              Windsurf, every workspace — condensed, 6,000-char format cap (skill only)
+  --copilot                     GitHub Copilot, this repo — no cross-editor global exists (skill only)
+  --gemini                      Gemini CLI, this project (skill only)
+  --gemini-global                Gemini CLI, every project (skill only)
+  --agents-md                   Plain AGENTS.md, this project (skill only)
   --recipes                     Show recipes instead of components (list only)
   -h, --help                    Show this help
 `;
@@ -65,10 +69,14 @@ function parseArgs(argv) {
       args.flags.cursor = true;
     } else if (arg === "--windsurf") {
       args.flags.windsurf = true;
+    } else if (arg === "--windsurf-global") {
+      args.flags.windsurfGlobal = true;
     } else if (arg === "--copilot") {
       args.flags.copilot = true;
     } else if (arg === "--gemini") {
       args.flags.gemini = true;
+    } else if (arg === "--gemini-global") {
+      args.flags.geminiGlobal = true;
     } else if (arg === "--recipes") {
       args.flags.recipes = true;
     } else if (arg === "-h" || arg === "--help") {

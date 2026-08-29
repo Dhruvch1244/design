@@ -62,9 +62,17 @@ Apply these signals in order — the first one that matches decides:
 3. **Project type is the fallback default.** Use the table above's "Pick it
    when" column against what the project actually is (a SaaS dashboard, a
    portfolio, a dev tool, a wellness app, a game).
-4. **When genuinely unsure between two candidates, ask.** Don't silently
-   pick — a wrong visual direction is expensive to unwind after a dozen
-   components are built in it. One clarifying question up front is cheap.
+4. **When genuinely unsure — between two candidates, or with no strong
+   signal at all (a blank scaffold, no explicit ask) — stop and ask, don't
+   silently pick.** A wrong visual direction is expensive to unwind after a
+   dozen components are built in it; one clarifying question up front is
+   cheap. Ask as a structured choice, not an open-ended question:
+   - Lead with your actual recommendation, named and justified in one line
+     (which signal from above pointed at it, even a weak one).
+   - Offer 1–2 sensible alternatives, each with an equally short reason.
+   - If the host environment has a structured choice/question tool (e.g.
+     Claude Code's `AskUserQuestion`), use it so the user picks from
+     concrete options instead of writing free text back.
 
 ## How the handoff actually works
 

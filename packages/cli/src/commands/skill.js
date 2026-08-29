@@ -1,4 +1,4 @@
-import { cp, access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { cp, access, mkdir, readdir } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,20 +10,7 @@ import { fileURLToPath } from "node:url";
 // install time) means `dsgn skill` works offline and never depends on the
 // deployed site being reachable.
 const packageRoot = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
-const CLAUDE_SOURCE = path.join(packageRoot, "skill", "dsgn");
-const FLAT_SOURCE = path.join(packageRoot, "skill", "flat", "dsgn.md");
-
-// Cursor's .mdc rules format supports YAML frontmatter with `description`
-// (used for "agent requested" auto-attachment, the same role SKILL.md's own
-// `description` field plays for Claude Code) and `alwaysApply`. Windsurf,
-// Copilot, Gemini, and plain AGENTS.md all just read raw markdown with no
-// required frontmatter, so the flat doc is installed as-is for those.
-const CURSOR_FRONTMATTER = `---
-description: Build UI with the real @dhruvchoudhary/dsgn component registry and the dhruvch1244/design philosophy, in one of five distinct visual voices, routed automatically by project context or explicit request.
-alwaysApply: false
----
-
-`;
+const bundled = (...segments) => path.join(packageRoot, "skill", ...segments);
 
 async function exists(filePath) {
   try {
@@ -34,73 +21,140 @@ async function exists(filePath) {
   }
 }
 
-async function installDir(source, target, overwrite) {
-  if (!overwrite && (await exists(target))) return false;
-  await mkdir(path.dirname(target), { recursive: true });
-  await cp(source, target, { recursive: true, force: true });
-  return true;
+// A "step" is one file or directory that has to land for a target to be
+// considered installed. Every step exposes `conflict()` (the path that
+// already exists, or null) so a multi-step target (a root file plus a data
+// directory, e.g. Copilot/Gemini) can be checked for conflicts across all
+// its steps *before* writing any of them — an install should never
+// half-apply.
+
+// The whole `source` directory becomes `target` — used for a namespace this
+// skill exclusively owns (Claude's own skills/dsgn, Cursor's rules/dsgn,
+// Gemini's .gemini/dsgn data folder), so "target already exists" is a clean
+// single conflict check.
+function dirStep(source, target) {
+  return {
+    conflict: async () => ((await exists(target)) ? target : null),
+    apply: async () => {
+      await mkdir(path.dirname(target), { recursive: true });
+      await cp(source, target, { recursive: true, force: true });
+    },
+  };
 }
 
-async function installFile(content, target, overwrite) {
-  if (!overwrite && (await exists(target))) return false;
-  await mkdir(path.dirname(target), { recursive: true });
-  await writeFile(target, content, "utf8");
-  return true;
+// A single file copy, for a target that is one real file (AGENTS.md,
+// GEMINI.md, copilot-instructions.md, Windsurf's global_rules.md).
+function fileStep(source, target) {
+  return {
+    conflict: async () => ((await exists(target)) ? target : null),
+    apply: async () => {
+      await mkdir(path.dirname(target), { recursive: true });
+      await cp(source, target, { force: true });
+    },
+  };
 }
 
-async function flatContent() {
-  return readFile(FLAT_SOURCE, "utf8");
+// Copies each entry of `sourceDir` into `targetDir` individually, checking
+// each for conflicts rather than the directory as a whole — for a shared
+// directory another tool/team member may already have unrelated files in
+// (Windsurf's .windsurf/rules/, Copilot's .github/instructions/), so
+// installing here must never disturb anything not named dsgn-*.
+function dirMergeStep(sourceDir, targetDir) {
+  return {
+    conflict: async () => {
+      for (const entry of await readdir(sourceDir)) {
+        const target = path.join(targetDir, entry);
+        if (await exists(target)) return target;
+      }
+      return null;
+    },
+    apply: async () => {
+      await mkdir(targetDir, { recursive: true });
+      for (const entry of await readdir(sourceDir)) {
+        await cp(path.join(sourceDir, entry), path.join(targetDir, entry), { recursive: true, force: true });
+      }
+    },
+  };
 }
 
 // Every install target `dsgn skill` supports, keyed by the flag that
-// selects it. Exactly one must be passed per invocation. Claude Code gets
-// the real multi-file skill (router + 5 sub-agent personas + reference
-// docs, dispatched via a Task/Agent-style tool); every other tool gets
-// `skill/flat/dsgn.md` — the same content flattened into one file, since
-// none of them support Claude Code's sub-agent dispatch mechanism (see
-// scripts/sync-skill.mjs for how that flattening happens).
+// selects it. Exactly one must be passed per invocation.
+//
+// Claude Code gets the real multi-file skill (router + 5 sub-agent
+// personas + reference docs, dispatched via a Task/Agent-style tool).
+// Cursor gets the closest real equivalent: router.mdc + agents/*.mdc +
+// reference/*.mdc as genuine sibling files, each with its own `description`
+// frontmatter Cursor reads to auto-attach the relevant one. Windsurf,
+// Copilot, and Gemini all get real multi-file structure too, shaped around
+// what each format actually supports (see scripts/sync-skill.mjs for the
+// full reasoning per tool). AGENTS.md alone stays a single flattened file —
+// that convention is genuinely single-file by design, not a shortcut.
+//
+// Deliberately not offered: a Cursor global target (Cursor's only global
+// mechanism is its Settings UI, not a file) and a Copilot global target (no
+// cross-editor file-based mechanism exists — only JetBrains has one, at an
+// IDE-specific OS path, which isn't a fit for a generic installer).
 const TARGETS = {
   global: {
     flag: "--global",
-    resolveTarget: () => path.join(os.homedir(), ".claude", "skills", "dsgn"),
-    install: (target, overwrite) => installDir(CLAUDE_SOURCE, target, overwrite),
+    steps: () => [dirStep(bundled("dsgn"), path.join(os.homedir(), ".claude", "skills", "dsgn"))],
     hint: "Claude Code picks it up automatically next session — nothing else to configure.",
   },
   project: {
     flag: "--project",
-    resolveTarget: (cwd) => path.join(cwd, ".claude", "skills", "dsgn"),
-    install: (target, overwrite) => installDir(CLAUDE_SOURCE, target, overwrite),
+    steps: (cwd) => [dirStep(bundled("dsgn"), path.join(cwd, ".claude", "skills", "dsgn"))],
     hint: "Claude Code picks it up automatically next session — nothing else to configure.",
   },
   agentsMd: {
     flag: "--agents-md",
-    resolveTarget: (cwd) => path.join(cwd, "AGENTS.md"),
-    install: async (target, overwrite) => installFile(await flatContent(), target, overwrite),
+    steps: (cwd) => [fileStep(bundled("flat", "dsgn.md"), path.join(cwd, "AGENTS.md"))],
     hint: "Read natively by Codex CLI, Amp, Cursor, and other AGENTS.md-aware tools — nothing else to configure.",
   },
   cursor: {
     flag: "--cursor",
-    resolveTarget: (cwd) => path.join(cwd, ".cursor", "rules", "dsgn.mdc"),
-    install: async (target, overwrite) => installFile(CURSOR_FRONTMATTER + (await flatContent()), target, overwrite),
-    hint: "Cursor picks it up automatically as an agent-requested rule — nothing else to configure.",
+    steps: (cwd) => [dirStep(bundled("cursor"), path.join(cwd, ".cursor", "rules", "dsgn"))],
+    hint: "Cursor reads each file's own description and auto-attaches the relevant one — nothing else to configure.",
   },
   windsurf: {
     flag: "--windsurf",
-    resolveTarget: (cwd) => path.join(cwd, ".windsurf", "rules", "dsgn.md"),
-    install: async (target, overwrite) => installFile(await flatContent(), target, overwrite),
-    hint: "Windsurf picks it up automatically from .windsurf/rules — nothing else to configure.",
+    steps: (cwd) => [dirMergeStep(bundled("windsurf", "project"), path.join(cwd, ".windsurf", "rules"))],
+    hint: "Windsurf loads every .windsurf/rules/*.md file into Cascade automatically — nothing else to configure.",
+  },
+  windsurfGlobal: {
+    flag: "--windsurf-global",
+    steps: () => [fileStep(bundled("windsurf", "global", "global_rules.md"), path.join(os.homedir(), ".windsurf", "global_rules.md"))],
+    hint:
+      "Applies to every Windsurf workspace. This replaces the whole file — if you already keep " +
+      "custom global rules there, merge by hand instead of using --overwrite. It's a condensed " +
+      "summary (Windsurf caps this file at 6,000 characters); run --windsurf in a project for the full skill.",
   },
   copilot: {
     flag: "--copilot",
-    resolveTarget: (cwd) => path.join(cwd, ".github", "copilot-instructions.md"),
-    install: async (target, overwrite) => installFile(await flatContent(), target, overwrite),
-    hint: "GitHub Copilot reads this repo-wide automatically — nothing else to configure.",
+    steps: (cwd) => [
+      fileStep(bundled("copilot", "copilot-instructions.md"), path.join(cwd, ".github", "copilot-instructions.md")),
+      dirMergeStep(bundled("copilot", "instructions"), path.join(cwd, ".github", "instructions")),
+    ],
+    hint:
+      "GitHub Copilot reads this repo-wide automatically. All 5 style-voice instruction files apply " +
+      "together (Copilot has no description-based routing) — delete the ones you don't want.",
   },
   gemini: {
     flag: "--gemini",
-    resolveTarget: (cwd) => path.join(cwd, "GEMINI.md"),
-    install: async (target, overwrite) => installFile(await flatContent(), target, overwrite),
-    hint: "Read natively by the Gemini CLI / Gemini Code Assist — nothing else to configure.",
+    steps: (cwd) => [
+      fileStep(bundled("gemini", "project-GEMINI.md"), path.join(cwd, "GEMINI.md")),
+      dirStep(bundled("gemini", "dsgn"), path.join(cwd, ".gemini", "dsgn")),
+    ],
+    hint: "Read natively by the Gemini CLI / Gemini Code Assist for this project — nothing else to configure.",
+  },
+  geminiGlobal: {
+    flag: "--gemini-global",
+    steps: () => [
+      fileStep(bundled("gemini", "global-GEMINI.md"), path.join(os.homedir(), ".gemini", "GEMINI.md")),
+      dirStep(bundled("gemini", "dsgn"), path.join(os.homedir(), ".gemini", "dsgn")),
+    ],
+    hint:
+      "Applies to every Gemini CLI project. Replaces ~/.gemini/GEMINI.md in full — merge by hand " +
+      "instead of using --overwrite if you already keep other global instructions there.",
   },
 };
 
@@ -109,8 +163,8 @@ export async function skill(cwd, flags = {}) {
 
   if (requested.length === 0) {
     throw new Error(
-      "Specify a target: --global or --project for Claude Code, or one of " +
-        "--agents-md, --cursor, --windsurf, --copilot, --gemini for other AI tools.",
+      "Specify a target: --global or --project for Claude Code; --cursor; --windsurf or " +
+        "--windsurf-global; --copilot; --gemini or --gemini-global; or --agents-md.",
     );
   }
   if (requested.length > 1) {
@@ -120,14 +174,23 @@ export async function skill(cwd, flags = {}) {
   }
 
   const target = TARGETS[requested[0]];
-  const targetPath = target.resolveTarget(cwd);
+  const steps = target.steps(cwd);
 
-  if (!(await target.install(targetPath, flags.overwrite))) {
-    console.error(`${targetPath} already exists — pass --overwrite to replace it.`);
-    process.exitCode = 1;
-    return;
+  if (!flags.overwrite) {
+    for (const step of steps) {
+      const conflict = await step.conflict();
+      if (conflict) {
+        console.error(`${conflict} already exists — pass --overwrite to replace it.`);
+        process.exitCode = 1;
+        return;
+      }
+    }
   }
 
-  console.log(`Installed the dsgn Agent Skill to ${targetPath}`);
+  for (const step of steps) {
+    await step.apply();
+  }
+
+  console.log("Installed the dsgn Agent Skill.");
   console.log(target.hint);
 }
