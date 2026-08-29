@@ -21,6 +21,11 @@ Usage:
   npx @dhruvchoudhary/dsgn snippets             Add VS Code snippets for every registry component
   npx @dhruvchoudhary/dsgn skill --global       Install the dsgn Agent Skill for Claude Code, every project
   npx @dhruvchoudhary/dsgn skill --project      Install the dsgn Agent Skill for this project only
+  npx @dhruvchoudhary/dsgn skill --agents-md    Write a flattened skill doc to ./AGENTS.md (Codex, Amp, ...)
+  npx @dhruvchoudhary/dsgn skill --cursor       Install as a Cursor rule at .cursor/rules/dsgn.mdc
+  npx @dhruvchoudhary/dsgn skill --windsurf     Install as a Windsurf rule at .windsurf/rules/dsgn.md
+  npx @dhruvchoudhary/dsgn skill --copilot      Install to .github/copilot-instructions.md
+  npx @dhruvchoudhary/dsgn skill --gemini       Install to ./GEMINI.md
 
 Options:
   --registry <url-or-path>      Registry to read from (default: ${`https://design.dhruvchoudhary.com/r`})
@@ -29,6 +34,11 @@ Options:
   --force                       Overwrite locally-modified files (update only, default: skip them)
   --global                      Install to ~/.claude/skills/dsgn (skill only)
   --project                     Install to ./.claude/skills/dsgn (skill only)
+  --agents-md                   Install to ./AGENTS.md (skill only)
+  --cursor                      Install to ./.cursor/rules/dsgn.mdc (skill only)
+  --windsurf                    Install to ./.windsurf/rules/dsgn.md (skill only)
+  --copilot                     Install to ./.github/copilot-instructions.md (skill only)
+  --gemini                      Install to ./GEMINI.md (skill only)
   --recipes                     Show recipes instead of components (list only)
   -h, --help                    Show this help
 `;
@@ -49,6 +59,16 @@ function parseArgs(argv) {
       args.flags.global = true;
     } else if (arg === "--project") {
       args.flags.project = true;
+    } else if (arg === "--agents-md") {
+      args.flags.agentsMd = true;
+    } else if (arg === "--cursor") {
+      args.flags.cursor = true;
+    } else if (arg === "--windsurf") {
+      args.flags.windsurf = true;
+    } else if (arg === "--copilot") {
+      args.flags.copilot = true;
+    } else if (arg === "--gemini") {
+      args.flags.gemini = true;
     } else if (arg === "--recipes") {
       args.flags.recipes = true;
     } else if (arg === "-h" || arg === "--help") {

@@ -64,6 +64,13 @@ default pillar, not just the components it installs.
 Point it at a different registry (this monorepo's own build, or a fork)
 with `--registry <url-or-local-path>` or the `DSGN_REGISTRY` env var.
 
+`dsgn skill` installs the philosophy + registry as an AI-tool skill/rules
+file — `--global`/`--project` for Claude Code's native multi-file Agent
+Skill format, or `--agents-md`/`--cursor`/`--windsurf`/`--copilot`/`--gemini`
+for a flattened single-file version other tools read natively. See
+[`packages/cli/README.md`](packages/cli/README.md#agent-skill) for the full
+list.
+
 ## Adding a new component to the registry
 
 1. Add the component under `packages/registry/src/components/<name>/`.

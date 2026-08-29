@@ -20,6 +20,24 @@ const CLONE_COMMAND =
 const CLI_SKILL_GLOBAL = "npx @dhruvchoudhary/dsgn skill --global";
 const CLI_SKILL_PROJECT = "npx @dhruvchoudhary/dsgn skill --project";
 
+interface OtherTool {
+  flag: string;
+  tool: string;
+  target: string;
+}
+
+// Same router + 5 personas + reference docs as the Claude Code skill,
+// flattened into skill/flat/dsgn.md by scripts/sync-skill.mjs — these tools
+// read one instructions file rather than a multi-file skill package with
+// sub-agent dispatch.
+const OTHER_TOOLS: OtherTool[] = [
+  { flag: "--agents-md", tool: "Codex CLI, Amp, and other AGENTS.md-aware tools", target: "./AGENTS.md" },
+  { flag: "--cursor", tool: "Cursor", target: "./.cursor/rules/dsgn.mdc" },
+  { flag: "--windsurf", tool: "Windsurf", target: "./.windsurf/rules/dsgn.md" },
+  { flag: "--copilot", tool: "GitHub Copilot", target: "./.github/copilot-instructions.md" },
+  { flag: "--gemini", tool: "Gemini CLI / Gemini Code Assist", target: "./GEMINI.md" },
+];
+
 // Real registry components (Card/CardHeader/CardTitle/CardDescription/
 // CardContent, Button variant="soft") — soft-minimal's own doc says to drop
 // borders for a soft ambient shadow and favor rounded-full soft-fill
@@ -750,6 +768,39 @@ export default function SkillPage() {
               </div>
             </div>
           </div>
+        </div>
+      </Reveal>
+
+      <Reveal delay={100}>
+        <div className="mt-10 space-y-4">
+          <h2 className="font-display text-xl uppercase tracking-wide">Not using Claude Code?</h2>
+          <p className="text-sm text-muted-foreground">
+            Same router, five personas, and reference docs — flattened into one file for tools that
+            read a single instructions file instead of a multi-file skill package.
+          </p>
+          <div className="space-y-3">
+            {OTHER_TOOLS.map(({ flag, tool, target }) => {
+              const command = `npx @dhruvchoudhary/dsgn skill ${flag}`;
+              return (
+                <div key={flag}>
+                  <div className="mb-1.5 font-mono text-xs text-muted-foreground">
+                    {tool} — installs to <code className="text-accent">{target}</code>
+                  </div>
+                  <div className="relative">
+                    <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-12 font-mono text-xs text-accent">
+                      <code>{command}</code>
+                    </pre>
+                    <CopyButton text={command} className="absolute right-3 top-3" />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Non-destructive by default, like every <code className="font-mono text-accent">dsgn</code>{" "}
+            install command — pass <code className="font-mono text-accent">--overwrite</code> if the
+            target file already exists and you want it replaced.
+          </p>
         </div>
       </Reveal>
 

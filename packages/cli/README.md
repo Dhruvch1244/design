@@ -1,5 +1,9 @@
 # dsgn
 
+[![npm version](https://img.shields.io/npm/v/@dhruvchoudhary/dsgn)](https://www.npmjs.com/package/@dhruvchoudhary/dsgn)
+[![npm downloads](https://img.shields.io/npm/dw/@dhruvchoudhary/dsgn)](https://www.npmjs.com/package/@dhruvchoudhary/dsgn)
+[![license](https://img.shields.io/npm/l/@dhruvchoudhary/dsgn)](https://github.com/dhruvch1244/design/blob/main/LICENSE)
+
 A CLI that copies [dsgn](https://design.dhruvchoudhary.com) design-system
 components into your own project's source tree — the shadcn/ui model. No
 runtime dependency on this package: once a component lands, you own the
@@ -83,6 +87,24 @@ package, so it works offline. Full package, browsable and downloadable
 without the CLI, at
 [design.dhruvchoudhary.com/skill](https://design.dhruvchoudhary.com/skill).
 
+### Other AI tools
+
+The same router, personas, and reference docs, flattened into one file for
+tools that read a single instructions file instead of Claude Code's
+multi-file skill format:
+
+```sh
+npx @dhruvchoudhary/dsgn skill --agents-md   # ./AGENTS.md — Codex CLI, Amp, Cursor, ...
+npx @dhruvchoudhary/dsgn skill --cursor      # ./.cursor/rules/dsgn.mdc
+npx @dhruvchoudhary/dsgn skill --windsurf    # ./.windsurf/rules/dsgn.md
+npx @dhruvchoudhary/dsgn skill --copilot     # ./.github/copilot-instructions.md
+npx @dhruvchoudhary/dsgn skill --gemini      # ./GEMINI.md
+```
+
+Each is non-destructive by default like every other `dsgn` install command —
+pass `--overwrite` if the target file already exists and you want it
+replaced.
+
 ## Commands
 
 | Command | What it does |
@@ -96,6 +118,7 @@ without the CLI, at
 | `doctor` | Health-check installed files (missing, modified, a11y) |
 | `snippets` | Add VS Code snippets for every registry component |
 | `skill --global` / `--project` | Install the dsgn Claude Code Agent Skill |
+| `skill --agents-md` / `--cursor` / `--windsurf` / `--copilot` / `--gemini` | Install the flattened skill doc for another AI tool |
 
 ## Options
 
@@ -107,6 +130,11 @@ without the CLI, at
 | `--force` | Overwrite locally-modified files (`update` only) |
 | `--global` | Install to `~/.claude/skills/dsgn` (`skill` only) |
 | `--project` | Install to `./.claude/skills/dsgn` (`skill` only) |
+| `--agents-md` | Install to `./AGENTS.md` (`skill` only) |
+| `--cursor` | Install to `./.cursor/rules/dsgn.mdc` (`skill` only) |
+| `--windsurf` | Install to `./.windsurf/rules/dsgn.md` (`skill` only) |
+| `--copilot` | Install to `./.github/copilot-instructions.md` (`skill` only) |
+| `--gemini` | Install to `./GEMINI.md` (`skill` only) |
 | `-h, --help` | Show help |
 
 ## What's in the registry

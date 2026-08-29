@@ -5,6 +5,31 @@ documented here, in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format. The registry and site aren't independently versioned — they're
 covered under **Registry** below, dated by when they actually shipped.
 
+## [0.5.0] — 2026-08-29
+
+### Added
+
+- `dsgn skill` now installs for AI tools beyond Claude Code:
+  `--agents-md` (plain `AGENTS.md`), `--cursor` (`.cursor/rules/dsgn.mdc`),
+  `--windsurf` (`.windsurf/rules/dsgn.md`), `--copilot`
+  (`.github/copilot-instructions.md`), and `--gemini` (`GEMINI.md`). Each
+  installs `skill/flat/dsgn.md` — the same router, five style personas, and
+  reference docs as the Claude Code skill, flattened into one file for tools
+  that read a single instructions file instead of a multi-file skill package
+  with sub-agent dispatch. Built by `scripts/sync-skill.mjs` from the same
+  `skills/dsgn/` source as the Claude skill, so the two can't drift apart.
+- A GitHub Actions workflow (`.github/workflows/publish-cli.yml`) that tags
+  and publishes `packages/cli` to npm automatically whenever a version bump
+  in `packages/cli/package.json` lands on `main` — the same "bump, commit,
+  merge" flow already used for every release so far, just without the manual
+  `npm publish` + `git tag` steps after.
+
+### Fixed
+
+- `packages/cli/README.md` — the file npm actually renders on the package
+  page — had no version/downloads/license badges, unlike the repo's root
+  README. Added the same three badges there.
+
 ## [0.4.0] — 2026-08-29
 
 ### Added

@@ -1,7 +1,7 @@
 {
   "name": "@dhruvchoudhary/dsgn",
-  "version": "0.4.0",
-  "description": "CLI that copies dsgn design-system components into your project's own source tree — no runtime dependency on this package, in the shadcn/ui tradition. Works in any React + Tailwind project. Includes diff/update for tracking upstream changes, composed recipes, a doctor health-check, VS Code snippets, and a Claude Code Agent Skill installer (dsgn skill --global / --project).",
+  "version": "0.5.0",
+  "description": "CLI that copies dsgn design-system components into your project's own source tree — no runtime dependency on this package, in the shadcn/ui tradition. Works in any React + Tailwind project. Includes diff/update for tracking upstream changes, composed recipes, a doctor health-check, VS Code snippets, and an Agent Skill installer for Claude Code, Cursor, Windsurf, GitHub Copilot, Gemini, and plain AGENTS.md (dsgn skill --global/--project/--agents-md/--cursor/--windsurf/--copilot/--gemini).",
   "type": "module",
   "bin": {
     "dsgn": "bin/dsgn.js"
@@ -40,7 +40,12 @@
     "react",
     "claude-code",
     "agent-skill",
-    "claude"
+    "claude",
+    "cursor",
+    "windsurf",
+    "copilot",
+    "gemini",
+    "agents-md"
   ],
   "publishConfig": {
     "access": "public"
