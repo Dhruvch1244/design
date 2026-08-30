@@ -5,6 +5,17 @@ documented here, in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format. The registry and site aren't independently versioned — they're
 covered under **Registry** below, dated by when they actually shipped.
 
+## [0.9.0] — 2026-08-30
+
+### Added
+
+- `dsgn skill --adopt` / `--adopt-global` — installs `dsgn-adopt`, the
+  sibling skill that extracts an *existing* codebase's own real UI
+  conventions into a portable skill file for that project, instead of a
+  new voice silently competing with the style it already committed to.
+  Claude Code only for now, same non-destructive-by-default install
+  mechanism as every other `skill` target.
+
 ## [0.8.0] — 2026-08-30
 
 ### Added

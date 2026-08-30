@@ -9,6 +9,7 @@ import { makeSandbox } from "./helpers.js";
 
 const packageRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const bundledSkillDir = path.join(packageRoot, "skill", "dsgn");
+const bundledAdoptDir = path.join(packageRoot, "skill", "adopt");
 const bundledFlatDoc = path.join(packageRoot, "skill", "flat", "dsgn.md");
 const bundledCursorDir = path.join(packageRoot, "skill", "cursor");
 const bundledWindsurfDir = path.join(packageRoot, "skill", "windsurf");
@@ -23,6 +24,7 @@ const repoRoot = path.dirname(path.dirname(packageRoot));
 test.before(async () => {
   try {
     await access(bundledSkillDir);
+    await access(bundledAdoptDir);
     await access(bundledFlatDoc);
     await access(bundledCursorDir);
     await access(bundledWindsurfDir);
@@ -125,6 +127,33 @@ test("skill: --global installs to the resolved home directory", async (t) => {
   await withHome(dir, async () => {
     await skill(dir, { global: true });
     assert.ok(await exists(path.join(dir, ".claude", "skills", "dsgn", "SKILL.md")));
+  });
+});
+
+// --- dsgn-adopt ----------------------------------------------------------------
+
+test("skill: --adopt installs the bundled dsgn-adopt skill into ./.claude/skills/dsgn-adopt", async (t) => {
+  const { dir, cleanup } = await makeSandbox();
+  t.after(cleanup);
+
+  await skill(dir, { adopt: true });
+
+  const target = path.join(dir, ".claude", "skills", "dsgn-adopt");
+  assert.ok(await exists(path.join(target, "SKILL.md")));
+  assert.ok(await exists(path.join(target, "reference", "extraction-checklist.md")));
+
+  const bundledFiles = await countFiles(bundledAdoptDir);
+  const installedFiles = await countFiles(target);
+  assert.equal(installedFiles, bundledFiles);
+});
+
+test("skill: --adopt-global installs to the resolved home directory", async (t) => {
+  const { dir, cleanup } = await makeSandbox();
+  t.after(cleanup);
+
+  await withHome(dir, async () => {
+    await skill(dir, { adoptGlobal: true });
+    assert.ok(await exists(path.join(dir, ".claude", "skills", "dsgn-adopt", "SKILL.md")));
   });
 });
 

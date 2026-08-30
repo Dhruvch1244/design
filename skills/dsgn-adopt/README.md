@@ -22,19 +22,27 @@ skills/dsgn-adopt/
 
 ## Installing it
 
-Same mechanism as `skills/dsgn/` — copy the directory into wherever Claude
-Code looks for skills:
+```
+npx @dhruvchoudhary/dsgn skill --adopt          # this project only
+npx @dhruvchoudhary/dsgn skill --adopt-global   # every project
+```
+
+Same non-destructive-by-default install mechanism as every other `dsgn
+skill` target — pass `--overwrite` to replace an existing install. Claude
+Code only for now (unlike `skills/dsgn/`, which also bundles for Cursor,
+Windsurf, Copilot, and Gemini) — this skill is an on-demand procedure you
+run once per unfamiliar repo, not always-active persistent context, which
+fits Claude Code's Skill-invocation model more naturally than those other
+tools' always-loaded-rules formats. Extending it to them is a natural next
+step if that stops being true.
+
+Or copy the directory directly, the same mechanism the CLI uses under the
+hood:
 
 ```
 cp -r skills/dsgn-adopt ~/.claude/skills/dsgn-adopt        # every project
 cp -r skills/dsgn-adopt <your-project>/.claude/skills/dsgn-adopt  # one project
 ```
-
-Not currently bundled through `npx @dhruvchoudhary/dsgn skill` the way
-`skills/dsgn/` is (that command's `--global`/`--project`/`--cursor`/etc.
-targets, and `scripts/sync-skill.mjs`'s per-tool builds, are all scoped to
-the voice-router skill specifically) — a natural next step if this proves
-useful enough to want the same one-command install and multi-tool bundling.
 
 ## What it produces
 

@@ -30,6 +30,8 @@ Usage:
   npx @dhruvchoudhary/dsgn skill --gemini-global  Gemini CLI context, every project (~/.gemini/GEMINI.md + ~/.gemini/dsgn/)
   npx @dhruvchoudhary/dsgn skill --agents-md      Flattened skill doc, this project (./AGENTS.md — Codex CLI, Amp, ...)
   npx @dhruvchoudhary/dsgn skill --project --agents-md  Both, bridged: CLAUDE.md gets an @AGENTS.md import so Claude Code reads it too
+  npx @dhruvchoudhary/dsgn skill --adopt          dsgn-adopt Agent Skill, this project (./.claude/skills/dsgn-adopt) — extracts an existing codebase's own conventions
+  npx @dhruvchoudhary/dsgn skill --adopt-global   dsgn-adopt Agent Skill, every project (~/.claude/skills/dsgn-adopt)
 
 Options:
   --registry <url-or-path>      Registry to read from (default: ${`https://design.dhruvchoudhary.com/r`})
@@ -45,6 +47,8 @@ Options:
   --gemini                      Gemini CLI, this project (skill only)
   --gemini-global                Gemini CLI, every project (skill only)
   --agents-md                   Plain AGENTS.md, this project (skill only)
+  --adopt                       dsgn-adopt Skill, this project — extracts an existing codebase's conventions (skill only)
+  --adopt-global                dsgn-adopt Skill, every project (skill only)
   --recipes                     Show recipes instead of components (list only)
   --json                        Machine-readable output (list only)
   -h, --help                    Show this help
@@ -80,6 +84,10 @@ function parseArgs(argv) {
       args.flags.gemini = true;
     } else if (arg === "--gemini-global") {
       args.flags.geminiGlobal = true;
+    } else if (arg === "--adopt") {
+      args.flags.adopt = true;
+    } else if (arg === "--adopt-global") {
+      args.flags.adoptGlobal = true;
     } else if (arg === "--recipes") {
       args.flags.recipes = true;
     } else if (arg === "--json") {
