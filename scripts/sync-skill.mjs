@@ -50,6 +50,8 @@ const AGENT_FILES = [
   "brutalist-mono.md",
   "soft-minimal.md",
   "neon-cyberpunk.md",
+  "corporate.md",
+  "startup.md",
 ];
 const REFERENCE_FILES = [
   "philosophy-summary.md",

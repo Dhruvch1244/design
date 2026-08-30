@@ -24,13 +24,13 @@ from the `dhruvch1244/design` repo, not invented conventions:
 Use it whenever the task is building or restyling UI — a page, a component
 library, a design system, a "make this look premium" request — especially
 when the project is a fresh scaffold with no established visual language yet,
-or when the user explicitly asks for one of the five voices below by name.
+or when the user explicitly asks for one of the seven voices below by name.
 
 Don't use it to override an established, working design system already in
 place in the target project unless the user asks for a restyle. This skill
 is additive, not a replacement for a project's existing conventions.
 
-## The five style agents
+## The seven style agents
 
 Each file in `agents/` is a complete, self-contained persona: a visual style
 plus that style's take on all five workflow facets (component building, page
@@ -46,6 +46,8 @@ differ in what the UI *looks and moves like*.
 | `agents/brutalist-mono.md` | Pure black/white, thick borders, monospace-forward, hard offset shadows, near-zero radius | Developer tools, changelogs, anything the user calls "raw," "brutalist," or "no-nonsense" |
 | `agents/soft-minimal.md` | Silver-grey/white, huge whitespace, ultra-diffused shadows, calm micro-motion | Consumer/health/wellness products, anything the user calls "calm," "minimal," or "airy" |
 | `agents/neon-cyberpunk.md` | Near-black with saturated multi-color neon glow, tight bold display type, high-intensity motion | Gaming, music, entertainment, anything the user explicitly asks for "cyberpunk," "neon," or "loud" |
+| `agents/corporate.md` | Near-white/near-black neutral, one restrained desaturated accent, 1px borders over shadows, near-invisible motion, system-native sans type | Enterprise SaaS, developer platforms, anything the user calls "corporate," "enterprise," or references Apple/Google/Next.js |
+| `agents/startup.md` | Dark saturated background, two-hue gradient accent used boldly, oversized confident type, spring/overshoot motion | Product launches, marketing sites, anything the user calls "startup," "bold," or wants to feel fast-moving |
 
 ## Router logic
 

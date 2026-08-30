@@ -182,6 +182,183 @@
     0 24px 48px -16px color-mix(in srgb, black 12%, transparent);
 }
 
+/*
+ * Live voice switcher (components/voice-picker.tsx, surfaced in
+ * AppearanceMenu + RemixPanel) — same [data-x] + custom-property-override
+ * mechanism as [data-theme]/[data-accent] above, just a third independent
+ * axis. "glass-dark-cyan" (the flagship voice) needs no block of its own:
+ * it *is* the :root/[data-theme="light"] baseline already.
+ *
+ * Deliberately NOT re-pointing --accent per voice — the palette picker
+ * already owns accent color as an independent user choice; a voice here
+ * changes background/surface/border/shadow/radius/heading-typeface
+ * character, not which hue is "the" accent. Two voices are dark-leaning by
+ * declared identity (neon-cyberpunk, startup — both say so in their own
+ * agents/*.md "near-black... dark enough for the accent to pop") and stay
+ * close to their dark values even under [data-theme="light"], the same way
+ * brutalist-mono's own doc says pure black/white breaks the "never pure
+ * black" rule on purpose. Every other voice gets a real light and dark
+ * pair.
+ */
+[data-voice="brutalist-mono"] {
+  --void: #000000;
+  --surface: #0a0a0a;
+  --ink: #ffffff;
+  --ink-soft: #cccccc;
+  --ink-faint: #888888;
+  --rule: #ffffff;
+  --glass: #000000;
+  --glass-strong: #000000;
+  --radius-scale: 0.15;
+  --shadow-ambient-raw: none;
+  --glow-accent: none;
+}
+[data-voice="brutalist-mono"][data-theme="light"] {
+  --void: #ffffff;
+  --surface: #f5f5f5;
+  --ink: #000000;
+  --ink-soft: #333333;
+  --ink-faint: #666666;
+  --rule: #000000;
+  --glass: #ffffff;
+  --glass-strong: #ffffff;
+}
+
+[data-voice="editorial-warm"] {
+  --void: #1a1512;
+  --surface: #241d18;
+  --ink: #f5efe6;
+  --ink-soft: #c9beac;
+  --ink-faint: #8f8272;
+  --rule: #3a2f26;
+  --glass: #1a1512e6;
+  --glass-strong: #241d18f2;
+  --radius-scale: 1.3;
+  --shadow-ambient-raw: 0 1px 0 color-mix(in srgb, white 3%, transparent) inset,
+    0 20px 40px -18px color-mix(in srgb, black 40%, transparent);
+}
+[data-voice="editorial-warm"][data-theme="light"] {
+  --void: #fdfbf7;
+  --surface: #ffffff;
+  --ink: #1f2124;
+  --ink-soft: #5c5850;
+  --ink-faint: #8a8578;
+  --rule: #e8e2d5;
+  --glass: #fffffef2;
+  --glass-strong: #ffffff;
+  --shadow-ambient-raw: 0 1px 0 white inset,
+    0 20px 40px -18px color-mix(in srgb, #3a2f1a 10%, transparent);
+}
+
+[data-voice="soft-minimal"] {
+  --void: #1c1c1f;
+  --surface: #25252a;
+  --ink: #e8e8ea;
+  --ink-soft: #a8a8b2;
+  --ink-faint: #78787f;
+  --rule: #2e2e33;
+  --radius-scale: 1.8;
+  --shadow-ambient-raw: 0 24px 64px -20px color-mix(in srgb, black 45%, transparent);
+  --glow-accent: 0 20px 60px -20px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+[data-voice="soft-minimal"][data-theme="light"] {
+  --void: #f4f4f5;
+  --surface: #ffffff;
+  --ink: #333338;
+  --ink-soft: #6b6b72;
+  --ink-faint: #9a9aa2;
+  --rule: #eeeeef;
+  --shadow-ambient-raw: 0 24px 64px -24px color-mix(in srgb, black 8%, transparent);
+}
+
+[data-voice="neon-cyberpunk"] {
+  --void: #05060c;
+  --surface: #0a0c16;
+  --ink: #eef0ff;
+  --ink-soft: #9aa0c8;
+  --ink-faint: #5c6088;
+  --rule: #232849;
+  --glass: #05060ccc;
+  --glass-strong: #0a0c16e6;
+  --glow-accent: 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent),
+    0 0 60px -6px color-mix(in srgb, var(--accent) 65%, transparent),
+    0 0 120px -20px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+[data-voice="neon-cyberpunk"][data-theme="light"] {
+  --void: #0a0b14;
+  --surface: #12131f;
+  --ink: #f0f1ff;
+  --ink-soft: #a5abd0;
+  --ink-faint: #666a94;
+  --rule: #2a2f52;
+}
+
+[data-voice="corporate"] {
+  --void: #0a0a0b;
+  --surface: #111113;
+  --ink: #f5f5f5;
+  --ink-soft: #a0a0a5;
+  --ink-faint: #6b6b70;
+  --rule: #232326;
+  --glass: #111113;
+  --glass-strong: #111113;
+  --radius-scale: 0.6;
+  --shadow-ambient-raw: 0 1px 0 color-mix(in srgb, white 3%, transparent) inset,
+    0 8px 20px -12px color-mix(in srgb, black 50%, transparent);
+  --glow-accent: none;
+  /*
+   * Tailwind's `@theme inline` resolves the `font-display` utility to
+   * `var(--font-bebas)` directly at build time (confirmed in the compiled
+   * output — `.font-display{font-family:var(--font-bebas)}`), not
+   * `var(--font-display)`, so overriding --font-display here would be a
+   * no-op. --font-bebas is the actual variable the utility reads.
+   */
+  --font-bebas: var(--font-hanken);
+}
+[data-voice="corporate"][data-theme="light"] {
+  --void: #fafafa;
+  --surface: #ffffff;
+  --ink: #111113;
+  --ink-soft: #5a5a5f;
+  --ink-faint: #8a8a8f;
+  --rule: #e4e4e7;
+  --glass: #ffffff;
+  --glass-strong: #ffffff;
+  --shadow-ambient-raw: 0 1px 0 white inset,
+    0 8px 20px -12px color-mix(in srgb, black 8%, transparent);
+}
+/* Corporate drops the flagship voice's condensed all-caps heading treatment
+   — .font-display already repoints to --font-sans above; this un-does the
+   uppercase/wide-tracking Tailwind utilities every heading also carries,
+   via a higher-specificity selector rather than touching each component. */
+[data-voice="corporate"] .font-display {
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 600;
+}
+
+[data-voice="startup"] {
+  --void: #0d0620;
+  --surface: #160b2e;
+  --ink: #f5f0ff;
+  --ink-soft: #b8a8e0;
+  --ink-faint: #7d6ba8;
+  --rule: #2e1f52;
+  --glass: #0d0620cc;
+  --glass-strong: #160b2ee6;
+  --radius-scale: 1.6;
+  --glow-accent: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent),
+    0 12px 50px -10px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+[data-voice="startup"][data-theme="light"] {
+  --void: #100a24;
+  --surface: #1c1038;
+  --ink: #f7f2ff;
+  --ink-soft: #bfb0e6;
+  --ink-faint: #8577b8;
+  --rule: #362463;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

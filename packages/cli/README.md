@@ -85,9 +85,9 @@ npx @dhruvchoudhary/dsgn skill --global    # ~/.claude/skills/dsgn — every pro
 npx @dhruvchoudhary/dsgn skill --project   # ./.claude/skills/dsgn — this project only
 ```
 
-Installs the dsgn Claude Code Agent Skill: a router plus 5 style-persona
+Installs the dsgn Claude Code Agent Skill: a router plus 7 style-persona
 sub-agents (glass-dark-cyan, editorial-warm, brutalist-mono, soft-minimal,
-neon-cyberpunk), each grounded in the real philosophy docs, registry, and
+neon-cyberpunk, corporate, startup), each grounded in the real philosophy docs, registry, and
 token system — so Claude builds UI using this project's actual design
 philosophy instead of invented conventions. Bundled directly in this
 package, so it works offline. Full package, browsable and downloadable
@@ -138,7 +138,7 @@ bridge.
   rules you already have there. The global variant is a hand-written
   condensed summary, not the full skill — Windsurf caps `global_rules.md`
   at 6,000 characters, and the full skill can't fit.
-- **Copilot** has no description-based routing, so all 5 style-voice
+- **Copilot** has no description-based routing, so all 7 style-voice
   instruction files apply together whenever their `applyTo` glob matches —
   delete the ones you don't want if you'd rather keep one voice active.
   There's no cross-editor global file (only JetBrains has an IDE-specific

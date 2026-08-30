@@ -3,12 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { PalettePicker } from "@/components/palette-picker";
+import { VoicePicker } from "@/components/voice-picker";
 import { cn } from "@/lib/utils";
 
 /**
- * Consolidates the theme toggle and the accent palette picker — 5 separate
- * controls — behind one trigger icon, so the nav pill carries one item
- * instead of five. Both are still one click away, just not permanently
+ * Consolidates the theme toggle, accent palette picker, and voice picker
+ * behind one trigger icon, so the nav pill carries one item instead of
+ * several. All three are still one click away, just not permanently
  * occupying pill real estate. Closes on outside click or Escape.
  */
 export function AppearanceMenu() {
@@ -67,6 +68,12 @@ export function AppearanceMenu() {
             Accent
           </span>
           <PalettePicker className="flex-wrap" />
+        </div>
+        <div className="space-y-2">
+          <span className="text-xs font-medium uppercase tracking-[0.15em] text-muted-foreground">
+            Voice
+          </span>
+          <VoicePicker />
         </div>
       </div>
     </div>

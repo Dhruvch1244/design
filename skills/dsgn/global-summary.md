@@ -2,7 +2,7 @@
 
 Global summary of the `dhruvch1244/design` philosophy + component registry,
 loaded into every Windsurf workspace. This is a condensed excerpt — for the
-full router, five style-persona voices, and reference docs, run
+full router, seven style-persona voices, and reference docs, run
 `npx @dhruvchoudhary/dsgn skill --windsurf` in a specific project to install
 the complete `.windsurf/rules/dsgn-*.md` set.
 
@@ -34,7 +34,7 @@ the complete `.windsurf/rules/dsgn-*.md` set.
 source tree, not a runtime dependency. Full list: `npx @dhruvchoudhary/dsgn
 list`.
 
-## Five style voices — pick one when building or restyling UI
+## Seven style voices — pick one when building or restyling UI
 
 - **glass-dark-cyan** — dark OLED, cyan accent, glass panels. Default for
   dev-tool/SaaS/technical UI.
@@ -46,6 +46,10 @@ list`.
   of borders. For consumer/wellness products.
 - **neon-cyberpunk** — near-black with saturated multi-color glow. For
   gaming, music, entertainment.
+- **corporate** — near-white/near-black neutral, one restrained accent,
+  near-invisible shadows. For enterprise SaaS and developer platforms.
+- **startup** — dark saturated background, gradient accent, oversized
+  confident type, overshoot motion. For launches and marketing sites.
 
 Pick order: explicit user request, then existing project brand cues, then
 project type, then ask if genuinely unsure — a wrong visual direction is

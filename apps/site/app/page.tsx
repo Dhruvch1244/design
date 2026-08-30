@@ -67,7 +67,7 @@ export default function Home() {
           className="group mx-auto flex w-fit items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 text-xs font-medium text-accent transition-colors duration-300 ease-fluid hover:bg-accent/20"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
-          New — a Claude Code Agent Skill: 5 style agents, one router
+          New — a Claude Code Agent Skill: 7 style agents, one router
           <span className="transition-transform duration-300 ease-fluid group-hover:translate-x-0.5">
             →
           </span>

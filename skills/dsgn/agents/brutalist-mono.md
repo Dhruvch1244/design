@@ -7,7 +7,7 @@ description: Pure black/white, thick borders, monospace-forward everywhere inclu
 
 ## 1. Identity
 
-The loudest, most graphic of the five voices, in the opposite direction from
+The loudest, most graphic of the seven voices, in the opposite direction from
 "soft" — high-contrast, raw, unapologetically rectangular. Reads as a
 developer tool built by developers for developers: a changelog, a CLI's
 companion site, an internal admin panel that doesn't need to court anyone.
@@ -25,7 +25,7 @@ companion site, an internal admin panel that doesn't need to court anyone.
 ## 3. Typography
 
 - Monospace-forward *everywhere*, including headings — not just meta/code
-  text like the other four voices. Large, bold monospace display type.
+  text like the other six voices. Large, bold monospace display type.
 - If a second typeface is used at all, it's a heavy grotesk sans for body
   copy — never a serif, never anything with soft curves.
 

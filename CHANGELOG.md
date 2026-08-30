@@ -260,3 +260,32 @@ doesn't require a CLI release to take effect for `dsgn add`.
   defers mounting those two demos until they actually scroll into view —
   the new always-visible top-of-page search bars below don't need it, they
   were already confirmed harmless by the same trace.
+- **2026-08-30** — The top-of-page search on `/components` and `/examples`
+  replaced with `SectionSearchButton`, a compact pill (matching Nav's own
+  search-trigger style) that opens a modal, instead of a permanently
+  expanded inline list.
+- **2026-08-30** — `/components` split into real per-component pages
+  (`/components/button`, `/components/pagination`, ...) with a persistent,
+  live-filtering sidebar in the spirit of Angular Material's docs site —
+  25 static pages, sitemap updated, prev/next navigation between
+  components. The index page keeps its gallery grid, now linking to real
+  pages instead of same-page anchors.
+- **2026-08-30** — Philosophy moved to the end of the site nav (was first).
+  Added a new philosophy doc, `philosophy/motion.md` ("Motion & Animation"),
+  explicitly sourced from this repo's own site rather than the three
+  external case-study apps the 9 core pillars come from — it's the one
+  place this project has a real, git-checkable animation decision to point
+  at (`Reveal`'s state-vs-DOM-mutation bug, `CursorGlow`'s sibling-layer
+  requirement, the `overflow-clip` scrollWidth investigation, and the
+  `cmdk` scroll-jump bug fixed above). Not one of the core pillars —
+  those stay strictly evidenced from lyric-viewer/file-viewer/review-grader
+  by design.
+- **2026-08-30** — Two new style voices, `corporate` (Apple/Google/Next.js-
+  inspired: neutral, restrained, near-invisible shadows) and `startup`
+  (dark, gradient-accented, oversized confident type) — 7 voices total.
+  Added as real `skills/dsgn/agents/*.md` files (bundled into every skill
+  install target: Claude, Cursor, Windsurf, Copilot, Gemini, AGENTS.md) and
+  as a live, switchable "Voice" control on the site itself (`VoicePicker`,
+  in both `AppearanceMenu` and `RemixPanel`) — `[data-voice="..."]` CSS
+  blocks in `globals.css` re-skin background/surface/text/border/radius/
+  shadow/glow per voice, orthogonal to the existing accent-color picker.

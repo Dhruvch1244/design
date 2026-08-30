@@ -9,7 +9,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 export const metadata: Metadata = {
   title: "Best Practices — Dhruv Choudhary",
   description:
-    "Concrete Do/Don't rules and pre-output checklists for five UI voices — real content from the dsgn Agent Skill, not generic advice.",
+    "Concrete Do/Don't rules and pre-output checklists for seven UI voices — real content from the dsgn Agent Skill, not generic advice.",
 };
 
 interface Voice {
@@ -26,7 +26,7 @@ interface Voice {
 // best-practices boilerplate. If those files change, update here too (same
 // hand-sync tradeoff apps/site/app/skill/page.tsx already makes for its own
 // curated excerpts, rather than pulling in a full markdown-render pipeline
-// for five short structured lists).
+// for seven short structured lists).
 const VOICES: Voice[] = [
   {
     slug: "glass-dark-cyan",
@@ -99,7 +99,7 @@ const VOICES: Voice[] = [
     tagline: "Silver-grey, huge whitespace, ambient shadow — consumer and wellness products.",
     dos: [
       "Use soft, diffused ambient shadows instead of borders for separation.",
-      "Check contrast explicitly and often — this voice's calm aesthetic is the highest a11y-risk of the five.",
+      "Check contrast explicitly and often — this voice's calm aesthetic carries real a11y risk.",
     ],
     donts: [
       "Add a visible hard border anywhere it can be avoided.",
@@ -137,6 +137,51 @@ const VOICES: Voice[] = [
       "Semantic --accent token still points to one primary hue for component-level consistency",
     ],
   },
+  {
+    slug: "corporate",
+    name: "Corporate",
+    tagline: "Near-white/near-black neutral, one restrained accent — enterprise SaaS and dev platforms.",
+    dos: [
+      "Use a single, desaturated accent color, reserved for the one action that matters per view.",
+      "Use 1px neutral borders as the primary separation method.",
+    ],
+    donts: [
+      "Add glass/backdrop-blur panels, gradients, or decorative glow.",
+      "Use the flagship voice's condensed all-caps display type — system sans, size and weight for hierarchy instead.",
+      "Use bounce/spring easing or motion longer than ~250ms.",
+    ],
+    checklist: [
+      "Background is neutral near-white/near-black, no warmth or color tint",
+      "Exactly one accent color, desaturated, used sparingly",
+      "Separation uses 1px neutral borders, not shadows, except for true elevation (dropdowns, modals)",
+      "Headings use system-native sans at size/weight for hierarchy, not the condensed display face other voices use",
+      "No gradients, glow, or glass/backdrop-blur panels anywhere",
+      "Motion is under ~250ms with linear/ease-out timing, no bounce",
+      "Spacing follows a consistent, grid-aligned rhythm",
+    ],
+  },
+  {
+    slug: "startup",
+    name: "Startup",
+    tagline: "Dark saturated background, gradient accent, oversized type — launches and marketing sites.",
+    dos: [
+      "Use a confident two-color gradient accent on hero headlines and primary CTAs.",
+      "Use spring/overshoot easing for hero-moment motion.",
+      "Size headline type dramatically larger than body copy.",
+    ],
+    donts: [
+      "Spread the gradient accent everywhere uniformly — it should mark the highest-priority elements, not become wallpaper.",
+      "Use corporate's linear/no-bounce motion rule here — flat, no overshoot reads as the wrong voice entirely.",
+    ],
+    checklist: [
+      "Hero headline is oversized and confident, noticeably larger than this voice's own body copy",
+      "Primary CTA carries a bold gradient/glow treatment, not a quiet outline",
+      "Motion on hero/CTA moments uses spring or overshoot easing",
+      "Gradient contrast checked at both ends against WCAG AA, not just the midpoint",
+      "Background is dark/saturated enough for the gradient accent to read clearly, not the flagship voice's neutral technical void",
+      "Section-level whitespace is generous; within-section spacing stays punchy and close",
+    ],
+  },
 ];
 
 function CheckIcon({ className }: { className?: string }) {
@@ -161,7 +206,7 @@ export default function BestPracticesPage() {
       <Reveal>
         <Eyebrow>Best practices · dsgn</Eyebrow>
         <h1 className="mt-6 font-display text-4xl uppercase leading-tight tracking-wide sm:text-5xl">
-          Five voices, five checklists.
+          Seven voices, seven checklists.
         </h1>
         <p className="mt-4 text-muted-foreground">
           Not generic UI advice — the real Do/Don&rsquo;t rules and pre-output checklists from each of
@@ -169,7 +214,7 @@ export default function BestPracticesPage() {
           <Link href="/skill" className="text-accent hover:underline">
             dsgn Agent Skill&rsquo;s
           </Link>{" "}
-          five style-persona files. Every rule here governs a specific, checkable visual decision,
+          seven style-persona files. Every rule here governs a specific, checkable visual decision,
           not a platitude — pick the voice you&rsquo;re building in and run its checklist before
           calling the work done.
         </p>

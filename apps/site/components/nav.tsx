@@ -10,12 +10,12 @@ import { AppearanceMenu } from "@/components/appearance-menu";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
-  { href: "/philosophy", label: "Philosophy" },
   { href: "/case-studies", label: "Case Studies" },
   { href: "/components", label: "Components" },
   { href: "/examples", label: "Examples" },
   { href: "/theming", label: "Theming" },
   { href: "/best-practices", label: "Best Practices" },
+  { href: "/philosophy", label: "Philosophy" },
 ];
 
 // Rendered as a filled accent pill, not a plain text link — the Agent Skill

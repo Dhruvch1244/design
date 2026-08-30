@@ -157,7 +157,7 @@ const TARGETS = {
       dirMergeStep(bundled("copilot", "instructions"), path.join(cwd, ".github", "instructions")),
     ],
     hint:
-      "GitHub Copilot reads this repo-wide automatically. All 5 style-voice instruction files apply " +
+      "GitHub Copilot reads this repo-wide automatically. All 7 style-voice instruction files apply " +
       "together (Copilot has no description-based routing) — delete the ones you don't want.",
   },
   gemini: {
