@@ -7,10 +7,6 @@ import { ImageResponse } from "next/og";
 export const alt = "Dhruv Choudhary — a design philosophy, made usable";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-// output: "export" needs every generated route, images included, to
-// explicitly opt into static rendering (same requirement as sitemap.ts).
-export const dynamic = "force-static";
-
 const VOID = "#07080c";
 const ACCENT = "#22d3ee";
 

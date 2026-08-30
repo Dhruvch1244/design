@@ -289,3 +289,45 @@ doesn't require a CLI release to take effect for `dsgn add`.
   in both `AppearanceMenu` and `RemixPanel`) — `[data-voice="..."]` CSS
   blocks in `globals.css` re-skin background/surface/text/border/radius/
   shadow/glow per voice, orthogonal to the existing accent-color picker.
+- **2026-08-30** — The site moved off GitHub Pages to Vercel. Removed
+  `output: "export"` from `next.config.ts` (every route was already
+  static/SSG, so this is a strict capability increase — route handlers,
+  on-demand rendering, ISR all become available if ever needed — not a
+  behavior change for anything that exists today), deleted the now-dead
+  `.github/workflows/deploy-site.yml` (Vercel deploys via its own git
+  integration, not a GitHub Action) and `apps/site/public/CNAME` (a
+  GitHub-Pages-specific custom-domain file Vercel doesn't use), and
+  switched `playwright.config.ts`'s e2e smoke suite from serving the old
+  static `out/` export to `next start` against the real production build —
+  the same server Vercel actually runs. `trailingSlash: true` stays, since
+  every existing indexed URL and internal link already assumes it.
+- **2026-08-30** — Fixed a real registry component bug, found live on
+  `/examples`' "Component search" demo via the Chrome extension: `cmdk`
+  auto-selects a `Command`'s first item the instant it mounts (the same
+  behavior behind the scroll-jump bug fixed earlier), so `CommandItem`'s
+  solid `bg-accent`/`text-accent-foreground` "selected" block was on-screen
+  before any real user interaction, every time — reading as a stray
+  highlighted row rather than a keyboard-nav state. Softened to a
+  `bg-accent/12`/`text-accent` tint (matching the existing "soft" button
+  variant), in both `packages/registry/src/components/command/command.tsx`
+  (the shipped registry source) and the site's own installed copy —
+  verified visually via the Chrome extension against the dev server.
+- **2026-08-30** — New sibling skill, `skills/dsgn-adopt/`, for the reverse
+  situation from `skills/dsgn/`: instead of building UI from this repo's
+  own philosophy/registry/voices, it extracts an *existing* codebase's own
+  real, already-shipped UI conventions (component variant names, primitive
+  library, styling approach, design tokens) into a portable skill file for
+  that project — grounded in real files it actually read, never invented,
+  the same discipline `philosophy/AGENTS.md` holds itself to. Verified by
+  hand against a real, unrelated Next.js + Base UI + shadcn codebase (not
+  one of this repo's own dependencies): correctly identified Base UI over
+  Radix, the repo's real 6-variant Button vocabulary (no `accent` variant),
+  its `data-slot` convention, and its OKLCH token system — all things a
+  training-data-default guess would have gotten wrong. Not yet bundled
+  through the CLI's `skill` command (that command's targets and
+  `scripts/sync-skill.mjs`'s per-tool builds are scoped to the voice-router
+  skill specifically) — copy the directory directly for now. Also fixed two
+  stale "five voices" references missed in the corporate/startup pass
+  earlier this session: `skills/dsgn/SKILL.md`'s own frontmatter
+  `description`, and `skills/dsgn/README.md` (which also still claimed "no
+  automated sync" despite `scripts/sync-skill.mjs` existing).

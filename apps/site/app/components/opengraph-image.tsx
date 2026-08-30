@@ -5,10 +5,6 @@ import path from "node:path";
 export const alt = "dsgn — the component registry";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-// output: "export" needs every generated route, images included, to
-// explicitly opt into static rendering (same requirement as sitemap.ts).
-export const dynamic = "force-static";
-
 const VOID = "#07080c";
 const ACCENT = "#22d3ee";
 
