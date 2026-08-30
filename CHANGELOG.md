@@ -301,3 +301,14 @@ doesn't require a CLI release to take effect for `dsgn add`.
   static `out/` export to `next start` against the real production build —
   the same server Vercel actually runs. `trailingSlash: true` stays, since
   every existing indexed URL and internal link already assumes it.
+- **2026-08-30** — Fixed a real registry component bug, found live on
+  `/examples`' "Component search" demo via the Chrome extension: `cmdk`
+  auto-selects a `Command`'s first item the instant it mounts (the same
+  behavior behind the scroll-jump bug fixed earlier), so `CommandItem`'s
+  solid `bg-accent`/`text-accent-foreground` "selected" block was on-screen
+  before any real user interaction, every time — reading as a stray
+  highlighted row rather than a keyboard-nav state. Softened to a
+  `bg-accent/12`/`text-accent` tint (matching the existing "soft" button
+  variant), in both `packages/registry/src/components/command/command.tsx`
+  (the shipped registry source) and the site's own installed copy —
+  verified visually via the Chrome extension against the dev server.

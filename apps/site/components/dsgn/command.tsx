@@ -125,6 +125,12 @@ export const CommandGroup = React.forwardRef<
 ));
 CommandGroup.displayName = "CommandGroup";
 
+// A soft accent tint, not a solid accent-foreground block — cmdk
+// auto-selects the first item the instant a Command mounts, so this state
+// is on-screen before any real user interaction, every time. A full-opacity
+// block read as a stray highlighted row (a bug, not a feature) in exactly
+// that "just mounted, nobody's touched it yet" moment; the tint still reads
+// clearly on hover/keyboard-nav without looking broken at rest.
 export const CommandItem = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item>
@@ -133,7 +139,7 @@ export const CommandItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex cursor-pointer select-none items-center gap-2 rounded-md px-2 py-2 text-sm outline-none",
-      "data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground",
+      "data-[selected=true]:bg-accent/12 data-[selected=true]:text-accent",
       "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
       className,
     )}
