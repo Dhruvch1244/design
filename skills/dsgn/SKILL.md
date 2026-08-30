@@ -13,7 +13,7 @@ from the `dhruvch1244/design` repo, not invented conventions:
    shipped in three real apps, not aspirational values. Applies to *any*
    code you write while this skill is active, not just UI code.
 2. **A real, installable component registry** (`reference/component-registry.md`,
-   sourced from `packages/registry/registry.json`) — 31 components + a utils
+   sourced from `packages/registry/registry.json`) — 36 components + a utils
    module, installed with `npx @dhruvchoudhary/dsgn add <component>`. Files
    are copied into the consumer's own source tree, not imported from a
    package at runtime — the consumer owns and can edit them the moment they

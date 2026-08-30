@@ -270,6 +270,39 @@ export default function ComponentsPage() {
               <div className="absolute -top-1 left-[calc(66%-6px)] h-3.5 w-3.5 rounded-full border-2 border-accent bg-background" />
             </div>
           </GalleryTile>
+          <GalleryTile slug="collapsible" label="Collapsible">
+            <div className="flex h-7 w-16 items-center justify-between rounded-md border border-border px-2">
+              <div className="h-1 w-8 rounded-full bg-muted-foreground/30" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3 w-3">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </div>
+          </GalleryTile>
+          <GalleryTile slug="toggle" label="Toggle">
+            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-accent/20">
+              <svg {...ICON_PROPS} className="h-4 w-4">
+                <path d="M6 4h6a3.5 3.5 0 0 1 0 7H6zM6 11h7a3.5 3.5 0 0 1 0 7H6z" />
+              </svg>
+            </div>
+          </GalleryTile>
+          <GalleryTile slug="hover-card" label="Hover Card">
+            <div className="relative h-8 w-16">
+              <div className="h-4 w-10 rounded bg-muted-foreground/20" />
+              <div className="absolute left-1 top-4 h-5 w-14 rounded-md border border-border bg-card shadow-sm" />
+            </div>
+          </GalleryTile>
+          <GalleryTile slug="scroll-area" label="Scroll Area">
+            <div className="flex h-8 w-16 items-center justify-end gap-1 rounded-md border border-border pr-1">
+              <div className="h-5 w-0.5 rounded-full bg-border" />
+            </div>
+          </GalleryTile>
+          <GalleryTile slug="context-menu" label="Context Menu">
+            <div className="flex h-8 w-16 flex-col justify-center gap-1 rounded-md border border-border p-1.5">
+              <div className="h-1 w-8 rounded-full bg-muted-foreground/30" />
+              <div className="h-1 w-6 rounded-full bg-muted-foreground/20" />
+              <div className="h-1 w-7 rounded-full bg-muted-foreground/20" />
+            </div>
+          </GalleryTile>
         </div>
       </Reveal>
     </>

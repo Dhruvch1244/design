@@ -326,6 +326,56 @@
       ]
     },
     {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "description": "Collapsible, CollapsibleTrigger, CollapsibleContent -- a single show/hide section, built on Radix Collapsible. Distinct from accordion, which manages multiple items.",
+      "dependencies": ["@radix-ui/react-collapsible"],
+      "registryDependencies": [],
+      "files": [
+        { "path": "src/components/collapsible/collapsible.tsx", "target": "components/dsgn/collapsible.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "description": "Toggle -- a single pressed/unpressed button, built on Radix Toggle. The singular sibling of toggle-group.",
+      "dependencies": ["@radix-ui/react-toggle", "class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/toggle/toggle.tsx", "target": "components/dsgn/toggle.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "description": "HoverCard, HoverCardTrigger, HoverCardContent -- a hover-triggered preview panel, built on Radix Hover Card.",
+      "dependencies": ["@radix-ui/react-hover-card"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/hover-card/hover-card.tsx", "target": "components/dsgn/hover-card.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "description": "ScrollArea, ScrollBar -- custom-styled scrollbars for a fixed-height panel, built on Radix Scroll Area.",
+      "dependencies": ["@radix-ui/react-scroll-area"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/scroll-area/scroll-area.tsx", "target": "components/dsgn/scroll-area.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "description": "ContextMenu and sub-parts -- a right-click menu, built on Radix Context Menu. Same shape as dropdown-menu.",
+      "dependencies": ["@radix-ui/react-context-menu"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/context-menu/context-menu.tsx", "target": "components/dsgn/context-menu.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
       "name": "recipe-auth-form",
       "type": "registry:block",
       "description": "Recipe -- a real sign-in form composed from Card + Input + Checkbox + Button. Installed via `dsgn add recipe:auth-form`.",

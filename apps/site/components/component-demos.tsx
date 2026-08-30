@@ -82,6 +82,18 @@ import {
 } from "@/components/dsgn/sheet";
 import { ToggleGroup, ToggleGroupItem } from "@/components/dsgn/toggle-group";
 import { Slider } from "@/components/dsgn/slider";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/dsgn/collapsible";
+import { Toggle } from "@/components/dsgn/toggle";
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/dsgn/hover-card";
+import { ScrollArea } from "@/components/dsgn/scroll-area";
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+} from "@/components/dsgn/context-menu";
 import { ComboboxDemo } from "@/components/combobox-demo";
 import { ToastDemo } from "@/components/toast-demo";
 import { Frame } from "@/components/brand/frame";
@@ -645,6 +657,93 @@ export const COMPONENT_DEMOS: Record<string, () => React.ReactNode> = {
         <Slider defaultValue={[60]} max={100} step={1} aria-label="Volume" />
         <Slider defaultValue={[20, 80]} max={100} step={1} aria-label="Price range" />
       </div>
+    </Frame>
+  ),
+
+  collapsible: () => (
+    <Frame>
+      <Collapsible defaultOpen className="w-full max-w-sm">
+        <CollapsibleTrigger asChild>
+          <Button variant="outline" className="w-full justify-between">
+            What&apos;s included
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
+              <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Button>
+        </CollapsibleTrigger>
+        <CollapsibleContent className="mt-2 space-y-1 rounded-md border border-border p-3 text-sm text-muted-foreground">
+          <p>Unlimited components, every recipe, and the Claude Code Agent Skill.</p>
+        </CollapsibleContent>
+      </Collapsible>
+    </Frame>
+  ),
+
+  toggle: () => (
+    <Frame>
+      <div className="flex items-center gap-2">
+        <Toggle aria-label="Toggle bold" defaultPressed>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
+            <path d="M6 4h6a3.5 3.5 0 0 1 0 7H6zM6 11h7a3.5 3.5 0 0 1 0 7H6z" />
+          </svg>
+        </Toggle>
+        <Toggle aria-label="Toggle italic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" strokeLinecap="round">
+            <path d="M10 4h6M6 20h6M13 4 8 20" />
+          </svg>
+        </Toggle>
+      </div>
+    </Frame>
+  ),
+
+  "hover-card": () => (
+    <Frame>
+      <HoverCard>
+        <HoverCardTrigger asChild>
+          <Button variant="link">@dhruvchoudhary</Button>
+        </HoverCardTrigger>
+        <HoverCardContent>
+          <div className="flex items-center gap-3">
+            <Avatar>
+              <AvatarFallback>DC</AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="text-sm font-medium">Dhruv Choudhary</p>
+              <p className="text-xs text-muted-foreground">Building dsgn — a component registry + design philosophy skill.</p>
+            </div>
+          </div>
+        </HoverCardContent>
+      </HoverCard>
+    </Frame>
+  ),
+
+  "scroll-area": () => (
+    <Frame>
+      <ScrollArea className="h-48 w-full max-w-sm rounded-md border border-border">
+        <div className="p-4 space-y-3">
+          {Array.from({ length: 12 }, (_, i) => (
+            <p key={i} className="text-sm text-muted-foreground">
+              Notification {i + 1} — a scrollable panel with a custom-styled scrollbar.
+            </p>
+          ))}
+        </div>
+      </ScrollArea>
+    </Frame>
+  ),
+
+  "context-menu": () => (
+    <Frame>
+      <ContextMenu>
+        <ContextMenuTrigger className="flex h-32 w-full max-w-sm select-none items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+          Right-click here
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuLabel>Actions</ContextMenuLabel>
+          <ContextMenuSeparator />
+          <ContextMenuItem>Copy</ContextMenuItem>
+          <ContextMenuItem>Duplicate</ContextMenuItem>
+          <ContextMenuItem>Delete</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
     </Frame>
   ),
 };
