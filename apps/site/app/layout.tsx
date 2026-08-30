@@ -83,6 +83,8 @@ const THEME_SCRIPT = `(function () {
     document.documentElement.setAttribute('data-theme', theme);
     var accent = localStorage.getItem('accent') || 'cyan';
     document.documentElement.setAttribute('data-accent', accent);
+    var voice = localStorage.getItem('voice');
+    if (voice) document.documentElement.setAttribute('data-voice', voice);
     var radius = localStorage.getItem('radius-scale');
     if (radius) document.documentElement.style.setProperty('--radius-scale', radius);
     var variants = ['a', 'b', 'c', 'd', 'e'];

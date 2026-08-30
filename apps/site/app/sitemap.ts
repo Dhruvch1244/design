@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { PHILOSOPHY_DOCS } from "@/lib/philosophy-docs";
 import { CASE_STUDIES } from "@/lib/case-studies";
+import { COMPONENTS_DATA } from "@/lib/components-data";
 
 // output: "export" needs every route (including generated ones like this)
 // to explicitly opt into static rendering.
@@ -17,6 +18,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
     { url: `${BASE}/components/`, priority: 0.8 },
+    ...COMPONENTS_DATA.map((c) => ({
+      url: `${BASE}/components/${c.slug}/`,
+      priority: 0.6,
+    })),
     { url: `${BASE}/examples/`, priority: 0.8 },
     { url: `${BASE}/theming/`, priority: 0.7 },
     { url: `${BASE}/skill/`, priority: 0.7 },

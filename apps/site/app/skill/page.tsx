@@ -10,7 +10,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 export const metadata: Metadata = {
   title: "Skill — Dhruv Choudhary",
   description:
-    "A Claude Code Agent Skill: install it and Claude builds UI using this project's real design philosophy and component registry, in one of five visual voices.",
+    "A Claude Code Agent Skill: install it and Claude builds UI using this project's real design philosophy and component registry, in one of seven visual voices.",
 };
 
 const DEGIT_COMMAND = "npx degit dhruvch1244/design/skills/dsgn ~/.claude/skills/dsgn";
@@ -27,7 +27,7 @@ interface OtherTool {
   note?: string;
 }
 
-// Same router + 5 personas + reference docs as the Claude Code skill, built
+// Same router + 7 personas + reference docs as the Claude Code skill, built
 // per-tool by scripts/sync-skill.mjs into the real structure each format
 // actually supports — not one flattened file everywhere. Cursor gets real
 // sibling .mdc files Cursor auto-attaches by description; Gemini gets real
@@ -38,13 +38,13 @@ const OTHER_TOOLS: OtherTool[] = [
   {
     flag: "--cursor",
     tool: "Cursor",
-    target: "./.cursor/rules/dsgn/ (router + 5 agents + 4 reference docs)",
+    target: "./.cursor/rules/dsgn/ (router + 7 agents + 4 reference docs)",
     note: "Cursor reads each file's description and auto-attaches the relevant one. No file-based global — Cursor's only global mechanism is its Settings UI.",
   },
   {
     flag: "--windsurf",
     tool: "Windsurf (this project)",
-    target: "./.windsurf/rules/dsgn-*.md (10 files)",
+    target: "./.windsurf/rules/dsgn-*.md (12 files)",
   },
   {
     flag: "--windsurf-global",
@@ -55,8 +55,8 @@ const OTHER_TOOLS: OtherTool[] = [
   {
     flag: "--copilot",
     tool: "GitHub Copilot",
-    target: "./.github/copilot-instructions.md + .github/instructions/dsgn-*.instructions.md (5 files)",
-    note: "Copilot has no description-based routing — all 5 voices apply together; delete the ones you don't want.",
+    target: "./.github/copilot-instructions.md + .github/instructions/dsgn-*.instructions.md (7 files)",
+    note: "Copilot has no description-based routing — all 7 voices apply together; delete the ones you don't want.",
   },
   {
     flag: "--gemini",
@@ -97,7 +97,7 @@ const WORKED_EXAMPLE_CODE = `<Card className="border-0 shadow-[0_8px_40px_-12px_
 // actually needs to read first.
 const SKILL_MD_PREVIEW = `---
 name: dsgn
-description: Build UI with the real @dhruvchoudhary/dsgn component registry and the dhruvch1244/design philosophy, in one of five distinct visual voices, routed automatically by project context or explicit request.
+description: Build UI with the real @dhruvchoudhary/dsgn component registry and the dhruvch1244/design philosophy, in one of seven distinct visual voices, routed automatically by project context or explicit request.
 ---
 
 ## When to use this skill
@@ -105,7 +105,7 @@ description: Build UI with the real @dhruvchoudhary/dsgn component registry and 
 Use it whenever the task is building or restyling UI — a page, a component
 library, a design system, a "make this look premium" request — especially
 when the project is a fresh scaffold with no established visual language yet,
-or when the user explicitly asks for one of the five voices below by name.
+or when the user explicitly asks for one of the seven voices below by name.
 
 Don't use it to override an established, working design system already in
 place in the target project unless the user asks for a restyle. This skill
@@ -120,7 +120,7 @@ Apply these signals in order — the first one that matches decides:
 2. Existing brand cues win next. Match a project's existing palette/type
    direction rather than introducing a new voice on top of an established one.
 3. Project type is the fallback default — a SaaS dashboard, a portfolio, a
-   dev tool, a wellness app, a game each map to one of the five voices below.
+   dev tool, a wellness app, a game each map to one of the seven voices below.
 4. When genuinely unsure — two candidates, or no strong signal at all —
    stop and ask, don't silently pick. Lead with your actual recommendation
    and why, offer 1-2 alternatives, and use a structured choice tool
@@ -302,7 +302,7 @@ color and effects stay quiet.
 
 ## 4. Spacing & density
 
-The most generous of the five voices. Large margins, wide column measure
+The most generous of the seven voices. Large margins, wide column measure
 limits for body text (don't let a paragraph run edge-to-edge on a wide
 screen), and real whitespace between sections — this voice fails if it feels
 crowded.
@@ -372,7 +372,7 @@ description: Pure black/white, thick borders, monospace-forward everywhere inclu
 
 ## 1. Identity
 
-The loudest, most graphic of the five voices, in the opposite direction from
+The loudest, most graphic of the seven voices, in the opposite direction from
 "soft" — high-contrast, raw, unapologetically rectangular. Reads as a
 developer tool built by developers for developers: a changelog, a CLI's
 companion site, an internal admin panel that doesn't need to court anyone.
@@ -390,7 +390,7 @@ companion site, an internal admin panel that doesn't need to court anyone.
 ## 3. Typography
 
 - Monospace-forward *everywhere*, including headings — not just meta/code
-  text like the other four voices. Large, bold monospace display type.
+  text like the other six voices. Large, bold monospace display type.
 - If a second typeface is used at all, it's a heavy grotesk sans for body
   copy — never a serif, never anything with soft curves.
 
@@ -475,10 +475,10 @@ description: Silver-grey/white background, massive whitespace, ultra-diffused am
 
 ## 1. Identity
 
-The calmest of the five voices — closer to a wellness or consumer-health app
+The calmest of the seven voices — closer to a wellness or consumer-health app
 than a developer tool. Nothing shouts; components feel like they're floating
 just above the background rather than sitting in a hard-bordered container.
-The risk profile here is different from the other four voices: the biggest
+The risk profile here is different from the other six voices: the biggest
 failure mode isn't visual clutter, it's *accessibility drifting quietly*
 because everything is intentionally low-contrast and soft.
 
@@ -504,7 +504,7 @@ because everything is intentionally low-contrast and soft.
 
 ## 4. Spacing & density
 
-The airiest of the five voices alongside editorial-warm, but structured
+The airiest of the seven voices alongside editorial-warm, but structured
 differently — favors floating, well-separated component "islands" over
 editorial's dense text columns. Generous padding inside every component,
 not just between sections.
@@ -538,21 +538,23 @@ blur radius large, so the effect reads as "floating," not "framed."
   border-based separation with the ambient-shadow recipe, keep the accent
   genuinely muted (a saturated accent breaks this voice's calm register
   immediately).
-- **Accessibility Reviewer**: this is the voice where contrast checking
-  matters *most* of the five, precisely because everything is intentionally
-  soft and low-contrast by design — actively verify every text/background
+- **Accessibility Reviewer**: this is one of the voices where contrast
+  checking matters most (alongside corporate's subtle-elevation cues and
+  startup's gradient contrast), precisely because everything here is
+  intentionally soft and low-contrast by design — actively verify every
+  text/background
   and icon/background pairing against WCAG AA, don't rely on "it looks
   readable." A muted pastel accent on a light grey background is a common
   place this voice fails contrast silently if not checked.
 - **Motion specialist**: keep amplitude low across the board — even the
   "emphasized" motion in this voice (e.g. a successful-save confirmation)
-  should be gentle relative to the other four voices' equivalents.
+  should be gentle relative to the other six voices' equivalents.
 
 ## 8. Do / Don't
 
 - Do: use soft, diffused ambient shadows instead of borders for separation.
-- Do: check contrast explicitly and often — this voice's calm aesthetic is
-  the highest a11y-risk of the five.
+- Do: check contrast explicitly and often — this voice's calm aesthetic
+  carries real a11y risk.
 - Don't: add a visible hard border anywhere it can be avoided.
 - Don't: use a saturated or high-chroma accent color.
 - Don't: use fast/snappy motion — everything here should feel unhurried.
@@ -584,7 +586,7 @@ description: Near-black background with saturated multi-color neon glow, tight b
 
 ## 1. Identity
 
-The most intense of the five voices — takes the flagship voice's single-cyan
+The most intense of the seven voices — takes the flagship voice's single-cyan
 glow-on-dark idea and turns the intensity up past what a professional
 SaaS/dev-tool product would want, deliberately. Appropriate for gaming,
 music, live-event, and entertainment contexts where "loud" is the correct
@@ -595,8 +597,9 @@ answer, not a mistake.
 - Background: near-black, slightly cooler/bluer than the flagship voice's
   \`--void\`.
 - Accent: *multiple* saturated neon hues used simultaneously and layered —
-  where the other four voices insist on one accent color, this is the one
-  voice where combining cyan + magenta + violet (the same three hues already
+  where most of the other six voices insist on one accent color (startup's
+  two-hue gradient is the other exception), this is the one voice where
+  combining cyan + magenta + violet (the same three hues already
   present in this repo's real token set, just used together instead of one
   at a time) is correct, via layered glows and gradient edges rather than
   large flat fills.
@@ -622,11 +625,13 @@ that the calmer voices should avoid.
 
 ## 5. Motion character
 
-The highest-intensity motion of the five — glow pulses, color-shifting
-accents, more elaborate scroll choreography are all in-bounds here. Still
-built on the same real-world constraints as every other voice though:
-animate \`transform\`/\`opacity\` only, and — because this voice's motion is the
-most likely of the five to be genuinely uncomfortable for motion-sensitive
+The highest-intensity *sustained* motion of the seven — glow pulses,
+color-shifting accents, more elaborate scroll choreography are all in-bounds
+here (startup's motion is punchier in short bursts, but doesn't sustain at
+this intensity). Still built on the same real-world constraints as every
+other voice though: animate \`transform\`/\`opacity\` only, and — because this
+voice's motion is the most likely of the seven to be genuinely uncomfortable
+for motion-sensitive
 users — a \`prefers-reduced-motion\` fallback isn't optional polish here, it's
 required.
 
@@ -645,7 +650,7 @@ than being a plain flat line.
   accent color the glow uses per section so the whole page doesn't read as
   monochrome-neon.
 - **Page Composer**: layouts can be more visually dense and layered than
-  the other four voices — overlapping glow elements, diagonal section
+  the other six voices — overlapping glow elements, diagonal section
   breaks, and grid/scanline background texture are all appropriate here in
   a way they wouldn't be for the calmer voices.
 - **Theming Specialist**: activate multiple accent hues simultaneously
@@ -690,6 +695,240 @@ than being a plain flat line.
       component-level consistency
 `,
   },
+  {
+    slug: "corporate",
+    name: "Corporate",
+    description:
+      "Near-white/near-black neutral background, one restrained accent, generous whitespace, near-invisible shadows, system-native sans type. Apple/Google/Next.js-inspired — for enterprise SaaS, developer platforms, and anything that needs to read as high-craft and trustworthy rather than experimental.",
+    content: `---
+name: dsgn-corporate
+description: Near-white/near-black neutral background, one restrained accent, generous whitespace, near-invisible shadows, system-native sans type. Apple/Google/Next.js-inspired — for enterprise SaaS, developer platforms, and anything that needs to read as high-craft and trustworthy rather than experimental.
+---
+
+# Corporate
+
+## 1. Identity
+
+The most restrained of the seven voices — takes cues from Apple's marketing
+pages, Google's Material 3 surfaces, and Next.js's own docs site: confident
+through restraint, not through loudness. Nothing here competes with the
+content for attention. Reads as high-craft, considered, and safe to put in
+front of an enterprise buyer — the opposite instinct from neon-cyberpunk's
+"loud is correct," but arrived at deliberately, not from a lack of ideas.
+
+## 2. Color logic
+
+- Background: true near-white (\`#FAFAFA\`–\`#FFFFFF\`) in light mode, true
+  near-black (\`#0A0A0B\`–\`#111113\`) in dark mode — neutral, not warm like
+  editorial-warm's cream and not cool-tinted like neon-cyberpunk's void.
+- Accent: exactly one, desaturated relative to the flagship voice's cyan —
+  a muted blue or near-black is the default instinct, used sparingly and
+  almost never as a large fill. Most of the interface should be neutral
+  grayscale; the accent marks the one action per view that matters.
+- Borders over shadows for separation where possible — a 1px neutral-gray
+  hairline reads as more "engineered" than a soft shadow does.
+- No gradients, no glow, no glass/backdrop-blur panels — those all read as
+  "consumer/marketing" rather than "enterprise tool."
+
+## 3. Typography
+
+- System-native sans (the OS's own UI font stack, or a geometric grotesk
+  that reads the same) for both headings and body — no condensed display
+  face like the flagship voice's Bebas Neue. Headings are large through
+  size and weight, not through stretching or all-caps.
+- Tight, controlled letter-spacing — slightly negative tracking on large
+  headings is correct here (the opposite of the flagship voice's wide
+  uppercase tracking); body copy stays at normal tracking for readability.
+- Fewer weights in play than other voices — regular and semibold cover most
+  of the interface; reserve bold for true emphasis, not decoration.
+
+## 4. Spacing & density
+
+Generous but not airy in soft-minimal's floating-island sense — spacing
+here reads as *precision*, not calm. Consistent, grid-aligned padding;
+components line up to a shared baseline rather than drifting. Whitespace is
+used to group related things, not just to create breathing room.
+
+## 5. Motion character
+
+Subtle and fast — 150–250ms, no bounce or overshoot easing. Motion here
+should be nearly invisible if you're not looking for it: a fade, a small
+scale, never a slide-and-settle. The instinct to check: if a reviewer would
+describe the motion as "smooth" rather than notice it as an effect at all,
+it's right for this voice.
+
+## 6. Borders & shadows
+
+Borders do almost all the separation work — a consistent 1px neutral border
+(not the flagship voice's --rule on a dark glass panel, a genuinely flat
+neutral gray) around cards, inputs, and containers. Shadows exist only as a
+near-invisible single-digit-opacity ambient layer for true elevation (a
+dropdown over content, a modal), never as a decorative glow — \`--glow-accent\`
+should read as effectively off in this voice.
+
+## 7. Workflow facets in this voice
+
+- **Component Builder**: cards use a 1px neutral border, not a shadow, for
+  their primary separation; reserve shadow for genuinely elevated surfaces
+  (dropdowns, modals). Buttons favor a tight \`rounded-md\`, not the flagship
+  voice's pill shapes, except where a pill is the platform-native pattern
+  (a filter chip, a status badge).
+- **Page Composer**: grid-aligned layouts with a strict, visible rhythm —
+  err toward a systemized 8px spacing scale applied consistently rather than
+  bespoke spacing per section.
+- **Theming Specialist**: lower \`--radius-scale\` toward its default-to-sharp
+  end, drop \`--glow-accent\` to near-zero, keep the accent genuinely singular
+  and desaturated — a second bright color anywhere breaks this voice's
+  restraint immediately.
+- **Accessibility Reviewer**: the near-invisible shadow/border approach
+  means elevation cues are subtle — verify a modal/dropdown is distinguishable
+  from its background by more than opacity alone (a border or a real shadow,
+  not just a 2% tint), and that focus states are clearly visible against
+  the near-white/near-black backgrounds.
+- **Motion specialist**: keep every transition under 250ms with linear or
+  ease-out timing — no spring/bounce easing anywhere in this voice.
+
+## 8. Do / Don't
+
+- Do: use a single, desaturated accent color, reserved for the one action
+  that matters per view.
+- Do: use 1px neutral borders as the primary separation method.
+- Don't: add glass/backdrop-blur panels, gradients, or decorative glow.
+- Don't: use the flagship voice's condensed all-caps display type — system
+  sans, size and weight for hierarchy instead.
+- Don't: use bounce/spring easing or motion longer than ~250ms.
+
+## 9. Pre-output checklist
+
+- [ ] Background is neutral near-white/near-black, no warmth or color tint
+- [ ] Exactly one accent color, desaturated, used sparingly
+- [ ] Separation uses 1px neutral borders, not shadows, except for true
+      elevation (dropdowns, modals)
+- [ ] Headings use system-native sans at size/weight for hierarchy, not the
+      condensed display face other voices use
+- [ ] No gradients, glow, or glass/backdrop-blur panels anywhere
+- [ ] Motion is under ~250ms with linear/ease-out timing, no bounce
+- [ ] Spacing follows a consistent, grid-aligned rhythm
+`,
+  },
+  {
+    slug: "startup",
+    name: "Startup",
+    description:
+      "High-saturation gradient accent, oversized confident type, energetic overshoot motion, bold claims in the hero. For product launches, marketing sites, and anything that needs to feel fast-moving and ambitious rather than settled.",
+    content: `---
+name: dsgn-startup
+description: High-saturation gradient accent, oversized confident type, energetic overshoot motion, bold claims in the hero. For product launches, marketing sites, and anything that needs to feel fast-moving and ambitious rather than settled.
+---
+
+# Startup
+
+## 1. Identity
+
+The most ambitious-*feeling* of the seven voices — not the loudest in raw
+color intensity (that's still neon-cyberpunk), but the one built to make a
+first-time visitor feel like they've found something moving fast. Reads as
+"we shipped this last week and it already works," the opposite instinct
+from corporate's "this has been engineered and reviewed." Appropriate for
+landing pages, product launches, and marketing sites where the job is
+conversion and momentum, not enterprise trust-building.
+
+## 2. Color logic
+
+- Background: near-black or a very deep saturated tone (deep violet-black,
+  not the flagship voice's neutral \`--void\`) — dark enough for a bright
+  accent to pop, warmer/more colorful than the flagship's technical OLED.
+- Accent: a bold gradient (two of the flagship voice's real hues — cyan
+  into violet, or magenta into warm — not a single flat fill) used
+  confidently and often: hero headlines, primary CTAs, stat callouts. Where
+  corporate uses one desaturated color sparingly, this voice wants gradient
+  accent everywhere the eye should land first.
+- High contrast throughout — this voice doesn't do quiet secondary text;
+  even muted copy should read clearly at a glance.
+
+## 3. Typography
+
+- Oversized, confident display type for headlines — bigger than the
+  flagship voice's already-large headings, tight leading, often mixed
+  weight (a thin word next to a bold one) for emphasis within a single
+  line. This is the one voice where a headline breaking a "don't make text
+  too big" instinct is often correct.
+- Body copy stays legible and normal-weight — the size contrast between
+  headline and body should be dramatic, not gradual.
+
+## 4. Spacing & density
+
+Punchy, not airy — sections are large and confident (big hero, big stat
+row) but content within a section sits close together, creating a "dense
+but not cluttered" feel very different from soft-minimal's floating
+islands or corporate's grid precision. Whitespace is spent on section-level
+breathing room, not evenly distributed everywhere.
+
+## 5. Motion character
+
+Fast and energetic, with real overshoot — spring/bounce easing is
+*correct* here, unlike corporate's linear/ease-out-only rule. Hero elements
+should feel like they arrive with momentum: a slight overshoot on scale-in,
+a quick stagger across a stat row. This is the opposite motion register
+from corporate: where that voice wants motion nearly invisible, this voice
+wants it noticed, as long as it never blocks interaction.
+
+## 6. Borders & shadows
+
+Glow is a first-class tool here, more than the flagship voice's "sparing,
+single accent" use — a hero CTA or headline can carry a real
+\`shadow-glow\`-style effect (see \`button.tsx\`'s \`glow\` variant) without it
+reading as excessive, because everything else in this voice already signals
+"high energy." Borders, where used, can carry a gradient edge rather than a
+flat neutral line.
+
+## 7. Workflow facets in this voice
+
+- **Component Builder**: primary CTAs default to the boldest available
+  treatment (glow + gradient-leaning accent), not a quiet outline — this is
+  the one voice where the flagship's restraint ("reserve glow for the one
+  CTA per view") relaxes into "the hero CTA should be unmissable."
+- **Page Composer**: front-load the boldest content — a big claim, a real
+  number, a confident headline — above the fold; the hero section should do
+  more visual work than any other voice's hero.
+- **Theming Specialist**: raise \`--radius-scale\` toward pill shapes for
+  buttons/badges (confident, friendly, fast), lean into a two-color
+  gradient for the accent treatment rather than a single flat hue.
+- **Accessibility Reviewer**: gradient text/fills need contrast checked at
+  both ends of the gradient, not just the midpoint — verify the darkest
+  point of a gradient-on-dark-background pairing still clears WCAG AA, since
+  this voice's confidence can quietly break contrast at one edge of a
+  gradient even when it looks fine at a glance.
+- **Motion specialist**: use spring/overshoot easing for hero and CTA
+  moments specifically; keep it faster and punchier than neon-cyberpunk's
+  sustained high-intensity motion — this voice wants quick bursts of
+  energy, not continuous intensity.
+
+## 8. Do / Don't
+
+- Do: use a confident two-color gradient accent on hero headlines and
+  primary CTAs.
+- Do: use spring/overshoot easing for hero-moment motion.
+- Do: size headline type dramatically larger than body copy.
+- Don't: spread the gradient accent everywhere uniformly — it should mark
+  the highest-priority elements, not become wallpaper.
+- Don't: use corporate's linear/no-bounce motion rule here — flat, no
+  overshoot reads as the wrong voice entirely.
+
+## 9. Pre-output checklist
+
+- [ ] Hero headline is oversized and confident, noticeably larger than this
+      voice's own body copy
+- [ ] Primary CTA carries a bold gradient/glow treatment, not a quiet outline
+- [ ] Motion on hero/CTA moments uses spring or overshoot easing
+- [ ] Gradient contrast checked at both ends against WCAG AA, not just the
+      midpoint
+- [ ] Background is dark/saturated enough for the gradient accent to read
+      clearly, not the flagship voice's neutral technical void
+- [ ] Section-level whitespace is generous; within-section spacing stays
+      punchy and close
+`,
+  },
 ];
 
 const REFERENCE_DOCS = [
@@ -726,7 +965,7 @@ export default function SkillPage() {
         <p className="mt-4 text-muted-foreground">
           A Claude Code Agent Skill: install it and Claude builds UI using this project&rsquo;s real
           design philosophy and component registry — not invented conventions — routed
-          automatically to one of five distinct visual voices based on what you&rsquo;re actually
+          automatically to one of seven distinct visual voices based on what you&rsquo;re actually
           building. Grounded in the same files everything else on this site is grounded in:{" "}
           <Link href="/philosophy" className="text-accent hover:underline">
             the philosophy docs
@@ -818,7 +1057,7 @@ export default function SkillPage() {
         <div className="mt-10 space-y-4">
           <h2 className="font-display text-xl uppercase tracking-wide">Not using Claude Code?</h2>
           <p className="text-sm text-muted-foreground">
-            Same router, five personas, and reference docs — built as real multi-file structure for
+            Same router, seven personas, and reference docs — built as real multi-file structure for
             tools that support it (Cursor, Windsurf, Gemini CLI), shaped around what each format
             actually documents rather than one flattened file everywhere.
           </p>
@@ -867,7 +1106,7 @@ export default function SkillPage() {
 
       <Reveal delay={160}>
         <div className="mt-10 space-y-4">
-          <h2 className="font-display text-xl uppercase tracking-wide">The five style agents</h2>
+          <h2 className="font-display text-xl uppercase tracking-wide">The seven style agents</h2>
           <p className="text-sm text-muted-foreground">
             Each is a complete, self-contained persona — a visual style plus that style&rsquo;s
             take on all five workflow facets. None contradict the philosophy; they only differ in

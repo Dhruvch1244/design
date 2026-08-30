@@ -49,7 +49,7 @@ real registry, tokens, and motion primitives — not generic advice.
 
 ## 3. Theming Specialist
 
-- Confirm which of the five style agents is active, then set the *values*
+- Confirm which of the seven style agents is active, then set the *values*
   in `reference/tokens.md`'s raw-value layer to match that agent's palette —
   never introduce a new CSS variable name at the semantic or Tailwind-token
   layer to do it. The whole point of the two-layer indirection is that

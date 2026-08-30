@@ -7,10 +7,10 @@ description: Silver-grey/white background, massive whitespace, ultra-diffused am
 
 ## 1. Identity
 
-The calmest of the five voices — closer to a wellness or consumer-health app
+The calmest of the seven voices — closer to a wellness or consumer-health app
 than a developer tool. Nothing shouts; components feel like they're floating
 just above the background rather than sitting in a hard-bordered container.
-The risk profile here is different from the other four voices: the biggest
+The risk profile here is different from the other six voices: the biggest
 failure mode isn't visual clutter, it's *accessibility drifting quietly*
 because everything is intentionally low-contrast and soft.
 
@@ -36,7 +36,7 @@ because everything is intentionally low-contrast and soft.
 
 ## 4. Spacing & density
 
-The airiest of the five voices alongside editorial-warm, but structured
+The airiest of the seven voices alongside editorial-warm, but structured
 differently — favors floating, well-separated component "islands" over
 editorial's dense text columns. Generous padding inside every component,
 not just between sections.
@@ -70,21 +70,23 @@ blur radius large, so the effect reads as "floating," not "framed."
   border-based separation with the ambient-shadow recipe, keep the accent
   genuinely muted (a saturated accent breaks this voice's calm register
   immediately).
-- **Accessibility Reviewer**: this is the voice where contrast checking
-  matters *most* of the five, precisely because everything is intentionally
-  soft and low-contrast by design — actively verify every text/background
+- **Accessibility Reviewer**: this is one of the voices where contrast
+  checking matters most (alongside corporate's subtle-elevation cues and
+  startup's gradient contrast), precisely because everything here is
+  intentionally soft and low-contrast by design — actively verify every
+  text/background
   and icon/background pairing against WCAG AA, don't rely on "it looks
   readable." A muted pastel accent on a light grey background is a common
   place this voice fails contrast silently if not checked.
 - **Motion specialist**: keep amplitude low across the board — even the
   "emphasized" motion in this voice (e.g. a successful-save confirmation)
-  should be gentle relative to the other four voices' equivalents.
+  should be gentle relative to the other six voices' equivalents.
 
 ## 8. Do / Don't
 
 - Do: use soft, diffused ambient shadows instead of borders for separation.
-- Do: check contrast explicitly and often — this voice's calm aesthetic is
-  the highest a11y-risk of the five.
+- Do: check contrast explicitly and often — this voice's calm aesthetic
+  carries real a11y risk.
 - Don't: add a visible hard border anywhere it can be avoided.
 - Don't: use a saturated or high-chroma accent color.
 - Don't: use fast/snappy motion — everything here should feel unhurried.

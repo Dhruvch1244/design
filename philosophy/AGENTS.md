@@ -329,3 +329,6 @@ to read.
   (#6, #7, #8) as line-level conventions.
 - `anti-patterns.md` — every anti-pattern named above, collected in one place
   with the failure mode spelled out, for quick lookup.
+- `motion.md` — animation/interaction-motion guidance, sourced from this
+  project's own site rather than the three apps above (it's the one place
+  this project has a real, git-checkable animation decision of its own).

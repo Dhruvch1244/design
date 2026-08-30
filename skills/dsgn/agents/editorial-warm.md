@@ -37,7 +37,7 @@ color and effects stay quiet.
 
 ## 4. Spacing & density
 
-The most generous of the five voices. Large margins, wide column measure
+The most generous of the seven voices. Large margins, wide column measure
 limits for body text (don't let a paragraph run edge-to-edge on a wide
 screen), and real whitespace between sections — this voice fails if it feels
 crowded.

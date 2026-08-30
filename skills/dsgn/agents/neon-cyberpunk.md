@@ -7,7 +7,7 @@ description: Near-black background with saturated multi-color neon glow, tight b
 
 ## 1. Identity
 
-The most intense of the five voices — takes the flagship voice's single-cyan
+The most intense of the seven voices — takes the flagship voice's single-cyan
 glow-on-dark idea and turns the intensity up past what a professional
 SaaS/dev-tool product would want, deliberately. Appropriate for gaming,
 music, live-event, and entertainment contexts where "loud" is the correct
@@ -18,8 +18,9 @@ answer, not a mistake.
 - Background: near-black, slightly cooler/bluer than the flagship voice's
   `--void`.
 - Accent: *multiple* saturated neon hues used simultaneously and layered —
-  where the other four voices insist on one accent color, this is the one
-  voice where combining cyan + magenta + violet (the same three hues already
+  where most of the other six voices insist on one accent color (startup's
+  two-hue gradient is the other exception), this is the one voice where
+  combining cyan + magenta + violet (the same three hues already
   present in this repo's real token set, just used together instead of one
   at a time) is correct, via layered glows and gradient edges rather than
   large flat fills.
@@ -45,11 +46,13 @@ that the calmer voices should avoid.
 
 ## 5. Motion character
 
-The highest-intensity motion of the five — glow pulses, color-shifting
-accents, more elaborate scroll choreography are all in-bounds here. Still
-built on the same real-world constraints as every other voice though:
-animate `transform`/`opacity` only, and — because this voice's motion is the
-most likely of the five to be genuinely uncomfortable for motion-sensitive
+The highest-intensity *sustained* motion of the seven — glow pulses,
+color-shifting accents, more elaborate scroll choreography are all in-bounds
+here (startup's motion is punchier in short bursts, but doesn't sustain at
+this intensity). Still built on the same real-world constraints as every
+other voice though: animate `transform`/`opacity` only, and — because this
+voice's motion is the most likely of the seven to be genuinely uncomfortable
+for motion-sensitive
 users — a `prefers-reduced-motion` fallback isn't optional polish here, it's
 required.
 
@@ -68,7 +71,7 @@ than being a plain flat line.
   accent color the glow uses per section so the whole page doesn't read as
   monochrome-neon.
 - **Page Composer**: layouts can be more visually dense and layered than
-  the other four voices — overlapping glow elements, diagonal section
+  the other six voices — overlapping glow elements, diagonal section
   breaks, and grid/scanline background texture are all appropriate here in
   a way they wouldn't be for the calmer voices.
 - **Theming Specialist**: activate multiple accent hues simultaneously
