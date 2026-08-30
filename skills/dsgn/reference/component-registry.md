@@ -1,7 +1,7 @@
 # Component registry
 
 Sourced from `packages/registry/registry.json` and the component source
-under `packages/registry/src/components/`. 31 real UI components plus one
+under `packages/registry/src/components/`. 36 real UI components plus one
 `utils` module — a mix of Radix UI primitives and plain styled native
 elements (see the "Radix primitive?" column below), wrapped with
 `class-variance-authority` (CVA) + a `cn()` helper (clsx + tailwind-merge)
@@ -19,7 +19,7 @@ consumer owns the file the moment it lands — editing it is expected, there is
 nothing to "eject" later. `utils` (the `cn()` helper) installs automatically
 as a dependency of any component that needs it.
 
-## The 31 components
+## The 36 components
 
 | Component | Radix primitive? | npm deps |
 |---|---|---|
@@ -54,6 +54,11 @@ as a dependency of any component that needs it.
 | `toast` | Yes | `@radix-ui/react-toast` |
 | `toggle-group` | Yes | `@radix-ui/react-toggle-group` |
 | `slider` | Yes | `@radix-ui/react-slider` |
+| `collapsible` | Yes | `@radix-ui/react-collapsible` |
+| `toggle` | Yes | `@radix-ui/react-toggle` |
+| `hover-card` | Yes | `@radix-ui/react-hover-card` |
+| `scroll-area` | Yes | `@radix-ui/react-scroll-area` |
+| `context-menu` | Yes | `@radix-ui/react-context-menu` |
 
 ## Real variant/prop signatures — don't invent props not listed here
 
@@ -144,6 +149,36 @@ own `SliderPrimitive.Root` props (`value`/`defaultValue`, `min`, `max`,
 `step`, etc.). Renders one `Thumb` per entry in `value`/`defaultValue`, so
 the same component covers both a single-handle slider (`[60]`) and a range
 slider (`[20, 80]`) without a separate API.
+
+**Collapsible**: `Collapsible`, `CollapsibleTrigger`, `CollapsibleContent` —
+a bare, unstyled re-export of the Radix primitive (no CVA, no default
+classes), since a single show/hide section has too many real layouts
+(trigger button, plain link, chevron placement) to impose one look. Style
+each part directly via `className`. Distinct from `accordion`, which
+manages a set of items with only one (or a controlled few) open at a time.
+
+**Toggle** (`variant` × `size`): `variant`: `default` · `outline`. `size`:
+`default` · `sm` · `lg`. The singular sibling of `toggle-group` — a single
+pressed/unpressed button (e.g. one toolbar key), not a set.
+
+**Hover Card**: `HoverCard`, `HoverCardTrigger`, `HoverCardContent` — same
+shape as `popover` but hover-triggered instead of click-triggered, with
+Radix's own default `openDelay`/`closeDelay` (700ms / 300ms) rather than
+opening instantly. Don't use it for anything a keyboard-only or touch user
+must be able to reach — a hover-only trigger has no keyboard equivalent by
+default, so it's best for supplementary previews, not required content.
+
+**Scroll Area**: `ScrollArea` (wraps `Viewport` + `ScrollBar` + `Corner`
+internally, pass a `className` with a fixed height like `h-48`), plus a
+separately-exported `ScrollBar` (`orientation`: `vertical` · `horizontal`)
+for a second scrollbar if a consumer needs horizontal scroll too.
+
+**Context Menu**: `ContextMenu`, `ContextMenuTrigger`, `ContextMenuContent`,
+`ContextMenuItem`, `ContextMenuCheckboxItem`, `ContextMenuRadioItem`,
+`ContextMenuLabel`, `ContextMenuSeparator`, `ContextMenuShortcut`,
+`ContextMenuGroup`, `ContextMenuSub`, `ContextMenuRadioGroup` — right-click
+triggered instead of click-triggered, otherwise the same compound shape and
+same className conventions as `dropdown-menu`.
 
 **Everything else listed as "Yes" under Radix primitive** follows the
 standard Radix compound-component shape (`Root`/`Trigger`/`Content`, etc.) —

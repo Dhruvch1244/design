@@ -108,4 +108,29 @@ export const COMPONENTS_DATA: ComponentEntry[] = [
     title: "Slider",
     description: "One Thumb per value — the same component covers both single-handle and range sliders.",
   },
+  {
+    slug: "collapsible",
+    title: "Collapsible",
+    description: "A single show/hide section, built on Radix Collapsible — distinct from Accordion's multi-item model.",
+  },
+  {
+    slug: "toggle",
+    title: "Toggle",
+    description: "A single pressed/unpressed button, built on Radix Toggle — the singular sibling of Toggle Group.",
+  },
+  {
+    slug: "hover-card",
+    title: "Hover Card",
+    description: "A hover-triggered preview panel, built on Radix Hover Card.",
+  },
+  {
+    slug: "scroll-area",
+    title: "Scroll Area",
+    description: "Custom-styled scrollbars for a fixed-height panel, built on Radix Scroll Area.",
+  },
+  {
+    slug: "context-menu",
+    title: "Context Menu",
+    description: "A right-click menu, built on Radix Context Menu — same compound shape as Dropdown Menu.",
+  },
 ];

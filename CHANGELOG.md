@@ -364,3 +364,19 @@ doesn't require a CLI release to take effect for `dsgn add`.
   mounting), so the site's `ToastDemo` now portals its own `<Toaster/>` to
   `document.body` directly rather than changing the shipped registry
   component's behavior for every consumer.
+- **2026-08-30** — Five more components, from a follow-up gap-analysis pass
+  scoped specifically to real Radix primitives this registry didn't already
+  cover, each adding zero new non-Radix dependencies: `collapsible` (a
+  single show/hide section, shipped as a bare unstyled re-export since a
+  single collapsible has too many real layouts to impose one look — distinct
+  from `accordion`'s multi-item model), `toggle` (the singular sibling of
+  `toggle-group`, same CVA size/variant shape), `hover-card` (same shape as
+  `popover` but hover-triggered, using Radix's real default 700ms/300ms
+  open/close delay rather than an invented instant one), `scroll-area`
+  (custom-styled scrollbars for a fixed-height panel), and `context-menu`
+  (right-click triggered, same compound shape as `dropdown-menu`) — 36
+  components total. Explicitly did not build a Date Picker, Data Table,
+  Resizable Panels, or Input OTP in this pass: none have a real Radix
+  primitive, and each would need its own new third-party dependency
+  (`react-day-picker`, `@tanstack/react-table`, `react-resizable-panels`,
+  `input-otp`) this registry doesn't currently carry.
