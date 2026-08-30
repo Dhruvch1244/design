@@ -229,6 +229,47 @@ export default function ComponentsPage() {
               <div className="h-5 w-5 rounded-full border border-border" />
             </div>
           </GalleryTile>
+          <GalleryTile slug="alert-dialog" label="Alert Dialog">
+            <svg {...ICON_PROPS}>
+              <path d="M12 9v4M12 17h.01" strokeLinecap="round" />
+              <path d="m10.3 3.9-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3.1l-8-14a2 2 0 0 0-3.4 0Z" strokeLinejoin="round" />
+            </svg>
+          </GalleryTile>
+          <GalleryTile slug="sheet" label="Sheet">
+            <div className="flex h-8 w-16 items-center justify-end overflow-hidden rounded-md border border-border">
+              <div className="h-full w-6 bg-accent/30" />
+            </div>
+          </GalleryTile>
+          <GalleryTile slug="combobox" label="Combobox">
+            <div className="flex h-7 w-16 items-center justify-between rounded-md border border-border px-2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3 w-3">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.2-3.2" />
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3 w-3">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </div>
+          </GalleryTile>
+          <GalleryTile slug="toast" label="Toast">
+            <div className="h-8 w-16 rounded-md border border-border bg-card px-2 py-1.5">
+              <div className="h-1 w-full rounded-full bg-muted-foreground/30" />
+              <div className="mt-1 h-1 w-2/3 rounded-full bg-muted-foreground/20" />
+            </div>
+          </GalleryTile>
+          <GalleryTile slug="toggle-group" label="Toggle Group">
+            <div className="flex gap-0.5 rounded-md border border-border p-0.5">
+              <div className="h-5 w-5 rounded bg-accent/20" />
+              <div className="h-5 w-5 rounded" />
+              <div className="h-5 w-5 rounded" />
+            </div>
+          </GalleryTile>
+          <GalleryTile slug="slider" label="Slider">
+            <div className="relative h-1.5 w-16 rounded-full bg-muted">
+              <div className="absolute h-1.5 w-2/3 rounded-full bg-accent" />
+              <div className="absolute -top-1 left-[calc(66%-6px)] h-3.5 w-3.5 rounded-full border-2 border-accent bg-background" />
+            </div>
+          </GalleryTile>
         </div>
       </Reveal>
     </>

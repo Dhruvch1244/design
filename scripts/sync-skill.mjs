@@ -68,7 +68,7 @@ const REFERENCE_DESCRIPTIONS = {
   "philosophy-summary.md":
     "Condensed from philosophy/AGENTS.md — nine rules extracted from decisions that actually shipped in three real apps, not aspirational values.",
   "component-registry.md":
-    "The real 25 UI components plus utils, sourced from packages/registry/registry.json and each component's actual source — real prop names, real variants.",
+    "The real 31 UI components plus utils, sourced from packages/registry/registry.json and each component's actual source — real prop names, real variants.",
   "tokens.md":
     "The site's real CSS custom properties from apps/site/app/globals.css, and the raw-value to semantic-alias to Tailwind-token indirection every style agent reskins through.",
   "workflow-checklist.md":

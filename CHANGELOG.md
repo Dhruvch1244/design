@@ -342,3 +342,25 @@ doesn't require a CLI release to take effect for `dsgn add`.
   earlier this session: `skills/dsgn/SKILL.md`'s own frontmatter
   `description`, and `skills/dsgn/README.md` (which also still claimed "no
   automated sync" despite `scripts/sync-skill.mjs` existing).
+- **2026-08-30** — Six new components closing the gaps found by the prior
+  gap-analysis pass: `alert-dialog` (destructive-confirm, built on
+  `@radix-ui/react-alert-dialog`, its `Action`/`Cancel` reusing Button's own
+  `destructive`/`outline` variants rather than duplicating button styles),
+  `sheet` (a 4-side slide-in panel on the existing `@radix-ui/react-dialog`
+  dependency, no new package needed), `combobox` (Button + Popover +
+  Command composed into a real searchable-select, matching trigger width
+  via Radix's `--radix-popover-trigger-width`), `toast` (an imperative
+  `toast()` API plus a `<Toaster/>`, on `@radix-ui/react-toast`, hand-rolled
+  transition classes rather than pulling in the `tailwindcss-animate`
+  plugin this project doesn't otherwise depend on — matching the precedent
+  `accordion` already set), `toggle-group`, and `slider` — 31 components
+  total. Fixed a real `position: fixed` containing-block bug surfaced while
+  verifying `toast` live: any ancestor with a non-`none` CSS `transform`
+  (including `translateY(0)`) creates a new containing block for `fixed`
+  descendants, and the site's own scroll-`Reveal` wrapper around every
+  component demo does exactly that — unlike `Dialog`/`Sheet`/`AlertDialog`,
+  which already escape it via Radix's own internal `Portal`, `ToastViewport`
+  doesn't self-portal (matching upstream convention that assumes root-level
+  mounting), so the site's `ToastDemo` now portals its own `<Toaster/>` to
+  `document.body` directly rather than changing the shipped registry
+  component's behavior for every consumer.

@@ -264,6 +264,68 @@
       ]
     },
     {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "description": "AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel -- built on Radix Alert Dialog. Distinct from Dialog: forces an explicit confirm/cancel choice, can't be dismissed by clicking outside, for destructive actions.",
+      "dependencies": ["@radix-ui/react-alert-dialog"],
+      "registryDependencies": ["utils", "button"],
+      "files": [
+        { "path": "src/components/alert-dialog/alert-dialog.tsx", "target": "components/dsgn/alert-dialog.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "description": "Sheet, SheetTrigger, SheetContent (side: top/right/bottom/left), SheetHeader, SheetFooter, SheetTitle, SheetDescription -- built on Radix Dialog (no new primitive dependency), edge-anchored instead of centered.",
+      "dependencies": ["@radix-ui/react-dialog", "class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/sheet/sheet.tsx", "target": "components/dsgn/sheet.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "description": "Combobox -- a searchable select, composed from Popover + Command + Button (no new primitive dependency). Controlled: options/value/onValueChange.",
+      "dependencies": [],
+      "registryDependencies": ["utils", "button", "popover", "command"],
+      "files": [
+        { "path": "src/components/combobox/combobox.tsx", "target": "components/dsgn/combobox.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "description": "Toast, ToastProvider, ToastViewport, ToastTitle, ToastDescription, ToastClose, ToastAction (toast.tsx) + an imperative toast() API (use-toast.ts) + a <Toaster /> to mount once near the app root (toaster.tsx). Built on Radix Toast.",
+      "dependencies": ["@radix-ui/react-toast", "class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/toast/toast.tsx", "target": "components/dsgn/toast.tsx", "type": "registry:ui" },
+        { "path": "src/components/toast/use-toast.ts", "target": "components/dsgn/use-toast.ts", "type": "registry:ui" },
+        { "path": "src/components/toast/toaster.tsx", "target": "components/dsgn/toaster.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "description": "ToggleGroup, ToggleGroupItem -- a segmented control, built on Radix Toggle Group. type=\"single\" or \"multiple\" selection.",
+      "dependencies": ["@radix-ui/react-toggle-group", "class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/toggle-group/toggle-group.tsx", "target": "components/dsgn/toggle-group.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "description": "Slider -- built on Radix Slider. One Thumb per value in the value/defaultValue array, so the same component covers both single-handle and range sliders.",
+      "dependencies": ["@radix-ui/react-slider"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/slider/slider.tsx", "target": "components/dsgn/slider.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
       "name": "recipe-auth-form",
       "type": "registry:block",
       "description": "Recipe -- a real sign-in form composed from Card + Input + Checkbox + Button. Installed via `dsgn add recipe:auth-form`.",
