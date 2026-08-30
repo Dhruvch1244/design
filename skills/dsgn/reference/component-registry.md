@@ -1,10 +1,11 @@
 # Component registry
 
 Sourced from `packages/registry/registry.json` and the component source
-under `packages/registry/src/components/`. 23 real UI components plus one
-`utils` module, all Radix UI primitives or plain styled native elements
-wrapped with `class-variance-authority` (CVA) + a `cn()` helper (clsx +
-tailwind-merge) where variants exist.
+under `packages/registry/src/components/`. 25 real UI components plus one
+`utils` module — a mix of Radix UI primitives and plain styled native
+elements (see the "Radix primitive?" column below), wrapped with
+`class-variance-authority` (CVA) + a `cn()` helper (clsx + tailwind-merge)
+where variants exist.
 
 ## Install
 
@@ -18,7 +19,7 @@ consumer owns the file the moment it lands — editing it is expected, there is
 nothing to "eject" later. `utils` (the `cn()` helper) installs automatically
 as a dependency of any component that needs it.
 
-## The 23 components
+## The 25 components
 
 | Component | Radix primitive? | npm deps |
 |---|---|---|
@@ -45,6 +46,8 @@ as a dependency of any component that needs it.
 | `table` | No — plain styled `<table>` | — |
 | `skeleton` | No — a `div` with `animate-pulse` | — |
 | `empty-state` | No — composed pattern | — |
+| `breadcrumb` | Slot only (`asChild` on `BreadcrumbLink`) | `@radix-ui/react-slot` |
+| `pagination` | No — built on `button`'s own CVA variants | `class-variance-authority` |
 
 ## Real variant/prop signatures — don't invent props not listed here
 
@@ -75,7 +78,24 @@ props — a dashed-border composed pattern, not variant-based.
 
 **Command** (built on `cmdk`, not a Radix primitive): `Command`,
 `CommandDialog`, `CommandInput`, `CommandList`, `CommandEmpty`,
-`CommandGroup`, `CommandItem`, `CommandShortcut`.
+`CommandGroup`, `CommandItem`, `CommandShortcut`. `CommandDialog` is a
+modal — prefer it over a permanently-expanded inline `Command` for any
+search/jump UI that isn't itself the main content of the view (an inline
+`Command` auto-selects and scroll-into-views its first item on mount,
+which is harmless when already on-screen but has caused a real page-load
+scroll-jump bug when the widget sits below the fold — see
+`apps/site/components/lazy-mount.tsx` and `section-search-button.tsx` for
+the two fixes this repo landed for it).
+
+**Breadcrumb**: `Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem`,
+`BreadcrumbLink` (`asChild` via Slot), `BreadcrumbPage`,
+`BreadcrumbSeparator`, `BreadcrumbEllipsis` — plain semantic `nav`/`ol`
+markup, no primitive-library dependency.
+
+**Pagination**: `Pagination`, `PaginationContent`, `PaginationItem`,
+`PaginationLink` (`isActive`, `size`), `PaginationPrevious`,
+`PaginationNext`, `PaginationEllipsis` — built directly on `button`'s own
+CVA `buttonVariants`, no primitive-library dependency.
 
 **Everything else listed as "Yes" under Radix primitive** follows the
 standard Radix compound-component shape (`Root`/`Trigger`/`Content`, etc.) —
@@ -86,8 +106,23 @@ docs.
 
 ## Recipes (composed, multi-component patterns)
 
-If `packages/cli` has shipped a `recipe:` install mode by the time this skill
-is used (`npx @dhruvchoudhary/dsgn add recipe:<name>`), prefer installing a
-matching recipe over hand-composing several components from scratch — check
-`packages/registry/` for a `recipes` directory or `registry.json` entries
-with a `recipe` type before assuming one doesn't exist.
+`npx @dhruvchoudhary/dsgn add recipe:<name>` installs a whole composed
+pattern — the recipe file plus every component it depends on — in one shot.
+Prefer installing a matching recipe over hand-composing the same components
+from scratch. 8 recipes exist today, under `packages/registry/src/recipes/`:
+
+| Recipe | Composed from |
+|---|---|
+| `auth-form` | Card + Input + Checkbox + Button |
+| `settings-panel` | Card + Switch + Select + Separator + Button |
+| `pricing-tiers` | Card + Badge + Button |
+| `empty-state-cta` | EmptyState + Button |
+| `billing-summary` | Card + Badge + Progress + Button |
+| `team-members` | Table + Avatar + Badge + DropdownMenu + Button |
+| `notification-list` | Card + Avatar + Badge |
+| `onboarding-checklist` | Card + Progress + Checkbox |
+
+This list can drift as new recipes ship — run
+`npx @dhruvchoudhary/dsgn list --recipes` (or `--recipes --json`) for the
+always-current list straight from the registry before assuming this table
+is exhaustive.

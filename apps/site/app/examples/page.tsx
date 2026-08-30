@@ -64,7 +64,7 @@ import { Reveal } from "@/components/motion/reveal";
 import { CursorGlow } from "@/components/motion/cursor-glow";
 import { SkillPromoBanner } from "@/components/skill-promo-banner";
 import { TableOfContents, type TocEntry } from "@/components/table-of-contents";
-import { ExampleJumpCommand } from "@/components/example-jump-command";
+import { SectionSearchButton } from "@/components/section-search-button";
 import { LazyMount } from "@/components/lazy-mount";
 import { cn } from "@/lib/utils";
 
@@ -225,8 +225,13 @@ export default function ExamplesPage() {
             </Link>{" "}
             shown on their own elsewhere on this site.
           </p>
-          <div className="mt-6 max-w-sm">
-            <ExampleJumpCommand sections={SECTIONS} />
+          <div className="mt-6">
+            <SectionSearchButton
+              sections={SECTIONS}
+              heading="Examples"
+              placeholder="Jump to an example..."
+              label="Search examples"
+            />
           </div>
         </CursorGlow>
       </Reveal>
