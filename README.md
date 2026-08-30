@@ -3,6 +3,9 @@
 [![npm version](https://img.shields.io/npm/v/@dhruvchoudhary/dsgn)](https://www.npmjs.com/package/@dhruvchoudhary/dsgn)
 [![npm downloads](https://img.shields.io/npm/dw/@dhruvchoudhary/dsgn)](https://www.npmjs.com/package/@dhruvchoudhary/dsgn)
 [![license](https://img.shields.io/npm/l/@dhruvchoudhary/dsgn)](https://github.com/dhruvch1244/design/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/dhruvch1244/design)](https://github.com/dhruvch1244/design)
+[![dsgn components](https://img.shields.io/endpoint?url=https://design.dhruvchoudhary.com/badge-data.json)](https://design.dhruvchoudhary.com/components)
+[![dsgn recipes](https://img.shields.io/endpoint?url=https://design.dhruvchoudhary.com/badge-data-recipes.json)](https://design.dhruvchoudhary.com/examples)
 
 A design philosophy, made usable — and made cross-AI.
 
@@ -92,12 +95,14 @@ Every interactive component in `packages/registry` (`dialog`, `select`,
 `shadcn init` has defaulted new projects to Base UI since July 2026. This is
 a decision, not an oversight:
 
-- **23 shipped components are already Radix-shaped.** Every one of them,
-  plus the five recipes in `packages/registry/src/recipes`, would need to be
-  rebuilt and re-verified against Base UI's different prop/slot API. That's
-  real regression risk for zero user-facing benefit until Base UI's own
-  ecosystem (docs, community examples, third-party registries built on it)
-  matches what Radix already has.
+- **23 of the 25 shipped components are already Radix-shaped** (`breadcrumb`
+  and `pagination` are plain semantic markup with no primitive dependency).
+  Every Radix-based one, plus the eight recipes in
+  `packages/registry/src/recipes`, would need to be rebuilt and re-verified
+  against Base UI's different prop/slot API. That's real regression risk for
+  zero user-facing benefit until Base UI's own ecosystem (docs, community
+  examples, third-party registries built on it) matches what Radix already
+  has.
 - **`dsgn add` copies source, it doesn't pin a version.** Once a component
   lands in a consuming project, the primitive underneath it is that
   project's problem, not an upgrade this registry can force later. Migrating

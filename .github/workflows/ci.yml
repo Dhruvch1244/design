@@ -30,6 +30,15 @@ jobs:
       - name: Lint registry for site-specific token leaks
         run: npm run lint:registry-tokens
 
+      # The CLI's own test suite otherwise only runs at publish time
+      # (publish-cli.yml, gated on a version-bump push to main) — nothing
+      # previously ran it on a pull request, so a PR could break `dsgn add`,
+      # `skill`, `diff`/`update`, or `doctor` and this workflow would still
+      # go green.
+      - name: Test the CLI
+        working-directory: packages/cli
+        run: npm test
+
       - name: Lint site
         working-directory: apps/site
         run: npm run lint

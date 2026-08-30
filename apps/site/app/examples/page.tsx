@@ -64,6 +64,8 @@ import { Reveal } from "@/components/motion/reveal";
 import { CursorGlow } from "@/components/motion/cursor-glow";
 import { SkillPromoBanner } from "@/components/skill-promo-banner";
 import { TableOfContents, type TocEntry } from "@/components/table-of-contents";
+import { ExampleJumpCommand } from "@/components/example-jump-command";
+import { LazyMount } from "@/components/lazy-mount";
 import { cn } from "@/lib/utils";
 
 const slugify = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
@@ -223,6 +225,9 @@ export default function ExamplesPage() {
             </Link>{" "}
             shown on their own elsewhere on this site.
           </p>
+          <div className="mt-6 max-w-sm">
+            <ExampleJumpCommand sections={SECTIONS} />
+          </div>
         </CursorGlow>
       </Reveal>
 
@@ -479,7 +484,10 @@ export default function ExamplesPage() {
         title="Component search"
         description="Command — searching this registry's real component list, not sample data."
       >
-        <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-border bg-card">
+        <LazyMount
+          minHeight={276}
+          className="w-full max-w-sm overflow-hidden rounded-2xl border border-border bg-card"
+        >
           <Command loop>
             <CommandInput placeholder="Search components..." />
             <CommandList>
@@ -493,7 +501,7 @@ export default function ExamplesPage() {
               </CommandGroup>
             </CommandList>
           </Command>
-        </div>
+        </LazyMount>
       </ExampleFrame>
 
       <ExampleFrame

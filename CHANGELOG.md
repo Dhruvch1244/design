@@ -5,6 +5,14 @@ documented here, in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format. The registry and site aren't independently versioned — they're
 covered under **Registry** below, dated by when they actually shipped.
 
+## [0.8.0] — 2026-08-30
+
+### Added
+
+- `dsgn list --json` — same component/recipe data as `list` and
+  `list --recipes`, as machine-readable JSON instead of the human-readable
+  table, for scripting against the registry.
+
 ## [0.7.0] — 2026-08-29
 
 ### Added
@@ -219,3 +227,36 @@ doesn't require a CLI release to take effect for `dsgn add`.
   total). Root README now states explicitly why the registry stays on
   Radix primitives rather than following `shadcn init`'s July 2026 switch
   to Base UI as its default, instead of leaving the choice unstated.
+- **2026-08-30** — `team-members` recipe added (Table + Avatar + Badge +
+  DropdownMenu + Button — a role-badged member list with a per-row actions
+  menu), installable via `dsgn add recipe:team-members` (6 recipes total).
+  Root README also gained a GitHub stars badge alongside the existing npm
+  version/downloads badges.
+- **2026-08-30** — Two new primitive components, `breadcrumb` and
+  `pagination` (25 components total) — both plain semantic markup with no
+  Radix dependency, `pagination` built on Button's own variants. Two more
+  recipes, `notification-list` and `onboarding-checklist` (8 recipes
+  total). `/components` and `/examples` each gained a real, always-visible
+  jump-to-section search at the top of the page (previously the only
+  working one was buried mid-page in `/components`' Command demo, and
+  `/examples` had no text search at all — only a desktop-only static
+  sidebar). The site nav's `⌘K` search trigger is now reachable from the
+  mobile menu too, not just the desktop pill. `generate-badge-data.mjs` now
+  also writes a live `dsgn recipes` count badge alongside the existing
+  `dsgn components` one, both embedded on the homepage and in the root
+  README. CI (`ci.yml`) now runs the CLI's own 47-test suite on every pull
+  request — previously it only ran at publish time, so a PR could break
+  `add`/`skill`/`diff`/`update`/`doctor` without CI catching it.
+- **2026-08-30** — Fixed a real production bug found while verifying the
+  above on a phone-width production build: `/components` and `/examples`
+  were loading pre-scrolled up to ~3000px down the page on mobile, before
+  any of my changes this session — confirmed by tracing `scrollIntoView`
+  calls against the static export. Cause: `cmdk` auto-selects a `Command`'s
+  first item on mount and calls `scrollIntoView({block:"nearest"})` on it;
+  for the pre-existing `Command` demos sitting off-screen (`/components`'
+  "Command" section, `/examples`' "Component search" example), that
+  cascaded into the whole page scrolling itself down on load. Fixed with a
+  new `LazyMount` component (`apps/site/components/lazy-mount.tsx`) that
+  defers mounting those two demos until they actually scroll into view —
+  the new always-visible top-of-page search bars below don't need it, they
+  were already confirmed harmless by the same trace.

@@ -55,6 +55,8 @@ const INSTALL_CMD = "npx @dhruvchoudhary/dsgn add button card";
 // site (see /examples's Registry components stat fix).
 const BADGE_MARKDOWN =
   "[![dsgn components](https://img.shields.io/endpoint?url=https://design.dhruvchoudhary.com/badge-data.json)](https://design.dhruvchoudhary.com/components)";
+const RECIPES_BADGE_MARKDOWN =
+  "[![dsgn recipes](https://img.shields.io/endpoint?url=https://design.dhruvchoudhary.com/badge-data-recipes.json)](https://design.dhruvchoudhary.com/examples)";
 
 export default function Home() {
   return (
@@ -139,6 +141,14 @@ export default function Home() {
             </pre>
             <div className="absolute right-3 top-3">
               <CopyButton text={BADGE_MARKDOWN} />
+            </div>
+          </div>
+          <div className="relative mt-3">
+            <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-14 font-mono text-xs text-accent">
+              <code>{RECIPES_BADGE_MARKDOWN}</code>
+            </pre>
+            <div className="absolute right-3 top-3">
+              <CopyButton text={RECIPES_BADGE_MARKDOWN} />
             </div>
           </div>
         </Frame>
