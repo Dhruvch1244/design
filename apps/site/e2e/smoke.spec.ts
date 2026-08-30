@@ -32,13 +32,14 @@ for (const route of ROUTES) {
       // always the same generic "Failed to load resource: the server
       // responded with a status of 404" with no URL in it, so it can't be
       // filtered by content. Next's <Link> prefetches RSC payload files
-      // (…/__next.<route>.__PAGE__.txt) for any link that scrolls into view;
-      // those payloads only resolve on a Next-aware server, and a generic
-      // static host — this test's `serve`, and GitHub Pages itself, the
-      // actual deploy target, which has no more Next-awareness than `serve`
-      // does — 404s them. Harmless: the prefetch failing just means that
-      // link falls back to a normal full navigation when actually clicked,
-      // which every other assertion in this file already proves works.
+      // (…/__next.<route>.__PAGE__.txt) for any link that scrolls into view.
+      // This filter predates the move to `next start`/Vercel (a real
+      // Next-aware server, which resolves these payloads normally); it's
+      // kept as a harmless no-op rather than removed, in case this ever
+      // runs against a plain static host again — the prefetch failing there
+      // just means that link falls back to a normal full navigation when
+      // actually clicked, which every other assertion in this file already
+      // proves works.
       page.on("response", (response) => {
         // Only 4xx/5xx are failures — a 3xx is a normal, successful redirect
         // (the GitHub avatar URL in the Avatar example redirects to GitHub's

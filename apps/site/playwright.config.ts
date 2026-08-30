@@ -1,10 +1,10 @@
 import { defineConfig } from "@playwright/test";
 
-// Serves the static export (out/) with a plain static file server, not
-// `next start` — output: "export" produces a fully static site with no
-// Node server to start, and that's deliberate (see next.config.ts). The
-// smoke tests hit that same static output, not a dev server, so they
-// exercise exactly what actually ships to GitHub Pages.
+// Runs `next start` against the real production build (`.next`, produced by
+// the `npm run build` step CI already runs before this), the same server
+// Vercel runs in production — not a plain static file server. CI builds
+// first (see .github/workflows/ci.yml), so webServer just starts it here;
+// reuseExistingServer covers local `npm run dev`-then-test workflows.
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
@@ -15,12 +15,7 @@ export default defineConfig({
     screenshot: "only-on-failure",
   },
   webServer: {
-    // No -s (SPA rewrite) flag deliberately — GitHub Pages serves each
-    // route's own out/<route>/index.html directly (trailingSlash: true in
-    // next.config.ts), not a single rewritten index.html, so the test
-    // server should match that instead of masking a route that isn't
-    // actually being generated.
-    command: "npx serve out -l 4173",
+    command: "npx next start -p 4173",
     url: "http://localhost:4173",
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,

@@ -4,10 +4,6 @@ import { CASE_STUDIES, findCaseStudyBySlug } from "@/lib/case-studies";
 export const alt = "Case study — Dhruv Choudhary";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-// output: "export" needs every generated route, images included, to
-// explicitly opt into static rendering (same requirement as sitemap.ts).
-export const dynamic = "force-static";
-
 export function generateStaticParams() {
   return CASE_STUDIES.map((study) => ({ slug: study.slug }));
 }

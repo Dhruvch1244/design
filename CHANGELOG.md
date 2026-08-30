@@ -289,3 +289,15 @@ doesn't require a CLI release to take effect for `dsgn add`.
   in both `AppearanceMenu` and `RemixPanel`) — `[data-voice="..."]` CSS
   blocks in `globals.css` re-skin background/surface/text/border/radius/
   shadow/glow per voice, orthogonal to the existing accent-color picker.
+- **2026-08-30** — The site moved off GitHub Pages to Vercel. Removed
+  `output: "export"` from `next.config.ts` (every route was already
+  static/SSG, so this is a strict capability increase — route handlers,
+  on-demand rendering, ISR all become available if ever needed — not a
+  behavior change for anything that exists today), deleted the now-dead
+  `.github/workflows/deploy-site.yml` (Vercel deploys via its own git
+  integration, not a GitHub Action) and `apps/site/public/CNAME` (a
+  GitHub-Pages-specific custom-domain file Vercel doesn't use), and
+  switched `playwright.config.ts`'s e2e smoke suite from serving the old
+  static `out/` export to `next start` against the real production build —
+  the same server Vercel actually runs. `trailingSlash: true` stays, since
+  every existing indexed URL and internal link already assumes it.
