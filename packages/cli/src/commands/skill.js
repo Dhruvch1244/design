@@ -1,4 +1,4 @@
-import { cp, access, mkdir, readdir } from "node:fs/promises";
+import { cp, access, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -73,6 +73,28 @@ function dirMergeStep(sourceDir, targetDir) {
       for (const entry of await readdir(sourceDir)) {
         await cp(path.join(sourceDir, entry), path.join(targetDir, entry), { recursive: true, force: true });
       }
+    },
+  };
+}
+
+// Ensures CLAUDE.md starts with an `@AGENTS.md` import instead of writing a
+// second, competing copy of the philosophy — the same bridge this repo's own
+// apps/site/CLAUDE.md already uses. Never destructive: if CLAUDE.md doesn't
+// exist yet it's created with just the import line; if it exists and already
+// has the import, apply() is a no-op; otherwise the import is prepended
+// above whatever's already there, so nothing a user wrote is lost. Because
+// it never overwrites, this step has no real conflict state — `conflict()`
+// always returns null, unlike fileStep/dirStep/dirMergeStep above.
+function claudeMdImportStep(cwd) {
+  const target = path.join(cwd, "CLAUDE.md");
+  return {
+    conflict: async () => null,
+    apply: async () => {
+      const existing = (await exists(target)) ? await readFile(target, "utf8") : "";
+      if (existing.includes("@AGENTS.md")) return;
+      const body = existing.trim().length > 0 ? `@AGENTS.md\n\n${existing}` : "@AGENTS.md\n";
+      await mkdir(path.dirname(target), { recursive: true });
+      await writeFile(target, body);
     },
   };
 }
@@ -158,23 +180,61 @@ const TARGETS = {
   },
 };
 
+// The one combination of targets that's actually a coherent single install
+// rather than a mistake: Claude Code's own Skill format plus the AGENTS.md
+// standard the rest of the industry (Codex CLI, Amp, Cursor, Gemini CLI,
+// Jules, Aider, Zed, Windsurf, Devin, ...) converges on. Claude Code itself
+// still doesn't read AGENTS.md natively, so without this bridge a project
+// has to pick one — this installs both plus the CLAUDE.md import that makes
+// Claude Code read the AGENTS.md content too. Global Claude installs are
+// deliberately not offered a bridge: AGENTS.md is inherently per-repo, and
+// mixing a home-directory skill with a cwd-scoped AGENTS.md would be a
+// confused scope, not a real install target.
+const BRIDGES = {
+  "project+agentsMd": {
+    keys: ["project", "agentsMd"],
+    steps: (cwd) => [...TARGETS.project.steps(cwd), ...TARGETS.agentsMd.steps(cwd), claudeMdImportStep(cwd)],
+    hint:
+      "Claude Code picks up .claude/skills/dsgn automatically, and CLAUDE.md now starts with an " +
+      "@AGENTS.md import — the same bridge this repo's own apps/site/CLAUDE.md uses — so the two " +
+      "formats stay driven by one file instead of drifting apart. Other AGENTS.md-aware tools read " +
+      "./AGENTS.md directly.",
+  },
+};
+
+function findBridge(requestedKeys) {
+  return Object.values(BRIDGES).find(
+    (bridge) => bridge.keys.length === requestedKeys.length && bridge.keys.every((key) => requestedKeys.includes(key)),
+  );
+}
+
 export async function skill(cwd, flags = {}) {
   const requested = Object.keys(TARGETS).filter((key) => flags[key]);
 
   if (requested.length === 0) {
     throw new Error(
       "Specify a target: --global or --project for Claude Code; --cursor; --windsurf or " +
-        "--windsurf-global; --copilot; --gemini or --gemini-global; or --agents-md.",
-    );
-  }
-  if (requested.length > 1) {
-    throw new Error(
-      `Pass only one target at a time, not ${requested.map((key) => TARGETS[key].flag).join(" and ")}.`,
+        "--windsurf-global; --copilot; --gemini or --gemini-global; or --agents-md. " +
+        "(--project --agents-md together installs the bridged combo.)",
     );
   }
 
-  const target = TARGETS[requested[0]];
-  const steps = target.steps(cwd);
+  let steps;
+  let hint;
+  if (requested.length === 1) {
+    const target = TARGETS[requested[0]];
+    steps = target.steps(cwd);
+    hint = target.hint;
+  } else {
+    const bridge = findBridge(requested);
+    if (!bridge) {
+      throw new Error(
+        `Pass only one target at a time, not ${requested.map((key) => TARGETS[key].flag).join(" and ")}.`,
+      );
+    }
+    steps = bridge.steps(cwd);
+    hint = bridge.hint;
+  }
 
   if (!flags.overwrite) {
     for (const step of steps) {
@@ -192,5 +252,5 @@ export async function skill(cwd, flags = {}) {
   }
 
   console.log("Installed the dsgn Agent Skill.");
-  console.log(target.hint);
+  console.log(hint);
 }

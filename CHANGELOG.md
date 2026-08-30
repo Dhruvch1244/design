@@ -5,6 +5,19 @@ documented here, in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format. The registry and site aren't independently versioned — they're
 covered under **Registry** below, dated by when they actually shipped.
 
+## [0.7.0] — 2026-08-29
+
+### Added
+
+- `dsgn skill --project --agents-md` now installs a bridged combo instead of
+  rejecting the pair as two targets: `.claude/skills/dsgn/` and `./AGENTS.md`
+  both land as usual, and `CLAUDE.md` is made to start with an `@AGENTS.md`
+  import (prepended above any existing content, never overwriting it) — the
+  same pattern this repo's own `apps/site/CLAUDE.md` already uses. Closes
+  the gap where Claude Code, still the one major AGENTS.md holdout, and the
+  rest of the AGENTS.md-reading ecosystem needed two separate installs
+  driven by two different source files.
+
 ## [0.6.0] — 2026-08-29
 
 ### Changed
@@ -201,3 +214,8 @@ doesn't require a CLI release to take effect for `dsgn add`.
   (all 4 `side` positions), Dialog (a destructive-confirm variant next to
   the original), Separator (vertical orientation), and Progress (3
   values). `/best-practices` added to the main nav.
+- **2026-08-29** — 2 more composed recipes added (`empty-state-cta`,
+  `billing-summary`), installable via `dsgn add recipe:<name>` (5 recipes
+  total). Root README now states explicitly why the registry stays on
+  Radix primitives rather than following `shadcn init`'s July 2026 switch
+  to Base UI as its default, instead of leaving the choice unstated.

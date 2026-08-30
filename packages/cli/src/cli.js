@@ -28,6 +28,7 @@ Usage:
   npx @dhruvchoudhary/dsgn skill --gemini         Gemini CLI context, this project (./GEMINI.md + ./.gemini/dsgn/)
   npx @dhruvchoudhary/dsgn skill --gemini-global  Gemini CLI context, every project (~/.gemini/GEMINI.md + ~/.gemini/dsgn/)
   npx @dhruvchoudhary/dsgn skill --agents-md      Flattened skill doc, this project (./AGENTS.md — Codex CLI, Amp, ...)
+  npx @dhruvchoudhary/dsgn skill --project --agents-md  Both, bridged: CLAUDE.md gets an @AGENTS.md import so Claude Code reads it too
 
 Options:
   --registry <url-or-path>      Registry to read from (default: ${`https://design.dhruvchoudhary.com/r`})

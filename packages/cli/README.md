@@ -35,7 +35,8 @@ npx @dhruvchoudhary/dsgn add recipe:auth-form
 ```
 
 Available recipes: `auth-form` (sign-in card), `settings-panel`
-(preferences screen), `pricing-tiers` (3-tier plan layout).
+(preferences screen), `pricing-tiers` (3-tier plan layout), `empty-state-cta`
+(no-projects-yet panel), `billing-summary` (plan/usage card).
 
 ## Tracking upstream changes
 
@@ -103,6 +104,25 @@ npx @dhruvchoudhary/dsgn skill --gemini-global    # ~/.gemini/GEMINI.md + ~/.gem
 npx @dhruvchoudhary/dsgn skill --agents-md        # ./AGENTS.md — Codex CLI, Amp, ... (single flattened file)
 ```
 
+### Claude Code + AGENTS.md, bridged
+
+Claude Code doesn't read `AGENTS.md` natively — it reads `CLAUDE.md`. Passing
+`--project` and `--agents-md` together installs both and bridges them, instead
+of making you pick one:
+
+```sh
+npx @dhruvchoudhary/dsgn skill --project --agents-md
+```
+
+This writes `.claude/skills/dsgn/` and `./AGENTS.md` exactly as the two flags
+would separately, then makes sure `CLAUDE.md` starts with an `@AGENTS.md`
+import — the same pattern this repo's own `apps/site/CLAUDE.md` uses. The
+import is prepended above whatever's already in `CLAUDE.md`, never replaces
+it, and running the command again is a no-op if the import is already there.
+Every other AGENTS.md-aware tool (Codex CLI, Amp, Gemini CLI, Cursor, Zed,
+Windsurf, Devin, ...) keeps reading `./AGENTS.md` directly, unaffected by the
+bridge.
+
 - **Cursor** reads each file's own `description` frontmatter and
   auto-attaches the relevant one automatically — the closest real
   equivalent to Claude Code's sub-agent dispatch any of these tools has.
@@ -139,6 +159,7 @@ write *before* writing any of them, so an install never lands half-applied.
 | `snippets` | Add VS Code snippets for every registry component |
 | `skill --global` / `--project` | Install the dsgn Claude Code Agent Skill |
 | `skill --cursor` / `--windsurf[-global]` / `--copilot` / `--gemini[-global]` / `--agents-md` | Install the skill for another AI tool |
+| `skill --project --agents-md` | Both, bridged — `CLAUDE.md` gets an `@AGENTS.md` import so Claude Code reads it too |
 
 ## Options
 

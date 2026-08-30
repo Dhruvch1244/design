@@ -284,6 +284,50 @@ test("skill: --gemini-global installs ~/.gemini/GEMINI.md + ~/.gemini/dsgn with 
   });
 });
 
+// --- Claude Code + AGENTS.md bridge -------------------------------------------
+
+test("skill: --project --agents-md installs both and bridges CLAUDE.md with an @AGENTS.md import", async (t) => {
+  const { dir, cleanup } = await makeSandbox();
+  t.after(cleanup);
+
+  await skill(dir, { project: true, agentsMd: true });
+
+  assert.ok(await exists(path.join(dir, ".claude", "skills", "dsgn", "SKILL.md")));
+  assert.ok(await exists(path.join(dir, "AGENTS.md")));
+
+  const claudeMd = await readFile(path.join(dir, "CLAUDE.md"), "utf8");
+  assert.match(claudeMd, /^@AGENTS\.md/);
+});
+
+test("skill: the bridge prepends the import above an existing CLAUDE.md instead of replacing it", async (t) => {
+  const { dir, cleanup } = await makeSandbox();
+  t.after(cleanup);
+
+  await writeFile(path.join(dir, "CLAUDE.md"), "# Team-specific notes\n\nDon't touch the payments module.\n", "utf8");
+
+  await skill(dir, { project: true, agentsMd: true });
+
+  const claudeMd = await readFile(path.join(dir, "CLAUDE.md"), "utf8");
+  assert.match(claudeMd, /^@AGENTS\.md/);
+  assert.match(claudeMd, /Don't touch the payments module\./);
+});
+
+test("skill: the bridge is idempotent — running it twice doesn't duplicate the import", async (t) => {
+  const { dir, cleanup } = await makeSandbox();
+  t.after(cleanup);
+
+  await skill(dir, { project: true, agentsMd: true, overwrite: true });
+  await skill(dir, { project: true, agentsMd: true, overwrite: true });
+
+  const claudeMd = await readFile(path.join(dir, "CLAUDE.md"), "utf8");
+  const occurrences = claudeMd.split("@AGENTS.md").length - 1;
+  assert.equal(occurrences, 1);
+});
+
+test("skill: unsupported target combos still reject (global+project is not a bridge)", async (t) => {
+  await assert.rejects(() => skill("/irrelevant", { global: true, agentsMd: true }), /Pass only one target at a time/);
+});
+
 // --- shared non-destructive behavior -----------------------------------------
 
 test("skill: multi-step targets are non-destructive by default, --overwrite replaces them", async (t) => {
