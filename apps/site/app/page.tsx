@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Link } from "@/components/link";
 import { Button } from "@/components/dsgn/button";
 import { Badge } from "@/components/dsgn/badge";
@@ -7,6 +8,7 @@ import { Reveal } from "@/components/motion/reveal";
 import { Magnetic } from "@/components/motion/magnetic";
 import { CursorGlow } from "@/components/motion/cursor-glow";
 import { CopyButton } from "@/components/copy-button";
+import { SHOWCASE_SITES } from "@/lib/showcase-sites";
 
 const PILLARS = [
   {
@@ -48,6 +50,18 @@ const PILLARS = [
 ] as const;
 
 const INSTALL_CMD = "npx @dhruvchoudhary/dsgn add button card";
+
+// Excerpt only — the full prompt (verbatim, no edits) is in the showcase
+// repo's README and its first commit message. Featured here is real, since
+// it's what actually shipped Halyard; it's just not the whole 500+ word
+// brief this homepage doesn't have room for.
+const SHOWCASE_PROMPT_EXCERPT =
+  "Build a standalone showcase/demo site that proves out dsgn... " +
+  "The goal is a real, working example of what someone gets when they " +
+  "install dsgn into a fresh project — this will eventually be " +
+  "screenshotted and used to advertise the tool alongside the " +
+  "prompt/skill that built it, so it needs to actually look good, not " +
+  "just function.";
 
 // Real, live badge data — apps/site/scripts/generate-badge-data.mjs writes
 // this from the actual registry item count at every build, so this markdown
@@ -173,6 +187,56 @@ export default function Home() {
           </Reveal>
         ))}
       </section>
+
+      <Reveal>
+        <CursorGlow className="mt-8 rounded-[2rem] py-4">
+          <Eyebrow>Built with dsgn, not just demoed with it</Eyebrow>
+          <h2 className="mt-6 font-display text-3xl uppercase leading-tight tracking-wide sm:text-4xl">
+            One prompt. A real app.
+          </h2>
+          <p className="mt-4 max-w-2xl text-muted-foreground">
+            {SHOWCASE_SITES.length === 1 ? "Halyard" : `${SHOWCASE_SITES.length} sites`} — a
+            genuine external project, installing this registry from npm like any other consumer,
+            shipped from a single prompt to a design-focused Claude Code agent.
+          </p>
+
+          <div className="mt-10 grid gap-8 md:grid-cols-2 md:items-center">
+            <Link href={SHOWCASE_SITES[0].liveHref} className="block">
+              <Frame className="overflow-hidden p-0" glow>
+                <div className="relative aspect-[8/5] w-full bg-muted">
+                  <Image
+                    src={SHOWCASE_SITES[0].screenshot}
+                    alt={`${SHOWCASE_SITES[0].name} — ${SHOWCASE_SITES[0].tagline}`}
+                    fill
+                    sizes="(min-width: 768px) 40vw, 100vw"
+                    className="object-cover object-top transition-transform duration-500 ease-fluid hover:scale-[1.02]"
+                  />
+                </div>
+              </Frame>
+            </Link>
+
+            <div>
+              <p className="font-mono text-xs text-muted-foreground">the prompt, verbatim</p>
+              <blockquote className="mt-3 border-l-2 border-accent/40 pl-4 text-sm italic text-muted-foreground">
+                &ldquo;{SHOWCASE_PROMPT_EXCERPT}&rdquo;
+              </blockquote>
+              <div className="mt-6 flex flex-wrap items-center gap-4">
+                <Magnetic>
+                  <Button asChild variant="accent" className="rounded-full px-6">
+                    <Link href="/showcase">See the showcase</Link>
+                  </Button>
+                </Magnetic>
+                <Link
+                  href={SHOWCASE_SITES[0].liveHref}
+                  className="text-sm text-muted-foreground hover:text-accent hover:underline"
+                >
+                  View {SHOWCASE_SITES[0].name} live →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </CursorGlow>
+      </Reveal>
     </div>
   );
 }
