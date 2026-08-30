@@ -161,6 +161,21 @@ export function Nav() {
           )}
           style={{ transitionDelay: open ? "325ms" : "0ms" }}
         >
+          <button
+            type="button"
+            aria-label="Open command palette"
+            onClick={() => {
+              setOpen(false);
+              window.dispatchEvent(new CustomEvent("cmdk:open"));
+            }}
+            className="flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-xs text-muted-foreground transition-colors duration-300 ease-fluid hover:border-accent hover:text-accent"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3.5 w-3.5">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.2-3.2" />
+            </svg>
+            Search
+          </button>
           <ThemeToggle />
           <PalettePicker />
         </div>

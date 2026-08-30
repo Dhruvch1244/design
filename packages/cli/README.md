@@ -36,7 +36,13 @@ npx @dhruvchoudhary/dsgn add recipe:auth-form
 
 Available recipes: `auth-form` (sign-in card), `settings-panel`
 (preferences screen), `pricing-tiers` (3-tier plan layout), `empty-state-cta`
-(no-projects-yet panel), `billing-summary` (plan/usage card).
+(no-projects-yet panel), `billing-summary` (plan/usage card), `team-members`
+(role-badged member list with a per-row actions menu), `notification-list`
+(unread-count notification feed), `onboarding-checklist` (step checklist
+with progress).
+
+Run `dsgn list --recipes` (or `--recipes --json` for machine-readable
+output) to see the full, always-current list from the registry itself.
 
 ## Tracking upstream changes
 
@@ -152,7 +158,8 @@ write *before* writing any of them, so an install never lands half-applied.
 | `init` | Create `dsgn.config.json` in the current project |
 | `add <component...>` | Copy one or more components into your project |
 | `add recipe:<name>` | Copy a composed multi-component pattern |
-| `list` | Show every component available in the registry |
+| `list` / `list --recipes` | Show every component or recipe available in the registry |
+| `list --json` | Same data as machine-readable JSON (combine with `--recipes`) |
 | `diff <component...>` | Show how an installed component differs from the registry |
 | `update <component...>` | Pull the current registry version into your project |
 | `doctor` | Health-check installed files (missing, modified, a11y) |

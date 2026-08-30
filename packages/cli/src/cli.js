@@ -15,6 +15,7 @@ Usage:
   npx @dhruvchoudhary/dsgn add recipe:<name>    Copy a composed multi-component pattern (e.g. recipe:auth-form)
   npx @dhruvchoudhary/dsgn list                 Show every component available in the registry
   npx @dhruvchoudhary/dsgn list --recipes       Show every composed recipe available in the registry
+  npx @dhruvchoudhary/dsgn list --json          Same data as machine-readable JSON (combine with --recipes)
   npx @dhruvchoudhary/dsgn diff <component...>  Show how an installed component differs from the registry
   npx @dhruvchoudhary/dsgn update <component...> Pull the current registry version into your project
   npx @dhruvchoudhary/dsgn doctor               Health-check installed files (missing, modified, a11y)
@@ -45,6 +46,7 @@ Options:
   --gemini-global                Gemini CLI, every project (skill only)
   --agents-md                   Plain AGENTS.md, this project (skill only)
   --recipes                     Show recipes instead of components (list only)
+  --json                        Machine-readable output (list only)
   -h, --help                    Show this help
 `;
 
@@ -80,6 +82,8 @@ function parseArgs(argv) {
       args.flags.geminiGlobal = true;
     } else if (arg === "--recipes") {
       args.flags.recipes = true;
+    } else if (arg === "--json") {
+      args.flags.json = true;
     } else if (arg === "-h" || arg === "--help") {
       args.flags.help = true;
     } else {

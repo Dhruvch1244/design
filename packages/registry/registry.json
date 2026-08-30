@@ -244,6 +244,26 @@
       ]
     },
     {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "description": "Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis -- plain semantic nav/ol markup, no primitive library dependency.",
+      "dependencies": ["@radix-ui/react-slot"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/breadcrumb/breadcrumb.tsx", "target": "components/dsgn/breadcrumb.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "description": "Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis -- built on Button's own variants, no primitive library dependency.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils", "button"],
+      "files": [
+        { "path": "src/components/pagination/pagination.tsx", "target": "components/dsgn/pagination.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
       "name": "recipe-auth-form",
       "type": "registry:block",
       "description": "Recipe -- a real sign-in form composed from Card + Input + Checkbox + Button. Installed via `dsgn add recipe:auth-form`.",
@@ -291,6 +311,36 @@
       "registryDependencies": ["card", "badge", "progress", "button"],
       "files": [
         { "path": "src/recipes/billing-summary.tsx", "target": "components/dsgn/recipes/billing-summary.tsx", "type": "registry:block" }
+      ]
+    },
+    {
+      "name": "recipe-team-members",
+      "type": "registry:block",
+      "description": "Recipe -- a team members table with per-row role badge and actions menu, composed from Table + Avatar + Badge + DropdownMenu + Button. Installed via `dsgn add recipe:team-members`.",
+      "dependencies": [],
+      "registryDependencies": ["table", "avatar", "badge", "dropdown-menu", "button"],
+      "files": [
+        { "path": "src/recipes/team-members.tsx", "target": "components/dsgn/recipes/team-members.tsx", "type": "registry:block" }
+      ]
+    },
+    {
+      "name": "recipe-notification-list",
+      "type": "registry:block",
+      "description": "Recipe -- an unread-count notification feed composed from Card + Avatar + Badge. Installed via `dsgn add recipe:notification-list`.",
+      "dependencies": [],
+      "registryDependencies": ["card", "avatar", "badge"],
+      "files": [
+        { "path": "src/recipes/notification-list.tsx", "target": "components/dsgn/recipes/notification-list.tsx", "type": "registry:block" }
+      ]
+    },
+    {
+      "name": "recipe-onboarding-checklist",
+      "type": "registry:block",
+      "description": "Recipe -- a step checklist with progress, composed from Card + Progress + Checkbox. Installed via `dsgn add recipe:onboarding-checklist`.",
+      "dependencies": [],
+      "registryDependencies": ["card", "progress", "checkbox"],
+      "files": [
+        { "path": "src/recipes/onboarding-checklist.tsx", "target": "components/dsgn/recipes/onboarding-checklist.tsx", "type": "registry:block" }
       ]
     }
   ]
