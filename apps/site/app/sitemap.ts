@@ -19,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     })),
     { url: `${BASE}/examples/`, priority: 0.8 },
+    { url: `${BASE}/design-analytics/`, priority: 0.7 },
     { url: `${BASE}/theming/`, priority: 0.7 },
     { url: `${BASE}/skill/`, priority: 0.7 },
     { url: `${BASE}/best-practices/`, priority: 0.6 },

@@ -359,6 +359,128 @@
   --rule: #362463;
 }
 
+/*
+ * /design-analytics (Halyard) — a standalone showcase, not a voice a visitor
+ * picks from the nav. Scoped under its own attribute rather than reusing
+ * [data-voice="corporate"] so its exact brand values (its own blue, its own
+ * elevation shadows, Geist instead of the site's own fonts) stay fixed
+ * regardless of whatever voice/accent a visitor has picked for the rest of
+ * the site — same reasoning as [data-voice] itself, just one level more
+ * specific. Values copied verbatim from the standalone deployment's own
+ * app/globals.css (github.com/Dhruvch1244/dsgn-showcase-analytics). The
+ * --radius-sm..--radius-3xl and --color-* mappings below all already exist
+ * in the sitewide @theme inline block and read through --radius-scale/
+ * --void/--accent/etc. by name, so overriding just the raw values here is
+ * enough — no duplicate @theme block needed (Tailwind only allows one).
+ */
+[data-showcase="halyard"] {
+  --void: #fafafa;
+  --surface: #ffffff;
+  --ink: #111113;
+  --ink-soft: #5a5a5f;
+  --ink-faint: #8a8a8f;
+  --rule: #e4e4e7;
+
+  --blue: #2f5ecb;
+  --accent-ink: #ffffff;
+  --danger: #b3261e;
+  --danger-ink: #ffffff;
+
+  --background: var(--void);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--surface);
+  --secondary: #f4f4f5;
+  --secondary-foreground: var(--ink);
+  --accent: var(--blue);
+  --accent-foreground: var(--accent-ink);
+  --muted: #f4f4f5;
+  --muted-foreground: var(--ink-soft);
+  --destructive: var(--danger);
+  --destructive-foreground: var(--danger-ink);
+  --border: var(--rule);
+  --ring: var(--accent);
+  --radius-scale: 0.6;
+
+  --elev-tint: 0 0 0;
+  --shadow-xs: 0 1px 1px rgb(var(--elev-tint) / 0.03);
+  --shadow-sm: 0 1px 2px rgb(var(--elev-tint) / 0.05);
+  --shadow-md:
+    0 2px 4px -1px rgb(var(--elev-tint) / 0.05), 0 4px 12px -4px rgb(var(--elev-tint) / 0.07);
+  --shadow-lg:
+    0 4px 10px -3px rgb(var(--elev-tint) / 0.07), 0 16px 36px -12px rgb(var(--elev-tint) / 0.13);
+  --shadow-xl: var(--shadow-lg);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --ease-fluid: cubic-bezier(0.2, 0, 0, 1);
+}
+/* Tabular figures for any column of numbers compared against another —
+   proportional digits make the column visibly ragged. Scoped like
+   everything else above, not a sitewide utility. */
+[data-showcase="halyard"] .tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+[data-showcase="halyard"] [data-reveal] {
+  animation: halyard-reveal-in 220ms var(--ease-fluid) both;
+  animation-delay: calc(var(--reveal-index, 0) * 40ms);
+}
+[data-showcase="halyard"] [data-wipe] {
+  transform-origin: left center;
+  animation: halyard-wipe-in 240ms var(--ease-fluid) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-showcase="halyard"] [data-reveal],
+  [data-showcase="halyard"] [data-wipe] {
+    animation: none;
+  }
+}
+[data-showcase="halyard"][data-theme="dark"] {
+  --void: #0a0a0b;
+  --surface: #111113;
+  --ink: #f5f5f5;
+  --ink-soft: #a0a0a5;
+  --ink-faint: #6b6b70;
+  --rule: #232326;
+
+  --blue: #7aa2f7;
+  --accent-ink: #0a0a0b;
+  --danger: #d13438;
+  --danger-ink: #ffffff;
+
+  --secondary: #1a1a1d;
+  --muted: #17171a;
+
+  --shadow-xs: 0 1px 1px rgb(var(--elev-tint) / 0.3);
+  --shadow-sm: 0 1px 2px rgb(var(--elev-tint) / 0.4);
+  --shadow-md:
+    0 2px 4px -1px rgb(var(--elev-tint) / 0.4), 0 4px 12px -4px rgb(var(--elev-tint) / 0.5);
+  --shadow-lg:
+    0 4px 10px -3px rgb(var(--elev-tint) / 0.45), 0 16px 36px -12px rgb(var(--elev-tint) / 0.7);
+  --shadow-xl: var(--shadow-lg);
+}
+@keyframes halyard-reveal-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes halyard-wipe-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
