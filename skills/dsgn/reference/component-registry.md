@@ -66,7 +66,8 @@ as a dependency of any component that needs it.
 - `variant`: `primary` · `secondary` · `accent` · `glow` (permanently-glowing
   accent, for the one CTA per view that should read as "the" action) ·
   `soft` (tinted fill, a step down from `accent` without dropping to a bare
-  outline) · `outline` · `ghost` · `link`
+  outline) · `outline` · `ghost` · `link` · `destructive` (what
+  `AlertDialogAction` builds on)
 - `size`: `xs` · `sm` · `md` · `lg` · `xl` · `icon` · `icon-sm` · `icon-lg`
 - `asChild`: renders via Radix `Slot` (e.g. `<Button asChild><Link
   href="/x">...</Link></Button>`) — `leftIcon`/`rightIcon` have no effect
@@ -144,11 +145,16 @@ via context unless a given item overrides it): `default` · `sm` · `lg` — plu
 whatever `type`/`value` props `@radix-ui/react-toggle-group`'s own `Root`
 takes (`single` vs `multiple` selection).
 
-**Slider**: a single `Slider` component — no custom props beyond Radix's
-own `SliderPrimitive.Root` props (`value`/`defaultValue`, `min`, `max`,
-`step`, etc.). Renders one `Thumb` per entry in `value`/`defaultValue`, so
-the same component covers both a single-handle slider (`[60]`) and a range
-slider (`[20, 80]`) without a separate API.
+**Slider**: a single `Slider` component, Radix's own `SliderPrimitive.Root`
+props (`value`/`defaultValue`, `min`, `max`, `step`, etc.) plus one custom
+prop, `thumbLabels?: string[]`. Renders one `Thumb` per entry in
+`value`/`defaultValue`, so the same component covers both a single-handle
+slider (`[60]`) and a range slider (`[20, 80]`) without a separate API —
+but Radix puts `role="slider"` on each `Thumb`, not `Root`, so a plain
+`aria-label` only reaches assistive tech for a single-thumb slider (applied
+to that one `Thumb` automatically). A range slider has more than one
+labelable control and no single name can describe both — use `thumbLabels`
+(e.g. `["Minimum price", "Maximum price"]`) to give each thumb its own.
 
 **Collapsible**: `Collapsible`, `CollapsibleTrigger`, `CollapsibleContent` —
 a bare, unstyled re-export of the Radix primitive (no CVA, no default
