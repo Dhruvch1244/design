@@ -34,6 +34,8 @@ packages/registry/      Source-of-truth components (React + Tailwind + CVA)
 packages/cli/            The dsgn CLI (npm: @dhruvchoudhary/dsgn) — copies registry components into a project
 apps/site/                Next.js site: renders philosophy/, showcases components,
                             and serves the registry as static JSON at /r/*.json
+skills/dsgn/               Claude Code Agent Skill — build/restyle UI in 7 voices
+skills/dsgn-adopt/         Sibling skill — extract an existing repo's own real conventions
 scripts/sync-registry.mjs  Builds the registry and copies it into apps/site/public/r
 ```
 
@@ -114,6 +116,27 @@ a decision, not an oversight:
   Cult UI) moves that Radix-based components start feeling like the outlier
   choice rather than the safe one. Until then, staying put is the considered
   call, made explicitly here so it doesn't read as staleness.
+
+## Agent Skills
+
+Two Claude Code Agent Skills live under `skills/`, for two different
+situations:
+
+- **`skills/dsgn/`** — build or restyle UI using this repo's own philosophy,
+  registry, and one of 7 style voices (glass-dark-cyan, editorial-warm,
+  brutalist-mono, soft-minimal, neon-cyberpunk, corporate, startup). Install
+  via `npx @dhruvchoudhary/dsgn skill --project` (or `--global`,
+  `--cursor`, `--windsurf`, `--copilot`, `--gemini`, `--agents-md` — see
+  `packages/cli/README.md`). Best for a fresh scaffold, or a restyle the
+  user actually asked for.
+- **`skills/dsgn-adopt/`** — the opposite situation: a codebase that
+  *already* has real, shipped UI conventions of its own. Extracts what's
+  actually there (real component variant names, the real primitive library,
+  real design tokens — never invented, every claim cites a file) into a
+  portable skill file for that project, so new work matches the existing
+  convention instead of silently introducing a competing one. Not yet
+  bundled through the CLI's `skill` command — copy `skills/dsgn-adopt/`
+  directly for now (see `skills/dsgn-adopt/README.md`).
 
 ## Roadmap
 

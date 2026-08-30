@@ -1,6 +1,6 @@
 ---
 name: dsgn
-description: Build UI with the real @dhruvchoudhary/dsgn component registry and the dhruvch1244/design philosophy, in one of five distinct visual voices, routed automatically by project context or explicit request.
+description: Build UI with the real @dhruvchoudhary/dsgn component registry and the dhruvch1244/design philosophy, in one of seven distinct visual voices, routed automatically by project context or explicit request.
 ---
 
 # dsgn — design-philosophy-driven UI builder
@@ -28,7 +28,11 @@ or when the user explicitly asks for one of the seven voices below by name.
 
 Don't use it to override an established, working design system already in
 place in the target project unless the user asks for a restyle. This skill
-is additive, not a replacement for a project's existing conventions.
+is additive, not a replacement for a project's existing conventions. If the
+target project already has real, shipped UI but no documented conventions
+of its own, use the sibling `dsgn-adopt` skill first — it extracts what's
+actually there into a portable skill file, rather than this skill's voices
+silently competing with a style the project already committed to.
 
 ## The seven style agents
 

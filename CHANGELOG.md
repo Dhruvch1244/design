@@ -312,3 +312,22 @@ doesn't require a CLI release to take effect for `dsgn add`.
   variant), in both `packages/registry/src/components/command/command.tsx`
   (the shipped registry source) and the site's own installed copy —
   verified visually via the Chrome extension against the dev server.
+- **2026-08-30** — New sibling skill, `skills/dsgn-adopt/`, for the reverse
+  situation from `skills/dsgn/`: instead of building UI from this repo's
+  own philosophy/registry/voices, it extracts an *existing* codebase's own
+  real, already-shipped UI conventions (component variant names, primitive
+  library, styling approach, design tokens) into a portable skill file for
+  that project — grounded in real files it actually read, never invented,
+  the same discipline `philosophy/AGENTS.md` holds itself to. Verified by
+  hand against a real, unrelated Next.js + Base UI + shadcn codebase (not
+  one of this repo's own dependencies): correctly identified Base UI over
+  Radix, the repo's real 6-variant Button vocabulary (no `accent` variant),
+  its `data-slot` convention, and its OKLCH token system — all things a
+  training-data-default guess would have gotten wrong. Not yet bundled
+  through the CLI's `skill` command (that command's targets and
+  `scripts/sync-skill.mjs`'s per-tool builds are scoped to the voice-router
+  skill specifically) — copy the directory directly for now. Also fixed two
+  stale "five voices" references missed in the corporate/startup pass
+  earlier this session: `skills/dsgn/SKILL.md`'s own frontmatter
+  `description`, and `skills/dsgn/README.md` (which also still claimed "no
+  automated sync" despite `scripts/sync-skill.mjs` existing).
