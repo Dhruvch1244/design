@@ -27,6 +27,18 @@ function rewriteImportsForConsumers(source) {
     .replace(
       /from\s+["'](?:\.\.\/)+components\/([a-z-]+)\/\1["']/g,
       'from "@/components/dsgn/$1"',
+    )
+    // Components (src/components/*) that depend on a sibling component import
+    // it directly by src/ location too (e.g. combobox importing
+    // "../button/button"); once copied into a consumer project every
+    // component lands flat in components/dsgn/, so this needs the same
+    // rewrite as the recipe case above, just without the "components/"
+    // segment in the source-relative path. Caught by dogfooding dsgn into a
+    // real consumer project — combobox, alert-dialog, and pagination all
+    // shipped this unresolved.
+    .replace(
+      /from\s+["'](?:\.\.\/)+([a-z-]+)\/\1["']/g,
+      'from "@/components/dsgn/$1"',
     );
 }
 
