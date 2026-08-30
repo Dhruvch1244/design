@@ -272,6 +272,26 @@
       "files": [
         { "path": "src/recipes/pricing-tiers.tsx", "target": "components/dsgn/recipes/pricing-tiers.tsx", "type": "registry:block" }
       ]
+    },
+    {
+      "name": "recipe-empty-state-cta",
+      "type": "registry:block",
+      "description": "Recipe -- a \"no projects yet\" panel composed from EmptyState + Button. Installed via `dsgn add recipe:empty-state-cta`.",
+      "dependencies": [],
+      "registryDependencies": ["empty-state", "button"],
+      "files": [
+        { "path": "src/recipes/empty-state-cta.tsx", "target": "components/dsgn/recipes/empty-state-cta.tsx", "type": "registry:block" }
+      ]
+    },
+    {
+      "name": "recipe-billing-summary",
+      "type": "registry:block",
+      "description": "Recipe -- a plan/usage summary composed from Card + Badge + Progress + Button. Installed via `dsgn add recipe:billing-summary`.",
+      "dependencies": [],
+      "registryDependencies": ["card", "badge", "progress", "button"],
+      "files": [
+        { "path": "src/recipes/billing-summary.tsx", "target": "components/dsgn/recipes/billing-summary.tsx", "type": "registry:block" }
+      ]
     }
   ]
 }

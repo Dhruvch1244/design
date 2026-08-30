@@ -84,6 +84,32 @@ global cap, etc).
    needs — e.g. `utils`).
 3. Run `npm run sync-registry` and check it on `/components` locally.
 
+## Primitive layer: Radix, not Base UI
+
+Every interactive component in `packages/registry` (`dialog`, `select`,
+`tabs`, `dropdown-menu`, `accordion`, `popover`, `tooltip`, ...) is built on
+`@radix-ui/react-*`, not [Base UI](https://base-ui.com) — even though
+`shadcn init` has defaulted new projects to Base UI since July 2026. This is
+a decision, not an oversight:
+
+- **23 shipped components are already Radix-shaped.** Every one of them,
+  plus the five recipes in `packages/registry/src/recipes`, would need to be
+  rebuilt and re-verified against Base UI's different prop/slot API. That's
+  real regression risk for zero user-facing benefit until Base UI's own
+  ecosystem (docs, community examples, third-party registries built on it)
+  matches what Radix already has.
+- **`dsgn add` copies source, it doesn't pin a version.** Once a component
+  lands in a consuming project, the primitive underneath it is that
+  project's problem, not an upgrade this registry can force later. Migrating
+  the source of truth doesn't retroactively move anyone who already ran
+  `dsgn add`.
+- **This is a tracked decision, not a default nobody looked at.** Revisit it
+  if Base UI's accessibility/behavior parity with Radix becomes clearly
+  superior, or if enough of the shadcn-compatible ecosystem (Kibo UI, 21st.dev,
+  Cult UI) moves that Radix-based components start feeling like the outlier
+  choice rather than the safe one. Until then, staying put is the considered
+  call, made explicitly here so it doesn't read as staleness.
+
 ## Roadmap
 
 The JS/TS version (this repo) is deliberately first and complete before
