@@ -655,7 +655,7 @@ export const COMPONENT_DEMOS: Record<string, () => React.ReactNode> = {
     <Frame>
       <div className="max-w-sm space-y-8">
         <Slider defaultValue={[60]} max={100} step={1} aria-label="Volume" />
-        <Slider defaultValue={[20, 80]} max={100} step={1} aria-label="Price range" />
+        <Slider defaultValue={[20, 80]} max={100} step={1} thumbLabels={["Minimum price", "Maximum price"]} />
       </div>
     </Frame>
   ),
