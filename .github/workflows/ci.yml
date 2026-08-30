@@ -30,6 +30,19 @@ jobs:
       - name: Lint registry for site-specific token leaks
         run: npm run lint:registry-tokens
 
+      # Rewrites src/'s relative imports to the @/ alias consumers actually
+      # have (see build-registry.mjs) and writes the result to dist/r — the
+      # next step lints exactly that output, not src/, since a relative
+      # import that resolves fine in src/ can still be broken once flattened
+      # into a consumer's components/dsgn/ directory. See
+      # scripts/lint-registry-imports.mjs for the incident this guards
+      # against (alert-dialog, combobox, and pagination all shipped broken).
+      - name: Build registry
+        run: npm run build:registry
+
+      - name: Lint built registry for unresolved relative imports
+        run: npm run lint:registry-imports
+
       # The CLI's own test suite otherwise only runs at publish time
       # (publish-cli.yml, gated on a version-bump push to main) — nothing
       # previously ran it on a pull request, so a PR could break `dsgn add`,

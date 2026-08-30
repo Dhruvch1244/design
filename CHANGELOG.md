@@ -380,3 +380,23 @@ doesn't require a CLI release to take effect for `dsgn add`.
   primitive, and each would need its own new third-party dependency
   (`react-day-picker`, `@tanstack/react-table`, `react-resizable-panels`,
   `input-otp`) this registry doesn't currently carry.
+- **2026-08-30** — Fixed a real, live bug: `alert-dialog`, `combobox`, and
+  `pagination` each imported a sibling component by its `src/` location
+  (e.g. combobox's `from "../button/button"`), and
+  `build-registry.mjs`'s `rewriteImportsForConsumers` only ever rewrote the
+  recipe shape (`../components/<name>/<name>`), never the plain
+  component-to-component shape. `packages/registry`'s own `tsc --noEmit`
+  never caught it — it typechecks `src/`, where those relative imports are
+  still correctly resolvable on disk; the bug only exists once the build
+  step flattens every component into one `components/dsgn/` directory for
+  a consumer. Confirmed live and broken on the deployed registry before the
+  fix (`curl https://design.dhruvchoudhary.com/r/combobox.json` shipped the
+  unresolved import verbatim) — any real `npx @dhruvchoudhary/dsgn add
+  alert-dialog`, `add combobox`, or `add pagination` got a file that
+  couldn't build. Found by dogfooding: installing dsgn into a real,
+  separate showcase project via the actual CLI, not the internal site.
+  Fixed the regex, and added a new permanent check,
+  `scripts/lint-registry-imports.mjs` (wired into `ci.yml` right after
+  `build:registry`), that scans the *built* `dist/r/*.json` output —
+  not `src/` — for any remaining unresolved relative import, so this
+  specific failure class can't ship silently again.
