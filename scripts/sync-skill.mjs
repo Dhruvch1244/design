@@ -22,7 +22,7 @@
 //   skill/copilot/           copilot-instructions.md (router + philosophy +
 //                            registry + tokens + checklist) + instructions/
 //                            dsgn-<voice>.instructions.md — Copilot has no
-//                            description-based routing, so all 5 apply
+//                            description-based routing, so all 7 apply
 //                            together whenever their `applyTo` glob matches.
 //   skill/gemini/            project-GEMINI.md / global-GEMINI.md (differ
 //                            only in @import path prefix) + a shared
@@ -42,6 +42,7 @@ import { fileURLToPath } from "node:url";
 
 const repoRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const skillRoot = join(repoRoot, "skills", "dsgn");
+const adoptRoot = join(repoRoot, "skills", "dsgn-adopt");
 const outRoot = join(repoRoot, "packages", "cli", "skill");
 
 const AGENT_FILES = [
@@ -67,7 +68,7 @@ const REFERENCE_DESCRIPTIONS = {
   "philosophy-summary.md":
     "Condensed from philosophy/AGENTS.md — nine rules extracted from decisions that actually shipped in three real apps, not aspirational values.",
   "component-registry.md":
-    "The real 23 UI components plus utils, sourced from packages/registry/registry.json and each component's actual source — real prop names, real variants.",
+    "The real 31 UI components plus utils, sourced from packages/registry/registry.json and each component's actual source — real prop names, real variants.",
   "tokens.md":
     "The site's real CSS custom properties from apps/site/app/globals.css, and the raw-value to semantic-alias to Tailwind-token indirection every style agent reskins through.",
   "workflow-checklist.md":
@@ -108,6 +109,21 @@ async function buildClaude() {
     filter: (source) => !source.endsWith("global-summary.md"),
   });
   console.log(`Synced Claude Code skill into ${dest}`);
+}
+
+// ---------------------------------------------------------------------------
+// 1b. dsgn-adopt — Claude Code only for now (see skills/dsgn-adopt/README.md
+// for why: it's an on-demand procedure, not always-active persistent
+// context, which fits Claude Code's Skill-invocation model most naturally —
+// the other tools' formats are all built around the latter). Unchanged copy,
+// same shape as buildClaude() above.
+// ---------------------------------------------------------------------------
+async function buildAdopt() {
+  const dest = join(outRoot, "adopt");
+  await rm(dest, { recursive: true, force: true });
+  await mkdir(dirname(dest), { recursive: true });
+  await cp(adoptRoot, dest, { recursive: true });
+  console.log(`Synced dsgn-adopt skill into ${dest}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -266,7 +282,7 @@ async function buildWindsurf() {
 // 5. GitHub Copilot — copilot-instructions.md (repo-wide: router + inlined
 //    reference docs) + instructions/dsgn-<voice>.instructions.md, scoped via
 //    `applyTo` (the only frontmatter field the format documents — no
-//    description-based routing exists, so all 5 apply together whenever
+//    description-based routing exists, so all 7 apply together whenever
 //    their glob matches; that limitation is stated in the router text
 //    itself rather than papered over).
 // ---------------------------------------------------------------------------
@@ -364,6 +380,7 @@ async function buildGemini() {
 }
 
 await buildClaude();
+await buildAdopt();
 await buildFlat();
 await buildCursor();
 await buildWindsurf();

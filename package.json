@@ -13,5 +13,9 @@
     "sync-registry": "node scripts/sync-registry.mjs",
     "typecheck": "npm run typecheck --workspace @dsgn/registry",
     "lint:registry-tokens": "node scripts/lint-registry-tokens.mjs"
+  },
+  "dependencies": {
+    "@tailwindcss/oxide": "^4.3.3",
+    "lightningcss": "^1.33.0"
   }
 }

@@ -59,6 +59,31 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from "@/components/dsgn/pagination";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/dsgn/alert-dialog";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+  SheetClose,
+} from "@/components/dsgn/sheet";
+import { ToggleGroup, ToggleGroupItem } from "@/components/dsgn/toggle-group";
+import { Slider } from "@/components/dsgn/slider";
+import { ComboboxDemo } from "@/components/combobox-demo";
+import { ToastDemo } from "@/components/toast-demo";
 import { Frame } from "@/components/brand/frame";
 import { ComponentJumpCommand } from "@/components/component-jump-command";
 import { LazyMount } from "@/components/lazy-mount";
@@ -538,6 +563,88 @@ export const COMPONENT_DEMOS: Record<string, () => React.ReactNode> = {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
+    </Frame>
+  ),
+
+  "alert-dialog": () => (
+    <Frame>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant="destructive">Delete project</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete lyric-viewer?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This removes the case study and its assets. This action cannot be undone — unlike a
+              plain Dialog, this one can&rsquo;t be dismissed by clicking outside it.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </Frame>
+  ),
+
+  sheet: () => (
+    <Frame>
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="outline">Open filters</Button>
+        </SheetTrigger>
+        <SheetContent side="right">
+          <SheetHeader>
+            <SheetTitle>Filters</SheetTitle>
+            <SheetDescription>Narrow the component list by category.</SheetDescription>
+          </SheetHeader>
+          <div className="mt-6 space-y-3 text-sm text-muted-foreground">
+            <p>Same Dialog primitive underneath — edge-anchored instead of centered.</p>
+          </div>
+          <SheetFooter className="mt-6">
+            <SheetClose asChild>
+              <Button variant="outline">Close</Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+    </Frame>
+  ),
+
+  combobox: () => <ComboboxDemo />,
+
+  toast: () => <ToastDemo />,
+
+  "toggle-group": () => (
+    <Frame>
+      <ToggleGroup type="single" defaultValue="center">
+        <ToggleGroupItem value="left" aria-label="Align left">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4" strokeLinecap="round">
+            <path d="M4 6h16M4 12h10M4 18h13" />
+          </svg>
+        </ToggleGroupItem>
+        <ToggleGroupItem value="center" aria-label="Align center">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4" strokeLinecap="round">
+            <path d="M4 6h16M7 12h10M5 18h14" />
+          </svg>
+        </ToggleGroupItem>
+        <ToggleGroupItem value="right" aria-label="Align right">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4" strokeLinecap="round">
+            <path d="M4 6h16M10 12h10M7 18h13" />
+          </svg>
+        </ToggleGroupItem>
+      </ToggleGroup>
+    </Frame>
+  ),
+
+  slider: () => (
+    <Frame>
+      <div className="max-w-sm space-y-8">
+        <Slider defaultValue={[60]} max={100} step={1} aria-label="Volume" />
+        <Slider defaultValue={[20, 80]} max={100} step={1} aria-label="Price range" />
+      </div>
     </Frame>
   ),
 };

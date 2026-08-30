@@ -134,9 +134,9 @@ situations:
   actually there (real component variant names, the real primitive library,
   real design tokens — never invented, every claim cites a file) into a
   portable skill file for that project, so new work matches the existing
-  convention instead of silently introducing a competing one. Not yet
-  bundled through the CLI's `skill` command — copy `skills/dsgn-adopt/`
-  directly for now (see `skills/dsgn-adopt/README.md`).
+  convention instead of silently introducing a competing one. Install via
+  `npx @dhruvchoudhary/dsgn skill --adopt` (or `--adopt-global`) — Claude
+  Code only for now (see `skills/dsgn-adopt/README.md` for why).
 
 ## Roadmap
 

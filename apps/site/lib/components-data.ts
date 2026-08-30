@@ -78,4 +78,34 @@ export const COMPONENTS_DATA: ComponentEntry[] = [
     title: "Pagination",
     description: "Pagination, PaginationContent, PaginationLink, PaginationPrevious, PaginationNext — built on Button's own variants, no primitive dependency.",
   },
+  {
+    slug: "alert-dialog",
+    title: "Alert Dialog",
+    description: "Forces an explicit confirm/cancel choice for destructive actions — can't be dismissed by clicking outside, unlike a plain Dialog.",
+  },
+  {
+    slug: "sheet",
+    title: "Sheet",
+    description: "A slide-in panel anchored to an edge (top/right/bottom/left) — built on Radix Dialog, no new primitive dependency.",
+  },
+  {
+    slug: "combobox",
+    title: "Combobox",
+    description: "A searchable select, composed from Popover + Command + Button — no new primitive dependency.",
+  },
+  {
+    slug: "toast",
+    title: "Toast",
+    description: "An imperative toast() API + a <Toaster/> to mount once near the app root — built on Radix Toast.",
+  },
+  {
+    slug: "toggle-group",
+    title: "Toggle Group",
+    description: "A segmented control — single or multiple selection, built on Radix Toggle Group.",
+  },
+  {
+    slug: "slider",
+    title: "Slider",
+    description: "One Thumb per value — the same component covers both single-handle and range sliders.",
+  },
 ];

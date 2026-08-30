@@ -101,7 +101,7 @@ each tool's own format actually supports — not one flattened file
 everywhere:
 
 ```sh
-npx @dhruvchoudhary/dsgn skill --cursor           # ./.cursor/rules/dsgn/ (router + 5 agents + 4 reference docs)
+npx @dhruvchoudhary/dsgn skill --cursor           # ./.cursor/rules/dsgn/ (router + 7 agents + 4 reference docs)
 npx @dhruvchoudhary/dsgn skill --windsurf         # ./.windsurf/rules/dsgn-*.md (this project)
 npx @dhruvchoudhary/dsgn skill --windsurf-global  # ~/.windsurf/global_rules.md (every workspace, condensed)
 npx @dhruvchoudhary/dsgn skill --copilot          # ./.github/copilot-instructions.md + .github/instructions/dsgn-*.instructions.md
@@ -151,6 +151,26 @@ command — pass `--overwrite` if a target already exists and you want it
 replaced. Multi-file targets (Copilot, Gemini) check every file they'd
 write *before* writing any of them, so an install never lands half-applied.
 
+### dsgn-adopt — extract an existing codebase's own conventions
+
+The reverse of everything above: instead of applying this repo's own
+philosophy/registry/voices to a project, `dsgn-adopt` reads an **existing**
+codebase's real, already-shipped UI conventions (component variant names,
+the real primitive library, real design tokens) and writes them to a
+portable skill file for that project — grounded in files it actually read,
+never invented.
+
+```sh
+npx @dhruvchoudhary/dsgn skill --adopt          # this project only
+npx @dhruvchoudhary/dsgn skill --adopt-global   # every project
+```
+
+Claude Code only for now, unlike the voice-router skill above (no Cursor/
+Windsurf/Copilot/Gemini targets yet) — it's an on-demand procedure you run
+once per unfamiliar repo, not always-active persistent context, which fits
+Claude Code's Skill-invocation model more naturally than those other tools'
+always-loaded-rules formats.
+
 ## Commands
 
 | Command | What it does |
@@ -167,6 +187,7 @@ write *before* writing any of them, so an install never lands half-applied.
 | `skill --global` / `--project` | Install the dsgn Claude Code Agent Skill |
 | `skill --cursor` / `--windsurf[-global]` / `--copilot` / `--gemini[-global]` / `--agents-md` | Install the skill for another AI tool |
 | `skill --project --agents-md` | Both, bridged — `CLAUDE.md` gets an `@AGENTS.md` import so Claude Code reads it too |
+| `skill --adopt` / `--adopt-global` | Install the dsgn-adopt Skill — extracts an existing codebase's own real UI conventions |
 
 ## Options
 
@@ -185,6 +206,8 @@ write *before* writing any of them, so an install never lands half-applied.
 | `--gemini` | Install to `./GEMINI.md` + `./.gemini/dsgn/` (`skill` only) |
 | `--gemini-global` | Install to `~/.gemini/GEMINI.md` + `~/.gemini/dsgn/` (`skill` only) |
 | `--agents-md` | Install to `./AGENTS.md` (`skill` only) |
+| `--adopt` | Install dsgn-adopt to `./.claude/skills/dsgn-adopt` (`skill` only) |
+| `--adopt-global` | Install dsgn-adopt to `~/.claude/skills/dsgn-adopt` (`skill` only) |
 | `-h, --help` | Show help |
 
 ## What's in the registry

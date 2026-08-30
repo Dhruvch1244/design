@@ -178,6 +178,23 @@ const TARGETS = {
       "Applies to every Gemini CLI project. Replaces ~/.gemini/GEMINI.md in full — merge by hand " +
       "instead of using --overwrite if you already keep other global instructions there.",
   },
+  // dsgn-adopt is the reverse of every target above: instead of applying
+  // this repo's own voices to a blank/restyled project, it extracts an
+  // EXISTING codebase's own real conventions into a portable skill file for
+  // that project. Claude Code only for now — it's an on-demand procedure
+  // (run once per unfamiliar repo), not always-active persistent context,
+  // which fits Claude Code's Skill-invocation model more naturally than the
+  // other tools' always-loaded-rules formats. See skills/dsgn-adopt/README.md.
+  adopt: {
+    flag: "--adopt",
+    steps: (cwd) => [dirStep(bundled("adopt"), path.join(cwd, ".claude", "skills", "dsgn-adopt"))],
+    hint: "Claude Code picks it up automatically next session — nothing else to configure.",
+  },
+  adoptGlobal: {
+    flag: "--adopt-global",
+    steps: () => [dirStep(bundled("adopt"), path.join(os.homedir(), ".claude", "skills", "dsgn-adopt"))],
+    hint: "Claude Code picks it up automatically next session — nothing else to configure.",
+  },
 };
 
 // The one combination of targets that's actually a coherent single install
@@ -214,7 +231,8 @@ export async function skill(cwd, flags = {}) {
   if (requested.length === 0) {
     throw new Error(
       "Specify a target: --global or --project for Claude Code; --cursor; --windsurf or " +
-        "--windsurf-global; --copilot; --gemini or --gemini-global; or --agents-md. " +
+        "--windsurf-global; --copilot; --gemini or --gemini-global; --agents-md; or --adopt " +
+        "or --adopt-global for the dsgn-adopt skill. " +
         "(--project --agents-md together installs the bridged combo.)",
     );
   }

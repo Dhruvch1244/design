@@ -940,7 +940,7 @@ const REFERENCE_DOCS = [
   {
     file: "reference/component-registry.md",
     title: "Component registry",
-    body: "The real 23 UI components plus utils, sourced from packages/registry/registry.json and each component's actual source — real prop names, real variants.",
+    body: "The real 31 UI components plus utils, sourced from packages/registry/registry.json and each component's actual source — real prop names, real variants.",
   },
   {
     file: "reference/tokens.md",

@@ -1,7 +1,7 @@
 # Component registry
 
 Sourced from `packages/registry/registry.json` and the component source
-under `packages/registry/src/components/`. 25 real UI components plus one
+under `packages/registry/src/components/`. 31 real UI components plus one
 `utils` module — a mix of Radix UI primitives and plain styled native
 elements (see the "Radix primitive?" column below), wrapped with
 `class-variance-authority` (CVA) + a `cn()` helper (clsx + tailwind-merge)
@@ -19,7 +19,7 @@ consumer owns the file the moment it lands — editing it is expected, there is
 nothing to "eject" later. `utils` (the `cn()` helper) installs automatically
 as a dependency of any component that needs it.
 
-## The 25 components
+## The 31 components
 
 | Component | Radix primitive? | npm deps |
 |---|---|---|
@@ -48,6 +48,12 @@ as a dependency of any component that needs it.
 | `empty-state` | No — composed pattern | — |
 | `breadcrumb` | Slot only (`asChild` on `BreadcrumbLink`) | `@radix-ui/react-slot` |
 | `pagination` | No — built on `button`'s own CVA variants | `class-variance-authority` |
+| `alert-dialog` | Yes | `@radix-ui/react-alert-dialog` |
+| `sheet` | Yes (on `@radix-ui/react-dialog`, no new dep) | `@radix-ui/react-dialog` |
+| `combobox` | No — composes `button` + `popover` + `command` | (none new — reuses existing deps) |
+| `toast` | Yes | `@radix-ui/react-toast` |
+| `toggle-group` | Yes | `@radix-ui/react-toggle-group` |
+| `slider` | Yes | `@radix-ui/react-slider` |
 
 ## Real variant/prop signatures — don't invent props not listed here
 
@@ -96,6 +102,48 @@ markup, no primitive-library dependency.
 `PaginationLink` (`isActive`, `size`), `PaginationPrevious`,
 `PaginationNext`, `PaginationEllipsis` — built directly on `button`'s own
 CVA `buttonVariants`, no primitive-library dependency.
+
+**Alert Dialog**: `AlertDialog`, `AlertDialogTrigger`, `AlertDialogContent`,
+`AlertDialogHeader`, `AlertDialogFooter`, `AlertDialogTitle`,
+`AlertDialogDescription`, `AlertDialogAction`, `AlertDialogCancel` —
+`Action`/`Cancel` render via Button's own `buttonVariants` (`destructive` /
+`outline` respectively), not a separate className, so the confirm/cancel
+pair looks identical to every other button pair in the registry.
+
+**Sheet** (`side` on `SheetContent` only): `right` · `left` · `top` ·
+`bottom` (default `right`) — `Sheet`, `SheetTrigger`, `SheetClose`,
+`SheetContent`, `SheetHeader`, `SheetFooter`, `SheetTitle`,
+`SheetDescription`.
+
+**Combobox**: a single `Combobox` component (not a compound-component set),
+props `options: {value, label}[]`, `value?`, `onValueChange?`,
+`placeholder?`, `searchPlaceholder?`, `emptyText?`, `className?` — a
+composed pattern (Button + Popover + Command), not variant-based. Matches
+its Popover's width to the trigger via Radix's `--radix-popover-trigger-width`
+CSS var.
+
+**Toast**: `toast({ title?, description?, variant?, action? })` (imperative,
+callable from anywhere — not a hook-only API) plus a `<Toaster/>` mounted
+once, near the app root, that renders the actual `Toast`/`ToastViewport`
+elements as toasts get pushed. `variant`: `default` · `destructive`.
+`useToast()` also exposes `.toasts` and `.dismiss(id?)` for reading current
+state. `ToastViewport` is `position: fixed` and does not self-portal (it
+assumes root-level mounting, matching upstream convention) — nesting a
+`<Toaster/>` inside any ancestor with a non-`none` CSS `transform` (a
+scroll-reveal wrapper, e.g.) breaks its fixed-to-viewport positioning, since
+that transform creates a new containing block; portal it to `document.body`
+explicitly if that's unavoidable in a given tree.
+
+**Toggle Group** (`size` on `ToggleGroup`, inherited by every `ToggleGroupItem`
+via context unless a given item overrides it): `default` · `sm` · `lg` — plus
+whatever `type`/`value` props `@radix-ui/react-toggle-group`'s own `Root`
+takes (`single` vs `multiple` selection).
+
+**Slider**: a single `Slider` component — no custom props beyond Radix's
+own `SliderPrimitive.Root` props (`value`/`defaultValue`, `min`, `max`,
+`step`, etc.). Renders one `Thumb` per entry in `value`/`defaultValue`, so
+the same component covers both a single-handle slider (`[60]`) and a range
+slider (`[20, 80]`) without a separate API.
 
 **Everything else listed as "Yes" under Radix primitive** follows the
 standard Radix compound-component shape (`Root`/`Trigger`/`Content`, etc.) —
