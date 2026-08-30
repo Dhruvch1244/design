@@ -144,51 +144,6 @@ export default function Home() {
       </CursorGlow>
 
       <Reveal>
-        <Frame glow={false} className="mt-4">
-          <p className="text-sm font-medium">Embed the live component count</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Backed by the real registry — updates itself on every build, never a stale number.
-          </p>
-          <div className="relative mt-4">
-            <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-14 font-mono text-xs text-accent">
-              <code>{BADGE_MARKDOWN}</code>
-            </pre>
-            <div className="absolute right-3 top-3">
-              <CopyButton text={BADGE_MARKDOWN} />
-            </div>
-          </div>
-          <div className="relative mt-3">
-            <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-14 font-mono text-xs text-accent">
-              <code>{RECIPES_BADGE_MARKDOWN}</code>
-            </pre>
-            <div className="absolute right-3 top-3">
-              <CopyButton text={RECIPES_BADGE_MARKDOWN} />
-            </div>
-          </div>
-        </Frame>
-      </Reveal>
-
-      <section className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-6">
-        {PILLARS.map((pillar, i) => (
-          <Reveal key={pillar.title} delay={i * 60} className={pillar.span}>
-            <Frame className="h-full">
-              <div className="flex items-start justify-between gap-4">
-                <h2 className="font-display text-xl uppercase tracking-wide">{pillar.title}</h2>
-                <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
-              </div>
-              <p className="mt-3 text-sm text-muted-foreground">{pillar.body}</p>
-              <Link
-                href={`/case-studies/${pillar.app}`}
-                className="mt-5 inline-block font-mono text-[11px] uppercase tracking-[0.15em] text-accent hover:underline"
-              >
-                shipped in {pillar.app} →
-              </Link>
-            </Frame>
-          </Reveal>
-        ))}
-      </section>
-
-      <Reveal>
         <CursorGlow className="mt-8 rounded-[2rem] py-4">
           <Eyebrow>Built with dsgn, not just demoed with it</Eyebrow>
           <h2 className="mt-6 font-display text-3xl uppercase leading-tight tracking-wide sm:text-4xl">
@@ -237,6 +192,51 @@ export default function Home() {
           </div>
         </CursorGlow>
       </Reveal>
+
+      <Reveal>
+        <Frame glow={false} className="mt-4">
+          <p className="text-sm font-medium">Embed the live component count</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Backed by the real registry — updates itself on every build, never a stale number.
+          </p>
+          <div className="relative mt-4">
+            <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-14 font-mono text-xs text-accent">
+              <code>{BADGE_MARKDOWN}</code>
+            </pre>
+            <div className="absolute right-3 top-3">
+              <CopyButton text={BADGE_MARKDOWN} />
+            </div>
+          </div>
+          <div className="relative mt-3">
+            <pre className="overflow-x-auto rounded-lg border border-border bg-card p-4 pr-14 font-mono text-xs text-accent">
+              <code>{RECIPES_BADGE_MARKDOWN}</code>
+            </pre>
+            <div className="absolute right-3 top-3">
+              <CopyButton text={RECIPES_BADGE_MARKDOWN} />
+            </div>
+          </div>
+        </Frame>
+      </Reveal>
+
+      <section className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-6">
+        {PILLARS.map((pillar, i) => (
+          <Reveal key={pillar.title} delay={i * 60} className={pillar.span}>
+            <Frame className="h-full">
+              <div className="flex items-start justify-between gap-4">
+                <h2 className="font-display text-xl uppercase tracking-wide">{pillar.title}</h2>
+                <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
+              </div>
+              <p className="mt-3 text-sm text-muted-foreground">{pillar.body}</p>
+              <Link
+                href={`/case-studies/${pillar.app}`}
+                className="mt-5 inline-block font-mono text-[11px] uppercase tracking-[0.15em] text-accent hover:underline"
+              >
+                shipped in {pillar.app} →
+              </Link>
+            </Frame>
+          </Reveal>
+        ))}
+      </section>
     </div>
   );
 }
