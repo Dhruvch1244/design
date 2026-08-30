@@ -14,7 +14,7 @@ const FOOTER_LINKS = [
   { href: "/components", label: "Components" },
   { href: "/examples", label: "Examples" },
   { href: "/theming", label: "Theming" },
-  { href: "/design-analytics", label: "Showcase" },
+  { href: "/showcase", label: "Showcase" },
   { href: "/skill", label: "Skill" },
   { href: "/changelog", label: "Changelog" },
   { href: "https://github.com/dhruvch1244/design", label: "GitHub" },
