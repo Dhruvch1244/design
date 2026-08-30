@@ -52,16 +52,27 @@ export function fetchItem(base, name) {
  */
 export async function resolveItems(base, names) {
   const resolved = new Map();
+  // Cycle guard, separate from `resolved` — a Map only appends a key to its
+  // iteration-order position the *first* time it's set, so pre-inserting a
+  // placeholder for the current item (as this used to do) before recursing
+  // into its dependencies locks that item into an earlier position than its
+  // own dependencies, even though the dependencies resolve and get inserted
+  // later. That silently broke the "dependency before dependent" ordering
+  // this function's own contract promises. Only inserting into `resolved`
+  // after a name's dependencies are fully visited (post-order) fixes that,
+  // while `visiting` still stops a genuine dependency cycle from recursing
+  // forever.
+  const visiting = new Set();
 
   async function visit(name) {
-    if (resolved.has(name)) return;
+    if (resolved.has(name) || visiting.has(name)) return;
+    visiting.add(name);
     const item = await fetchItem(base, name);
-    // Placeholder so a dependency cycle can't cause infinite recursion.
-    resolved.set(name, null);
     for (const dep of item.registryDependencies ?? []) {
       await visit(dep);
     }
     resolved.set(name, item);
+    visiting.delete(name);
   }
 
   for (const name of names) {

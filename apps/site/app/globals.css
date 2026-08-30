@@ -1,27 +1,185 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/*
+ * This site's identity is deliberately the same brand system as
+ * dhruvchoudhary.com, not an invented one: void/surface/ink neutrals, an
+ * electric-cyan accent, magenta/violet secondary accents, glass cards. The
+ * exact hex values below are pulled from that site's compiled CSS so this
+ * subdomain reads as the same person's work, not a competing aesthetic.
+ * Theme is a real light/dark toggle (data-theme attribute, set pre-paint —
+ * see the inline script in layout.tsx), not just a prefers-color-scheme
+ * media query, matching the toggle already on the main site.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
+  --void: #07080c;
+  --surface: #0d0f16;
+  --ink: #f2f4f8;
+  --ink-soft: #a8afc0;
+  --ink-faint: #666e82;
+  --rule: #1d2130;
 
-  --card: #ffffff;
-  --card-foreground: #0a0a0a;
+  --cyan: #28e0ec;
+  --cyan-soft: #7aecf4;
+  --warm: #f2b45e;
+  --magenta: #ff2e7e;
+  --violet: #9a6bff;
+  --emerald: #2be6a3;
+  --blue: #5b9dff;
+  --rose: #ff6b8a;
 
-  --primary: #171717;
-  --primary-foreground: #fafafa;
+  /*
+   * Decorative glow colors, deliberately NOT redefined under
+   * [data-theme="light"] the way --cyan/--violet/--magenta/--warm are.
+   * Confirmed by inspecting dhruvchoudhary.com's own light-mode hero glow
+   * directly (getComputedStyle on its gradient-text name): it uses
+   * rgb(154,107,255) — this project's dark-mode --violet, #9a6bff — as the
+   * drop-shadow color even on the light page, not its own muted light-mode
+   * violet. Text/border colors need to mute for light-background contrast;
+   * a decorative background wash has no such constraint and reads as
+   * washed-out if it mutes along with everything else. These four stay at
+   * full saturation in both themes so the mesh-gradient below doesn't need
+   * a separate light-mode color pass, only an opacity one.
+   */
+  --glow-cyan: #28e0ec;
+  --glow-violet: #9a6bff;
+  --glow-magenta: #ff2e7e;
+  --glow-warm: #f2b45e;
+  --glow-emerald: #2be6a3;
+  --glow-blue: #5b9dff;
+  --glow-rose: #ff6b8a;
+  /* Tracks the palette-picker's choice the same way --accent does, but at
+     full saturation regardless of theme — see [data-accent="..."] below. */
+  --glow-accent-color: var(--glow-cyan);
 
-  --secondary: #f4f4f5;
-  --secondary-foreground: #171717;
+  --glass: #07080c99;
+  --glass-strong: #0d0f16e0;
+  --star-color: var(--ink);
 
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
+  --background: var(--void);
+  --foreground: var(--ink);
 
-  --destructive: #dc2626;
-  --destructive-foreground: #fafafa;
+  --card: var(--surface);
+  --card-foreground: var(--ink);
 
-  --border: #e4e4e7;
-  --ring: #a1a1aa;
+  --primary: var(--ink);
+  --primary-foreground: var(--void);
+
+  --secondary: #151822;
+  --secondary-foreground: var(--ink);
+
+  --accent: var(--cyan);
+  --accent-foreground: var(--void);
+
+  --muted: #12141c;
+  --muted-foreground: var(--ink-soft);
+
+  --destructive: #ff5470;
+  --destructive-foreground: var(--void);
+
+  --border: var(--rule);
+  --ring: color-mix(in srgb, var(--accent) 55%, transparent);
+
+  --glow-accent: 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent),
+    0 8px 40px -8px color-mix(in srgb, var(--accent) 35%, transparent);
+  --shadow-ambient-raw: 0 1px 0 color-mix(in srgb, white 4%, transparent) inset,
+    0 24px 48px -16px color-mix(in srgb, black 60%, transparent);
+
+  /*
+   * A single multiplier, not a token per size — components/remix-panel.tsx
+   * writes this one value to reshape every rounded-{sm,md,lg,xl,2xl,3xl}
+   * utility site-wide at once, via the @theme inline block below re-reading
+   * it live. rounded-full is deliberately left alone: buttons, badges, and
+   * avatars are pills as a brand choice (see nav.tsx, button.tsx), not a
+   * scaled corner radius, so a "sharp" remix shouldn't turn them into
+   * squares.
+   */
+  --radius-scale: 1;
+}
+
+/*
+ * Accent palette picker (components/palette-picker.tsx): data-accent
+ * repoints --accent at one of the four swatch variables. Everything that
+ * should follow the picked color already reads var(--accent) rather than
+ * var(--cyan) directly (--ring, --glow-accent, ::selection, buttons,
+ * links, focus rings) so this is the one place the picker needs to touch.
+ * Cyan is included explicitly, not just left as the :root default, so the
+ * picker's four options are symmetric in the markup/data model.
+ */
+[data-accent="cyan"] {
+  --accent: var(--cyan);
+  --glow-accent-color: var(--glow-cyan);
+}
+[data-accent="violet"] {
+  --accent: var(--violet);
+  --glow-accent-color: var(--glow-violet);
+}
+[data-accent="magenta"] {
+  --accent: var(--magenta);
+  --glow-accent-color: var(--glow-magenta);
+}
+[data-accent="warm"] {
+  --accent: var(--warm);
+  --glow-accent-color: var(--glow-warm);
+}
+[data-accent="emerald"] {
+  --accent: var(--emerald);
+  --glow-accent-color: var(--glow-emerald);
+}
+[data-accent="blue"] {
+  --accent: var(--blue);
+  --glow-accent-color: var(--glow-blue);
+}
+[data-accent="rose"] {
+  --accent: var(--rose);
+  --glow-accent-color: var(--glow-rose);
+}
+
+[data-theme="light"] {
+  --void: #f7f5f2;
+  --surface: #ffffff;
+  --ink: #14151a;
+  --ink-soft: #43454f;
+  --ink-faint: #6c6f7c;
+  --rule: #e0ded8;
+
+  --cyan: #0e8b96;
+  --cyan-soft: #0a6a73;
+  --magenta: #d21266;
+  --violet: #6a3ce0;
+  /*
+   * Unlike cyan/magenta/violet above, --warm had no light-mode override at
+   * all until this — the dark-mode #f2b45e amber (10.93:1 against the dark
+   * --void) drops to 1.68:1 against the light --void, badly failing WCAG AA
+   * (4.5:1). Darkened the same way the other three are: same hue, enough
+   * value dropped to hold contrast on a light background. Verified via the
+   * relative-luminance formula in components/palette-generator.tsx, not
+   * eyeballed — 5.43:1.
+   */
+  --warm: #8a5a12;
+  --emerald: #0a7a52;
+  --blue: #1d4fd8;
+  --rose: #b3123f;
+
+  /*
+   * Translucent "glass" only reads as glass when there's something rich
+   * behind it to blur — over the void background that's the starfield and
+   * saturated darkness; over a plain cream page the same low-opacity white
+   * just looks like a slightly-off-white flat div. Light mode compensates
+   * by going much more opaque (closer to a solid card) and leaning on
+   * shadow-ambient for depth instead of on translucency.
+   */
+  --glass: #ffffffe6;
+  --glass-strong: #fffffff2;
+  --star-color: #c9c2b4;
+
+  --secondary: #eeece6;
+  --muted: #efede7;
+  --destructive: #c81e46;
+
+  --ring: color-mix(in srgb, var(--accent) 45%, transparent);
+  --shadow-ambient-raw: 0 1px 0 white inset,
+    0 24px 48px -16px color-mix(in srgb, black 12%, transparent);
 }
 
 @theme inline {
@@ -37,6 +195,9 @@
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
 
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
 
@@ -46,37 +207,419 @@
   --color-border: var(--border);
   --color-ring: var(--ring);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-void: var(--void);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-cyan: var(--cyan);
+  --color-cyan-soft: var(--cyan-soft);
+  --color-warm: var(--warm);
+  --color-magenta: var(--magenta);
+  --color-violet: var(--violet);
+  --color-emerald: var(--emerald);
+  --color-blue: var(--blue);
+  --color-rose: var(--rose);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+
+  --shadow-ambient: var(--shadow-ambient-raw);
+  --shadow-glow: var(--glow-accent);
+
+  --radius-sm: calc(0.25rem * var(--radius-scale));
+  --radius-md: calc(0.5rem * var(--radius-scale));
+  --radius-lg: calc(0.75rem * var(--radius-scale));
+  --radius-xl: calc(1rem * var(--radius-scale));
+  --radius-2xl: calc(1.25rem * var(--radius-scale));
+  --radius-3xl: calc(1.5rem * var(--radius-scale));
+
+  --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --font-sans: var(--font-hanken);
+  --font-display: var(--font-bebas);
+  --font-mono: var(--font-jetbrains);
+
+  /*
+   * Tailwind v4's --animate-* namespace generates matching animate-*
+   * utilities the same way --ease-* and --color-* do. This is the
+   * dependency-free equivalent of what the tailwindcss-animate plugin
+   * provides for shadcn's Accordion specifically — Radix exposes the
+   * measured content height as --radix-accordion-content-height, which
+   * these keyframes animate to/from.
+   */
+  --animate-accordion-down: accordion-down 300ms var(--ease-fluid);
+  --animate-accordion-up: accordion-up 300ms var(--ease-fluid);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-
-    --card: #141414;
-    --card-foreground: #ededed;
-
-    --primary: #ededed;
-    --primary-foreground: #171717;
-
-    --secondary: #27272a;
-    --secondary-foreground: #ededed;
-
-    --muted: #27272a;
-    --muted-foreground: #a1a1aa;
-
-    --destructive: #ef4444;
-    --destructive-foreground: #0a0a0a;
-
-    --border: #27272a;
-    --ring: #52525b;
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@layer base {
+  /* One rule instead of per-component focus classes: every link and
+     button on the site gets a consistent, brand-colored focus ring
+     instead of the browser default (often a mismatched blue that's easy
+     to lose against a dark background). */
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /*
+   * .mesh-gradient and .starfield are position:fixed with a negative inset
+   * so their wash bleeds past the viewport edge on purpose — the bled edge
+   * is never actually on-screen. Chromium still counts a fixed element's
+   * layout box toward document.documentElement.scrollWidth even though
+   * it's invisible, producing a real horizontal scrollbar on every mobile
+   * width (confirmed: scrollWidth stayed fixed at ~408px regardless of
+   * actual viewport width).
+   *
+   * Getting this right took several wrong turns, kept here so nobody
+   * re-walks them: `overflow-x: hidden` fixes the scrollWidth bug but only
+   * when set on BOTH html and body — and doing that breaks
+   * position:sticky site-wide (philosophy-shell.tsx's sidebar stopped
+   * pinning and scrolled away with the page), because `hidden` forces the
+   * *other* axis to `auto` per the CSS overflow spec, turning html/body
+   * into their own scroll container distinct from the viewport. Neither a
+   * viewport-exact overflow-hidden wrapper around just the two bleeding
+   * layers, nor replacing their oversized inset with an equivalent
+   * `transform: scale()` (transforms are normally excluded from
+   * scrollable-overflow calculations), stopped the scrollWidth growth
+   * either — position:fixed elements apparently don't get that exclusion
+   * at the document root. `overflow-x: clip` on both html AND body is the
+   * one combination that's actually verified to fix both at once: unlike
+   * `hidden`, `clip` explicitly forbids scrolling (even
+   * programmatically), which is why it doesn't trigger the same
+   * visible->auto coupling that broke sticky. Verified via Playwright:
+   * scrollWidth matches clientWidth at 360/375/390px in both themes, and
+   * the philosophy sidebar stays pinned across a 3000px scroll.
+   */
+  html {
+    overflow-x: clip;
+  }
+
+  body {
+    overflow-x: clip;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    color-scheme: dark;
+  }
+
+  [data-theme="light"] body {
+    color-scheme: light;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 30%, transparent);
+    color: var(--foreground);
+  }
+
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      transition-duration: 1ms !important;
+    }
+    .progress-bar {
+      animation: none !important;
+    }
+  }
+}
+
+@layer utilities {
+  .reveal {
+    opacity: 0;
+    transform: translateY(2.5rem);
+    filter: blur(6px);
+    transition: opacity 900ms var(--ease-fluid), transform 900ms var(--ease-fluid),
+      filter 900ms var(--ease-fluid);
+  }
+
+  .reveal-in {
+    opacity: 1;
+    transform: translateY(0);
+    /* Not blur(0) — lightningcss's minifier compiles a zero-argument blur()
+       to invalid empty-parens CSS (`filter:blur()`), silently dropping the
+       whole declaration in some Chrome builds and leaving .reveal-in unable
+       to ever un-blur. `none` sidesteps that minifier bug entirely and
+       animates from blur(6px) identically. */
+    filter: none;
+  }
+}
+
+/*
+ * Five-color mesh gradient, layered behind the starfield (rendered first in
+ * layout.tsx — with matching z-index, DOM order decides paint order, which
+ * avoids the negative-z-index-under-a-fixed-element edge cases that come
+ * with trying to force it further back that way). Each blob's softness
+ * comes from a wide multi-stop radial-gradient falloff, not a CSS blur
+ * filter — filter: blur() over a full-viewport fixed element is genuinely
+ * expensive to keep painted; a gradient that's already soft at the CSS
+ * level costs the same as a sharp one.
+ *
+ * background-size is oversized (130%) specifically so background-position
+ * has room to pan — with the default 100% size there's nowhere for a
+ * position animation to move the composited image, so it would drift in
+ * source but render motionless. One slow 70s pan moves the whole
+ * five-color composition together rather than each blob independently,
+ * which is simpler and just as convincing at this speed.
+ *
+ * Colors come from the --glow-* tokens (full-saturation, theme-invariant),
+ * not --cyan/--violet/--magenta/--warm directly — those mute for light-mode
+ * text/border contrast, which made this same gradient read as a barely
+ * visible tint once its opacity was also turned down for light mode. A
+ * decorative wash has no contrast requirement, so it can and should stay at
+ * full saturation in both themes; only the opacity below still differs per
+ * theme, tuned by eye rather than derived.
+ */
+.mesh-gradient {
+  position: fixed;
+  inset: -15%;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(38% 38% at 15% 20%, color-mix(in srgb, var(--glow-cyan) 55%, transparent), transparent 70%),
+    radial-gradient(42% 42% at 85% 15%, color-mix(in srgb, var(--glow-violet) 50%, transparent), transparent 70%),
+    radial-gradient(40% 40% at 90% 85%, color-mix(in srgb, var(--glow-magenta) 45%, transparent), transparent 70%),
+    radial-gradient(36% 36% at 10% 90%, color-mix(in srgb, var(--glow-warm) 45%, transparent), transparent 70%),
+    radial-gradient(50% 50% at 50% 50%, color-mix(in srgb, var(--glow-accent-color) 25%, transparent), transparent 65%);
+  background-size: 130% 130%;
+  background-repeat: no-repeat;
+  opacity: 0.35;
+  animation: mesh-drift 70s ease-in-out infinite alternate;
+}
+
+@keyframes mesh-drift {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 10% 14%;
+  }
+}
+
+/*
+ * Light mode can run noticeably more opaque than before now that the
+ * colors underneath stay saturated (see the token comment above) — 0.26 is
+ * roughly 2x the old 0.14 and was tuned by eye against real page content
+ * (case-studies prose, the components gallery) so it reads as a genuine
+ * glow rather than either a flat tint or something that fights body text.
+ */
+[data-theme="light"] .mesh-gradient {
+  opacity: 0.26;
+}
+
+/*
+ * Compositional variety — picked once per full page load by the pre-paint
+ * script in layout.tsx (same mechanism that already seeds data-theme/
+ * data-accent before first paint, so there's no flash-of-different-glow on
+ * hydration) and written as data-glow-variant on <html>. "a" is the
+ * original five-blob balanced layout above; b–e are genuinely different
+ * blob counts/positions/color pairings, not just a-with-different-numbers,
+ * so a revisit actually reads as a different composition rather than the
+ * same shape recolored.
+ */
+[data-glow-variant="b"] .mesh-gradient {
+  background-image:
+    radial-gradient(46% 46% at 25% 15%, color-mix(in srgb, var(--glow-violet) 55%, transparent), transparent 72%),
+    radial-gradient(44% 44% at 78% 20%, color-mix(in srgb, var(--glow-magenta) 50%, transparent), transparent 72%),
+    radial-gradient(34% 34% at 60% 92%, color-mix(in srgb, var(--glow-cyan) 45%, transparent), transparent 68%);
+}
+
+[data-glow-variant="c"] .mesh-gradient {
+  background-image:
+    radial-gradient(48% 48% at 88% 12%, color-mix(in srgb, var(--glow-cyan) 55%, transparent), transparent 70%),
+    radial-gradient(46% 46% at 8% 88%, color-mix(in srgb, var(--glow-warm) 50%, transparent), transparent 70%),
+    radial-gradient(30% 30% at 50% 45%, color-mix(in srgb, var(--glow-magenta) 35%, transparent), transparent 65%);
+}
+
+[data-glow-variant="d"] .mesh-gradient {
+  background-image:
+    radial-gradient(50% 50% at 50% 18%, color-mix(in srgb, var(--glow-accent-color) 50%, transparent), transparent 72%),
+    radial-gradient(32% 32% at 10% 75%, color-mix(in srgb, var(--glow-cyan) 40%, transparent), transparent 68%),
+    radial-gradient(32% 32% at 92% 80%, color-mix(in srgb, var(--glow-violet) 40%, transparent), transparent 68%);
+}
+
+[data-glow-variant="e"] .mesh-gradient {
+  background-image:
+    radial-gradient(40% 40% at 82% 22%, color-mix(in srgb, var(--glow-cyan) 55%, transparent), transparent 70%),
+    radial-gradient(36% 36% at 95% 45%, color-mix(in srgb, var(--glow-violet) 50%, transparent), transparent 70%),
+    radial-gradient(32% 32% at 75% 5%, color-mix(in srgb, var(--glow-magenta) 45%, transparent), transparent 68%),
+    radial-gradient(24% 24% at 15% 90%, color-mix(in srgb, var(--glow-warm) 40%, transparent), transparent 65%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mesh-gradient {
+    animation: none;
+  }
+}
+
+/*
+ * Fixed, pointer-events-none starfield — layered above the mesh gradient. Three layers of small radial-gradient dots at
+ * different tile sizes (so it doesn't read as an obviously repeating
+ * pattern), each twinkling on its own offset cycle. It's also
+ * mouse-parallaxed (components/starfield.tsx writes --parallax-x/-y as the
+ * pointer moves; this file just reads them per layer at different
+ * multipliers) — deliberately uneven: the brightest cyan layer (this
+ * element's own background) barely moves, the two fainter dust layers
+ * drift more, so the "pole star" reads as the fixed point everything else
+ * shifts around, not just a background sliding as a single flat plane.
+ *
+ * inset is -30px, not 0 — a position:fixed element that exactly matches
+ * the viewport would reveal an empty strip at the trailing edge the moment
+ * it's translated for parallax; the negative inset gives it enough
+ * overhang that the max parallax offset (about ±20px) never uncovers an
+ * edge. Only opacity/transform are animated (GPU-only, no layout cost) and
+ * it's fixed to the viewport, never attached to a scrolling container.
+ * Stars are a night-sky motif, so they fade out entirely in the light
+ * theme rather than rendering as dark flecks on a cream background.
+ */
+.starfield {
+  position: fixed;
+  inset: -30px;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 22%, var(--cyan-soft), transparent),
+    radial-gradient(1.5px 1.5px at 68% 8%, var(--cyan-soft), transparent),
+    radial-gradient(1.5px 1.5px at 85% 55%, var(--cyan-soft), transparent),
+    radial-gradient(1.5px 1.5px at 30% 78%, var(--cyan-soft), transparent);
+  background-size: 600px 600px;
+  animation: twinkle 7s ease-in-out infinite;
+  opacity: 0.5;
+  transition: opacity 500ms var(--ease-fluid);
+  transform: translate3d(calc(var(--parallax-x, 0px) * 0.15), calc(var(--parallax-y, 0px) * 0.15), 0);
+  will-change: transform;
+}
+
+.starfield::before,
+.starfield::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  will-change: transform;
+}
+
+.starfield::before {
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 60% 70%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 80% 15%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 33% 88%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 45% 45%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 5% 60%, var(--star-color), transparent);
+  background-size: 260px 260px;
+  animation: twinkle 5s ease-in-out infinite;
+  transform: translate3d(calc(var(--parallax-x, 0px) * 0.5), calc(var(--parallax-y, 0px) * 0.5), 0);
+  opacity: 0.5;
+}
+
+.starfield::after {
+  background-image:
+    radial-gradient(1px 1px at 15% 55%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 70% 25%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 90% 80%, var(--star-color), transparent),
+    radial-gradient(1px 1px at 25% 10%, var(--star-color), transparent);
+  background-size: 380px 380px;
+  animation: twinkle 9s ease-in-out infinite reverse;
+  animation-delay: -3s;
+  transform: translate3d(calc(var(--parallax-x, 0px) * 0.8), calc(var(--parallax-y, 0px) * 0.8), 0);
+  opacity: 0.35;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/*
+ * Light mode keeps the same starfield mechanism (it's cheap and already
+ * built) but repurposed as a faint warm-taupe dot grid via --star-color —
+ * a paper-grain texture rather than a night sky, so the page isn't just a
+ * blank void in light mode. Only the base layer's own cyan-tinted "bright
+ * star" background is turned off (display:none on .starfield itself would
+ * also hide its ::before/::after pseudo-elements, since those are part of
+ * the same box — background-image/animation:none removes just this
+ * element's own layer while leaving its two pseudo-element layers, which
+ * already read --star-color, untouched).
+ */
+[data-theme="light"] .starfield {
+  background-image: none;
+  animation: none;
+}
+
+[data-theme="light"] .starfield::before,
+[data-theme="light"] .starfield::after {
+  opacity: 0.45;
+}
+
+/*
+ * Film-grain texture over the whole viewport, above content — an SVG
+ * feTurbulence filter baked into a data-URI so it costs one paint instead
+ * of a network request, and static (no animation) so it's not fighting the
+ * mesh gradient and starfield for attention. This is what keeps the
+ * gradient from reading as a flat digital blur — real grain is what a
+ * soft-focus color wash looks like on film, and its absence is one of the
+ * more common tells of a generic, ungrounded gradient background.
+ */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+[data-theme="light"] .grain-overlay {
+  opacity: 0.02;
+}
+
+/* Scroll-linked reading progress bar for the philosophy prose pages. Pure
+   CSS via the scroll-timeline spec (no scroll listener, no layout cost —
+   transform only). Degrades to a static 0-width bar in browsers that don't
+   support animation-timeline yet, which is an acceptable progressive
+   enhancement, not a broken state. */
+.progress-bar {
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: progress-grow linear both;
+  animation-timeline: scroll(root);
+}
+
+@keyframes progress-grow {
+  to {
+    transform: scaleX(1);
+  }
 }

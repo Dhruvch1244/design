@@ -17,6 +17,7 @@ export async function init(cwd) {
       `  alias:         ${DEFAULT_CONFIG.alias} (imports are written as "${DEFAULT_CONFIG.alias}/lib/utils")`,
       "",
       "Edit these paths if your project's layout differs, then run `dsgn add <component>`.",
+      "Run `dsgn snippets` for VS Code autocomplete on every registry component.",
     ].join("\n"),
   );
 }

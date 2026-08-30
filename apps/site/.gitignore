@@ -12,10 +12,22 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
 
 # next.js
 /.next/
 /out/
+
+# regenerated every build by scripts/generate-badge-data.mjs (prebuild) —
+# never stale in git history, always fresh from the actual registry count
+/public/badge-data.json
+
+# regenerated every build by scripts/generate-skill-zip.mjs (prebuild) —
+# always a fresh archive of skills/dsgn/, never stale in git history
+/public/downloads/dsgn-skill.zip
 
 # production
 /build

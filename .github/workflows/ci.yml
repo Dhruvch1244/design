@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck registry
+        run: npm run typecheck
+
+      # Fails the build if any registry component references a token that
+      # only exists in apps/site's own theme (bg-glass, shadow-ambient, ...)
+      # instead of the standard shadcn-convention tokens every registry item
+      # is supposed to depend on exclusively — see scripts/lint-registry-tokens.mjs
+      # for the incident this guards against.
+      - name: Lint registry for site-specific token leaks
+        run: npm run lint:registry-tokens
+
+      - name: Lint site
+        working-directory: apps/site
+        run: npm run lint
+
+      # apps/site's own prebuild script rebuilds packages/registry and syncs
+      # it into apps/site/public/r, so this also exercises build:registry and
+      # sync-registry, not just next build.
+      - name: Build site
+        working-directory: apps/site
+        run: npm run build
+
+      - name: Install Playwright browsers
+        working-directory: apps/site
+        run: npx playwright install --with-deps chromium
+
+      # Not a full visual-regression suite (no baseline screenshots to
+      # maintain) — a targeted functional check for the specific failure
+      # class found by hand this session: content silently stuck invisible,
+      # in either theme, with no build error and no console error pointing
+      # at it. See apps/site/e2e/smoke.spec.ts.
+      - name: Smoke test (every route, both themes)
+        working-directory: apps/site
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/site/playwright-report/
+          retention-days: 14

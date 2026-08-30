@@ -87,6 +87,23 @@ nothing because the code already says it?**
   hardware, hence the perf harness") — deleting it means a future contributor
   trusts a single benchmark run they shouldn't. Keep it.
 
+Illustrative example of the mistake, and the fix:
+
+```ts
+// Anti-pattern — restates what the code already says. Deleting this
+// comment loses nothing a competent reader wouldn't already know.
+// increment i
+i++;
+```
+
+```ts
+// Fix — records information the code can't say on its own. Deleting
+// this one means the next person burns time re-discovering the same wall.
+// Retried with exponential backoff first; abandoned because the upstream
+// API rate-limits by IP, not by key, so backoff alone never converges.
+i++;
+```
+
 This applies at doc-file granularity too, not just line comments.
 lyric-viewer's own `docs/JOB-ENGINE.md` contains a section describing a
 SQLite migration that was planned but never happened — and rather than

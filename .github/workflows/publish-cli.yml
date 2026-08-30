@@ -1,0 +1,80 @@
+name: Publish CLI to npm
+
+# Fires on every push to main, but path-filtered to only actually run when
+# packages/cli/package.json changes — i.e. the "chore(cli): bump to X.Y.Z"
+# commits this repo already makes by hand before a release. No version bump,
+# no publish attempt: npm rejects re-publishing an existing version anyway,
+# so gating on the version field (not just "something merged") keeps this
+# idempotent and avoids a guaranteed-failing run on every unrelated merge.
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/cli/package.json"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-cli
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - name: Read version from packages/cli/package.json
+        id: version
+        run: echo "value=$(node -p "require('./packages/cli/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      # Guards against re-running this on a workflow_dispatch retry, or a
+      # push whose diff touched package.json without actually bumping the
+      # version field.
+      - name: Check whether this version is already tagged
+        id: check
+        run: |
+          if git rev-parse "cli-v${{ steps.version.outputs.value }}" >/dev/null 2>&1; then
+            echo "already_tagged=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "already_tagged=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install dependencies
+        if: steps.check.outputs.already_tagged == 'false'
+        run: npm ci
+
+      - name: Test the CLI
+        if: steps.check.outputs.already_tagged == 'false'
+        working-directory: packages/cli
+        run: npm test
+
+      # prepublishOnly (packages/cli/package.json) runs scripts/sync-skill.mjs
+      # first, so the bundled Claude Code skill and the flattened
+      # AGENTS.md/Cursor/Windsurf/Copilot/Gemini doc are always rebuilt from
+      # skills/dsgn immediately before every real publish.
+      - name: Publish to npm
+        if: steps.check.outputs.already_tagged == 'false'
+        working-directory: packages/cli
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Tag the release
+        if: steps.check.outputs.already_tagged == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "cli-v${{ steps.version.outputs.value }}"
+          git push origin "cli-v${{ steps.version.outputs.value }}"

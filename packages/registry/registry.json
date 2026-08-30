@@ -16,8 +16,8 @@
     {
       "name": "button",
       "type": "registry:ui",
-      "description": "Button with variant/size props via class-variance-authority and a non-reflowing loading state.",
-      "dependencies": ["class-variance-authority"],
+      "description": "Button with 9 variants (primary/secondary/accent/glow/soft/outline/ghost/link/destructive) and 8 sizes (xs-xl plus 3 icon sizes) via class-variance-authority, left/right icon slots, a non-reflowing loading state, and asChild composition via Radix Slot.",
+      "dependencies": ["class-variance-authority", "@radix-ui/react-slot"],
       "registryDependencies": ["utils"],
       "files": [
         { "path": "src/components/button/button.tsx", "target": "components/dsgn/button.tsx", "type": "registry:ui" }
@@ -31,6 +31,266 @@
       "registryDependencies": ["utils"],
       "files": [
         { "path": "src/components/card/card.tsx", "target": "components/dsgn/card.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "description": "Badge with variant props via class-variance-authority.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/badge/badge.tsx", "target": "components/dsgn/badge.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "description": "Styled text input wrapping the native <input> element.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/input/input.tsx", "target": "components/dsgn/input.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "description": "A ⌘K command palette (Command, CommandDialog, CommandInput, CommandList, CommandGroup, CommandItem, CommandShortcut) built on cmdk, with its own dialog chrome so it doesn't require a separate Dialog primitive.",
+      "dependencies": ["cmdk"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/command/command.tsx", "target": "components/dsgn/command.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "description": "Styled multi-line text input wrapping the native <textarea> element.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/textarea/textarea.tsx", "target": "components/dsgn/textarea.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "description": "Toggle switch built on Radix Switch, with a thumb that stays legible against both checked and unchecked track colors in either theme.",
+      "dependencies": ["@radix-ui/react-switch"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/switch/switch.tsx", "target": "components/dsgn/switch.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "description": "Tooltip, TooltipProvider, TooltipTrigger, TooltipContent built on Radix Tooltip.",
+      "dependencies": ["@radix-ui/react-tooltip"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/tooltip/tooltip.tsx", "target": "components/dsgn/tooltip.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "description": "Tabs, TabsList, TabsTrigger, TabsContent built on Radix Tabs, styled as a pill-segmented control.",
+      "dependencies": ["@radix-ui/react-tabs"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/tabs/tabs.tsx", "target": "components/dsgn/tabs.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "description": "Select, SelectTrigger, SelectContent, SelectItem, SelectValue, SelectGroup built on Radix Select.",
+      "dependencies": ["@radix-ui/react-select"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/select/select.tsx", "target": "components/dsgn/select.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "description": "Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose built on Radix Dialog.",
+      "dependencies": ["@radix-ui/react-dialog"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/dialog/dialog.tsx", "target": "components/dsgn/dialog.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "description": "Alert, AlertTitle, AlertDescription with default/destructive variants via class-variance-authority.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/alert/alert.tsx", "target": "components/dsgn/alert.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "description": "Avatar, AvatarImage, AvatarFallback built on Radix Avatar.",
+      "dependencies": ["@radix-ui/react-avatar"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/avatar/avatar.tsx", "target": "components/dsgn/avatar.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "description": "Checkbox built on Radix Checkbox.",
+      "dependencies": ["@radix-ui/react-checkbox"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/checkbox/checkbox.tsx", "target": "components/dsgn/checkbox.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "description": "RadioGroup, RadioGroupItem built on Radix Radio Group.",
+      "dependencies": ["@radix-ui/react-radio-group"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/radio-group/radio-group.tsx", "target": "components/dsgn/radio-group.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "description": "Separator (horizontal or vertical divider) built on Radix Separator.",
+      "dependencies": ["@radix-ui/react-separator"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/separator/separator.tsx", "target": "components/dsgn/separator.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "description": "Progress bar built on Radix Progress.",
+      "dependencies": ["@radix-ui/react-progress"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/progress/progress.tsx", "target": "components/dsgn/progress.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "description": "Accordion, AccordionItem, AccordionTrigger, AccordionContent built on Radix Accordion. Needs two keyframes + theme tokens in your global CSS for the expand/collapse animation (accordion-down/accordion-up, animating to/from Radix's --radix-accordion-content-height) — see design.dhruvchoudhary.com's own apps/site/app/globals.css for the Tailwind v4 --animate-* block to copy.",
+      "dependencies": ["@radix-ui/react-accordion"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/accordion/accordion.tsx", "target": "components/dsgn/accordion.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "description": "Popover, PopoverTrigger, PopoverContent, PopoverAnchor built on Radix Popover.",
+      "dependencies": ["@radix-ui/react-popover"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/popover/popover.tsx", "target": "components/dsgn/popover.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "description": "DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuCheckboxItem, DropdownMenuRadioItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut built on Radix Dropdown Menu.",
+      "dependencies": ["@radix-ui/react-dropdown-menu"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/dropdown-menu/dropdown-menu.tsx", "target": "components/dsgn/dropdown-menu.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "description": "Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption -- styled native <table> elements, no primitive dependency.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/table/table.tsx", "target": "components/dsgn/table.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "description": "A pulsing placeholder for content that hasn't loaded yet.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/skeleton/skeleton.tsx", "target": "components/dsgn/skeleton.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "description": "The \"no rows yet\" / \"no results\" state -- a dashed placeholder with an icon, title, description, and optional action.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/empty-state/empty-state.tsx", "target": "components/dsgn/empty-state.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "recipe-auth-form",
+      "type": "registry:block",
+      "description": "Recipe -- a real sign-in form composed from Card + Input + Checkbox + Button. Installed via `dsgn add recipe:auth-form`.",
+      "dependencies": [],
+      "registryDependencies": ["card", "input", "checkbox", "button"],
+      "files": [
+        { "path": "src/recipes/auth-form.tsx", "target": "components/dsgn/recipes/auth-form.tsx", "type": "registry:block" }
+      ]
+    },
+    {
+      "name": "recipe-settings-panel",
+      "type": "registry:block",
+      "description": "Recipe -- a preferences panel composed from Card + Switch + Select + Separator + Button. Installed via `dsgn add recipe:settings-panel`.",
+      "dependencies": [],
+      "registryDependencies": ["card", "switch", "select", "separator", "button"],
+      "files": [
+        { "path": "src/recipes/settings-panel.tsx", "target": "components/dsgn/recipes/settings-panel.tsx", "type": "registry:block" }
+      ]
+    },
+    {
+      "name": "recipe-pricing-tiers",
+      "type": "registry:block",
+      "description": "Recipe -- a 3-tier pricing layout composed from Card + Badge + Button. Installed via `dsgn add recipe:pricing-tiers`.",
+      "dependencies": [],
+      "registryDependencies": ["card", "badge", "button"],
+      "files": [
+        { "path": "src/recipes/pricing-tiers.tsx", "target": "components/dsgn/recipes/pricing-tiers.tsx", "type": "registry:block" }
+      ]
+    },
+    {
+      "name": "recipe-empty-state-cta",
+      "type": "registry:block",
+      "description": "Recipe -- a \"no projects yet\" panel composed from EmptyState + Button. Installed via `dsgn add recipe:empty-state-cta`.",
+      "dependencies": [],
+      "registryDependencies": ["empty-state", "button"],
+      "files": [
+        { "path": "src/recipes/empty-state-cta.tsx", "target": "components/dsgn/recipes/empty-state-cta.tsx", "type": "registry:block" }
+      ]
+    },
+    {
+      "name": "recipe-billing-summary",
+      "type": "registry:block",
+      "description": "Recipe -- a plan/usage summary composed from Card + Badge + Progress + Button. Installed via `dsgn add recipe:billing-summary`.",
+      "dependencies": [],
+      "registryDependencies": ["card", "badge", "progress", "button"],
+      "files": [
+        { "path": "src/recipes/billing-summary.tsx", "target": "components/dsgn/recipes/billing-summary.tsx", "type": "registry:block" }
       ]
     }
   ]

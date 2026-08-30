@@ -1,0 +1,255 @@
+{
+  "dsgn: Button": {
+    "prefix": "dsgn-button",
+    "body": [
+      "import { Button } from \"@/components/dsgn/button\";",
+      "",
+      "<Button variant=\"${1|primary,secondary,accent,glow,soft,outline,ghost,link,destructive|}\">${2:Click me}</Button>"
+    ]
+  },
+  "dsgn: Card": {
+    "prefix": "dsgn-card",
+    "body": [
+      "import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from \"@/components/dsgn/card\";",
+      "",
+      "<Card>",
+      "  <CardHeader>",
+      "    <CardTitle>${1:Title}</CardTitle>",
+      "    <CardDescription>${2:Description}</CardDescription>",
+      "  </CardHeader>",
+      "  <CardContent>${3:content}</CardContent>",
+      "  <CardFooter>${0:footer}</CardFooter>",
+      "</Card>"
+    ]
+  },
+  "dsgn: Badge": {
+    "prefix": "dsgn-badge",
+    "body": [
+      "import { Badge } from \"@/components/dsgn/badge\";",
+      "",
+      "<Badge variant=\"${1|primary,secondary,accent,outline,destructive|}\">${2:Badge}</Badge>"
+    ]
+  },
+  "dsgn: Input": {
+    "prefix": "dsgn-input",
+    "body": [
+      "import { Input } from \"@/components/dsgn/input\";",
+      "",
+      "<Input type=\"${1:text}\" placeholder=\"${2:Placeholder}\" />"
+    ]
+  },
+  "dsgn: Command": {
+    "prefix": "dsgn-command",
+    "body": [
+      "import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from \"@/components/dsgn/command\";",
+      "",
+      "<Command>",
+      "  <CommandInput placeholder=\"${1:Search...}\" />",
+      "  <CommandList>",
+      "    <CommandEmpty>No results.</CommandEmpty>",
+      "    <CommandGroup heading=\"${2:Group}\">",
+      "      <CommandItem>${0:Item}</CommandItem>",
+      "    </CommandGroup>",
+      "  </CommandList>",
+      "</Command>"
+    ]
+  },
+  "dsgn: Textarea": {
+    "prefix": "dsgn-textarea",
+    "body": [
+      "import { Textarea } from \"@/components/dsgn/textarea\";",
+      "",
+      "<Textarea placeholder=\"${1:Placeholder}\" />"
+    ]
+  },
+  "dsgn: Switch": {
+    "prefix": "dsgn-switch",
+    "body": [
+      "import { Switch } from \"@/components/dsgn/switch\";",
+      "",
+      "<Switch defaultChecked={${1:false}} />"
+    ]
+  },
+  "dsgn: Tooltip": {
+    "prefix": "dsgn-tooltip",
+    "body": [
+      "import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from \"@/components/dsgn/tooltip\";",
+      "",
+      "<TooltipProvider>",
+      "  <Tooltip>",
+      "    <TooltipTrigger asChild>${1:<button>Hover me</button>}</TooltipTrigger>",
+      "    <TooltipContent>${0:Tooltip text}</TooltipContent>",
+      "  </Tooltip>",
+      "</TooltipProvider>"
+    ]
+  },
+  "dsgn: Tabs": {
+    "prefix": "dsgn-tabs",
+    "body": [
+      "import { Tabs, TabsList, TabsTrigger, TabsContent } from \"@/components/dsgn/tabs\";",
+      "",
+      "<Tabs defaultValue=\"${1:one}\">",
+      "  <TabsList>",
+      "    <TabsTrigger value=\"${1:one}\">${2:One}</TabsTrigger>",
+      "  </TabsList>",
+      "  <TabsContent value=\"${1:one}\">${0:content}</TabsContent>",
+      "</Tabs>"
+    ]
+  },
+  "dsgn: Select": {
+    "prefix": "dsgn-select",
+    "body": [
+      "import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from \"@/components/dsgn/select\";",
+      "",
+      "<Select defaultValue=\"${1:option}\">",
+      "  <SelectTrigger>",
+      "    <SelectValue />",
+      "  </SelectTrigger>",
+      "  <SelectContent>",
+      "    <SelectItem value=\"${1:option}\">${0:Option}</SelectItem>",
+      "  </SelectContent>",
+      "</Select>"
+    ]
+  },
+  "dsgn: Dialog": {
+    "prefix": "dsgn-dialog",
+    "body": [
+      "import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from \"@/components/dsgn/dialog\";",
+      "",
+      "<Dialog>",
+      "  <DialogTrigger asChild>${1:<button>Open</button>}</DialogTrigger>",
+      "  <DialogContent>",
+      "    <DialogHeader>",
+      "      <DialogTitle>${2:Title}</DialogTitle>",
+      "      <DialogDescription>${3:Description}</DialogDescription>",
+      "    </DialogHeader>",
+      "    <DialogFooter>${0:footer}</DialogFooter>",
+      "  </DialogContent>",
+      "</Dialog>"
+    ]
+  },
+  "dsgn: Alert": {
+    "prefix": "dsgn-alert",
+    "body": [
+      "import { Alert, AlertTitle, AlertDescription } from \"@/components/dsgn/alert\";",
+      "",
+      "<Alert variant=\"${1|default,destructive|}\">",
+      "  <AlertTitle>${2:Heads up}</AlertTitle>",
+      "  <AlertDescription>${0:Description}</AlertDescription>",
+      "</Alert>"
+    ]
+  },
+  "dsgn: Avatar": {
+    "prefix": "dsgn-avatar",
+    "body": [
+      "import { Avatar, AvatarImage, AvatarFallback } from \"@/components/dsgn/avatar\";",
+      "",
+      "<Avatar>",
+      "  <AvatarImage src=\"${1:/avatar.png}\" alt=\"${2:Name}\" />",
+      "  <AvatarFallback>${0:AB}</AvatarFallback>",
+      "</Avatar>"
+    ]
+  },
+  "dsgn: Checkbox": {
+    "prefix": "dsgn-checkbox",
+    "body": [
+      "import { Checkbox } from \"@/components/dsgn/checkbox\";",
+      "",
+      "<Checkbox defaultChecked={${1:false}} />"
+    ]
+  },
+  "dsgn: Radio Group": {
+    "prefix": "dsgn-radio-group",
+    "body": [
+      "import { RadioGroup, RadioGroupItem } from \"@/components/dsgn/radio-group\";",
+      "",
+      "<RadioGroup defaultValue=\"${1:option}\">",
+      "  <RadioGroupItem value=\"${1:option}\" id=\"${2:option}\" />",
+      "</RadioGroup>"
+    ]
+  },
+  "dsgn: Separator": {
+    "prefix": "dsgn-separator",
+    "body": ["import { Separator } from \"@/components/dsgn/separator\";", "", "<Separator />"]
+  },
+  "dsgn: Progress": {
+    "prefix": "dsgn-progress",
+    "body": [
+      "import { Progress } from \"@/components/dsgn/progress\";",
+      "",
+      "<Progress value={${1:60}} />"
+    ]
+  },
+  "dsgn: Accordion": {
+    "prefix": "dsgn-accordion",
+    "body": [
+      "import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from \"@/components/dsgn/accordion\";",
+      "",
+      "<Accordion type=\"single\" collapsible>",
+      "  <AccordionItem value=\"${1:item-1}\">",
+      "    <AccordionTrigger>${2:Question}</AccordionTrigger>",
+      "    <AccordionContent>${0:Answer}</AccordionContent>",
+      "  </AccordionItem>",
+      "</Accordion>"
+    ]
+  },
+  "dsgn: Popover": {
+    "prefix": "dsgn-popover",
+    "body": [
+      "import { Popover, PopoverTrigger, PopoverContent } from \"@/components/dsgn/popover\";",
+      "",
+      "<Popover>",
+      "  <PopoverTrigger asChild>${1:<button>Open</button>}</PopoverTrigger>",
+      "  <PopoverContent>${0:content}</PopoverContent>",
+      "</Popover>"
+    ]
+  },
+  "dsgn: Dropdown Menu": {
+    "prefix": "dsgn-dropdown-menu",
+    "body": [
+      "import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from \"@/components/dsgn/dropdown-menu\";",
+      "",
+      "<DropdownMenu>",
+      "  <DropdownMenuTrigger asChild>${1:<button>Open</button>}</DropdownMenuTrigger>",
+      "  <DropdownMenuContent>",
+      "    <DropdownMenuItem>${0:Item}</DropdownMenuItem>",
+      "  </DropdownMenuContent>",
+      "</DropdownMenu>"
+    ]
+  },
+  "dsgn: Table": {
+    "prefix": "dsgn-table",
+    "body": [
+      "import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from \"@/components/dsgn/table\";",
+      "",
+      "<Table>",
+      "  <TableHeader>",
+      "    <TableRow>",
+      "      <TableHead>${1:Column}</TableHead>",
+      "    </TableRow>",
+      "  </TableHeader>",
+      "  <TableBody>",
+      "    <TableRow>",
+      "      <TableCell>${0:Value}</TableCell>",
+      "    </TableRow>",
+      "  </TableBody>",
+      "</Table>"
+    ]
+  },
+  "dsgn: Skeleton": {
+    "prefix": "dsgn-skeleton",
+    "body": [
+      "import { Skeleton } from \"@/components/dsgn/skeleton\";",
+      "",
+      "<Skeleton className=\"${1:h-4 w-32}\" />"
+    ]
+  },
+  "dsgn: Empty State": {
+    "prefix": "dsgn-empty-state",
+    "body": [
+      "import { EmptyState } from \"@/components/dsgn/empty-state\";",
+      "",
+      "<EmptyState title=\"${1:Nothing here yet}\" description=\"${0:Description}\" />"
+    ]
+  }
+}
