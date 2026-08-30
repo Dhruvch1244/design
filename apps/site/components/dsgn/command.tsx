@@ -29,10 +29,12 @@ Command.displayName = "Command";
 export function CommandDialog({
   open,
   onOpenChange,
+  label = "Command palette",
   children,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  label?: string;
   children: React.ReactNode;
 }) {
   React.useEffect(() => {
@@ -51,6 +53,9 @@ export function CommandDialog({
       onClick={() => onOpenChange(false)}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={label}
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-card shadow-lg backdrop-blur-xl"
       >

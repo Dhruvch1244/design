@@ -380,3 +380,53 @@ doesn't require a CLI release to take effect for `dsgn add`.
   primitive, and each would need its own new third-party dependency
   (`react-day-picker`, `@tanstack/react-table`, `react-resizable-panels`,
   `input-otp`) this registry doesn't currently carry.
+- **2026-08-30** — Fixed a real, live bug: `alert-dialog`, `combobox`, and
+  `pagination` each imported a sibling component by its `src/` location
+  (e.g. combobox's `from "../button/button"`), and
+  `build-registry.mjs`'s `rewriteImportsForConsumers` only ever rewrote the
+  recipe shape (`../components/<name>/<name>`), never the plain
+  component-to-component shape. `packages/registry`'s own `tsc --noEmit`
+  never caught it — it typechecks `src/`, where those relative imports are
+  still correctly resolvable on disk; the bug only exists once the build
+  step flattens every component into one `components/dsgn/` directory for
+  a consumer. Confirmed live and broken on the deployed registry before the
+  fix (`curl https://design.dhruvchoudhary.com/r/combobox.json` shipped the
+  unresolved import verbatim) — any real `npx @dhruvchoudhary/dsgn add
+  alert-dialog`, `add combobox`, or `add pagination` got a file that
+  couldn't build. Found by dogfooding: installing dsgn into a real,
+  separate showcase project via the actual CLI, not the internal site.
+  Fixed the regex, and added a new permanent check,
+  `scripts/lint-registry-imports.mjs` (wired into `ci.yml` right after
+  `build:registry`), that scans the *built* `dist/r/*.json` output —
+  not `src/` — for any remaining unresolved relative import, so this
+  specific failure class can't ship silently again.
+- **2026-08-30** — Five more real, live bugs surfaced by the same dogfooding
+  session, all fixed: `combobox`'s popover used Tailwind v3's bare
+  `w-[--radix-popover-trigger-width]` custom-property shorthand, which
+  compiles to invalid CSS (`width: --radix-popover-trigger-width`, no
+  `var()`) under this project's Tailwind v4 — confirmed in the site's own
+  compiled output — so the popover never actually matched its trigger's
+  width; fixed to the explicit `var(...)` form already used correctly by
+  `select`. `Progress`'s indicator assumed `value` was already a 0–100
+  percentage and ignored `max` entirely, so a non-default `max` silently
+  rendered the wrong fill; now scales by `value / max`. `Slider` spread
+  `aria-label` onto `Root`, but Radix puts `role="slider"` on each `Thumb`,
+  so the label never reached assistive tech — fixed for single-thumb
+  sliders automatically, and added a new `thumbLabels?: string[]` prop for
+  range sliders, since one shared name can't describe two independent
+  handles (the `/examples` range-slider demo now passes
+  `thumbLabels={["Minimum price", "Maximum price"]}` instead of one
+  ambiguous `aria-label`). `Checkbox`'s indeterminate state rendered as a
+  plain unfilled box with a full checkmark showing anyway — Radix renders
+  `Indicator`'s children for both `checked` and `indeterminate` — now
+  filled the same as checked, with a dash icon swapped in instead of the
+  checkmark via a `[[data-state=indeterminate]_&]` selector. `CommandDialog`
+  had no `role`/`aria-modal` on its actual dialog surface; added
+  `role="dialog"` `aria-modal="true"` plus a new optional `label` prop
+  (defaults to "Command palette") for `aria-label` — confirmed `dsgn
+  doctor`'s a11y heuristic flag count on a fresh install dropped from 2 to
+  1, the remaining one being the backdrop's own click-to-dismiss `div`,
+  which doesn't need to be keyboard-focusable since Escape already closes
+  it. Also fixed a real doc-drift gap: `component-registry.md` listed
+  Button's variants but omitted `destructive`, which `AlertDialogAction`
+  actually depends on.
