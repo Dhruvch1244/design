@@ -29,7 +29,7 @@ the complete `.windsurf/rules/dsgn-*.md` set.
 
 ## The component registry
 
-23 real React + Tailwind + CVA components, installed with
+25 real React + Tailwind + CVA components, installed with
 `npx @dhruvchoudhary/dsgn add <name>` — copied into your project's own
 source tree, not a runtime dependency. Full list: `npx @dhruvchoudhary/dsgn
 list`.

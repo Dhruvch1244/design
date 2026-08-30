@@ -57,6 +57,7 @@ import { SelectPlayground } from "@/components/select-playground";
 import { CheckboxPlayground } from "@/components/checkbox-playground";
 import { TableOfContents, type TocEntry } from "@/components/table-of-contents";
 import { ComponentJumpCommand } from "@/components/component-jump-command";
+import { SectionSearchButton } from "@/components/section-search-button";
 import { LazyMount } from "@/components/lazy-mount";
 
 export const metadata: Metadata = {
@@ -209,8 +210,13 @@ export default function ComponentsPage() {
           <Link href="/theming" className="text-sm text-accent hover:underline">
             Reskin all of it for your own brand →
           </Link>
-          <div className="mt-6 max-w-sm">
-            <ComponentJumpCommand sections={SECTIONS} />
+          <div className="mt-6">
+            <SectionSearchButton
+              sections={SECTIONS}
+              heading="Components"
+              placeholder="Jump to a component..."
+              label="Search components"
+            />
           </div>
         </CursorGlow>
       </Reveal>
@@ -461,8 +467,9 @@ export default function ComponentsPage() {
               <p className="text-sm text-muted-foreground">
                 Built on <code className="font-mono text-accent">cmdk</code> — press{" "}
                 <kbd className="rounded border border-border px-1.5 py-0.5 font-mono text-xs">⌘K</kbd>{" "}
-                anywhere on this site for the real thing. The same jump-to-section search sits at
-                the top of this page; this copy is here so the Command section has one too.
+                anywhere on this site for the real thing, or the &ldquo;Search components&rdquo;
+                button at the top of this page. This inline version is here so the Command
+                section has one too.
               </p>
               <LazyMount minHeight={276}>
                 <ComponentJumpCommand sections={SECTIONS} />
