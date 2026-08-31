@@ -430,3 +430,18 @@ doesn't require a CLI release to take effect for `dsgn add`.
   it. Also fixed a real doc-drift gap: `component-registry.md` listed
   Button's variants but omitted `destructive`, which `AlertDialogAction`
   actually depends on.
+- **2026-08-31** — New skill workflow step, "Before building: confirm the
+  brief" (`skills/dsgn/SKILL.md`, plus a condensed version in
+  `global-summary.md` and `/skill`'s preview) — before installing anything,
+  restate the request as a structured brief (what's being built, its scope,
+  the voice chosen and why, any stated constraints, anything genuinely
+  unclear) and wait for confirmation, rather than building straight from a
+  possibly-underspecified first message. Skipped only when the user's own
+  request already reads like a full spec, so it doesn't add friction to
+  requests that don't need it. Propagated to every skill target (Claude
+  Code, Cursor, Windsurf, Copilot, Gemini, the flattened AGENTS.md doc) via
+  `sync-skill.mjs`; confirmed the Windsurf global summary still fits its
+  hard 6,000-character cap after the addition. Also fixed a stale "25
+  components" count in `global-summary.md`, missed in an earlier pass since
+  that file isn't derived from `registry.json` the way the other reference
+  docs are.

@@ -80,6 +80,40 @@ Apply these signals in order — the first one that matches decides:
      Claude Code's `AskUserQuestion`), use it so the user picks from
      concrete options instead of writing free text back.
 
+## Before building: confirm the brief
+
+Do this every time this skill activates, not only when the request already
+sounds vague — a request that sounds clear can still be underspecified in
+ways that are cheap to catch now and expensive to unwind after components
+are already installed. Skip this step only when the user's own message
+already reads like a spec (names the surface, the scope, and either a voice
+or an unambiguous signal for one) — restating a brief that's already fully
+specified is friction with no benefit, not rigor.
+
+1. **Restate the request as a structured brief**, not a running summary of
+   the conversation so far:
+   - **What** — the concrete surface being built (a specific page, component,
+     or flow), named, not "some UI."
+   - **Scope** — what's explicitly in and out (e.g. "the settings page, not
+     the whole account flow").
+   - **Voice** — which of the seven style agents per Router logic above, and
+     the one-line reason (the actual signal that pointed at it — explicit
+     request, existing brand cue, or project-type default). This is the
+     recommendation, not a placeholder to fill in later.
+   - **Constraints** — anything the user already stated that limits the
+     solution space (an existing framework/palette, "no new dependencies,"
+     a scope cut for time).
+   - **Unknowns** — anything genuinely unclear. Name these explicitly rather
+     than silently picking an answer.
+2. **Present it and stop.** Don't fold this into the first message of a
+   build already underway. Use a structured choice tool (e.g. Claude Code's
+   `AskUserQuestion`) for any Unknowns if the host supports one; state the
+   rest as a short, confirmable summary ("Building: X. Voice: Y, because Z.
+   Out of scope: W. Confirm?").
+3. **Proceed only once the user confirms or corrects it.** A correction here
+   is the step working as intended, not friction to route around — it's a
+   wrong assumption caught before it's expensive, not after.
+
 ## How the handoff actually works
 
 This skill degrades gracefully depending on what the host environment

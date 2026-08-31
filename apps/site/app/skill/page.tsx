@@ -124,7 +124,16 @@ Apply these signals in order — the first one that matches decides:
 4. When genuinely unsure — two candidates, or no strong signal at all —
    stop and ask, don't silently pick. Lead with your actual recommendation
    and why, offer 1-2 alternatives, and use a structured choice tool
-   (e.g. AskUserQuestion) if the host has one.`;
+   (e.g. AskUserQuestion) if the host has one.
+
+## Before building: confirm the brief
+
+Every time, unless the user's own request already reads like a full spec:
+restate what's being built, its scope (in vs. explicitly out), the voice
+chosen and the one-line reason, any stated constraints, and anything
+genuinely unclear — then stop and wait for confirmation before installing
+anything. A correction here is the step working as intended, not friction
+to route around.`;
 
 interface Agent {
   slug: string;
