@@ -6,6 +6,8 @@ import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
 import { CursorGlow } from "@/components/motion/cursor-glow";
 import { Badge } from "@/components/dsgn/badge";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/dsgn/collapsible";
+import { CopyButton } from "@/components/copy-button";
 import { SHOWCASE_SITES } from "@/lib/showcase-sites";
 import { SkillPromoBanner } from "@/components/skill-promo-banner";
 
@@ -81,9 +83,38 @@ export default function ShowcasePage() {
                     rel="noreferrer"
                     className="rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
                   >
-                    Repo + prompt ↗
+                    Repo ↗
                   </a>
                 </div>
+
+                {/* Full prompt, verbatim, not an excerpt — the homepage
+                    teaser only shows a few lines; this is the whole brief
+                    that actually shipped the site, byte-for-byte identical
+                    to the repo's own README and first commit message. */}
+                <Collapsible className="border-t border-border pt-4">
+                  <CollapsibleTrigger className="flex w-full items-center justify-between text-left text-sm font-medium hover:text-accent">
+                    View the full prompt
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      className="h-4 w-4 shrink-0 transition-transform duration-300 [[data-state=open]_&]:rotate-180"
+                    >
+                      <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-3">
+                    <div className="relative">
+                      <pre className="max-h-96 overflow-y-auto whitespace-pre-wrap rounded-lg border border-border bg-card p-4 pr-14 font-mono text-xs leading-relaxed text-muted-foreground">
+                        {site.prompt}
+                      </pre>
+                      <div className="absolute right-3 top-3">
+                        <CopyButton text={site.prompt} />
+                      </div>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
               </div>
             </Frame>
           </Reveal>
