@@ -29,7 +29,7 @@ the complete `.windsurf/rules/dsgn-*.md` set.
 
 ## The component registry
 
-25 real React + Tailwind + CVA components, installed with
+36 real React + Tailwind + CVA components, installed with
 `npx @dhruvchoudhary/dsgn add <name>` — copied into your project's own
 source tree, not a runtime dependency. Full list: `npx @dhruvchoudhary/dsgn
 list`.
@@ -54,6 +54,15 @@ list`.
 Pick order: explicit user request, then existing project brand cues, then
 project type, then ask if genuinely unsure — a wrong visual direction is
 expensive to unwind after components are already built in it.
+
+## Before building: confirm the brief
+
+Every time, unless the user's own request already reads like a full spec:
+restate what you're building, its scope (in vs. explicitly out), the voice
+chosen and the one-line reason, any stated constraints, and anything
+genuinely unclear — then stop and wait for confirmation before installing
+anything. A correction here is the step working, not friction to route
+around.
 
 Install the project-level rules above for the full detail behind each
 voice, the real component variant names, and the token system.
