@@ -209,6 +209,7 @@ always-loaded-rules formats.
 | `--adopt` | Install dsgn-adopt to `./.claude/skills/dsgn-adopt` (`skill` only) |
 | `--adopt-global` | Install dsgn-adopt to `~/.claude/skills/dsgn-adopt` (`skill` only) |
 | `-h, --help` | Show help |
+| `-v, --version` | Show the installed CLI version |
 
 ## What's in the registry
 
