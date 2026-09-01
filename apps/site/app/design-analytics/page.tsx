@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/dsgn/tooltip";
 import { Toaster } from "@/components/dsgn/toaster";
 import { AppShell } from "@/components/design-analytics/app-shell";
-import { ThemeScope } from "@/components/design-analytics/theme-scope";
+import { ShowcaseThemeScope } from "@/components/showcase-theme-scope";
 
 // Corporate voice calls for "system-native sans, or a geometric grotesk that
 // reads the same" — Geist is that grotesk, and specifically not this site's
@@ -21,7 +21,8 @@ export const metadata: Metadata = {
 
 export default function DesignAnalyticsPage() {
   return (
-    <ThemeScope
+    <ShowcaseThemeScope
+      showcase="halyard"
       className={`${geistSans.variable} ${geistMono.variable} min-h-dvh bg-background font-sans text-foreground antialiased`}
     >
       <TooltipProvider delayDuration={200} skipDelayDuration={400}>
@@ -32,6 +33,6 @@ export default function DesignAnalyticsPage() {
           own Reveal-wrapped chrome for /design-analytics entirely), so
           ToastViewport's position:fixed anchors to the true viewport. */}
       <Toaster />
-    </ThemeScope>
+    </ShowcaseThemeScope>
   );
 }

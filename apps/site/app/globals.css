@@ -481,6 +481,133 @@
   }
 }
 
+/*
+ * /design-tasks (Alcove) — same reasoning as [data-showcase="halyard"]
+ * above: its exact brand values (silver-grey ground, one muted eucalyptus
+ * accent, pill radius, Figtree) stay fixed regardless of whatever
+ * voice/accent a visitor has picked for the rest of the site. Values
+ * copied verbatim from the standalone deployment's own app/globals.css
+ * (github.com/Dhruvch1244/dsgn-showcase-tasks). --font-mono repoints to the
+ * sitewide --font-jetbrains already loaded by the root layout rather than
+ * loading JetBrains Mono a second time — same literal font, no reason to
+ * double-download it.
+ */
+[data-showcase="alcove"] {
+  --void: #f2f2f4;
+  --panel: #eaeaee;
+  --surface: #ffffff;
+  --ink: #26262b;
+  --ink-soft: #55555f;
+  --ink-faint: #6e6e77;
+  --rule: #e6e6ea;
+
+  --sage: #4f7261;
+  --sage-ink: #ffffff;
+  --danger: #9c4b41;
+  --danger-ink: #ffffff;
+
+  --background: var(--void);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--surface);
+  --secondary: #e4e4e9;
+  --secondary-foreground: var(--ink);
+  --accent: var(--sage);
+  --accent-foreground: var(--sage-ink);
+  --muted: #ececef;
+  --muted-foreground: var(--ink-soft);
+  --destructive: var(--danger);
+  --destructive-foreground: var(--danger-ink);
+  --border: var(--rule);
+  --ring: var(--sage);
+  --radius-scale: 1.75;
+
+  --hue-design: #6c5a8c;
+  --hue-ios: #3f6788;
+  --hue-api: #4f7261;
+  --hue-research: #8a6524;
+  --hue-a11y: #9c4b41;
+  --hue-infra: #55606e;
+  --hue-copy: #7a5a6d;
+
+  --elev-tint: 26 26 32;
+  --shadow-xs: 0 1px 2px rgb(var(--elev-tint) / 0.03), 0 10px 26px -14px rgb(var(--elev-tint) / 0.14);
+  --shadow-sm: var(--shadow-xs);
+  --shadow-md:
+    0 2px 4px -1px rgb(var(--elev-tint) / 0.04), 0 18px 44px -18px rgb(var(--elev-tint) / 0.18);
+  --shadow-lg:
+    0 4px 10px -3px rgb(var(--elev-tint) / 0.05), 0 32px 80px -24px rgb(var(--elev-tint) / 0.22);
+  --shadow-xl: var(--shadow-lg);
+
+  --font-sans: var(--font-figtree);
+  --font-mono: var(--font-jetbrains);
+  --ease-fluid: cubic-bezier(0.22, 0.68, 0.24, 1);
+}
+[data-showcase="alcove"][data-theme="dark"] {
+  --void: #1c1c1f;
+  --panel: #212126;
+  --surface: #26262b;
+  --ink: #e8e8ea;
+  --ink-soft: #a2a2ac;
+  --ink-faint: #8b8b95;
+  --rule: #33333a;
+
+  --sage: #8fbfa6;
+  --sage-ink: #1c1c1f;
+  --danger: #e0938a;
+  --danger-ink: #1c1c1f;
+
+  --secondary: #303038;
+  --muted: #2e2e35;
+
+  --hue-design: #b6a3d6;
+  --hue-ios: #8fb5d8;
+  --hue-api: #8fbfa6;
+  --hue-research: #d7b479;
+  --hue-a11y: #e0938a;
+  --hue-infra: #a8b3c2;
+  --hue-copy: #cba7bb;
+
+  --elev-tint: 0 0 0;
+  --shadow-xs: 0 1px 2px rgb(var(--elev-tint) / 0.24), 0 10px 26px -14px rgb(var(--elev-tint) / 0.55);
+  --shadow-sm: var(--shadow-xs);
+  --shadow-md:
+    0 2px 4px -1px rgb(var(--elev-tint) / 0.3), 0 18px 44px -18px rgb(var(--elev-tint) / 0.6);
+  --shadow-lg:
+    0 4px 10px -3px rgb(var(--elev-tint) / 0.35), 0 32px 80px -24px rgb(var(--elev-tint) / 0.7);
+  --shadow-xl: var(--shadow-lg);
+}
+[data-showcase="alcove"] .tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+[data-showcase="alcove"] [data-reveal] {
+  animation: alcove-reveal-in 460ms var(--ease-fluid) both;
+  animation-delay: calc(var(--reveal-index, 0) * 45ms);
+}
+@media (max-width: 767px) {
+  [data-showcase="alcove"] [data-column]:not([data-column-active="true"]) {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-showcase="alcove"] [data-reveal] {
+    animation: none;
+  }
+}
+@keyframes alcove-reveal-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -508,6 +635,10 @@
 
   --color-void: var(--void);
   --color-surface: var(--surface);
+  /* Only ever set inside [data-showcase="alcove"] — its recessed board
+     column color, one step under --void. No other voice/showcase defines
+     --panel, so bg-panel is inert (transparent) everywhere else. */
+  --color-panel: var(--panel);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-ink-faint: var(--ink-faint);

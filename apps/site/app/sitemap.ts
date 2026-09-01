@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { PHILOSOPHY_DOCS } from "@/lib/philosophy-docs";
 import { CASE_STUDIES } from "@/lib/case-studies";
 import { COMPONENTS_DATA } from "@/lib/components-data";
+import { SHOWCASE_SITES } from "@/lib/showcase-sites";
 
 const BASE = "https://design.dhruvchoudhary.com";
 
@@ -20,7 +21,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     { url: `${BASE}/examples/`, priority: 0.8 },
     { url: `${BASE}/showcase/`, priority: 0.7 },
-    { url: `${BASE}/design-analytics/`, priority: 0.6 },
+    ...SHOWCASE_SITES.map((site) => ({
+      url: `${BASE}${site.liveHref}/`,
+      priority: 0.6,
+    })),
     { url: `${BASE}/theming/`, priority: 0.7 },
     { url: `${BASE}/skill/`, priority: 0.7 },
     { url: `${BASE}/best-practices/`, priority: 0.6 },

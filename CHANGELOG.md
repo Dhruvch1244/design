@@ -5,6 +5,20 @@ documented here, in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format. The registry and site aren't independently versioned — they're
 covered under **Registry** below, dated by when they actually shipped.
 
+## [0.9.1] — 2026-08-31
+
+### Added
+
+- `-v, --version` — prints the installed CLI version and exits. Missing
+  entirely before this; an unknown-flag or bare invocation now reads as
+  exactly that (falls through to the unknown-command path or the help
+  screen) rather than being silently swallowed. Found while dogfooding a
+  showcase build — verified directly rather than taken at face value: the
+  build's own claim that the *old* unknown-command fallback exited `0`
+  didn't reproduce (`--version` before this change already exited `1`, as
+  expected for an unrecognized command) — the missing flag itself was the
+  only real gap.
+
 ## [0.9.0] — 2026-08-30
 
 ### Added

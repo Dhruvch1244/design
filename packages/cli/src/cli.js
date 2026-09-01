@@ -1,3 +1,4 @@
+import { createRequire } from "node:module";
 import { init } from "./commands/init.js";
 import { add } from "./commands/add.js";
 import { list } from "./commands/list.js";
@@ -6,6 +7,9 @@ import { update } from "./commands/update.js";
 import { doctor } from "./commands/doctor.js";
 import { snippets } from "./commands/snippets.js";
 import { skill } from "./commands/skill.js";
+
+const require = createRequire(import.meta.url);
+const { version: PACKAGE_VERSION } = require("../package.json");
 
 const HELP = `dsgn — install design-system components as source, into your own project
 
@@ -52,6 +56,7 @@ Options:
   --recipes                     Show recipes instead of components (list only)
   --json                        Machine-readable output (list only)
   -h, --help                    Show this help
+  -v, --version                 Show the installed CLI version
 `;
 
 function parseArgs(argv) {
@@ -94,6 +99,8 @@ function parseArgs(argv) {
       args.flags.json = true;
     } else if (arg === "-h" || arg === "--help") {
       args.flags.help = true;
+    } else if (arg === "-v" || arg === "--version") {
+      args.flags.version = true;
     } else {
       args._.push(arg);
     }
@@ -105,6 +112,11 @@ export async function run(argv) {
   const { _: positional, flags } = parseArgs(argv);
   const [command, ...rest] = positional;
   const cwd = process.cwd();
+
+  if (flags.version) {
+    console.log(PACKAGE_VERSION);
+    return;
+  }
 
   if (flags.help || !command) {
     console.log(HELP);

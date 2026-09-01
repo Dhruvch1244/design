@@ -150,9 +150,9 @@ export default function Home() {
             One prompt. A real app.
           </h2>
           <p className="mt-4 max-w-2xl text-muted-foreground">
-            {SHOWCASE_SITES.length === 1 ? "Halyard" : `${SHOWCASE_SITES.length} sites`} — a
-            genuine external project, installing this registry from npm like any other consumer,
-            shipped from a single prompt to a design-focused Claude Code agent.
+            {SHOWCASE_SITES.length === 1
+              ? `${SHOWCASE_SITES[0].name} — a genuine external project, installing this registry from npm like any other consumer, shipped from a single prompt to a design-focused Claude Code agent.`
+              : `${SHOWCASE_SITES.length} genuine external projects, each installing this registry from npm like any other consumer, each shipped from one prompt to a design-focused Claude Code agent.`}
           </p>
 
           <div className="mt-10 grid gap-8 md:grid-cols-2 md:items-center">

@@ -31,7 +31,10 @@ const FOOTER_LINKS = [
 // renders exactly as before.
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isStandaloneShowcase = pathname?.startsWith("/design-analytics");
+  // Every standalone showcase embed lives at /design-<name> (design-analytics,
+  // design-tasks, ...) — matched by prefix so each new one doesn't need a
+  // separate entry here.
+  const isStandaloneShowcase = pathname?.startsWith("/design-");
 
   if (isStandaloneShowcase) {
     return <>{children}</>;
