@@ -78,4 +78,64 @@ Verify before reporting done: dev server runs with no console/page errors, tsc -
 
 Do not commit, push, or deploy anything — this is local-only for now, I'll review it before any of that. When done, report back: what you built (product name, concept), which components you installed, the local dev server URL/port for review, and any real bugs or friction you hit in the actual dsgn CLI/registry while dogfooding it (distinct signal from the showcase's own quality — flag these clearly, they may need fixing upstream). Keep the final report under 400 words.`,
   },
+  {
+    slug: "thrum",
+    name: "Thrum",
+    org: "Thrum",
+    tagline:
+      "A fictional community feed — pulses, sparks, echoes, and rooms — with a live accent-preset switcher that reskins every installed component from one attribute.",
+    category: "Social / community feed",
+    voice: "startup",
+    componentCount: 28,
+    liveHref: "/design-social",
+    repoHref: "https://github.com/Dhruvch1244/dsgn-showcase-social",
+    screenshot: "/showcase/thrum.png",
+    prompt: `Build a standalone showcase/demo site that proves out dsgn, a copy-paste component registry + design-philosophy Claude Code skill published on npm as @dhruvchoudhary/dsgn (source monorepo at C:\\Users\\dhruv\\workspace\\Design, live registry served from https://design.dhruvchoudhary.com/r, docs/marketing site at https://design.dhruvchoudhary.com). This is showcase #2 of 5 — the first, "Halyard" (a SaaS analytics dashboard in the corporate voice), already shipped at C:\\Users\\dhruv\\workspace\\dsgn-showcase-analytics and is live at https://design.dhruvchoudhary.com/design-analytics — skim its README for the pattern (don't copy its content, it's a different concept). The goal is a real, working example of what someone gets when they install dsgn into a fresh project — this will be screenshotted and used to advertise the tool alongside the prompt that built it, so it needs to actually look good, not just function.
+
+Where to build it: a brand-new standalone Next.js project in a fresh sibling directory, C:\\Users\\dhruv\\workspace\\dsgn-showcase-social — NOT inside the C:\\Users\\dhruv\\workspace\\Design monorepo. This must be a genuine external consumer of the published package (npx @dhruvchoudhary/dsgn add <component>), not a hand-copied shortcut.
+
+Concept — hard constraint: an ORIGINAL social/community feed app for an invented product with an invented name (do not reuse "Halyard" or "Northbridge Labs"). Think a Twitter/Bluesky/Discord-adjacent community app — a feed, posts, replies, profiles, notifications. Real, plausible-looking content (usernames, post text, timestamps, reaction counts) is fine and expected — but do NOT use any real company's name, logo, actual brand colors, or copied copy. Nothing that could read as a clone of a specific real app's branding.
+
+Stack: Next.js (App Router), React, Tailwind CSS v4, TypeScript — same stack as the source monorepo. Scaffold fresh via create-next-app with Tailwind v4 + TypeScript + App Router.
+
+Style voice: use the startup voice — read philosophy/ and skills/dsgn/agents/startup.md in the source monorepo for its real documented rules before styling anything (dark, gradient-accented, oversized confident type, per its own description — but verify against the actual file, don't guess). The source monorepo's apps/site/app/globals.css has real CSS custom-property values for the startup voice under [data-voice="startup"] if you want a concrete starting palette — the philosophy docs still take precedence for the actual rules.
+
+Install real components via the real CLI (npx @dhruvchoudhary/dsgn init then npx @dhruvchoudhary/dsgn add <component> <component> ...) — dogfooding, don't hand-copy source. Halyard already exercised Table, Combobox, Toast, Sheet, ToggleGroup, Slider, Progress, Command heavily — for this app, lean toward a different spread so the 5 showcases collectively cover the registry: Avatar, HoverCard (profile preview on hover), Tabs (feed/replies/likes), Dialog or Sheet (compose post, or post detail), Toast (post confirmation), Popover (reaction picker), ScrollArea (a sidebar or notification panel), Skeleton (loading feed state), EmptyState (empty notifications), Toggle (like button — the singular Toggle, not ToggleGroup), Collapsible (collapsed reply threads), Context Menu (post options — copy link, mute, report), DropdownMenu. Check skills/dsgn/reference/component-registry.md in the source monorepo for the full real list and real prop signatures before using any component; don't invent props that don't exist.
+
+Verify before reporting done: dev server runs with no console/page errors, tsc --noEmit clean, visually reviewed at both a desktop (1280px+) and phone (390px) viewport — check for horizontal overflow or broken layouts at mobile width specifically. Use Playwright (available via npx playwright).
+
+README: write one following the pattern of dsgn-showcase-analytics/README.md (skim it for structure/tone, don't copy content) — what it is, that it's fictional, how it was built (the real npx @dhruvchoudhary/dsgn add ... command list), the style voice, structure table, any local edits to installed components with real reasons.
+
+Do not commit, push, or deploy anything — this is local-only for now, I'll review it before any of that. When done, report back: what you built (product name, concept), which components you installed, the local dev server URL/port for review, and any real bugs or friction you hit in the actual dsgn CLI/registry while dogfooding it (distinct signal from the showcase's own quality — flag these clearly, they may need fixing upstream). Keep the final report under 400 words.`,
+  },
+  {
+    slug: "sableroot",
+    name: "Sableroot",
+    org: "Sableroot",
+    tagline:
+      "A fictional small-batch coffee roastery — catalog, cart, and checkout across a genuine multi-page storefront, in the editorial-warm voice.",
+    category: "E-commerce storefront",
+    voice: "editorial-warm",
+    componentCount: 21,
+    liveHref: "/design-shop",
+    repoHref: "https://github.com/Dhruvch1244/dsgn-showcase-shop",
+    screenshot: "/showcase/sableroot.png",
+    prompt: `Build a standalone showcase/demo site that proves out \`dsgn\`, a copy-paste component registry + design-philosophy Claude Code skill published on npm as \`@dhruvchoudhary/dsgn\` (source monorepo at C:\\Users\\dhruv\\workspace\\Design, live registry served from https://design.dhruvchoudhary.com/r, docs/marketing site at https://design.dhruvchoudhary.com). This is showcase #3 of 5 — the first, "Halyard" (a SaaS analytics dashboard in the \`corporate\` voice), already shipped at C:\\Users\\dhruv\\workspace\\dsgn-showcase-analytics and is live at https://design.dhruvchoudhary.com/design-analytics — skim its README for the pattern (don't copy its content, it's a different concept). The goal is a real, working example of what someone gets when they install \`dsgn\` into a fresh project — this will be screenshotted and used to advertise the tool alongside the prompt that built it, so it needs to actually look good, not just function.
+
+**Where to build it**: a brand-new standalone Next.js project in a fresh sibling directory, \`C:\\Users\\dhruv\\workspace\\dsgn-showcase-shop\` — NOT inside the \`C:\\Users\\dhruv\\workspace\\Design\` monorepo. This must be a genuine external consumer of the published package (\`npx @dhruvchoudhary/dsgn add <component>\`), not a hand-copied shortcut.
+
+**Concept — hard constraint**: an ORIGINAL e-commerce storefront for an invented product brand with an invented name (do not reuse "Halyard" or "Northbridge Labs"). A product listing/catalog page, product detail view, cart, checkout-ish flow — pick a plausible product category (e.g. home goods, outdoor gear, coffee/food, apparel — your call) and invent the brand around it. Real, plausible-looking content (product names, prices, descriptions) is fine and expected — but do NOT use any real company's name, logo, actual brand colors, product photography, or copied copy. Use plain colored/gradient placeholder blocks or simple SVG illustrations instead of real product photos — nothing that could read as scraped from a real retailer.
+
+**Stack**: Next.js (App Router), React, Tailwind CSS v4, TypeScript — same stack as the source monorepo. Scaffold fresh via \`create-next-app\` with Tailwind v4 + TypeScript + App Router.
+
+**Style voice**: use the \`editorial-warm\` voice — read \`philosophy/\` and \`skills/dsgn/agents/editorial-warm.md\` in the source monorepo for its real documented rules before styling anything. The source monorepo's \`apps/site/app/globals.css\` has real CSS custom-property values for the \`editorial-warm\` voice under \`[data-voice="editorial-warm"]\` if you want a concrete starting palette — the philosophy docs still take precedence for the actual rules.
+
+**Install real components via the real CLI** (\`npx @dhruvchoudhary/dsgn init\` then \`npx @dhruvchoudhary/dsgn add <component> <component> ...\`) — dogfooding, don't hand-copy source. Halyard already exercised Table, Combobox, Toast, Sheet, ToggleGroup, Slider, Progress, Command heavily — for *this* app, lean toward a different spread so the 5 showcases collectively cover the registry: Card, Badge, Tabs (product details/specs/reviews), Accordion (FAQ / shipping info), Select (size/color variant), RadioGroup (delivery option), ToggleGroup (filter chips — category, in-stock), Sheet (cart drawer), Dialog (quick-view modal), Breadcrumb (category navigation), Pagination (product grid), Separator, Skeleton (loading product cards). Check \`skills/dsgn/reference/component-registry.md\` in the source monorepo for the full real list and real prop signatures before using any component; don't invent props that don't exist.
+
+**Verify before reporting done**: dev server runs with no console/page errors, \`tsc --noEmit\` clean, visually reviewed at both a desktop (1280px+) and phone (390px) viewport — check for horizontal overflow or broken layouts at mobile width specifically. Use Playwright (available via \`npx playwright\`).
+
+**README**: write one following the pattern of \`C:\\Users\\dhruv\\workspace\\dsgn-showcase-analytics\\README.md\` (skim it for structure/tone, don't copy content) — what it is, that it's fictional, how it was built (the real \`npx @dhruvchoudhary/dsgn add ...\` command list), the style voice, structure table, any local edits to installed components with real reasons.
+
+**Do not commit, push, or deploy anything** — this is local-only for now, I'll review it before any of that. When done, report back: what you built (product name, concept), which components you installed, the local dev server URL/port for review, and any real bugs or friction you hit in the actual \`dsgn\` CLI/registry while dogfooding it (distinct signal from the showcase's own quality — flag these clearly, they may need fixing upstream). Keep the final report under 400 words.`,
+  },
 ];
