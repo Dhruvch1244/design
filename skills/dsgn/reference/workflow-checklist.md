@@ -77,6 +77,17 @@ real registry, tokens, and motion primitives — not generic advice.
   ring styling, not just a hover state standing in for it. Radix primitives
   give you the right ARIA roles/attributes for free; don't strip them by
   overriding the rendered element type carelessly.
+- **A hard-won, real lesson from this repo**: `ring-offset-2` alone isn't
+  enough. Tailwind's ring-offset utility silently falls back to a
+  hardcoded white `ring-offset-color` unless one is set explicitly — this
+  repo's own `badge`, `button`, `input`, `select`, `slider`, `tabs`, and
+  `textarea` components shipped with exactly this gap: a bright white halo
+  around every focused control on any dark voice (six of the seven), fully
+  invisible if you only checked focus states in light mode. Always pair
+  `ring-offset-2` with an explicit `ring-offset-background` (or whichever
+  semantic background token the surface actually sits on) — never the bare
+  Tailwind default. Verify by checking a focused control in dark mode
+  specifically, not just confirming a ring renders at all.
 - Check real contrast ratios for the chosen palette in both themes, not
   just "it looks readable to me" — this is the specific place a purely
   aesthetic style choice (a muted, low-contrast palette; a saturated neon
