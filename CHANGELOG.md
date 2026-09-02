@@ -5,6 +5,18 @@ documented here, in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format. The registry and site aren't independently versioned — they're
 covered under **Registry** below, dated by when they actually shipped.
 
+## [0.9.2] — 2026-09-02
+
+### Fixed
+
+- An unrecognized flag (e.g. `dsgn add badge --yes`) used to fall through
+  silently to positional args, so the CLI tried to fetch a registry item
+  literally named after the flag and failed with a confusing 404
+  (`Registry request failed (404): .../r/--yes.json`) instead of a clear
+  error. Reproduced directly against the CLI before fixing, found while
+  dogfooding a showcase build. Now rejected immediately as
+  `Unknown option: --yes`, exit code 1.
+
 ## [0.9.1] — 2026-08-31
 
 ### Added
@@ -459,3 +471,22 @@ doesn't require a CLI release to take effect for `dsgn add`.
   components" count in `global-summary.md`, missed in an earlier pass since
   that file isn't derived from `registry.json` the way the other reference
   docs are.
+- **2026-09-02** — Fixed a real, cross-validated accessibility bug:
+  `badge`, `button`, `input`, `select`, `slider`, `tabs`, and `textarea` all
+  wrote `ring-offset-2` without also setting an explicit ring-offset color,
+  so they inherited Tailwind's hardcoded `#fff` default — a bright white
+  halo around every focused control on any dark voice (six of the seven
+  style voices, including this site's own flagship). `checkbox`,
+  `radio-group`, and `switch` already had this right (`ring-offset-background`
+  alongside `ring-offset-2`); the other seven now match that pattern.
+  Confirmed via the compiled CSS output, not just the source diff. Found
+  independently twice — once as a fix a showcase build made unprompted in
+  its own installed copies, once as a dogfooding report with a
+  `getComputedStyle` reproduction — before landing here. Also documented a
+  real, A/B-tested gap: `accordion` (and, more mildly, `breadcrumb`) ships
+  components that reference `--ease-fluid`/`--animate-accordion-*` tokens
+  `dsgn add` never injects, so a fresh consumer's accordion silently loses
+  its expand/collapse animation entirely unless those are added by hand.
+  `registry.json`'s descriptions and `component-registry.md`'s Accordion/
+  Breadcrumb entries now spell out the exact required CSS, not just point
+  at this site's own `globals.css` to go copy from.

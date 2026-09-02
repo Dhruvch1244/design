@@ -1,6 +1,6 @@
 {
   "name": "@dhruvchoudhary/dsgn",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "CLI that copies dsgn design-system components into your project's own source tree — no runtime dependency on this package, in the shadcn/ui tradition. Works in any React + Tailwind project. Includes diff/update for tracking upstream changes, composed recipes, a doctor health-check, VS Code snippets, an Agent Skill installer for Claude Code, Cursor, Windsurf, GitHub Copilot, Gemini, and plain AGENTS.md (dsgn skill --global/--project/--agents-md/--cursor/--windsurf/--copilot/--gemini), and dsgn-adopt for extracting an existing codebase's own UI conventions (dsgn skill --adopt/--adopt-global).",
   "type": "module",
   "bin": {

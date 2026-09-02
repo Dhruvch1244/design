@@ -99,10 +99,41 @@ scroll-jump bug when the widget sits below the fold — see
 `apps/site/components/lazy-mount.tsx` and `section-search-button.tsx` for
 the two fixes this repo landed for it).
 
+**Accordion**: `Accordion`, `AccordionItem`, `AccordionTrigger`,
+`AccordionContent` — built on Radix Accordion, standard compound shape.
+**Requires extra CSS `dsgn add` does not inject.** Without it, the
+`ease-fluid`/`animate-accordion-down`/`animate-accordion-up` Tailwind
+utility classes compile to nothing at all (not a fallback — genuinely
+absent), and the accordion snaps open/closed with no animation. Confirmed
+by an actual A/B build: deleting these lines and rebuilding removes the
+compiled CSS rules entirely; restoring them brings the rules back. Add this
+to the consumer's global CSS (`@theme inline` block, matching this repo's
+own `apps/site/app/globals.css`):
+```css
+@theme inline {
+  --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1); /* or any voice's own value */
+  --animate-accordion-down: accordion-down 300ms var(--ease-fluid);
+  --animate-accordion-up: accordion-up 300ms var(--ease-fluid);
+}
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+```
+
 **Breadcrumb**: `Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem`,
 `BreadcrumbLink` (`asChild` via Slot), `BreadcrumbPage`,
 `BreadcrumbSeparator`, `BreadcrumbEllipsis` — plain semantic `nav`/`ol`
-markup, no primitive-library dependency.
+markup, no primitive-library dependency. `BreadcrumbLink`'s hover
+transition also uses `--ease-fluid` — without it in the consumer's global
+CSS (see the Accordion entry above), the class compiles to nothing and the
+transition just falls back to the browser default easing. Milder than
+Accordion's gap (a subtle timing difference, not a broken animation), but
+the same root cause.
 
 **Pagination**: `Pagination`, `PaginationContent`, `PaginationItem`,
 `PaginationLink` (`isActive`, `size`), `PaginationPrevious`,
