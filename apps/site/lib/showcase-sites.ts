@@ -143,4 +143,34 @@ Do not commit, push, or deploy anything — this is local-only for now, I'll rev
 
 **Do not commit, push, or deploy anything** — this is local-only for now, I'll review it before any of that. When done, report back: what you built (product name, concept), which components you installed, the local dev server URL/port for review, and any real bugs or friction you hit in the actual \`dsgn\` CLI/registry while dogfooding it (distinct signal from the showcase's own quality — flag these clearly, they may need fixing upstream). Keep the final report under 400 words.`,
   },
+  {
+    slug: "voltgate",
+    name: "VOLTGATE",
+    org: "Redshift Interactive",
+    tagline:
+      "A fictional edge API developer console — keys, webhooks, request logs, and feature flags, in the loudest of the seven voices applied to the densest kind of surface.",
+    category: "Developer / API console",
+    voice: "neon-cyberpunk",
+    componentCount: 29,
+    liveHref: "/design-console",
+    repoHref: "https://github.com/Dhruvch1244/dsgn-showcase-console",
+    screenshot: "/showcase/voltgate.png",
+    prompt: `Build a standalone showcase/demo site that proves out \`dsgn\`, a copy-paste component registry + design-philosophy Claude Code skill published on npm as \`@dhruvchoudhary/dsgn\` (source monorepo at ~/workspace/Design, live registry served from https://design.dhruvchoudhary.com/r, docs/marketing site at https://design.dhruvchoudhary.com). This is showcase #5 of 5 — the first, "Halyard" (a SaaS analytics dashboard in the \`corporate\` voice), already shipped at ~/workspace/dsgn-showcase-analytics and is live at https://design.dhruvchoudhary.com/design-analytics — skim its README for the pattern (don't copy its content, it's a different concept). The goal is a real, working example of what someone gets when they install \`dsgn\` into a fresh project — this will be screenshotted and used to advertise the tool alongside the prompt that built it, so it needs to actually look good, not just function.
+
+**Where to build it**: a brand-new standalone Next.js project in a fresh sibling directory, \`~/workspace/dsgn-showcase-console\` — NOT inside the \`~/workspace/Design\` monorepo. This must be a genuine external consumer of the published package (\`npx @dhruvchoudhary/dsgn add <component>\`), not a hand-copied shortcut.
+
+**Concept — hard constraint**: an ORIGINAL developer/API admin console for an invented product with an invented name (do not reuse "Halyard" or "Northbridge Labs") — think an API-keys/webhooks/logs/feature-flags management console for a developer platform (like a Stripe/Vercel/Supabase-style dashboard, but its own original invented brand, not a copy of any of those). API key list with reveal/rotate/revoke actions, a webhook delivery log table, feature-flag toggles, request logs. Real, plausible-looking content (endpoint names, status codes, timestamps, API key prefixes) is fine and expected — but do NOT use any real company's name, logo, actual brand colors, or copied copy.
+
+**Stack**: Next.js (App Router), React, Tailwind CSS v4, TypeScript — same stack as the source monorepo. Scaffold fresh via \`create-next-app\` with Tailwind v4 + TypeScript + App Router.
+
+**Style voice**: use the \`neon-cyberpunk\` voice — read \`philosophy/\` and \`skills/dsgn/agents/neon-cyberpunk.md\` in the source monorepo for its real documented rules before styling anything — this is the boldest/most saturated of the 7 voices, follow its actual documented rules rather than softening it into something safer. The source monorepo's \`apps/site/app/globals.css\` has real CSS custom-property values for the \`neon-cyberpunk\` voice under \`[data-voice="neon-cyberpunk"]\` if you want a concrete starting palette — the philosophy docs still take precedence for the actual rules. Despite the bold aesthetic, this is still a real dev tool — information density, table legibility, and clear status/error states matter more here than in any of the other 4 showcases; don't let the voice's boldness compromise actual usability of a data-dense admin surface.
+
+**Install real components via the real CLI** (\`npx @dhruvchoudhary/dsgn init\` then \`npx @dhruvchoudhary/dsgn add <component> <component> ...\`) — dogfooding, don't hand-copy source. Halyard already exercised Table, Combobox, Toast, Sheet, ToggleGroup, Slider, Progress, Command heavily — for *this* app, lean toward a different spread so the 5 showcases collectively cover the registry: Switch (feature-flag toggles), AlertDialog (confirm destructive actions — revoke key, delete webhook), Tabs (Keys/Webhooks/Logs/Flags sections), Tooltip (info icons, truncated values), Badge (status codes, environment tags), ContextMenu (row actions), DropdownMenu, Card, Separator, Skeleton (loading table rows), EmptyState (no webhooks configured yet), Accordion (expandable log entry details), Table + Pagination. Check \`skills/dsgn/reference/component-registry.md\` in the source monorepo for the full real list and real prop signatures before using any component; don't invent props that don't exist.
+
+**Verify before reporting done**: dev server runs with no console/page errors, \`tsc --noEmit\` clean, visually reviewed at both a desktop (1280px+) and phone (390px) viewport — check for horizontal overflow or broken layouts at mobile width specifically (dense tables are a real mobile challenge — decide deliberately how they degrade). Use Playwright (available via \`npx playwright\`).
+
+**README**: write one following the pattern of \`~/workspace/dsgn-showcase-analytics\\README.md\` (skim it for structure/tone, don't copy content) — what it is, that it's fictional, how it was built (the real \`npx @dhruvchoudhary/dsgn add ...\` command list), the style voice, structure table, any local edits to installed components with real reasons.
+
+**Do not commit, push, or deploy anything** — this is local-only for now, I'll review it before any of that. When done, report back: what you built (product name, concept), which components you installed, the local dev server URL/port for review, and any real bugs or friction you hit in the actual \`dsgn\` CLI/registry while dogfooding it (distinct signal from the showcase's own quality — flag these clearly, they may need fixing upstream). Keep the final report under 400 words.`,
+  },
 ];
