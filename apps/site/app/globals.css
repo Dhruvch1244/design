@@ -910,6 +910,271 @@ body:has([data-showcase="thrum"]) {
   }
 }
 
+/* -----------------------------------------------------------------------
+ * VOLTGATE (dev/API console) — neon-cyberpunk voice. Same two-layer
+ * indirection as every showcase above: raw value -> semantic alias ->
+ * @theme inline token (sitewide, below). Dark-only, like Thrum's startup
+ * voice — this voice has no light-mode variant, so there's no compound
+ * [data-showcase="voltgate"][data-theme="light"] block.
+ * ------------------------------------------------------------------------ */
+[data-showcase="voltgate"] {
+  --void: #05060c;
+  --surface: #0a0c16;
+  --surface-lift: #0e1122;
+  --ink: #eef0ff;
+  --ink-soft: #9aa0c8;
+  --ink-faint: #7a80ad;
+  --rule: #232849;
+
+  /* The three neon hues, used together and layered — specifically correct
+     in this voice, specifically wrong in the other six. */
+  --cyan: #28e0ec;
+  --magenta: #ff2e7e;
+  --violet: #9a6bff;
+
+  --signal-ok: #3ef2a4;
+  --signal-warn: #ffc857;
+  --signal-bad: var(--magenta);
+
+  --background: var(--void);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--void);
+  --secondary: #151a33;
+  --secondary-foreground: var(--ink);
+  --accent: var(--cyan);
+  --accent-foreground: var(--void);
+  --muted: #10142a;
+  --muted-foreground: var(--ink-soft);
+  --destructive: var(--magenta);
+  /* Near-black, not white: white on #ff2e7e is 3.5:1 and fails AA. */
+  --destructive-foreground: #12000a;
+  --border: var(--rule);
+  --ring: color-mix(in srgb, var(--accent) 70%, transparent);
+  --radius-scale: 0.5;
+
+  /* Elevation = layered glow. Each step adds a hue rather than just more
+     blur, so a dropdown and a dialog are distinguishable by color
+     temperature, not only darkness. */
+  --shadow-xs: 0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent), 0 1px 2px rgb(0 0 0 / 0.6);
+  --shadow-sm: var(--shadow-xs);
+  --shadow-md:
+    0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent),
+    0 8px 24px -10px color-mix(in srgb, var(--accent) 30%, transparent),
+    0 10px 30px -12px rgb(0 0 0 / 0.8);
+  --shadow-lg:
+    0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent),
+    0 0 40px -14px color-mix(in srgb, var(--violet) 45%, transparent),
+    0 18px 50px -18px color-mix(in srgb, var(--accent) 35%, transparent),
+    0 24px 60px -20px rgb(0 0 0 / 0.9);
+  --shadow-xl: var(--shadow-lg);
+
+  /* --font-display is a no-op here, same gotcha documented above for
+     [data-voice="corporate"] and every other showcase: @theme inline
+     resolves the compiled .font-display utility to var(--font-bebas)
+     literally, so only overriding --font-bebas itself takes effect. */
+  --font-bebas: var(--font-anton);
+
+  --animate-accordion-down: accordion-down 260ms var(--ease-fluid);
+  --animate-accordion-up: accordion-up 220ms var(--ease-fluid);
+}
+
+[data-showcase="voltgate"] * {
+  scrollbar-color: var(--rule) transparent;
+  scrollbar-width: thin;
+}
+
+[data-showcase="voltgate"] ::selection {
+  background: color-mix(in srgb, var(--magenta) 35%, transparent);
+  color: var(--ink);
+}
+
+/* The decorative backdrop has a negative-inset glow wash that bleeds past
+   the viewport edge; Chromium still counts it toward
+   documentElement.scrollWidth. clip (not hidden, which would force the
+   other axis to auto and break the sticky top bar) scoped to only apply
+   while this route's wrapper is present in the DOM — see Thrum's .aurora
+   for the same fix applied the same way. */
+html:has([data-showcase="voltgate"]),
+body:has([data-showcase="voltgate"]) {
+  overflow-x: clip;
+}
+
+[data-showcase="voltgate"] .display {
+  font-family: var(--font-anton), ui-sans-serif, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 0.92;
+}
+
+[data-showcase="voltgate"] .wordmark-glow {
+  text-shadow:
+    0 0 18px color-mix(in srgb, var(--cyan) 55%, transparent),
+    0 0 42px color-mix(in srgb, var(--violet) 40%, transparent);
+}
+
+[data-showcase="voltgate"] .tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* The double-bezel panel edge: a hairline inner highlight over the border,
+   so a panel reads as a machined edge catching light rather than a 1px box. */
+[data-showcase="voltgate"] .bezel {
+  position: relative;
+}
+[data-showcase="voltgate"] .bezel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--cyan) 12%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--violet) 6%, transparent);
+}
+
+[data-showcase="voltgate"] .gridlines {
+  background-image:
+    linear-gradient(to right, var(--cyan) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--violet) 1px, transparent 1px);
+  background-size: 44px 44px;
+  opacity: 0.035;
+}
+
+/* Right-edge fade on horizontally-scrollable tables (the request-logs
+   table) — a pseudo-element on the wrapper, not a background on the
+   scroll container itself, so it stays pinned to the viewport edge
+   instead of scrolling away the moment the user starts dragging. Distinct
+   from .scroll-fade-x (the mask-image technique used elsewhere on this
+   site for a translucent/glass background): this wrapper sits on a solid
+   --surface fill, so a color-matched gradient is the correct tool here. */
+[data-showcase="voltgate"] .scroll-hint {
+  position: relative;
+}
+[data-showcase="voltgate"] .scroll-hint::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  z-index: 1;
+  width: 3rem;
+  pointer-events: none;
+  background: linear-gradient(
+    to left,
+    var(--surface) 15%,
+    color-mix(in srgb, var(--surface) 60%, transparent) 55%,
+    transparent
+  );
+}
+@media (min-width: 1280px) {
+  [data-showcase="voltgate"] .scroll-hint::after {
+    content: none;
+  }
+}
+
+/* The console-shell tab strip (5 tabs, doesn't fit at 390px) scrolls
+   horizontally with its scrollbar hidden — same real bug found and fixed
+   in the standalone build: the last tab sat almost entirely past the
+   viewport edge with no visual cue. Scoped to max-width: 1023.98px
+   (Tailwind's `lg` breakpoint) rather than fought via an `lg:` utility
+   override — this file's unlayered-CSS-beats-@layer-utilities note
+   applies here exactly as it did in the standalone repo. */
+@media (max-width: 1023.98px) {
+  [data-showcase="voltgate"] .scroll-fade-x {
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 28px), transparent);
+    mask-image: linear-gradient(to right, black calc(100% - 28px), transparent);
+  }
+}
+
+@keyframes voltgate-reveal-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+[data-showcase="voltgate"] [data-reveal] {
+  animation: voltgate-reveal-in 320ms var(--ease-fluid) both;
+  animation-delay: calc(var(--reveal-index, 0) * 45ms);
+}
+
+@keyframes voltgate-signal-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.82);
+  }
+}
+[data-showcase="voltgate"] [data-pulse] {
+  animation: voltgate-signal-pulse 2.2s var(--ease-fluid) infinite;
+}
+
+@keyframes voltgate-glow-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -3%, 0) scale(1.1);
+  }
+}
+[data-showcase="voltgate"] [data-glow-drift] {
+  animation: voltgate-glow-drift 18s var(--ease-fluid) infinite;
+}
+
+@keyframes voltgate-scan-sweep {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+[data-showcase="voltgate"] [data-scan] {
+  animation: voltgate-scan-sweep 7s linear infinite;
+}
+
+@keyframes voltgate-line-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -4px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+[data-showcase="voltgate"] [data-arrive] {
+  animation: voltgate-line-arrive 260ms var(--ease-fluid) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-showcase="voltgate"] [data-reveal],
+  [data-showcase="voltgate"] [data-pulse],
+  [data-showcase="voltgate"] [data-glow-drift],
+  [data-showcase="voltgate"] [data-scan],
+  [data-showcase="voltgate"] [data-arrive] {
+    animation: none !important;
+    transform: none !important;
+  }
+  [data-showcase="voltgate"] [data-reveal],
+  [data-showcase="voltgate"] [data-pulse],
+  [data-showcase="voltgate"] [data-arrive] {
+    opacity: 1;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -944,6 +1209,17 @@ body:has([data-showcase="thrum"]) {
   /* Only ever set inside [data-showcase="thrum"] — its raised-surface color
      (dropdown/popover fill, one step above --card). Inert everywhere else. */
   --color-elevated: var(--surface-raised);
+  /* Only ever set inside [data-showcase="voltgate"] — its nested-panel /
+     table-header-strip fill, one step above --surface. Inert everywhere
+     else. */
+  --color-surface-lift: var(--surface-lift);
+  /* Status semantics VOLTGATE's admin console needs independent of the
+     decorative cyan/magenta/violet triad (green/amber, plus magenta
+     doubling as the error hue). Only ever set inside
+     [data-showcase="voltgate"] — inert everywhere else. */
+  --color-signal-ok: var(--signal-ok);
+  --color-signal-warn: var(--signal-warn);
+  --color-signal-bad: var(--signal-bad);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-ink-faint: var(--ink-faint);
