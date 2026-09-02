@@ -608,6 +608,308 @@
   }
 }
 
+/*
+ * /design-social (Thrum) — same reasoning as the other [data-showcase="x"]
+ * blocks above. No [data-showcase="thrum"][data-theme="dark"] compound is
+ * needed: this voice has no light mode at all (startup.md's own dark
+ * variant is still dark), so :root-equivalent values apply unconditionally.
+ * Values copied verbatim from the standalone deployment's own
+ * app/globals.css (github.com/Dhruvch1244/dsgn-showcase-social).
+ *
+ * The accent-preset switcher (Aurora/Ember/Bloom) sets data-accent on THIS
+ * SAME wrapper element, not on <html> — <html> already carries the site's
+ * own data-accent (its own cyan/violet/... picker), and writing there would
+ * collide with it. See lib/design-social/accent.ts.
+ */
+[data-showcase="thrum"] {
+  --void: #0b0518;
+  --surface: #150a2e;
+  --surface-raised: #1e1142;
+  --ink: #f6f1ff;
+  --ink-soft: #b9a9e2;
+  --ink-faint: #8f81be;
+  --rule: #2e1f52;
+
+  --accent-a: #3ce0f0;
+  --accent-b: #a06bff;
+  --accent-ink: #0b0518;
+  --danger: #ff5470;
+  --danger-ink: #0b0518;
+
+  --background: var(--void);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--void);
+  --secondary: var(--surface-raised);
+  --secondary-foreground: var(--ink);
+  --accent: var(--accent-a);
+  --accent-foreground: var(--accent-ink);
+  --muted: #1a0e38;
+  --muted-foreground: var(--ink-soft);
+  --destructive: var(--danger);
+  --destructive-foreground: var(--danger-ink);
+  --border: var(--rule);
+  --ring: var(--accent);
+  --radius-scale: 1.6;
+
+  --accent-grad: linear-gradient(100deg, var(--accent-a), var(--accent-b));
+  --accent-grad-soft: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--accent-a) 18%, transparent),
+    color-mix(in srgb, var(--accent-b) 18%, transparent)
+  );
+  --glow-accent:
+    0 0 0 1px color-mix(in srgb, var(--accent-a) 40%, transparent),
+    0 14px 46px -12px color-mix(in srgb, var(--accent-b) 65%, transparent);
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.45);
+  --shadow-md: 0 4px 10px -3px rgb(0 0 0 / 0.5), 0 12px 28px -10px rgb(0 0 0 / 0.55);
+  --shadow-lg: 0 8px 20px -6px rgb(0 0 0 / 0.55), 0 28px 60px -20px rgb(0 0 0 / 0.7);
+  --shadow-xl: var(--shadow-lg);
+
+  --font-sans: var(--font-jakarta);
+  /* --font-display is a no-op here — @theme inline resolves the compiled
+     .font-display utility to var(--font-bebas) literally at build time
+     (same gotcha [data-voice="corporate"] documents above), so the
+     variable this needs to repoint is --font-bebas itself. */
+  --font-bebas: var(--font-bricolage);
+  --font-mono: var(--font-jetbrains);
+  --ease-spring: cubic-bezier(0.34, 1.42, 0.62, 1);
+  --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+}
+[data-showcase="thrum"][data-accent="ember"] {
+  --accent-a: #ff5fa2;
+  --accent-b: #ffb14d;
+}
+[data-showcase="thrum"][data-accent="bloom"] {
+  --accent-a: #b06bff;
+  --accent-b: #ff5fa2;
+}
+[data-showcase="thrum"] .tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+[data-showcase="thrum"] .aurora {
+  position: fixed;
+  inset: -20vmax;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(42vmax 42vmax at 18% 8%, color-mix(in srgb, var(--accent-a) 20%, transparent), transparent 68%),
+    radial-gradient(50vmax 50vmax at 88% 22%, color-mix(in srgb, var(--accent-b) 22%, transparent), transparent 70%);
+}
+/* .aurora's negative inset bleeds past the viewport on every side, which
+   inflates document.documentElement.scrollWidth into a real horizontal
+   scrollbar (the exact class of bug this site's own decorative background
+   elements caused once before — see CHANGELOG). This site's <body> is
+   shared across every route, so it can't take a blanket overflow-x rule;
+   :has() scopes the fix to only apply while this route's wrapper is
+   present, without touching any other page. */
+html:has([data-showcase="thrum"]),
+body:has([data-showcase="thrum"]) {
+  overflow-x: clip;
+}
+[data-showcase="thrum"] .text-gradient {
+  background-image: var(--accent-grad);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+[data-showcase="thrum"] .grad-ring {
+  position: relative;
+}
+[data-showcase="thrum"] .grad-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--accent-grad);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+[data-showcase="thrum"] [data-reveal] {
+  animation: thrum-reveal-in 520ms var(--ease-spring) both;
+  animation-delay: calc(var(--reveal-index, 0) * 55ms);
+}
+[data-showcase="thrum"] [data-meter] {
+  transform-origin: left center;
+  animation: thrum-meter-in 620ms var(--ease-fluid) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-showcase="thrum"] [data-reveal],
+  [data-showcase="thrum"] [data-meter] {
+    animation: none;
+  }
+}
+@keyframes thrum-reveal-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+@keyframes thrum-meter-in {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/*
+ * /design-shop (Sableroot) — same reasoning as the other [data-showcase="x"]
+ * blocks. Standard [data-showcase="sableroot"][data-theme="dark"] compound,
+ * same as Halyard/Alcove. --font-sans reuses the sitewide --font-hanken
+ * directly (Sableroot's own body font IS Hanken Grotesk, the same Google
+ * Font the root layout already loads) — no second download. Values copied
+ * verbatim from the standalone deployment's own app/globals.css
+ * (github.com/Dhruvch1244/dsgn-showcase-shop).
+ *
+ * accordion-down/accordion-up keyframes are NOT redeclared here: CSS
+ * @keyframes names are global identifiers, not selector-scoped, and the
+ * sitewide @theme inline block below already defines
+ * @keyframes accordion-down/accordion-up with the exact same
+ * height:0 <-> height:var(--radix-accordion-content-height) behavior
+ * Sableroot's own copy used — only the --animate-accordion-*
+ * duration/easing needs repointing here.
+ */
+[data-showcase="sableroot"] {
+  --paper: #faf6ee;
+  --surface: #fffdf8;
+  --ink: #221e19;
+  --ink-soft: #6b6255;
+  --ink-faint: #9c9384;
+  --rule: #e7dfd1;
+  --wash: #f1ebe0;
+
+  --sage: #4e6151;
+  --sage-ink: #faf6ee;
+  --brick: #93412f;
+  --brick-ink: #fffdf8;
+
+  --elev-tint: 58 45 26;
+  --shadow-xs: 0 1px 1px rgb(var(--elev-tint) / 0.03);
+  --shadow-sm: 0 1px 2px rgb(var(--elev-tint) / 0.04);
+  --shadow-md: 0 2px 6px -2px rgb(var(--elev-tint) / 0.05), 0 8px 20px -12px rgb(var(--elev-tint) / 0.07);
+  --shadow-lg: 0 4px 12px -4px rgb(var(--elev-tint) / 0.06), 0 24px 48px -20px rgb(var(--elev-tint) / 0.12);
+  --shadow-xl: var(--shadow-lg);
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--surface);
+  --secondary: var(--wash);
+  --secondary-foreground: var(--ink);
+  --accent: var(--sage);
+  --accent-foreground: var(--sage-ink);
+  --muted: var(--wash);
+  --muted-foreground: var(--ink-soft);
+  --destructive: var(--brick);
+  --destructive-foreground: var(--brick-ink);
+  --border: var(--rule);
+  --ring: var(--sage);
+  --radius-scale: 1.25;
+
+  /* Product artwork tones — a separate hue range from the UI palette on
+     purpose (see the standalone repo's own comment): this shop has no
+     photography, every product tile is a generated gradient + SVG motif. */
+  --art-clay: #c97b52;
+  --art-sage: #7e9478;
+  --art-ochre: #cf9a3c;
+  --art-plum: #7a5a6b;
+  --art-slate: #6e7a85;
+  --art-moss: #5c6b4a;
+  --art-rose: #c1837f;
+  --art-sand: #cbb391;
+  --art-espresso: #4a3728;
+
+  --font-sans: var(--font-hanken);
+  /* Same gotcha as [data-showcase="thrum"] and [data-voice="corporate"]
+     above: @theme inline resolves the compiled .font-display utility to
+     var(--font-bebas) literally at build time, so any element using the
+     class directly (not just h1-h4, which the rule above already covers)
+     needs --font-bebas itself repointed. */
+  --font-bebas: var(--font-fraunces);
+  --font-mono: var(--font-jetbrains);
+  --ease-fluid: cubic-bezier(0.22, 0.68, 0.16, 1);
+  --animate-accordion-down: accordion-down 300ms var(--ease-fluid);
+  --animate-accordion-up: accordion-up 300ms var(--ease-fluid);
+
+  line-height: 1.65;
+}
+[data-showcase="sableroot"][data-theme="dark"] {
+  --paper: #191411;
+  --surface: #221b16;
+  --ink: #f4ede3;
+  --ink-soft: #c4b8a6;
+  --ink-faint: #8a7e6d;
+  --rule: #372d25;
+  --wash: #241d18;
+
+  --sage: #a8bfa9;
+  --sage-ink: #191411;
+  --brick: #e08a76;
+  --brick-ink: #191411;
+
+  --elev-tint: 0 0 0;
+  --shadow-xs: 0 1px 1px rgb(var(--elev-tint) / 0.25);
+  --shadow-sm: 0 1px 2px rgb(var(--elev-tint) / 0.3);
+  --shadow-md: 0 2px 6px -2px rgb(var(--elev-tint) / 0.4), 0 8px 20px -12px rgb(var(--elev-tint) / 0.5);
+  --shadow-lg: 0 4px 12px -4px rgb(var(--elev-tint) / 0.45), 0 24px 48px -20px rgb(var(--elev-tint) / 0.65);
+  --shadow-xl: var(--shadow-lg);
+}
+[data-showcase="sableroot"] h1,
+[data-showcase="sableroot"] h2,
+[data-showcase="sableroot"] h3,
+[data-showcase="sableroot"] h4 {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+[data-showcase="sableroot"] a:focus-visible,
+[data-showcase="sableroot"] button:focus-visible,
+[data-showcase="sableroot"] [role="button"]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+[data-showcase="sableroot"] .tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+[data-showcase="sableroot"] .display-wonk {
+  font-variation-settings: "SOFT" 30, "WONK" 1;
+}
+[data-showcase="sableroot"] [data-reveal] {
+  animation: sableroot-drift-in 520ms var(--ease-fluid) both;
+  animation-delay: calc(var(--reveal-index, 0) * 55ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-showcase="sableroot"] [data-reveal] {
+    animation: none;
+  }
+}
+@keyframes sableroot-drift-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -639,6 +941,9 @@
      column color, one step under --void. No other voice/showcase defines
      --panel, so bg-panel is inert (transparent) everywhere else. */
   --color-panel: var(--panel);
+  /* Only ever set inside [data-showcase="thrum"] — its raised-surface color
+     (dropdown/popover fill, one step above --card). Inert everywhere else. */
+  --color-elevated: var(--surface-raised);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-ink-faint: var(--ink-faint);

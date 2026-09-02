@@ -186,7 +186,7 @@
     {
       "name": "accordion",
       "type": "registry:ui",
-      "description": "Accordion, AccordionItem, AccordionTrigger, AccordionContent built on Radix Accordion. Needs two keyframes + theme tokens in your global CSS for the expand/collapse animation (accordion-down/accordion-up, animating to/from Radix's --radix-accordion-content-height) — see design.dhruvchoudhary.com's own apps/site/app/globals.css for the Tailwind v4 --animate-* block to copy.",
+      "description": "Accordion, AccordionItem, AccordionTrigger, AccordionContent built on Radix Accordion. Requires --ease-fluid plus two keyframes in your global CSS for the expand/collapse animation and the trigger icon rotation (accordion-down/accordion-up, animating to/from Radix's --radix-accordion-content-height) — dsgn add does not inject these; without them the ease-fluid/animate-accordion-* utility classes compile to nothing and the accordion snaps open with no animation. See design.dhruvchoudhary.com's own apps/site/app/globals.css for the exact --ease-fluid value, the two --animate-accordion-* lines, and the two @keyframes blocks to copy — or skills/dsgn/reference/component-registry.md's Accordion entry for the same snippet inline.",
       "dependencies": ["@radix-ui/react-accordion"],
       "registryDependencies": ["utils"],
       "files": [
@@ -246,7 +246,7 @@
     {
       "name": "breadcrumb",
       "type": "registry:ui",
-      "description": "Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis -- plain semantic nav/ol markup, no primitive library dependency.",
+      "description": "Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis -- plain semantic nav/ol markup, no primitive library dependency. BreadcrumbLink's hover transition uses --ease-fluid; without it in your global CSS the ease-fluid utility compiles to nothing and the transition silently falls back to the browser default easing (a minor visual difference, not a broken build) -- see the Accordion entry for the exact value.",
       "dependencies": ["@radix-ui/react-slot"],
       "registryDependencies": ["utils"],
       "files": [

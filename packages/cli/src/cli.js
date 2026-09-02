@@ -101,6 +101,13 @@ function parseArgs(argv) {
       args.flags.help = true;
     } else if (arg === "-v" || arg === "--version") {
       args.flags.version = true;
+    } else if (arg.startsWith("-") && arg !== "-") {
+      // An unrecognized flag used to fall through to positional args, so
+      // e.g. `dsgn add badge --yes` treated "--yes" as a component name and
+      // failed with a confusing registry 404 for "--yes.json" instead of a
+      // clear unknown-option error. Caught while dogfooding a showcase
+      // build — reproduced directly against this CLI, not just reported.
+      throw new Error(`Unknown option: ${arg}`);
     } else {
       args._.push(arg);
     }
@@ -109,7 +116,14 @@ function parseArgs(argv) {
 }
 
 export async function run(argv) {
-  const { _: positional, flags } = parseArgs(argv);
+  let positional, flags;
+  try {
+    ({ _: positional, flags } = parseArgs(argv));
+  } catch (err) {
+    console.error(`\ndsgn: ${err.message}`);
+    process.exitCode = 1;
+    return;
+  }
   const [command, ...rest] = positional;
   const cwd = process.cwd();
 

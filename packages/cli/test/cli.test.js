@@ -63,3 +63,24 @@ test("cli: an actually-unknown command still exits non-zero", async (t) => {
     process.exitCode = undefined;
   });
 });
+
+test("cli: an unrecognized flag is rejected, not silently treated as a component name", async (t) => {
+  // Regression test: this exact case used to fall through to positional
+  // args, so `add badge --yes` tried to fetch a registry item literally
+  // named "--yes" and failed with a confusing 404 instead of a clear
+  // unknown-option error. Reproduced directly against the CLI before fixing.
+  const errors = [];
+  const originalError = console.error;
+  console.error = (...args) => errors.push(args.join(" "));
+  process.exitCode = undefined;
+
+  await run(["add", "badge", "--yes"]);
+
+  console.error = originalError;
+
+  assert.equal(process.exitCode, 1);
+  assert.match(errors.join("\n"), /Unknown option: --yes/);
+  t.after(() => {
+    process.exitCode = undefined;
+  });
+});
