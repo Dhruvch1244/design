@@ -490,3 +490,17 @@ doesn't require a CLI release to take effect for `dsgn add`.
   `registry.json`'s descriptions and `component-registry.md`'s Accordion/
   Breadcrumb entries now spell out the exact required CSS, not just point
   at this site's own `globals.css` to go copy from.
+- **2026-09-02** — Fixed a real, live bug in `toast`: `ToastClose` renders
+  with `opacity-0 group-hover:opacity-100`, but the `Toast` root never
+  declared itself as the `group` — so a mouse user hovering a toast saw no
+  dismiss button at all, only `focus:opacity-100` worked (keyboard-only).
+  This wasn't voice- or consumer-specific: the same missing class shipped
+  in this site's own mirrored copy and was live on every toast here too,
+  confirmed by checking the actual toaster wiring for a `group` className
+  injected some other way (there wasn't one) before fixing. One word
+  (`group` added to the root's base class list) fixes it in both
+  `packages/registry/src/components/toast/toast.tsx` and
+  `apps/site/components/dsgn/toast.tsx`. Found independently by the
+  showcase #5 (VOLTGATE, developer console) build while dogfooding; verified
+  directly via a Playwright hover test against the live component before
+  landing here, not taken on the showcase's own report alone.

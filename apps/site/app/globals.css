@@ -1358,3 +1358,20 @@ body:has([data-showcase="thrum"]) {
     transform: scaleX(1);
   }
 }
+
+/* Every <pre> code block on the site is overflow-x: auto with no scrollbar
+   on touch devices, so a line too long for a phone's width just clipped
+   flush against the edge — no visual cue there was more to swipe to. A
+   trailing mask-fade signals that without JS or measuring scrollWidth.
+   mask-image (not a background-color-matched gradient) is deliberate: some
+   of these blocks sit on Frame's translucent bg-glass, not a solid card
+   color, and masking fades whatever's actually rendered underneath rather
+   than assuming one background to blend into. Every one of these blocks
+   already carries pr-12/pr-14/pr-20 (room for an absolutely-positioned
+   CopyButton) or Tailwind Typography's own default pre padding, so on
+   short lines that don't overflow, the fade only ever eats into that
+   existing empty padding — not real text. */
+pre:not(.whitespace-pre-wrap) {
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, black calc(100% - 28px), transparent);
+}

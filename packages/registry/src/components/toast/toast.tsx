@@ -31,7 +31,7 @@ ToastViewport.displayName = ToastPrimitive.Viewport.displayName;
 // that: a transform+opacity transition covers it with zero extra CSS
 // required in the consuming project.
 const toastVariants = cva(
-  "pointer-events-auto relative flex w-full items-center justify-between gap-3 overflow-hidden rounded-2xl " +
+  "group pointer-events-auto relative flex w-full items-center justify-between gap-3 overflow-hidden rounded-2xl " +
     "border p-4 shadow-lg transition-all duration-300 ease-out " +
     "data-[state=closed]:translate-x-2 data-[state=closed]:opacity-0 " +
     "data-[state=open]:translate-x-0 data-[state=open]:opacity-100 " +

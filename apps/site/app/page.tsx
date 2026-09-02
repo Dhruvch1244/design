@@ -51,17 +51,15 @@ const PILLARS = [
 
 const INSTALL_CMD = "npx @dhruvchoudhary/dsgn add button card";
 
-// Excerpt only — the full prompt (verbatim, no edits) is in the showcase
-// repo's README and its first commit message. Featured here is real, since
-// it's what actually shipped Halyard; it's just not the whole 500+ word
-// brief this homepage doesn't have room for.
+// Excerpt only — the full prompt (verbatim, no edits) is in each showcase
+// repo's README and first commit message, and in full on /showcase. This is
+// a trimmed pull-quote for homepage space, not a verbatim requirement: the
+// self-referential aside about screenshotting it for marketing is cut, and
+// the sentence isn't left trailing off mid-thought.
 const SHOWCASE_PROMPT_EXCERPT =
-  "Build a standalone showcase/demo site that proves out dsgn... " +
-  "The goal is a real, working example of what someone gets when they " +
-  "install dsgn into a fresh project — this will eventually be " +
-  "screenshotted and used to advertise the tool alongside the " +
-  "prompt/skill that built it, so it needs to actually look good, not " +
-  "just function.";
+  "Build a standalone showcase/demo site that proves out dsgn — a real, " +
+  "working example of what someone gets when they install it into a " +
+  "fresh project. It needs to actually look good, not just function.";
 
 // Real, live badge data — apps/site/scripts/generate-badge-data.mjs writes
 // this from the actual registry item count at every build, so this markdown
@@ -155,40 +153,47 @@ export default function Home() {
               : `${SHOWCASE_SITES.length} genuine external projects, each installing this registry from npm like any other consumer, each shipped from one prompt to a design-focused Claude Code agent.`}
           </p>
 
-          <div className="mt-10 grid gap-8 md:grid-cols-2 md:items-center">
-            <Link href={SHOWCASE_SITES[0].liveHref} className="block">
-              <Frame className="overflow-hidden p-0" glow>
-                <div className="relative aspect-[8/5] w-full bg-muted">
-                  <Image
-                    src={SHOWCASE_SITES[0].screenshot}
-                    alt={`${SHOWCASE_SITES[0].name} — ${SHOWCASE_SITES[0].tagline}`}
-                    fill
-                    sizes="(min-width: 768px) 40vw, 100vw"
-                    className="object-cover object-top transition-transform duration-500 ease-fluid hover:scale-[1.02]"
-                  />
-                </div>
-              </Frame>
-            </Link>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {SHOWCASE_SITES.map((site) => (
+              <Link key={site.slug} href={site.liveHref} className="group block">
+                <Frame className="h-full overflow-hidden p-0" glow>
+                  <div className="relative aspect-[8/5] w-full bg-muted">
+                    <Image
+                      src={site.screenshot}
+                      alt={`${site.name} — ${site.tagline}`}
+                      fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover object-top transition-transform duration-500 ease-fluid group-hover:scale-[1.03]"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="font-display text-sm uppercase tracking-wide">{site.name}</p>
+                      <Badge variant="outline" className="shrink-0 text-[10px]">
+                        {site.voice}
+                      </Badge>
+                    </div>
+                    <p className="mt-1.5 line-clamp-2 text-xs text-muted-foreground">
+                      {site.tagline}
+                    </p>
+                  </div>
+                </Frame>
+              </Link>
+            ))}
+          </div>
 
+          <div className="mt-10 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
             <div>
-              <p className="font-mono text-xs text-muted-foreground">the prompt, verbatim</p>
+              <p className="font-mono text-xs text-muted-foreground">the prompt, in short</p>
               <blockquote className="mt-3 border-l-2 border-accent/40 pl-4 text-sm italic text-muted-foreground">
                 &ldquo;{SHOWCASE_PROMPT_EXCERPT}&rdquo;
               </blockquote>
-              <div className="mt-6 flex flex-wrap items-center gap-4">
-                <Magnetic>
-                  <Button asChild variant="accent" className="rounded-full px-6">
-                    <Link href="/showcase">See the showcase</Link>
-                  </Button>
-                </Magnetic>
-                <Link
-                  href={SHOWCASE_SITES[0].liveHref}
-                  className="text-sm text-muted-foreground hover:text-accent hover:underline"
-                >
-                  View {SHOWCASE_SITES[0].name} live →
-                </Link>
-              </div>
             </div>
+            <Magnetic>
+              <Button asChild variant="accent" className="rounded-full px-6">
+                <Link href="/showcase">See the full prompts →</Link>
+              </Button>
+            </Magnetic>
           </div>
         </CursorGlow>
       </Reveal>

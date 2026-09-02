@@ -64,5 +64,14 @@ genuinely unclear — then stop and wait for confirmation before installing
 anything. A correction here is the step working, not friction to route
 around.
 
+## Verify before calling it done
+
+Typecheck/lint if the project has them configured, and if the environment
+can run the project, actually load it — check a narrow mobile width
+(~390px) alongside desktop, and both themes if the target supports them. A
+source read-through misses console errors, contrast failures, and mobile
+overflow every time; most real friction using this skill traces back to
+skipping this step, not to a wrong component or style choice.
+
 Install the project-level rules above for the full detail behind each
 voice, the real component variant names, and the token system.

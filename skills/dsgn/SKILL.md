@@ -154,6 +154,34 @@ differs.
    component that already exists in the registry.
 4. Apply `reference/workflow-checklist.md`'s five facets in the chosen
    agent's voice before considering the work done.
+5. **Verify before calling it done.** A build that reads correctly in your
+   own source review can still be broken in ways only rendering it catches
+   — this is the single biggest gap between a skill-produced build and one
+   that actually holds up, confirmed repeatedly by dogfooding this exact
+   skill against real external projects: every real bug caught this way
+   (a dark-mode-only focus-ring contrast failure, a token a component
+   silently depends on that installation doesn't inject, a horizontal
+   mobile-overflow layout break) was invisible in a source read-through
+   and obvious the moment the build actually ran.
+   - Typecheck and lint clean (`tsc --noEmit`, the project's own lint
+     script) if the project has them configured — don't skip a check that's
+     already wired up and free to run.
+   - If the host environment can run the project and inspect the rendered
+     result (a dev server plus browser automation, or equivalent), actually
+     load it. Console errors and visually-wrong-but-plausible-looking
+     compositions surface here, not in a source read-through.
+   - Check a narrow mobile width (~390px) alongside desktop — horizontal
+     overflow and cramped layouts concentrate at mobile widths specifically
+     and are easy to miss when you're only picturing the desktop layout
+     while writing the code.
+   - If the target supports both themes, check both — a token that reads
+     fine in one can fail contrast or just look wrong in the other, and
+     "looks fine in light mode" says nothing about dark mode's own values.
+   - When a way to actually check the build exists, use it before reporting
+     done. A code read-through is not a substitute for looking at the
+     result, and most of the friction real projects hit using this skill
+     traces back to skipping this step, not to a wrong style or component
+     choice.
 
 ## Source of truth
 
