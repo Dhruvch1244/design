@@ -166,6 +166,13 @@ differs.
    - Typecheck and lint clean (`tsc --noEmit`, the project's own lint
      script) if the project has them configured — don't skip a check that's
      already wired up and free to run.
+   - Run `npx @dhruvchoudhary/dsgn doctor` first, before reaching for a
+     browser. It's free, has no dependencies beyond the CLI itself, and
+     catches exactly two of the mistakes above mechanically — a component
+     file missing on disk after `add`, and the same `<img>`-without-`alt` /
+     unreachable-`onClick` heuristics doctor already runs. It won't catch a
+     missing token or a mobile overflow, so it's a first pass, not a
+     replacement for actually rendering the build.
    - If the host environment can run the project and inspect the rendered
      result (a dev server plus browser automation, or equivalent), actually
      load it. Console errors and visually-wrong-but-plausible-looking
