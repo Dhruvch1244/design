@@ -1,7 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/components/dsgn/sheet";
+import { useCallback, useState } from "react";
+import { MobileNavSheet, useMobileNav } from "@/components/shared/mobile-nav";
+import { useCommandShortcut } from "@/components/shared/use-command-shortcut";
+import { toggleSiteTheme } from "@/components/shared/theme";
 import { AlertsView } from "@/components/design-analytics/alerts-view";
 import { CommandPalette } from "@/components/design-analytics/command-palette";
 import { EventsView } from "@/components/design-analytics/events-view";
@@ -13,76 +15,43 @@ import { TeamView } from "@/components/design-analytics/team-view";
 import { TopBar } from "@/components/design-analytics/top-bar";
 import { VIEW_BY_ID, type ViewId } from "@/lib/design-analytics/views";
 
-// Matches @/components/theme-toggle's own toggle exactly (same data-theme
-// attribute, same localStorage key) rather than Halyard's original
-// lib/theme.ts, which wrote a separate "halyard-theme" key and a custom
-// event — pointless once this shares the site's single data-theme attribute
-// on <html>, and would have left the command palette's "Toggle theme" out of
-// sync with the site's own theme toggle in the top bar.
-function toggleTheme() {
-  const current = document.documentElement.getAttribute("data-theme");
-  const next = current === "light" ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", next);
-  localStorage.setItem("theme", next);
-}
-
 export function AppShell() {
   const [view, setView] = useState<ViewId>("overview");
-  const [navOpen, setNavOpen] = useState(false);
+  const nav = useMobileNav();
   const [searchOpen, setSearchOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [focusedEventId, setFocusedEventId] = useState<string | null>(null);
 
-  /* One keydown listener for the whole app rather than one per surface —
-     the same reason the philosophy asks for a single scheduler: every
-     shortcut resolves in one place, so two of them can't disagree about
-     what an open modal should suppress. */
-  useEffect(() => {
-    /*
-     * A window-level shortcut fires even while a Radix modal owns the page,
-     * which is a real bug rather than a nicety: opening the palette from
-     * inside an open Sheet renders it outside that Sheet's focus trap and
-     * underneath its `aria-hidden`, so it is visible but not focusable and
-     * not announced. The DOM is the only reliable source of truth for "is a
-     * modal open" here — the event sheet's state lives inside EventsView, so
-     * this component cannot ask React for it without lifting state that has
-     * no other reason to move up.
-     */
-    function aModalIsOpen() {
-      return document.querySelector(
-        '[role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]',
-      ) !== null;
-    }
+  /* One shortcut owner for the whole app rather than one per surface — the
+     same reason the philosophy asks for a single scheduler: every shortcut
+     resolves in one place, so two of them can't disagree about what an open
+     modal should suppress. The listener, and the modal guard that keeps the
+     palette from opening underneath a Sheet's focus trap, now live in
+     components/shared/use-command-shortcut.ts. */
+  useCommandShortcut([
+    { key: "k", onTrigger: () => setSearchOpen((prev) => !prev), ownsOpenModal: searchOpen },
+    { key: ",", onTrigger: () => setSettingsOpen(true) },
+  ]);
 
-    function onKeyDown(event: KeyboardEvent) {
-      const meta = event.metaKey || event.ctrlKey;
-      if (!meta) return;
-      const key = event.key.toLowerCase();
-      if (key !== "k" && key !== ",") return;
-      // Closing the palette must keep working even though the palette itself
-      // is a dialog, so the guard only blocks *opening* on top of a modal.
-      if (aModalIsOpen() && !(key === "k" && searchOpen)) return;
+  const closeNav = nav.close;
 
-      event.preventDefault();
-      if (key === "k") setSearchOpen((prev) => !prev);
-      else setSettingsOpen(true);
-    }
+  const navigate = useCallback(
+    (next: ViewId) => {
+      setView(next);
+      closeNav();
+      setFocusedEventId(null);
+    },
+    [closeNav],
+  );
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [searchOpen]);
-
-  const navigate = useCallback((next: ViewId) => {
-    setView(next);
-    setNavOpen(false);
-    setFocusedEventId(null);
-  }, []);
-
-  const selectEvent = useCallback((eventId: string) => {
-    setView("events");
-    setNavOpen(false);
-    setFocusedEventId(eventId);
-  }, []);
+  const selectEvent = useCallback(
+    (eventId: string) => {
+      setView("events");
+      closeNav();
+      setFocusedEventId(eventId);
+    },
+    [closeNav],
+  );
 
 
   const meta = VIEW_BY_ID[view];
@@ -99,30 +68,30 @@ export function AppShell() {
         />
       </aside>
 
-      <Sheet open={navOpen} onOpenChange={setNavOpen}>
-        <SheetContent side="left" className="w-72 p-0 sm:max-w-xs">
-          {/* Radix logs a console warning for a Dialog without a Title or
-              Description; the nav has neither visually, so both are sr-only
-              rather than omitted. */}
-          <SheetTitle className="sr-only">Navigation</SheetTitle>
-          <SheetDescription className="sr-only">
-            Switch between views in this workspace.
-          </SheetDescription>
-          <Sidebar
-            activeView={view}
-            onNavigate={navigate}
-            onOpenSettings={() => {
-              setNavOpen(false);
-              setSettingsOpen(true);
-            }}
-          />
-        </SheetContent>
-      </Sheet>
+      {/* The sr-only title/description Radix requires for a drawer with no
+          visible heading are supplied by MobileNavSheet, so they can't be
+          forgotten here or in the two other showcases that have a drawer. */}
+      <MobileNavSheet
+        open={nav.open}
+        onOpenChange={nav.setOpen}
+        title="Navigation"
+        description="Switch between views in this workspace."
+        className="w-72 p-0 sm:max-w-xs"
+      >
+        <Sidebar
+          activeView={view}
+          onNavigate={navigate}
+          onOpenSettings={() => {
+            nav.close();
+            setSettingsOpen(true);
+          }}
+        />
+      </MobileNavSheet>
 
       <div className="lg:pl-60">
         <TopBar
           activeView={view}
-          onOpenNav={() => setNavOpen(true)}
+          onOpenNav={() => nav.setOpen(true)}
           onOpenSearch={() => setSearchOpen(true)}
           onOpenSettings={() => setSettingsOpen(true)}
         />
@@ -154,7 +123,7 @@ export function AppShell() {
         onNavigate={navigate}
         onOpenSettings={() => setSettingsOpen(true)}
         onSelectEvent={selectEvent}
-        onToggleTheme={() => toggleTheme()}
+        onToggleTheme={toggleSiteTheme}
       />
 
       <SettingsSheet open={settingsOpen} onOpenChange={setSettingsOpen} />

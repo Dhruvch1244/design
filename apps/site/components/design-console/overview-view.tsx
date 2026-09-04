@@ -167,7 +167,11 @@ export function OverviewView({ onJumpToWebhooks }: { onJumpToWebhooks: () => voi
                 <TableRow key={row.region} className="border-border/60">
                   <TableCell className="py-2.5 pl-4 font-mono text-[12.5px] sm:pl-5">
                     <span className="inline-flex items-center gap-2">
-                      <LiveDot tone={degraded ? "warn" : "ok"} animate={false} />
+                      <LiveDot
+                        tone={degraded ? "warn" : "ok"}
+                        srLabel={degraded ? "Degraded" : "Healthy"}
+                        animate={false}
+                      />
                       {row.region}
                     </span>
                   </TableCell>

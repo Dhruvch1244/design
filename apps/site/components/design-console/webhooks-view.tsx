@@ -268,6 +268,7 @@ function EndpointRow({
             <span className="shrink-0 text-[12.5px] leading-snug">
               <LiveDot
                 tone={!endpoint.enabled ? "warn" : degraded ? "bad" : "ok"}
+                srLabel={!endpoint.enabled ? "Paused" : degraded ? "Degraded" : "Healthy"}
                 animate={endpoint.enabled && degraded}
               />
             </span>

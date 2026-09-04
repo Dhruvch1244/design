@@ -109,10 +109,18 @@ export function EnvironmentChip({
 export function LiveDot({
   tone = "ok",
   label,
+  srLabel,
   animate = true,
 }: {
   tone?: "ok" | "warn" | "bad";
   label?: string;
+  /**
+   * The state the colour is signalling, for anyone who can't see the colour.
+   * Required in practice wherever the dot stands alone — with no `label` and
+   * no adjacent text naming the state, the dot is an empty <span> and the
+   * status simply doesn't exist for a screen reader.
+   */
+  srLabel?: string;
   animate?: boolean;
 }) {
   const color =
@@ -130,6 +138,7 @@ export function LiveDot({
         className={cn("h-1.5 w-1.5 rounded-full", color, glow)}
       />
       {label && <span className="text-[11px] text-muted-foreground">{label}</span>}
+      {srLabel && <span className="sr-only">{srLabel}</span>}
     </span>
   );
 }

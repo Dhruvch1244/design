@@ -4,8 +4,8 @@ import * as React from "react";
 import { Button } from "@/components/dsgn/button";
 import { TabsList, TabsTrigger } from "@/components/dsgn/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/dsgn/toggle-group";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/dsgn/sheet";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/dsgn/tooltip";
+import { MobileNavSheet, useMobileNav } from "@/components/shared/mobile-nav";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,19 +32,21 @@ import { describeEdit } from "@/lib/design-tasks/overlay";
 import { useBoard } from "@/lib/design-tasks/store";
 
 function MobileNav() {
-  const [open, setOpen] = React.useState(false);
+  const nav = useMobileNav();
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
+    <MobileNavSheet
+      open={nav.open}
+      onOpenChange={nav.setOpen}
+      title="Navigation"
+      className="w-72 bg-background p-0"
+      trigger={
         <Button variant="ghost" size="icon-sm" className="lg:hidden" aria-label="Open navigation">
           <MenuIcon className="h-5 w-5" />
         </Button>
-      </SheetTrigger>
-      <SheetContent side="left" className="w-72 bg-background p-0">
-        <SheetTitle className="sr-only">Navigation</SheetTitle>
-        <SidebarContent onNavigate={() => setOpen(false)} />
-      </SheetContent>
-    </Sheet>
+      }
+    >
+      <SidebarContent onNavigate={nav.close} />
+    </MobileNavSheet>
   );
 }
 

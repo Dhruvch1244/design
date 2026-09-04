@@ -1,4 +1,9 @@
 import * as React from "react";
+import {
+  CHECK_GEOMETRY,
+  MENU_GEOMETRY,
+  PLUS_GEOMETRY,
+} from "@/components/icons/shared";
 
 /**
  * One hand-drawn icon set instead of a dependency.
@@ -65,11 +70,10 @@ export const SearchIcon = (p: IconProps) => (
   </Glyph>
 );
 
-export const PlusIcon = (p: IconProps) => (
-  <Glyph {...p}>
-    <path d="M12 5v14M5 12h14" />
-  </Glyph>
-);
+/* PlusIcon, MenuIcon and CheckIcon draw geometry shared with the other
+   showcases (components/icons/shared.tsx). The 1.75 stroke that makes this
+   set read as soft-minimal still comes from <Glyph> above. */
+export const PlusIcon = (p: IconProps) => <Glyph {...p}>{PLUS_GEOMETRY}</Glyph>;
 
 export const FilterIcon = (p: IconProps) => (
   <Glyph {...p}>
@@ -97,11 +101,7 @@ export const MoonIcon = (p: IconProps) => (
   </Glyph>
 );
 
-export const MenuIcon = (p: IconProps) => (
-  <Glyph {...p}>
-    <path d="M4 7h16M4 12h16M4 17h16" />
-  </Glyph>
-);
+export const MenuIcon = (p: IconProps) => <Glyph {...p}>{MENU_GEOMETRY}</Glyph>;
 
 export const ChevronDownIcon = (p: IconProps) => (
   <Glyph {...p}>
@@ -115,11 +115,7 @@ export const ChevronRightIcon = (p: IconProps) => (
   </Glyph>
 );
 
-export const CheckIcon = (p: IconProps) => (
-  <Glyph {...p}>
-    <path d="m5 12.5 4.5 4.5L19 7" />
-  </Glyph>
-);
+export const CheckIcon = (p: IconProps) => <Glyph {...p}>{CHECK_GEOMETRY}</Glyph>;
 
 export const MoreIcon = (p: IconProps) => (
   <Glyph {...p}>

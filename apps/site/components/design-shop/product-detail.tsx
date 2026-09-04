@@ -241,7 +241,7 @@ export function ProductDetail({
 
       <div className="mt-16 lg:mt-24">
         <Tabs defaultValue="details">
-          <TabsList className="max-w-full overflow-x-auto">
+          <TabsList aria-label="Product information" className="max-w-full overflow-x-auto">
             <TabsTrigger value="details">Details</TabsTrigger>
             <TabsTrigger value="brewing">How we brew it</TabsTrigger>
             <TabsTrigger value="reviews">
