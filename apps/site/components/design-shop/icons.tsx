@@ -9,6 +9,7 @@
  * everyone remembering to pass the same stroke width.
  */
 import type { SVGProps } from "react";
+import { PLUS_GEOMETRY } from "@/components/icons/shared";
 
 type IconProps = SVGProps<SVGSVGElement>;
 
@@ -79,12 +80,12 @@ export function MinusIcon(props: IconProps) {
   );
 }
 
+/* Geometry shared with the other showcases (components/icons/shared.tsx);
+   this set's own 1.5 stroke and round caps still come from <Icon>. The check
+   and undo glyphs below are deliberately *not* shared — they are drawn wider
+   and flatter than Voltgate's to sit correctly next to this voice's serif. */
 export function PlusIcon(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <path d="M12 5v14M5 12h14" />
-    </Icon>
-  );
+  return <Icon {...props}>{PLUS_GEOMETRY}</Icon>;
 }
 
 export function TrashIcon(props: IconProps) {

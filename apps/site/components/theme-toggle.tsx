@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { setSiteTheme } from "@/components/shared/theme";
 import { cn } from "@/lib/utils";
 
 // The data-theme attribute (set pre-paint by the inline script in
@@ -30,9 +31,10 @@ export function ThemeToggle({ className }: { className?: string }) {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   function toggle() {
-    const next = theme === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
+    // Writes through components/shared/theme.ts so the button, the showcase
+    // command palettes and anything else that flips the theme all use one
+    // attribute and one storage key.
+    setSiteTheme(theme === "light" ? "dark" : "light");
   }
 
   return (

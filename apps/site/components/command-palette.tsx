@@ -11,6 +11,7 @@ import {
   CommandList,
   CommandShortcut,
 } from "@/components/dsgn/command";
+import { useCommandShortcut } from "@/components/shared/use-command-shortcut";
 import { PHILOSOPHY_DOCS } from "@/lib/philosophy-docs";
 import { CASE_STUDIES } from "@/lib/case-studies";
 
@@ -35,22 +36,19 @@ export function CommandPalette() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
+  // ⌘/Ctrl+K is shared with the showcase palettes (see
+  // components/shared/use-command-shortcut.ts), which is also where the guard
+  // that stops the palette opening underneath an already-open dialog lives.
+  useCommandShortcut([
+    { key: "k", onTrigger: () => setOpen((v) => !v), ownsOpenModal: open },
+  ]);
+
   useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        setOpen((v) => !v);
-      }
-    }
     function onCustomOpen() {
       setOpen(true);
     }
-    document.addEventListener("keydown", onKeyDown);
     window.addEventListener("cmdk:open", onCustomOpen);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("cmdk:open", onCustomOpen);
-    };
+    return () => window.removeEventListener("cmdk:open", onCustomOpen);
   }, []);
 
   function go(href: string) {

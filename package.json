@@ -13,7 +13,8 @@
     "sync-registry": "node scripts/sync-registry.mjs",
     "typecheck": "npm run typecheck --workspace @dsgn/registry",
     "lint:registry-tokens": "node scripts/lint-registry-tokens.mjs",
-    "lint:registry-imports": "node scripts/lint-registry-imports.mjs"
+    "lint:registry-imports": "node scripts/lint-registry-imports.mjs",
+    "lint:skill-drift": "node scripts/lint-skill-drift.mjs"
   },
   "dependencies": {
     "@tailwindcss/oxide": "^4.3.3",

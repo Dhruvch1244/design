@@ -15,6 +15,7 @@
  */
 
 import * as React from "react";
+import { useCommandShortcut } from "@/components/shared/use-command-shortcut";
 import {
   SEED_BOARD,
   type ColumnId,
@@ -96,17 +97,14 @@ export function BoardProvider({ children }: { children: React.ReactNode }) {
 
   // One global shortcut owner. Every other component asks the store to open
   // the palette rather than binding its own key handler, so there is exactly
-  // one place that can claim a keystroke.
-  React.useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setPaletteOpen((open) => !open);
-      }
-    }
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, []);
+  // one place that can claim a keystroke. The listener itself is shared with
+  // the other showcases (components/shared/use-command-shortcut.ts), which is
+  // also where the guard against opening the palette on top of an already-open
+  // Sheet lives — ⌘K over the task detail sheet used to render the palette
+  // outside that sheet's focus trap.
+  useCommandShortcut([
+    { key: "k", onTrigger: () => setPaletteOpen((open) => !open), ownsOpenModal: paletteOpen },
+  ]);
 
   const value: BoardContextValue = {
     tasks,

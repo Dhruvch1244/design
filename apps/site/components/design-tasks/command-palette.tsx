@@ -12,19 +12,9 @@ import {
 } from "@/components/dsgn/command";
 import { BoardIcon, ListIcon, TimelineIcon, SearchIcon, MoonIcon } from "@/components/design-tasks/icons";
 import { LabelSwatch } from "@/components/design-tasks/task-bits";
+import { toggleSiteTheme } from "@/components/shared/theme";
 import { columnName } from "@/lib/design-tasks/board";
 import { useBoard, type ViewId } from "@/lib/design-tasks/store";
-
-// Matches @/components/theme-toggle's own toggle exactly (same data-theme
-// attribute, same localStorage key) rather than this project's original
-// lib/theme.ts, which is dropped in the embedded version in favor of the
-// site's single shared data-theme attribute on <html>.
-function toggleTheme() {
-  const current = document.documentElement.getAttribute("data-theme");
-  const next = current === "light" ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", next);
-  localStorage.setItem("theme", next);
-}
 
 const VIEWS: { id: ViewId; name: string; icon: React.ReactNode }[] = [
   { id: "board", name: "Board", icon: <BoardIcon className="h-4 w-4" /> },
@@ -86,7 +76,7 @@ export function CommandPalette() {
           </CommandItem>
           <CommandItem
             value="toggle theme appearance dark light"
-            onSelect={() => run(() => toggleTheme())}
+            onSelect={() => run(toggleSiteTheme)}
           >
             <MoonIcon className="h-4 w-4" />
             Switch appearance

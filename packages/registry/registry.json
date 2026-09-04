@@ -382,7 +382,7 @@
       "dependencies": [],
       "registryDependencies": ["card", "input", "checkbox", "button"],
       "files": [
-        { "path": "src/recipes/auth-form.tsx", "target": "components/dsgn/recipes/auth-form.tsx", "type": "registry:block" }
+        { "path": "src/recipes/auth-form/auth-form.tsx", "target": "components/dsgn/recipes/auth-form.tsx", "type": "registry:block" }
       ]
     },
     {
@@ -392,7 +392,7 @@
       "dependencies": [],
       "registryDependencies": ["card", "switch", "select", "separator", "button"],
       "files": [
-        { "path": "src/recipes/settings-panel.tsx", "target": "components/dsgn/recipes/settings-panel.tsx", "type": "registry:block" }
+        { "path": "src/recipes/settings-panel/settings-panel.tsx", "target": "components/dsgn/recipes/settings-panel.tsx", "type": "registry:block" }
       ]
     },
     {
@@ -402,7 +402,7 @@
       "dependencies": [],
       "registryDependencies": ["card", "badge", "button"],
       "files": [
-        { "path": "src/recipes/pricing-tiers.tsx", "target": "components/dsgn/recipes/pricing-tiers.tsx", "type": "registry:block" }
+        { "path": "src/recipes/pricing-tiers/pricing-tiers.tsx", "target": "components/dsgn/recipes/pricing-tiers.tsx", "type": "registry:block" }
       ]
     },
     {
@@ -412,7 +412,7 @@
       "dependencies": [],
       "registryDependencies": ["empty-state", "button"],
       "files": [
-        { "path": "src/recipes/empty-state-cta.tsx", "target": "components/dsgn/recipes/empty-state-cta.tsx", "type": "registry:block" }
+        { "path": "src/recipes/empty-state-cta/empty-state-cta.tsx", "target": "components/dsgn/recipes/empty-state-cta.tsx", "type": "registry:block" }
       ]
     },
     {
@@ -422,7 +422,7 @@
       "dependencies": [],
       "registryDependencies": ["card", "badge", "progress", "button"],
       "files": [
-        { "path": "src/recipes/billing-summary.tsx", "target": "components/dsgn/recipes/billing-summary.tsx", "type": "registry:block" }
+        { "path": "src/recipes/billing-summary/billing-summary.tsx", "target": "components/dsgn/recipes/billing-summary.tsx", "type": "registry:block" }
       ]
     },
     {
@@ -432,7 +432,7 @@
       "dependencies": [],
       "registryDependencies": ["table", "avatar", "badge", "dropdown-menu", "button"],
       "files": [
-        { "path": "src/recipes/team-members.tsx", "target": "components/dsgn/recipes/team-members.tsx", "type": "registry:block" }
+        { "path": "src/recipes/team-members/team-members.tsx", "target": "components/dsgn/recipes/team-members.tsx", "type": "registry:block" }
       ]
     },
     {
@@ -442,7 +442,7 @@
       "dependencies": [],
       "registryDependencies": ["card", "avatar", "badge"],
       "files": [
-        { "path": "src/recipes/notification-list.tsx", "target": "components/dsgn/recipes/notification-list.tsx", "type": "registry:block" }
+        { "path": "src/recipes/notification-list/notification-list.tsx", "target": "components/dsgn/recipes/notification-list.tsx", "type": "registry:block" }
       ]
     },
     {
@@ -452,7 +452,7 @@
       "dependencies": [],
       "registryDependencies": ["card", "progress", "checkbox"],
       "files": [
-        { "path": "src/recipes/onboarding-checklist.tsx", "target": "components/dsgn/recipes/onboarding-checklist.tsx", "type": "registry:block" }
+        { "path": "src/recipes/onboarding-checklist/onboarding-checklist.tsx", "target": "components/dsgn/recipes/onboarding-checklist.tsx", "type": "registry:block" }
       ]
     }
   ]

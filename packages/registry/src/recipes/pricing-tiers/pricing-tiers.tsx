@@ -1,5 +1,5 @@
-import { Button } from "../components/button/button";
-import { Badge } from "../components/badge/badge";
+import { Button } from "../../components/button/button";
+import { Badge } from "../../components/badge/badge";
 import {
   Card,
   CardHeader,
@@ -7,8 +7,8 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "../components/card/card";
-import { cn } from "../lib/utils";
+} from "../../components/card/card";
+import { cn } from "../../lib/utils";
 
 const PLANS = [
   {

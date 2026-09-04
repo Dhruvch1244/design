@@ -1,14 +1,14 @@
-import { Button } from "../components/button/button";
-import { Badge } from "../components/badge/badge";
-import { Avatar, AvatarFallback } from "../components/avatar/avatar";
+import { Button } from "../../components/button/button";
+import { Badge } from "../../components/badge/badge";
+import { Avatar, AvatarFallback } from "../../components/avatar/avatar";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-} from "../components/dropdown-menu/dropdown-menu";
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "../components/table/table";
+} from "../../components/dropdown-menu/dropdown-menu";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "../../components/table/table";
 
 const MEMBERS = [
   { name: "Priya Nair", email: "priya@acme.co", role: "Owner", initials: "PN" },

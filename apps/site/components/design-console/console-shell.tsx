@@ -105,7 +105,14 @@ export function ConsoleShell() {
                 there to swipe to.
               */}
               <div className="-mx-4 overflow-x-auto px-4 pb-1 [scrollbar-width:none] scroll-fade-x sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 [&::-webkit-scrollbar]:hidden">
-                <TabsList className="h-auto gap-1 border border-border/70 bg-card/60 p-1 backdrop-blur-md">
+                {/* Named: the tab strip is the console's primary navigation
+                    and a bare tablist is announced as "tab list" with no
+                    indication of what it switches. Same treatment Alcove's
+                    board switcher already had. */}
+                <TabsList
+                  aria-label="Console sections"
+                  className="h-auto gap-1 border border-border/70 bg-card/60 p-1 backdrop-blur-md"
+                >
                   {VIEWS.map((entry) => (
                     <TabsTrigger
                       key={entry.id}

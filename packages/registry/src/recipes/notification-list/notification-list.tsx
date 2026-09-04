@@ -1,6 +1,6 @@
-import { Badge } from "../components/badge/badge";
-import { Avatar, AvatarFallback } from "../components/avatar/avatar";
-import { Card, CardHeader, CardTitle, CardContent } from "../components/card/card";
+import { Badge } from "../../components/badge/badge";
+import { Avatar, AvatarFallback } from "../../components/avatar/avatar";
+import { Card, CardHeader, CardTitle, CardContent } from "../../components/card/card";
 
 const NOTIFICATIONS = [
   {

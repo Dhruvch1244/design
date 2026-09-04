@@ -1,4 +1,9 @@
 import * as React from "react";
+import {
+  CHECK_GEOMETRY,
+  PLUS_GEOMETRY,
+  SEARCH_GEOMETRY,
+} from "@/components/icons/shared";
 
 /**
  * One icon set, hand-drawn on a single 24px grid at 1.5 stroke — the same
@@ -128,24 +133,14 @@ export const IconChevronRight = (p: IconProps) => (
   </Icon>
 );
 
-export const IconPlus = (p: IconProps) => (
-  <Icon {...p}>
-    <path d="M12 5v14M5 12h14" />
-  </Icon>
-);
+/* Three glyphs below draw geometry shared with the other showcases (see
+   components/icons/shared.tsx). Only the geometry is shared — the wrapper
+   above still owns this set's 1.5 stroke and round caps. */
+export const IconPlus = (p: IconProps) => <Icon {...p}>{PLUS_GEOMETRY}</Icon>;
 
-export const IconSearch = (p: IconProps) => (
-  <Icon {...p}>
-    <circle cx="11" cy="11" r="6.5" />
-    <path d="m16 16 4.5 4.5" />
-  </Icon>
-);
+export const IconSearch = (p: IconProps) => <Icon {...p}>{SEARCH_GEOMETRY}</Icon>;
 
-export const IconCheck = (p: IconProps) => (
-  <Icon {...p}>
-    <path d="m5 12.5 4.5 4.5L19 7" />
-  </Icon>
-);
+export const IconCheck = (p: IconProps) => <Icon {...p}>{CHECK_GEOMETRY}</Icon>;
 
 export const IconWarning = (p: IconProps) => (
   <Icon {...p}>

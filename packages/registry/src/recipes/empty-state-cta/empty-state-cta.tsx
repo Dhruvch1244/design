@@ -1,5 +1,5 @@
-import { Button } from "../components/button/button";
-import { EmptyState } from "../components/empty-state/empty-state";
+import { Button } from "../../components/button/button";
+import { EmptyState } from "../../components/empty-state/empty-state";
 
 export function EmptyStateCta() {
   return (

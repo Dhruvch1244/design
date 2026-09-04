@@ -1,4 +1,5 @@
 import type { SVGProps } from "react";
+import { MENU_GEOMETRY, SEARCH_GEOMETRY } from "@/components/icons/shared";
 
 /**
  * A hand-rolled icon set rather than a dependency.
@@ -91,21 +92,15 @@ export function IconSettings(props: IconProps) {
   );
 }
 
+/* Geometry shared with the other showcases (components/icons/shared.tsx).
+   Only the paths are shared — this set's 1.6 stroke still comes from <Icon>,
+   which is what keeps Halyard's chrome a hair lighter than Voltgate's. */
 export function IconSearch(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <circle cx="11" cy="11" r="6.5" />
-      <path d="m16 16 4.5 4.5" />
-    </Icon>
-  );
+  return <Icon {...props}>{SEARCH_GEOMETRY}</Icon>;
 }
 
 export function IconMenu(props: IconProps) {
-  return (
-    <Icon {...props}>
-      <path d="M4 7h16M4 12h16M4 17h16" />
-    </Icon>
-  );
+  return <Icon {...props}>{MENU_GEOMETRY}</Icon>;
 }
 
 export function IconClose(props: IconProps) {

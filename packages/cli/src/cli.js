@@ -65,12 +65,15 @@ function parseArgs(argv) {
     const arg = argv[i];
     if (arg === "--registry") {
       args.flags.registry = argv[++i];
-    } else if (arg === "--overwrite") {
+    } else if (arg === "--overwrite" || arg === "--force") {
+      // --overwrite (add/skill) and --force (update) mean the same thing —
+      // "replace what's already there" — so either name works on any
+      // command that supports one of them, instead of silently no-opping
+      // when a user reasonably tries the name they learned on another command.
       args.flags.overwrite = true;
+      args.flags.force = true;
     } else if (arg === "--skip-install") {
       args.flags.skipInstall = true;
-    } else if (arg === "--force") {
-      args.flags.force = true;
     } else if (arg === "--global") {
       args.flags.global = true;
     } else if (arg === "--project") {
@@ -115,6 +118,69 @@ function parseArgs(argv) {
   return args;
 }
 
+const COMMANDS = ["init", "add", "list", "diff", "update", "doctor", "snippets", "skill"];
+
+// Flags each command actually reads. `overwrite`/`force` are kept as two
+// keys internally (see parseArgs) but always travel together, so listing
+// either here admits both spellings.
+const COMMAND_FLAGS = {
+  init: [],
+  add: ["registry", "overwrite", "force", "skipInstall"],
+  list: ["registry", "recipes", "json"],
+  diff: ["registry"],
+  update: ["registry", "overwrite", "force"],
+  doctor: [],
+  snippets: [],
+  skill: [
+    "overwrite",
+    "force",
+    "global",
+    "project",
+    "cursor",
+    "windsurf",
+    "windsurfGlobal",
+    "copilot",
+    "gemini",
+    "geminiGlobal",
+    "agentsMd",
+    "adopt",
+    "adoptGlobal",
+  ],
+};
+
+function levenshtein(a, b) {
+  const dp = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+  for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      dp[i][j] =
+        a[i - 1] === b[j - 1]
+          ? dp[i - 1][j - 1]
+          : 1 + Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return dp[a.length][b.length];
+}
+
+function suggestCommand(command) {
+  let best = null;
+  let bestDistance = Infinity;
+  for (const candidate of COMMANDS) {
+    const distance = levenshtein(command, candidate);
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      best = candidate;
+    }
+  }
+  // Only suggest when the typo is plausible, not for wildly unrelated input.
+  return bestDistance <= 2 ? best : null;
+}
+
+function unsupportedFlags(command, flags) {
+  const allowed = new Set(["help", "version", ...(COMMAND_FLAGS[command] ?? [])]);
+  return Object.keys(flags).filter((flag) => !allowed.has(flag));
+}
+
 export async function run(argv) {
   let positional, flags;
   try {
@@ -134,6 +200,25 @@ export async function run(argv) {
 
   if (flags.help || !command) {
     console.log(HELP);
+    return;
+  }
+
+  if (!COMMANDS.includes(command)) {
+    const suggestion = suggestCommand(command);
+    console.error(
+      `Unknown command: ${command}${suggestion ? `\n\nDid you mean \`dsgn ${suggestion}\`?` : ""}\n`,
+    );
+    console.log(HELP);
+    process.exitCode = 1;
+    return;
+  }
+
+  const badFlags = unsupportedFlags(command, flags);
+  if (badFlags.length > 0) {
+    console.error(
+      `dsgn: --${badFlags[0].replace(/[A-Z]/g, (c) => "-" + c.toLowerCase())} has no effect on \`dsgn ${command}\` and was ignored — see \`dsgn --help\`.`,
+    );
+    process.exitCode = 1;
     return;
   }
 
@@ -163,10 +248,6 @@ export async function run(argv) {
       case "skill":
         await skill(cwd, flags);
         break;
-      default:
-        console.error(`Unknown command: ${command}\n`);
-        console.log(HELP);
-        process.exitCode = 1;
     }
   } catch (err) {
     console.error(`\ndsgn: ${err.message}`);

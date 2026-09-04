@@ -1,4 +1,4 @@
-import { Button } from "../components/button/button";
+import { Button } from "../../components/button/button";
 import {
   Card,
   CardHeader,
@@ -6,16 +6,16 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "../components/card/card";
-import { Switch } from "../components/switch/switch";
-import { Separator } from "../components/separator/separator";
+} from "../../components/card/card";
+import { Switch } from "../../components/switch/switch";
+import { Separator } from "../../components/separator/separator";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "../components/select/select";
+} from "../../components/select/select";
 
 export function SettingsPanel() {
   return (

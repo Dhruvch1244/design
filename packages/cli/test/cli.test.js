@@ -64,6 +64,58 @@ test("cli: an actually-unknown command still exits non-zero", async (t) => {
   });
 });
 
+test("cli: an unknown command with a close spelling gets a suggestion", async (t) => {
+  const errors = [];
+  const originalError = console.error;
+  console.error = (...args) => errors.push(args.join(" "));
+  process.exitCode = undefined;
+
+  await run(["lst"]);
+
+  console.error = originalError;
+
+  assert.equal(process.exitCode, 1);
+  assert.match(errors.join("\n"), /Did you mean `dsgn list`\?/);
+  t.after(() => {
+    process.exitCode = undefined;
+  });
+});
+
+test("cli: a flag unsupported by the given command is rejected instead of silently ignored", async (t) => {
+  const errors = [];
+  const originalError = console.error;
+  console.error = (...args) => errors.push(args.join(" "));
+  process.exitCode = undefined;
+
+  await run(["list", "--force"]);
+
+  console.error = originalError;
+
+  assert.equal(process.exitCode, 1);
+  assert.match(errors.join("\n"), /has no effect on `dsgn list`/);
+  t.after(() => {
+    process.exitCode = undefined;
+  });
+});
+
+test("cli: --force and --overwrite are interchangeable on commands that support either", async (t) => {
+  process.exitCode = undefined;
+  // update on a cwd with no dsgn.config.json errors on usage before ever
+  // touching the force/overwrite flag — this only proves the flag itself
+  // isn't rejected as "unsupported", which is what changed here.
+  const errors = [];
+  const originalError = console.error;
+  console.error = (...args) => errors.push(args.join(" "));
+
+  await run(["update", "button", "--overwrite"]);
+
+  console.error = originalError;
+  assert.doesNotMatch(errors.join("\n"), /has no effect on/);
+  t.after(() => {
+    process.exitCode = undefined;
+  });
+});
+
 test("cli: an unrecognized flag is rejected, not silently treated as a component name", async (t) => {
   // Regression test: this exact case used to fall through to positional
   // args, so `add badge --yes` tried to fetch a registry item literally

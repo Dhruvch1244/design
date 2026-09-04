@@ -14,6 +14,10 @@ import { useBoard } from "@/lib/design-tasks/store";
 export function FilterPopover() {
   const { filters, setFilters, filtersActive, clearFilters } = useBoard();
   const count = filters.labels.length + filters.people.length;
+  // The popover's own accessible name. Pointed at the heading that is already
+  // on screen rather than an aria-label, so the name a screen reader hears and
+  // the name a sighted person reads are the same string.
+  const headingId = React.useId();
 
   function toggleLabel(id: LabelId, on: boolean) {
     setFilters((prev) => ({
@@ -48,9 +52,11 @@ export function FilterPopover() {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-72 p-0">
+      <PopoverContent align="end" aria-labelledby={headingId} className="w-72 p-0">
         <div className="flex items-center justify-between px-4 pt-4">
-          <h3 className="text-sm font-semibold">Filter cycle 14</h3>
+          <h3 id={headingId} className="text-sm font-semibold">
+            Filter cycle 14
+          </h3>
           {filtersActive && (
             <Button variant="link" size="sm" onClick={clearFilters}>
               Reset

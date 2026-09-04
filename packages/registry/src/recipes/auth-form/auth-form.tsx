@@ -1,4 +1,4 @@
-import { Button } from "../components/button/button";
+import { Button } from "../../components/button/button";
 import {
   Card,
   CardHeader,
@@ -6,9 +6,9 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "../components/card/card";
-import { Input } from "../components/input/input";
-import { Checkbox } from "../components/checkbox/checkbox";
+} from "../../components/card/card";
+import { Input } from "../../components/input/input";
+import { Checkbox } from "../../components/checkbox/checkbox";
 
 export function AuthForm() {
   return (

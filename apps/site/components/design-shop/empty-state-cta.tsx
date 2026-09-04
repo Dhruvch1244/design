@@ -40,6 +40,9 @@ export function EmptyStateCta({
             fill="none"
             stroke="currentColor"
             strokeWidth="1.5"
+            // Decorative — the empty state's own title carries the meaning.
+            // Matches the aria-hidden every glyph in icons.tsx already sets.
+            aria-hidden="true"
             className="h-9 w-9"
           >
             <path d="M12 4v16m8-8H4" strokeLinecap="round" />

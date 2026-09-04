@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Badge } from "@/components/dsgn/badge";
 import { Button } from "@/components/dsgn/button";
-import { Sheet, SheetContent, SheetTitle } from "@/components/dsgn/sheet";
+import { MobileNavSheet, useMobileNav } from "@/components/shared/mobile-nav";
 import { AccentSwitcher } from "@/components/design-social/accent-switcher";
 import { ComposeDialog } from "@/components/design-social/compose-dialog";
 import { ExploreView } from "@/components/design-social/explore-view";
@@ -38,7 +38,7 @@ export function AppShell() {
   const [profileHandle, setProfileHandle] = React.useState<string>(VIEWER.handle);
   const [threadId, setThreadId] = React.useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = React.useState(false);
-  const [navOpen, setNavOpen] = React.useState(false);
+  const nav = useMobileNav();
 
   const unread = unreadCount();
 
@@ -60,10 +60,12 @@ export function AppShell() {
     window.scrollTo({ top: 0 });
   }, []);
 
+  const closeNav = nav.close;
+
   const openSettings = React.useCallback(() => {
-    setNavOpen(false);
+    closeNav();
     setSettingsOpen(true);
-  }, []);
+  }, [closeNav]);
 
   return (
     <div className="relative">
@@ -78,7 +80,7 @@ export function AppShell() {
           variant="ghost"
           size="icon-sm"
           aria-label="Open menu"
-          onClick={() => setNavOpen(true)}
+          onClick={() => nav.setOpen(true)}
           className="-ml-1 rounded-full"
         >
           <MenuIcon className="h-5 w-5" />
@@ -88,31 +90,35 @@ export function AppShell() {
         <AccentSwitcher />
       </header>
 
-      <Sheet open={navOpen} onOpenChange={setNavOpen}>
-        {/*
-          A flex column, not a plain block: LeftNav's root is `h-full`, so
-          without this the wordmark above it would push the nav's own footer
-          (the account menu) past the bottom of the sheet and clip it. The
-          `min-h-0` wrapper is what lets the nav's internal ScrollArea shrink
-          instead of overflowing.
-        */}
-        <SheetContent side="left" className="flex w-[19rem] flex-col gap-5 p-5 pt-14">
-          {/* Radix requires a Title for the dialog's accessible name; the
-              visible chrome here is the nav itself, so it is screen-reader
-              only rather than a heading nobody needed. */}
-          <SheetTitle className="sr-only">Navigation</SheetTitle>
-          <Wordmark />
-          <div className="min-h-0 flex-1">
-            <LeftNav
-              variant="sheet"
-              view={view}
-              onNavigate={navigate}
-              onOpenSettings={openSettings}
-              onAfterNavigate={() => setNavOpen(false)}
-            />
-          </div>
-        </SheetContent>
-      </Sheet>
+      {/*
+        A flex column, not a plain block: LeftNav's root is `h-full`, so
+        without this the wordmark above it would push the nav's own footer
+        (the account menu) past the bottom of the sheet and clip it. The
+        `min-h-0` wrapper is what lets the nav's internal ScrollArea shrink
+        instead of overflowing.
+
+        The sr-only title Radix requires for the dialog's accessible name is
+        supplied by MobileNavSheet — the visible chrome here is the nav
+        itself, so it stays screen-reader only rather than a heading nobody
+        needed.
+      */}
+      <MobileNavSheet
+        open={nav.open}
+        onOpenChange={nav.setOpen}
+        title="Navigation"
+        className="flex w-[19rem] flex-col gap-5 p-5 pt-14"
+      >
+        <Wordmark />
+        <div className="min-h-0 flex-1">
+          <LeftNav
+            variant="sheet"
+            view={view}
+            onNavigate={navigate}
+            onOpenSettings={openSettings}
+            onAfterNavigate={nav.close}
+          />
+        </div>
+      </MobileNavSheet>
 
       <div className="mx-auto flex w-full max-w-[1440px] gap-6 px-4 sm:px-6 lg:gap-8 lg:px-8">
         {/* --- desktop rail --- */}
