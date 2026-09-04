@@ -1,6 +1,6 @@
-import { Button } from "../components/button/button";
-import { Badge } from "../components/badge/badge";
-import { Progress } from "../components/progress/progress";
+import { Button } from "../../components/button/button";
+import { Badge } from "../../components/badge/badge";
+import { Progress } from "../../components/progress/progress";
 import {
   Card,
   CardHeader,
@@ -8,7 +8,7 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "../components/card/card";
+} from "../../components/card/card";
 
 export function BillingSummary() {
   return (

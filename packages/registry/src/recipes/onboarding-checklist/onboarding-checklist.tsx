@@ -1,6 +1,6 @@
-import { Checkbox } from "../components/checkbox/checkbox";
-import { Progress } from "../components/progress/progress";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../components/card/card";
+import { Checkbox } from "../../components/checkbox/checkbox";
+import { Progress } from "../../components/progress/progress";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../../components/card/card";
 
 const STEPS = [
   { label: "Create your account", done: true },
