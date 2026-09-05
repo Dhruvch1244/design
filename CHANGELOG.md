@@ -5,6 +5,25 @@ documented here, in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format. The registry and site aren't independently versioned — they're
 covered under **Registry** below, dated by when they actually shipped.
 
+## [0.9.3] — 2026-09-05
+
+### Fixed
+
+- `rewriteAlias` (used by `add`, `diff`, and `update`) only ever rewrote
+  `@/lib/utils` imports, and its early-return check looked only at `alias`/
+  `utilsDir` — never `componentsDir`. Any multi-file registry item that
+  imports a sibling component (`combobox`, `alert-dialog`, `pagination`, and
+  all 8 recipes — 11 items total) shipped with a broken
+  `@/components/dsgn/<name>` import the moment a project customized
+  `componentsDir` in `dsgn.config.json`: the file itself landed at the new
+  location, but its own import of another registry component still pointed
+  at the untouched default path. Reproduced directly (`dsgn add combobox`
+  into a project with `componentsDir: "src/ui"` produced a
+  `combobox.tsx` that imported `@/components/dsgn/button`, which never
+  existed) before fixing. Now rewrites `@/components/dsgn/<name>` too,
+  independently of the `@/lib/utils` rewrite, whenever either `alias` or
+  `componentsDir` differs from default.
+
 ## [0.9.2] — 2026-09-02
 
 ### Fixed

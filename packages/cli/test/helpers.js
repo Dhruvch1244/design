@@ -69,6 +69,24 @@ export async function makeFixtureRegistry(dir) {
         },
       ],
     },
+    {
+      // Mirrors the real combobox/alert-dialog/recipe shape: a multi-file
+      // composite that imports a sibling registry component via the @ alias,
+      // not just `@/lib/utils` — this is the shape that exposed the
+      // rewriteAlias bug (only `@/lib/utils` was ever rewritten).
+      name: "menu",
+      type: "registry:ui",
+      description: "A menu built from Button.",
+      registryDependencies: ["button", "utils"],
+      dependencies: [],
+      files: [
+        {
+          target: "components/dsgn/menu.tsx",
+          content:
+            'import { Button } from "@/components/dsgn/button";\nimport { cn } from "@/lib/utils";\n\nexport function Menu() {\n  return Button && cn && null;\n}\n',
+        },
+      ],
+    },
   ];
 
   const index = {
