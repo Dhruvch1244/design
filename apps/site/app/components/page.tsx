@@ -11,6 +11,7 @@ import { Frame } from "@/components/brand/frame";
 import { Reveal } from "@/components/motion/reveal";
 import { CursorGlow } from "@/components/motion/cursor-glow";
 import { SectionSearchButton } from "@/components/section-search-button";
+import { SEARCH_GEOMETRY, CHEVRON_DOWN_GEOMETRY } from "@/components/icons/site";
 import { COMPONENTS_DATA } from "@/lib/components-data";
 
 export const metadata: Metadata = {
@@ -116,10 +117,7 @@ export default function ComponentsPage() {
             <div className="h-7 w-16 rounded-md border border-border" />
           </GalleryTile>
           <GalleryTile slug="command" label="Command">
-            <svg {...ICON_PROPS}>
-              <circle cx="11" cy="11" r="7" />
-              <path d="m20 20-3.2-3.2" />
-            </svg>
+            <svg {...ICON_PROPS}>{SEARCH_GEOMETRY}</svg>
           </GalleryTile>
           <GalleryTile slug="textarea" label="Textarea">
             <div className="h-9 w-16 space-y-1 rounded-md border border-border p-1.5">
@@ -145,7 +143,7 @@ export default function ComponentsPage() {
             <div className="flex h-7 w-16 items-center justify-between rounded-md border border-border px-2">
               <span className="h-1 w-6 rounded-full bg-muted-foreground/30" />
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3 w-3">
-                <path d="m6 9 6 6 6-6" />
+                {CHEVRON_DOWN_GEOMETRY}
               </svg>
             </div>
           </GalleryTile>
@@ -181,7 +179,7 @@ export default function ComponentsPage() {
             <div className="flex w-16 items-center justify-between border-b border-border pb-1.5">
               <span className="h-1 w-8 rounded-full bg-muted-foreground/30" />
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3 w-3">
-                <path d="m6 9 6 6 6-6" />
+                {CHEVRON_DOWN_GEOMETRY}
               </svg>
             </div>
           </GalleryTile>
@@ -243,11 +241,10 @@ export default function ComponentsPage() {
           <GalleryTile slug="combobox" label="Combobox">
             <div className="flex h-7 w-16 items-center justify-between rounded-md border border-border px-2">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3 w-3">
-                <circle cx="11" cy="11" r="7" />
-                <path d="m20 20-3.2-3.2" />
+                {SEARCH_GEOMETRY}
               </svg>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3 w-3">
-                <path d="m6 9 6 6 6-6" />
+                {CHEVRON_DOWN_GEOMETRY}
               </svg>
             </div>
           </GalleryTile>
@@ -274,7 +271,7 @@ export default function ComponentsPage() {
             <div className="flex h-7 w-16 items-center justify-between rounded-md border border-border px-2">
               <div className="h-1 w-8 rounded-full bg-muted-foreground/30" />
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3 w-3">
-                <path d="m6 9 6 6 6-6" />
+                {CHEVRON_DOWN_GEOMETRY}
               </svg>
             </div>
           </GalleryTile>

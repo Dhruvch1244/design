@@ -30,6 +30,15 @@ jobs:
       - name: Lint registry for site-specific token leaks
         run: npm run lint:registry-tokens
 
+      # Catches skills/dsgn/**'s hand-maintained component-count prose and
+      # table drifting from packages/registry/registry.json — see
+      # scripts/lint-skill-drift.mjs for the "23 components" incident this
+      # guards against. Existed as an npm script with nothing calling it in
+      # CI; a PR could still land a stale count and this workflow would go
+      # green.
+      - name: Lint skill docs for registry drift
+        run: npm run lint:skill-drift
+
       # Rewrites src/'s relative imports to the @/ alias consumers actually
       # have (see build-registry.mjs) and writes the result to dist/r — the
       # next step lints exactly that output, not src/, since a relative
