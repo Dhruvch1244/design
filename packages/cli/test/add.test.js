@@ -55,6 +55,53 @@ test("add: rewrites @/lib/utils imports when a custom alias is configured", asyn
   assert.doesNotMatch(content, /@\/lib\/utils/);
 });
 
+test("add: rewrites cross-component @/components/dsgn imports when componentsDir is customized", async (t) => {
+  // Regression test: rewriteAlias only ever rewrote `@/lib/utils`, so a
+  // multi-file item that imports a sibling component (Combobox, AlertDialog,
+  // every recipe) shipped with a broken import the moment componentsDir was
+  // customized — the file was written to the new location, but its own
+  // import of another registry component still pointed at the untouched
+  // default `components/dsgn/` path. Reproduced directly against a real
+  // custom-componentsDir project before fixing.
+  const { dir, cleanup } = await makeSandbox();
+  t.after(cleanup);
+  const registry = await makeFixtureRegistry(dir);
+
+  await writeConfig(dir, {
+    $schema: "https://design.dhruvchoudhary.com/schema/config.json",
+    componentsDir: "src/ui",
+    utilsDir: "lib",
+    alias: "@",
+  });
+
+  await add(dir, ["menu"], { registry, skipInstall: true });
+
+  const content = await readFile(path.join(dir, "src/ui/menu.tsx"), "utf8");
+  assert.match(content, /from "@\/src\/ui\/button"/);
+  assert.doesNotMatch(content, /@\/components\/dsgn\/button/);
+  // utilsDir was left at its default, so this import needs no rewrite.
+  assert.match(content, /from "@\/lib\/utils"/);
+});
+
+test("add: rewrites cross-component imports when only the alias is customized", async (t) => {
+  const { dir, cleanup } = await makeSandbox();
+  t.after(cleanup);
+  const registry = await makeFixtureRegistry(dir);
+
+  await writeConfig(dir, {
+    $schema: "https://design.dhruvchoudhary.com/schema/config.json",
+    componentsDir: "components/dsgn",
+    utilsDir: "lib",
+    alias: "~",
+  });
+
+  await add(dir, ["menu"], { registry, skipInstall: true });
+
+  const content = await readFile(path.join(dir, "components/dsgn/menu.tsx"), "utf8");
+  assert.match(content, /from "~\/components\/dsgn\/button"/);
+  assert.match(content, /from "~\/lib\/utils"/);
+});
+
 test("add: records an install hash for every written file", async (t) => {
   const { dir, cleanup } = await makeSandbox();
   t.after(cleanup);
