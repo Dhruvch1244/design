@@ -4,6 +4,7 @@ import { Eyebrow } from "@/components/brand/eyebrow";
 import { Frame } from "@/components/brand/frame";
 import { Button } from "@/components/dsgn/button";
 import { Reveal } from "@/components/motion/reveal";
+import { Magnetic } from "@/components/motion/magnetic";
 import { CopyButton } from "@/components/copy-button";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/dsgn/accordion";
 
@@ -990,11 +991,13 @@ export default function SkillPage() {
           .
         </p>
         <div className="mt-6">
-          <Button asChild variant="accent" size="lg" className="rounded-full px-7 shadow-glow">
-            <a href="/downloads/dsgn-skill.zip" download="dsgn-skill.zip">
-              Download .zip
-            </a>
-          </Button>
+          <Magnetic>
+            <Button asChild variant="accent" size="lg" className="rounded-full px-7 shadow-glow">
+              <a href="/downloads/dsgn-skill.zip" download="dsgn-skill.zip">
+                Download .zip
+              </a>
+            </Button>
+          </Magnetic>
         </div>
       </Reveal>
 

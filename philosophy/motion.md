@@ -69,8 +69,8 @@ visual one that happens to look separated today.
 `components/motion/magnetic.tsx` (the hover-pull effect on buttons/links)
 mutates `style.transform` directly via a ref on every `pointermove`,
 specifically to avoid a React re-render on each event — only `transform` is
-touched, so the effect is compositor-only. And `app/globals.css` gates the
-two motion features with real cost against `prefers-reduced-motion`:
+touched, so the effect is compositor-only. And `app/globals.css` gates
+motion features with real cost against `prefers-reduced-motion`:
 `scroll-behavior: smooth` only applies under `(prefers-reduced-motion:
 no-preference)`, and under `(prefers-reduced-motion: reduce)`, `.reveal`'s
 transition duration collapses to 1ms and `.progress-bar` animations are
@@ -79,6 +79,25 @@ it's the same class of correctness property pillar #9 (`AGENTS.md`)
 describes for `async`: something that fails silently (a user set the OS
 preference, the app ignored it) rather than loudly, so it has to be checked
 for explicitly rather than assumed away.
+
+That gap is exactly what `magnetic.tsx` itself shipped with for a while:
+compositor-only answers the first half of this question ("stays off the
+render thread") but not the second ("respects OS preference") — the
+component ran its `pointermove` handler and translated the element
+regardless of `prefers-reduced-motion`, unlike `.reveal` and
+`.progress-bar`, which both had a reduced-motion branch from the start. The
+distinction that let it slip past review is that a magnetic pull is
+triggered continuously by user interaction rather than firing once on
+mount — it's easy to mentally file "interactive" motion as opt-in by
+nature and skip the same check a passive scroll animation gets. The fix
+reads `prefers-reduced-motion` into a ref on mount (and listens for it
+changing mid-session, since a user can toggle the OS setting without
+reloading the page) and no-ops the pointer handler when it's set, so the
+button/link stays fully interactive with zero added motion, rather than
+the effect being removed outright as a workaround. `app/globals.css` now
+gates three motion features this way, not two — the count matters less
+than the generalizable point: "this one's interactive, not passive" is not
+a reason an effect is exempt from the same check.
 
 ## A seemingly-decorative effect can have a real layout cost — measure it like one
 

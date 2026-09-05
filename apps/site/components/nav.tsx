@@ -7,6 +7,7 @@ import { Mark } from "@/components/brand/mark";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { PalettePicker } from "@/components/palette-picker";
 import { AppearanceMenu } from "@/components/appearance-menu";
+import { SEARCH_GEOMETRY } from "@/components/icons/site";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -97,8 +98,7 @@ export function Nav() {
               className="hidden h-8 items-center gap-1.5 rounded-full border border-border px-2.5 text-xs text-muted-foreground transition-colors duration-300 ease-fluid hover:border-accent hover:text-accent md:flex"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3.5 w-3.5">
-                <circle cx="11" cy="11" r="7" />
-                <path d="m20 20-3.2-3.2" />
+                {SEARCH_GEOMETRY}
               </svg>
               <kbd className="font-mono text-[10px]">⌘K</kbd>
             </button>
@@ -171,8 +171,7 @@ export function Nav() {
             className="flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-xs text-muted-foreground transition-colors duration-300 ease-fluid hover:border-accent hover:text-accent"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3.5 w-3.5">
-              <circle cx="11" cy="11" r="7" />
-              <path d="m20 20-3.2-3.2" />
+              {SEARCH_GEOMETRY}
             </svg>
             Search
           </button>

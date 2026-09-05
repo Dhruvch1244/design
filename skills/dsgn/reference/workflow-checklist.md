@@ -31,6 +31,21 @@ real registry, tokens, and motion primitives — not generic advice.
   ways to make an otherwise-correct build read as amateur — typography is
   usually the first thing a visitor registers about a page, before color
   or layout.
+- **A hard-won, real lesson from this repo**: if the same SVG icon geometry
+  ends up repeated ≥2 times within one project's own single voice (the real
+  site had a magnifier icon duplicated 6 times and a chevron duplicated 4
+  times across its own nav, sidebar, and gallery tiles — see
+  `apps/site/components/icons/site.tsx`), extract just the `<path>`/
+  `<circle>` children into a local shared constant; leave `viewBox`,
+  `stroke`, `strokeWidth`, and `className` at each call site. Do **not**
+  build a generic, reusable-across-voices `<Icon>` component from this,
+  even though the instinct is the same one — stroke width and cap style are
+  part of a voice's own identity (this repo's own showcases deliberately
+  draw the "same" glyph differently per voice: 1.5px square-cap vs 1.75px
+  round-cap strokes), so a shared cross-voice `<Icon>` would flatten exactly
+  the difference those choices exist to express. See
+  `apps/site/components/icons/shared.tsx`'s own comment for the fuller
+  reasoning.
 
 ## 2. Page Composer
 
@@ -129,3 +144,12 @@ real registry, tokens, and motion primitives — not generic advice.
   specifically because an ancestor's `opacity` can't be "undone" for a
   child — if the glow and the content shared a layer, fading the glow out
   would also fade the content.
+- **A hard-won, real lesson from this repo**: a continuous, per-event effect
+  (a magnetic hover-pull that recalculates on every `pointermove`, not a
+  one-time scroll reveal) needs its own explicit `prefers-reduced-motion`
+  check — it doesn't get to inherit the "subtle opacity fade" exemption.
+  `apps/site/components/motion/magnetic.tsx` shipped for a while without
+  one; the fix reads the media query into a ref (not React state, matching
+  the ref-driven transform itself) and no-ops the pointer handler when
+  reduced motion is requested, so the wrapped button/link stays fully
+  functional with zero motion rather than being removed outright.

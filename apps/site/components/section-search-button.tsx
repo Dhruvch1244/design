@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from "@/components/dsgn/command";
+import { SEARCH_GEOMETRY } from "@/components/icons/site";
 
 /**
  * A compact trigger button that opens a modal Command palette scoped to
@@ -33,8 +34,7 @@ export function SectionSearchButton({
         className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm text-muted-foreground transition-colors duration-300 ease-fluid hover:border-accent hover:text-accent"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.2-3.2" />
+          {SEARCH_GEOMETRY}
         </svg>
         {label}
       </button>

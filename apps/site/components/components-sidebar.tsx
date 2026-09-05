@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Link } from "@/components/link";
 import { cn } from "@/lib/utils";
 import { COMPONENTS_DATA } from "@/lib/components-data";
+import { SEARCH_GEOMETRY } from "@/components/icons/site";
 
 /**
  * Persistent left-rail nav + live-filtering search, in the spirit of
@@ -35,8 +36,7 @@ export function ComponentsSidebar() {
           strokeWidth="1.5"
           className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
         >
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.2-3.2" />
+          {SEARCH_GEOMETRY}
         </svg>
         <input
           type="text"
