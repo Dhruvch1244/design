@@ -130,3 +130,85 @@ test("doctor: does not flag onClick when role/tabIndex are present", async (t) =
 
   assert.doesNotMatch(output, /no role\/tabIndex/);
 });
+
+test("doctor: flags an icon-only button with no accessible name", async (t) => {
+  const { dir, cleanup } = await makeSandbox();
+  t.after(cleanup);
+  const registry = await makeFixtureRegistry(dir);
+  await add(dir, ["button"], { registry, skipInstall: true });
+  await writeFile(
+    path.join(dir, "components/dsgn/button.tsx"),
+    'export function Button() {\n  return <button><svg viewBox="0 0 24 24"><path d="M0 0" /></svg></button>;\n}\n',
+  );
+
+  const cap = captureConsole();
+  await doctor(dir);
+  const output = cap.lines.join("\n");
+  cap.restore();
+  process.exitCode = 0;
+
+  assert.match(output, /icon-only <button> with no aria-label\/aria-labelledby/);
+});
+
+test("doctor: does not flag an icon-only button that has an aria-label", async (t) => {
+  const { dir, cleanup } = await makeSandbox();
+  t.after(cleanup);
+  const registry = await makeFixtureRegistry(dir);
+  await add(dir, ["button"], { registry, skipInstall: true });
+  await writeFile(
+    path.join(dir, "components/dsgn/button.tsx"),
+    'export function Button() {\n  return <button aria-label="Close"><svg viewBox="0 0 24 24"><path d="M0 0" /></svg></button>;\n}\n',
+  );
+
+  const cap = captureConsole();
+  await doctor(dir);
+  const output = cap.lines.join("\n");
+  cap.restore();
+
+  assert.doesNotMatch(output, /icon-only <button>/);
+});
+
+test("doctor: flags an <input> with no associated label", async (t) => {
+  const { dir, cleanup } = await makeSandbox();
+  t.after(cleanup);
+  const registry = await makeFixtureRegistry(dir);
+  await add(dir, ["button"], { registry, skipInstall: true });
+  await writeFile(
+    path.join(dir, "components/dsgn/button.tsx"),
+    'export function Button() {\n  return <input type="text" placeholder="Name" />;\n}\n',
+  );
+
+  const cap = captureConsole();
+  await doctor(dir);
+  const output = cap.lines.join("\n");
+  cap.restore();
+  process.exitCode = 0;
+
+  assert.match(output, /<input> with no associated label/);
+});
+
+test("doctor: does not flag an <input> with an aria-label, an id, or wrapped in a <label>", async (t) => {
+  const { dir, cleanup } = await makeSandbox();
+  t.after(cleanup);
+  const registry = await makeFixtureRegistry(dir);
+  await add(dir, ["button"], { registry, skipInstall: true });
+  await writeFile(
+    path.join(dir, "components/dsgn/button.tsx"),
+    'export function Button() {\n' +
+      '  return (\n' +
+      '    <div>\n' +
+      '      <input type="text" aria-label="Name" />\n' +
+      '      <input type="text" id="email" />\n' +
+      '      <label>Phone <input type="text" /></label>\n' +
+      '    </div>\n' +
+      "  );\n" +
+      "}\n",
+  );
+
+  const cap = captureConsole();
+  await doctor(dir);
+  const output = cap.lines.join("\n");
+  cap.restore();
+
+  assert.doesNotMatch(output, /<input> with no associated label/);
+});

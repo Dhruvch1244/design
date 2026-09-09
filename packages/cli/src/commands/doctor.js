@@ -26,6 +26,33 @@ function scanAccessibility(content, targetRelative) {
   for (const match of content.matchAll(clickableDiv)) {
     issues.push(`${targetRelative}: onClick on a <${match[1]}> with no role/tabIndex — not keyboard-reachable`);
   }
+  // Icon-only <button>: content is a single <svg>...</svg> and nothing
+  // else, with no aria-label/aria-labelledby on the tag — a screen reader
+  // announces "button" with no name at all. Scoped tightly to the
+  // svg-only-child shape (rather than e.g. "no text anywhere in the
+  // subtree") to keep false positives near zero: a button that wraps an
+  // icon alongside real text is left alone.
+  const iconOnlyButton =
+    /<button(?![^>]*\baria-label\s*=)(?![^>]*\baria-labelledby\s*=)[^>]*>\s*<svg\b[\s\S]*?<\/svg>\s*<\/button>/g;
+  for (const match of content.matchAll(iconOnlyButton)) {
+    issues.push(`${targetRelative}: icon-only <button> with no aria-label/aria-labelledby — no accessible name`);
+  }
+  // <input> with no way to resolve an accessible name: no aria-label, no
+  // aria-labelledby, and no id an external <label htmlFor> could target.
+  // Inputs already wrapped by a <label> (implicit association) are excluded
+  // first so they're never flagged; inputs that do carry an id are also
+  // left alone, since a matching <label htmlFor> may legitimately live
+  // elsewhere in the file (or even in a sibling file) — that's the
+  // trade-off for keeping this a low-false-positive regex instead of a
+  // real cross-reference check.
+  const contentOutsideLabels = content.replace(/<label[^>]*>[\s\S]*?<\/label>/g, "");
+  const inputWithoutLabel =
+    /<input(?![^>]*\btype\s*=\s*["']hidden["'])(?![^>]*\baria-label\s*=)(?![^>]*\baria-labelledby\s*=)(?![^>]*\bid\s*=)[^>]*\/?>/g;
+  for (const match of contentOutsideLabels.matchAll(inputWithoutLabel)) {
+    issues.push(
+      `${targetRelative}: <input> with no associated label — "${match[0].slice(0, 60)}..." (no id, aria-label, or aria-labelledby, and not wrapped in <label>)`,
+    );
+  }
   return issues;
 }
 
