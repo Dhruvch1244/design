@@ -1,0 +1,48 @@
+{
+  "name": "@dhruvchoudhary/dsgn-mcp",
+  "version": "0.1.0",
+  "description": "MCP (Model Context Protocol) server exposing the dsgn design-system registry to AI clients (Claude Code, Cursor, Claude Desktop, ...) -- list, search, and fetch components/recipes with resolved transitive dependencies, and generate on-house-style component scaffolds, without shelling out to the dsgn CLI.",
+  "type": "module",
+  "bin": {
+    "dsgn-mcp": "bin/dsgn-mcp.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0"
+  },
+  "license": "MIT",
+  "author": "Dhruv Choudhary",
+  "homepage": "https://design.dhruvchoudhary.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhruvch1244/design.git",
+    "directory": "packages/mcp"
+  },
+  "bugs": "https://github.com/dhruvch1244/design/issues",
+  "keywords": [
+    "design-system",
+    "components",
+    "mcp",
+    "model-context-protocol",
+    "shadcn",
+    "tailwind",
+    "react",
+    "claude-code",
+    "claude",
+    "cursor",
+    "claude-desktop",
+    "ai-agent"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
