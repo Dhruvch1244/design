@@ -54,6 +54,26 @@
       ]
     },
     {
+      "name": "label",
+      "type": "registry:ui",
+      "description": "Label built on Radix Label. Used standalone or as the labeling piece of Form.",
+      "dependencies": ["@radix-ui/react-label"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/label/label.tsx", "target": "components/dsgn/label.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "form",
+      "type": "registry:ui",
+      "description": "Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage -- built on react-hook-form's FormProvider + Controller + useFormContext, with Radix Slot wiring FormControl to whatever input it wraps. Resolver-agnostic: works with zodResolver (recommended), valibot, or a hand-rolled resolver passed to your own useForm() call.",
+      "dependencies": ["react-hook-form", "@radix-ui/react-slot"],
+      "registryDependencies": ["utils", "label"],
+      "files": [
+        { "path": "src/components/form/form.tsx", "target": "components/dsgn/form.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
       "name": "command",
       "type": "registry:ui",
       "description": "A ⌘K command palette (Command, CommandDialog, CommandInput, CommandList, CommandGroup, CommandItem, CommandShortcut) built on cmdk, with its own dialog chrome so it doesn't require a separate Dialog primitive.",
@@ -376,6 +396,146 @@
       ]
     },
     {
+      "name": "calendar",
+      "type": "registry:ui",
+      "description": "Calendar -- built on react-day-picker v10, styled to dsgn's border/radius/token conventions (border-border, bg-accent, text-accent-foreground, bg-muted). Supports single/range/multiple selection modes via react-day-picker's own props.",
+      "dependencies": ["react-day-picker"],
+      "registryDependencies": ["utils", "button"],
+      "files": [
+        { "path": "src/components/calendar/calendar.tsx", "target": "components/dsgn/calendar.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:ui",
+      "description": "DatePicker -- a single-date picker composed from Popover + Button + Calendar (no new primitive dependency). Controlled: value/onValueChange.",
+      "dependencies": [],
+      "registryDependencies": ["utils", "popover", "button", "calendar"],
+      "files": [
+        { "path": "src/components/date-picker/date-picker.tsx", "target": "components/dsgn/date-picker.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "data-table",
+      "type": "registry:ui",
+      "description": "DataTable -- a sortable, filterable, paginated table composed from Table + Button + Input and @tanstack/react-table (v8 line -- see the in-file note on why, next to its ColumnDef-based ColumnDef/columns+data API). Generic over columns/data via TanStack's ColumnDef, not tied to any specific dataset shape.",
+      "dependencies": ["@tanstack/react-table"],
+      "registryDependencies": ["utils", "table", "button", "input"],
+      "files": [
+        { "path": "src/components/data-table/data-table.tsx", "target": "components/dsgn/data-table.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "description": "Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerFooter, DrawerTitle, DrawerDescription, DrawerClose -- a bottom-sheet with real drag-to-dismiss gesture behavior, built on vaul. Distinct from Sheet, which is Radix Dialog repositioned to an edge with no gesture support.",
+      "dependencies": ["vaul"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/drawer/drawer.tsx", "target": "components/dsgn/drawer.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "description": "NavigationMenu and sub-parts -- a top-level site nav with flyout panels, built on Radix Navigation Menu, styled consistently with dropdown-menu/context-menu.",
+      "dependencies": ["@radix-ui/react-navigation-menu", "class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/navigation-menu/navigation-menu.tsx", "target": "components/dsgn/navigation-menu.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "description": "Menubar and sub-parts -- a desktop-app-style top menu bar, built on Radix Menubar. Same compound shape as dropdown-menu/context-menu.",
+      "dependencies": ["@radix-ui/react-menubar"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/menubar/menubar.tsx", "target": "components/dsgn/menubar.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "multi-select",
+      "type": "registry:ui",
+      "description": "MultiSelect -- a tags-input style multi-value select, composed from Popover + Command + Badge + Button (no new primitive dependency). Controlled: options/value/onValueChange.",
+      "dependencies": [],
+      "registryDependencies": ["utils", "popover", "command", "badge", "button"],
+      "files": [
+        { "path": "src/components/multi-select/multi-select.tsx", "target": "components/dsgn/multi-select.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "carousel",
+      "type": "registry:ui",
+      "description": "Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext -- built on embla-carousel-react, with prev/next controls composed from Button (no new primitive-library dependency for the arrows). Keyboard arrow-key navigation built in.",
+      "dependencies": ["embla-carousel-react"],
+      "registryDependencies": ["utils", "button"],
+      "files": [
+        { "path": "src/components/carousel/carousel.tsx", "target": "components/dsgn/carousel.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "description": "ResizablePanelGroup, ResizablePanel, ResizableHandle -- built on react-resizable-panels 4.x (see the in-file note on its renamed Group/Panel/Separator API vs. the PanelGroup/Panel/PanelResizeHandle shape most docs still reference). ResizableHandle takes an optional withHandle prop for a visible grip.",
+      "dependencies": ["react-resizable-panels"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/resizable/resizable.tsx", "target": "components/dsgn/resizable.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "description": "InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator -- a one-time-passcode input built on the input-otp npm package (OTPInput + its RenderProps context), styled slot-by-slot.",
+      "dependencies": ["input-otp"],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/input-otp/input-otp.tsx", "target": "components/dsgn/input-otp.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "description": "Kbd -- a styled <kbd> wrapper for rendering a keyboard shortcut, no primitive-library dependency.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/kbd/kbd.tsx", "target": "components/dsgn/kbd.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "file-upload",
+      "type": "registry:ui",
+      "description": "FileUpload -- a drag-and-drop + click-to-browse dropzone with a per-file list and optional progress bars, composed from Button + Progress. Controlled (value/onValueChange) and presentational only: it never performs the actual upload, since transport is app-specific.",
+      "dependencies": [],
+      "registryDependencies": ["utils", "button", "progress"],
+      "files": [
+        { "path": "src/components/file-upload/file-upload.tsx", "target": "components/dsgn/file-upload.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "stepper",
+      "type": "registry:ui",
+      "description": "Stepper -- a numbered/checked multi-step progress indicator with per-step label/description, horizontal or vertical via an orientation prop. No primitive-library dependency.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/stepper/stepper.tsx", "target": "components/dsgn/stepper.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "description": "Timeline -- a vertical timeline with dot/icon markers connected by a line, each entry taking a title/timestamp/description. No primitive-library dependency.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/timeline/timeline.tsx", "target": "components/dsgn/timeline.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
       "name": "recipe-auth-form",
       "type": "registry:block",
       "description": "Recipe -- a real sign-in form composed from Card + Input + Checkbox + Button. Installed via `dsgn add recipe:auth-form`.",
@@ -453,6 +613,26 @@
       "registryDependencies": ["card", "progress", "checkbox"],
       "files": [
         { "path": "src/recipes/onboarding-checklist/onboarding-checklist.tsx", "target": "components/dsgn/recipes/onboarding-checklist.tsx", "type": "registry:block" }
+      ]
+    },
+    {
+      "name": "recipe-stat-tiles",
+      "type": "registry:block",
+      "description": "Recipe -- a responsive KPI tile grid with colored trend badges, composed from Card + Badge. Installed via `dsgn add recipe:stat-tiles`.",
+      "dependencies": [],
+      "registryDependencies": ["card", "badge"],
+      "files": [
+        { "path": "src/recipes/stat-tiles/stat-tiles.tsx", "target": "components/dsgn/recipes/stat-tiles.tsx", "type": "registry:block" }
+      ]
+    },
+    {
+      "name": "recipe-testimonial-marquee",
+      "type": "registry:block",
+      "description": "Recipe -- a hover-pausing auto-scrolling row of quote cards, composed from Card + Avatar with a self-contained CSS keyframe animation. Installed via `dsgn add recipe:testimonial-marquee`.",
+      "dependencies": [],
+      "registryDependencies": ["card", "avatar"],
+      "files": [
+        { "path": "src/recipes/testimonial-marquee/testimonial-marquee.tsx", "target": "components/dsgn/recipes/testimonial-marquee.tsx", "type": "registry:block" }
       ]
     }
   ]
