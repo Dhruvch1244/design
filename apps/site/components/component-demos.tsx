@@ -141,6 +141,10 @@ import { Kbd } from "@/components/dsgn/kbd";
 import { FileUpload } from "@/components/dsgn/file-upload";
 import { Stepper } from "@/components/dsgn/stepper";
 import { Timeline } from "@/components/dsgn/timeline";
+import { Rating } from "@/components/dsgn/rating";
+import { ColorPicker } from "@/components/dsgn/color-picker";
+import { AvatarGroup } from "@/components/dsgn/avatar-group";
+import { CommandPaletteProvider, CommandPalette } from "@/components/dsgn/command-palette";
 import { ComboboxDemo } from "@/components/combobox-demo";
 import { ToastDemo } from "@/components/toast-demo";
 import { Frame } from "@/components/brand/frame";
@@ -1096,4 +1100,77 @@ export const COMPONENT_DEMOS: Record<string, () => React.ReactNode> = {
       />
     </Frame>
   ),
+
+  rating: () => {
+    function RatingDemo() {
+      const [value, setValue] = React.useState(3);
+      return (
+        <div className="flex flex-col items-start gap-3">
+          <Rating value={3.5} readOnly aria-label="Average rating" />
+          <Rating value={value} onValueChange={setValue} aria-label="Rate this product" />
+        </div>
+      );
+    }
+    return (
+      <Frame>
+        <RatingDemo />
+      </Frame>
+    );
+  },
+
+  "color-picker": () => {
+    function ColorPickerDemo() {
+      const [value, setValue] = React.useState("#3b82f6");
+      return <ColorPicker value={value} onValueChange={setValue} />;
+    }
+    return (
+      <Frame>
+        <ColorPickerDemo />
+      </Frame>
+    );
+  },
+
+  "avatar-group": () => (
+    <Frame>
+      <AvatarGroup
+        max={3}
+        avatars={[
+          { src: "https://github.com/dhruvch1244.png", alt: "Dhruv Choudhary", fallback: "DC" },
+          { fallback: "JS" },
+          { fallback: "AK" },
+          { fallback: "MP" },
+          { fallback: "RL" },
+        ]}
+      />
+    </Frame>
+  ),
+
+  "command-palette": () => {
+    function CommandPaletteDemo() {
+      const [lastSelected, setLastSelected] = React.useState<string | null>(null);
+      return (
+        <CommandPaletteProvider>
+          <div className="flex flex-col items-start gap-2">
+            <p className="text-sm text-muted-foreground">
+              Press <Kbd>⌘</Kbd>+<Kbd>K</Kbd> (or Ctrl+K) to open the palette.
+              {lastSelected ? ` Last selected: ${lastSelected}.` : ""}
+            </p>
+          </div>
+          <CommandPalette
+            items={[
+              { id: "profile", label: "View profile", group: "Navigation", onSelect: () => setLastSelected("View profile") },
+              { id: "settings", label: "Open settings", group: "Navigation", onSelect: () => setLastSelected("Open settings") },
+              { id: "new-doc", label: "New document", group: "Actions", shortcut: "⌘N", onSelect: () => setLastSelected("New document") },
+              { id: "logout", label: "Log out", group: "Actions", onSelect: () => setLastSelected("Log out") },
+            ]}
+          />
+        </CommandPaletteProvider>
+      );
+    }
+    return (
+      <Frame>
+        <CommandPaletteDemo />
+      </Frame>
+    );
+  },
 };

@@ -206,4 +206,24 @@ export const COMPONENTS_DATA: ComponentEntry[] = [
     title: "Timeline",
     description: "A vertical timeline with dot/icon markers connected by a line.",
   },
+  {
+    slug: "rating",
+    title: "Rating",
+    description: "A star rating with a fractional-fill read-only display and a keyboard-accessible interactive input mode.",
+  },
+  {
+    slug: "color-picker",
+    title: "Color Picker",
+    description: "A swatch trigger opening a Popover with a native color input, presets, and a hex text field.",
+  },
+  {
+    slug: "avatar-group",
+    title: "Avatar Group",
+    description: "A row of overlapping Avatars with a max prop that collapses overflow into a trailing +N badge.",
+  },
+  {
+    slug: "command-palette",
+    title: "Command Palette",
+    description: "A reusable CommandPaletteProvider + useCommandPalette() + CommandPalette wiring a global ⌘K shortcut.",
+  },
 ];

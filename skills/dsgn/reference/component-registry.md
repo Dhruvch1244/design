@@ -1,7 +1,7 @@
 # Component registry
 
 Sourced from `packages/registry/registry.json` and the component source
-under `packages/registry/src/components/`. 52 real UI components plus one
+under `packages/registry/src/components/`. 56 real UI components plus one
 `utils` module — a mix of Radix UI primitives, other well-known headless
 libraries (`react-day-picker`, `vaul`, `@tanstack/react-table`,
 `react-hook-form`, `embla-carousel-react`, `react-resizable-panels`,
@@ -21,7 +21,7 @@ consumer owns the file the moment it lands — editing it is expected, there is
 nothing to "eject" later. `utils` (the `cn()` helper) installs automatically
 as a dependency of any component that needs it.
 
-## The 52 components
+## The 56 components
 
 | Component | Radix primitive? | npm deps |
 |---|---|---|
@@ -77,6 +77,10 @@ as a dependency of any component that needs it.
 | `file-upload` | No — composes `button` + `progress` | — |
 | `stepper` | No — plain styled markup | — |
 | `timeline` | No — plain styled markup | — |
+| `rating` | No — inline SVG star icon | — |
+| `color-picker` | No — composes `popover` + `input` + `button` | (none new — reuses existing deps) |
+| `avatar-group` | No — composes `avatar` | — |
+| `command-palette` | No (uses `cmdk` via `command`) | (none new — reuses existing deps) |
 
 ## Real variant/prop signatures — don't invent props not listed here
 
@@ -363,6 +367,44 @@ upcoming), `orientation?` (`horizontal` · `vertical`, default
 `items: {title, timestamp?, description?, icon?}[]`, `className?` — a
 vertical dot/icon-and-line layout, no primitive-library dependency. Pass
 `icon` per-item to replace the default plain dot marker.
+
+**Rating**: a single `Rating` component (not compound), props `value`
+(fractional in read-only mode, e.g. `3.5`), `onValueChange?` (supplying this
+switches it into controlled interactive mode), `max?` (default `5`),
+`readOnly?` (defaults to `!onValueChange`), `icon?` (a custom icon
+component, defaults to an inline SVG star), `size?` (`sm`/`md`/`lg`),
+`className?`. Read-only mode renders fractional fill via a clipped overlay
+(dim outline underneath, solid accent copy on top, width-clamped to the
+exact percentage) rather than rounding. Interactive mode uses
+`role="radiogroup"`/`role="radio"` per icon (a discrete 1-N choice, not a
+continuous range — `slider`'s contract implies arbitrary intermediate
+values, which a whole-number star rating never has), with hover-preview and
+arrow-key/Home/End keyboard support plus roving tabindex.
+
+**Color Picker**: a single `ColorPicker` component (not compound), props
+`value: string` (hex), `onValueChange: (value: string) => void`,
+`presets?: string[]` (defaults to a 10-color set), `className?` — composed
+from `Popover` + `Input` + `Button`. Opens a Popover containing a native
+`<input type="color">` (the real browser color-picker UI — no hand-rolled
+HSV wheel), a row of preset swatch buttons, and a hex text input. Fully
+controlled, no internal color state.
+
+**Avatar Group**: a single `AvatarGroup` component (not compound), props
+`avatars: {src?, alt?, fallback}[]`, `max?` (default `5`), `className?`,
+`avatarClassName?` — composed from `Avatar`. Overlapping stack via negative
+margins (`-space-x-3`) and a `ring-background` border per avatar; overflow
+beyond `max` collapses into one trailing "+N" avatar styled identically to
+the real ones.
+
+**Command Palette**: `CommandPaletteProvider` (owns open/closed state and a
+global ⌘K/Ctrl+K `keydown` listener, renders no UI itself), `useCommandPalette()`
+(reads/toggles that state — must be called under the provider), and
+`CommandPalette` (props `items: {id, label, onSelect, group?, shortcut?,
+icon?}[]`, `placeholder?`, `emptyText?`, `label?` — the actual dialog,
+reusing `command`'s own `CommandDialog` chrome, must also be rendered under
+the provider). Closes the gap `combobox`/`multi-select` don't: a generic,
+reusable "press ⌘K anywhere" story for a consuming project, distinct from
+this repo's own site-specific `component-jump-command.tsx`.
 
 **Everything else listed as "Yes" under Radix primitive** follows the
 standard Radix compound-component shape (`Root`/`Trigger`/`Content`, etc.) —

@@ -634,6 +634,46 @@
       "files": [
         { "path": "src/recipes/testimonial-marquee/testimonial-marquee.tsx", "target": "components/dsgn/recipes/testimonial-marquee.tsx", "type": "registry:block" }
       ]
+    },
+    {
+      "name": "rating",
+      "type": "registry:ui",
+      "description": "Star (or configurable icon) rating -- read-only display with fractional fill via a clipped overlay, plus a controlled interactive input mode with hover-preview and arrow-key support. Interactive mode uses role=\"radiogroup\"/\"radio\" (a discrete 1-N choice, not a continuous range). No new dependency -- inline SVG star icon.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        { "path": "src/components/rating/rating.tsx", "target": "components/dsgn/rating.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "color-picker",
+      "type": "registry:ui",
+      "description": "A color swatch trigger that opens a Popover containing a native <input type=\"color\"> (real browser color-picker UI, no hand-rolled HSV wheel), a row of preset swatches, and a hex text input. Controlled: value/onValueChange.",
+      "dependencies": [],
+      "registryDependencies": ["popover", "input", "button"],
+      "files": [
+        { "path": "src/components/color-picker/color-picker.tsx", "target": "components/dsgn/color-picker.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "avatar-group",
+      "type": "registry:ui",
+      "description": "A row of overlapping Avatars (negative-margin stacking, ring-background separation) with a max prop that collapses overflow into a trailing \"+N\" avatar-styled badge.",
+      "dependencies": [],
+      "registryDependencies": ["avatar"],
+      "files": [
+        { "path": "src/components/avatar-group/avatar-group.tsx", "target": "components/dsgn/avatar-group.tsx", "type": "registry:ui" }
+      ]
+    },
+    {
+      "name": "command-palette",
+      "type": "registry:ui",
+      "description": "CommandPaletteProvider + useCommandPalette() + CommandPalette -- a generic, reusable global ⌘K/Ctrl+K command palette wired on top of Command's own CommandDialog chrome. The provider owns open/closed state and the keyboard shortcut; CommandPalette renders the dialog from an items list.",
+      "dependencies": [],
+      "registryDependencies": ["command"],
+      "files": [
+        { "path": "src/components/command-palette/command-palette.tsx", "target": "components/dsgn/command-palette.tsx", "type": "registry:ui" }
+      ]
     }
   ]
 }
