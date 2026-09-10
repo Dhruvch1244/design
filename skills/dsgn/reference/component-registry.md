@@ -1,11 +1,13 @@
 # Component registry
 
 Sourced from `packages/registry/registry.json` and the component source
-under `packages/registry/src/components/`. 36 real UI components plus one
-`utils` module — a mix of Radix UI primitives and plain styled native
-elements (see the "Radix primitive?" column below), wrapped with
-`class-variance-authority` (CVA) + a `cn()` helper (clsx + tailwind-merge)
-where variants exist.
+under `packages/registry/src/components/`. 56 real UI components plus one
+`utils` module — a mix of Radix UI primitives, other well-known headless
+libraries (`react-day-picker`, `vaul`, `@tanstack/react-table`,
+`react-hook-form`, `embla-carousel-react`, `react-resizable-panels`,
+`input-otp`), and plain styled native elements (see the "Radix primitive?"
+column below), wrapped with `class-variance-authority` (CVA) + a `cn()`
+helper (clsx + tailwind-merge) where variants exist.
 
 ## Install
 
@@ -19,7 +21,7 @@ consumer owns the file the moment it lands — editing it is expected, there is
 nothing to "eject" later. `utils` (the `cn()` helper) installs automatically
 as a dependency of any component that needs it.
 
-## The 36 components
+## The 56 components
 
 | Component | Radix primitive? | npm deps |
 |---|---|---|
@@ -27,6 +29,8 @@ as a dependency of any component that needs it.
 | `card` | No — plain styled divs | — |
 | `badge` | No | `class-variance-authority` |
 | `input` | No — plain `<input>` | — |
+| `label` | Yes | `@radix-ui/react-label` |
+| `form` | Slot only (`FormControl`) | `react-hook-form`, `@radix-ui/react-slot` |
 | `textarea` | No — plain `<textarea>` | — |
 | `command` | No (uses `cmdk`) | `cmdk` |
 | `switch` | Yes | `@radix-ui/react-switch` |
@@ -59,6 +63,24 @@ as a dependency of any component that needs it.
 | `hover-card` | Yes | `@radix-ui/react-hover-card` |
 | `scroll-area` | Yes | `@radix-ui/react-scroll-area` |
 | `context-menu` | Yes | `@radix-ui/react-context-menu` |
+| `calendar` | No (uses `react-day-picker`) | `react-day-picker` |
+| `date-picker` | No — composes `popover` + `button` + `calendar` | (none new — reuses existing deps) |
+| `data-table` | No (uses `@tanstack/react-table`) | `@tanstack/react-table` |
+| `drawer` | No (uses `vaul`) | `vaul` |
+| `navigation-menu` | Yes | `@radix-ui/react-navigation-menu`, `class-variance-authority` |
+| `menubar` | Yes | `@radix-ui/react-menubar` |
+| `multi-select` | No — composes `popover` + `command` + `badge` + `button` | (none new — reuses existing deps) |
+| `carousel` | No (uses `embla-carousel-react`) | `embla-carousel-react` |
+| `resizable` | No (uses `react-resizable-panels`) | `react-resizable-panels` |
+| `input-otp` | No (uses `input-otp`) | `input-otp` |
+| `kbd` | No — plain styled `<kbd>` | — |
+| `file-upload` | No — composes `button` + `progress` | — |
+| `stepper` | No — plain styled markup | — |
+| `timeline` | No — plain styled markup | — |
+| `rating` | No — inline SVG star icon | — |
+| `color-picker` | No — composes `popover` + `input` + `button` | (none new — reuses existing deps) |
+| `avatar-group` | No — composes `avatar` | — |
+| `command-palette` | No (uses `cmdk` via `command`) | (none new — reuses existing deps) |
 
 ## Real variant/prop signatures — don't invent props not listed here
 
@@ -217,6 +239,173 @@ for a second scrollbar if a consumer needs horizontal scroll too.
 triggered instead of click-triggered, otherwise the same compound shape and
 same className conventions as `dropdown-menu`.
 
+**Label**: a single `Label` component, thin `@radix-ui/react-label` wrap.
+Standalone or paired with `form`.
+
+**Form**: `Form` (= react-hook-form's `FormProvider`), `FormField`
+(wraps `Controller`), `FormItem`, `FormLabel`, `FormControl` (wires the
+field via Radix `Slot` — its child must forward `ref` and spread props, same
+constraint as `Button`'s `asChild`), `FormDescription`, `FormMessage`
+(renders the field's validation error automatically, or its `children` if
+there's no error). Resolver-agnostic on purpose: this file never imports
+`zod` or a resolver — pass `resolver: zodResolver(schema)` (recommended) or
+any other resolver to your own `useForm()` call, then wrap it in `<Form
+{...form}>`.
+
+**Calendar**: a single `Calendar` component, a thin styled wrap of
+`react-day-picker`'s `DayPicker` — every real prop (`mode`, `selected`,
+`onSelect`, `numberOfMonths`, `disabled`, etc.) is `react-day-picker`'s own;
+don't invent Calendar-specific prop names. `mode="single"` gives a `Date |
+undefined`, `mode="range"` gives `{from, to}`, `mode="multiple"` gives
+`Date[]` — the exact shape of `selected`/`onSelect` depends on `mode`, per
+`react-day-picker`'s own types.
+
+**Date Picker**: a single `DatePicker` component (not compound), props
+`value?: Date`, `onValueChange?`, `placeholder?`, `disabled?`,
+`className?` — composed from `Popover` + `Button` + `Calendar` in
+single-date mode. For range or multi-date pickers, compose `Popover` +
+`Calendar` directly with the relevant `mode` instead of reaching for this
+component.
+
+**Data Table**: a single `DataTable<TData, TValue>` component (not
+compound), props `columns: ColumnDef<TData, TValue>[]`, `data: TData[]`,
+optional `filterColumn?` (a column id — enables the built-in filter input
+on that column) and `filterPlaceholder?`. Built on `@tanstack/react-table`'s
+8.x line, not its current 9.x major — v9 replaced the `ColumnDef`/
+`useReactTable` model with a typed-hooks-per-table architecture, which
+isn't a drop-in upgrade for a generic, copy-paste registry component. Ships
+sorting (click a sortable header), filtering (via `filterColumn`), and
+prev/next pagination out of the box; column visibility toggling isn't
+included — layer a `DropdownMenu` of `table.getAllColumns()` on top if a
+consumer needs it.
+
+**Drawer**: `Drawer`, `DrawerTrigger`, `DrawerContent`, `DrawerHeader`,
+`DrawerFooter`, `DrawerTitle`, `DrawerDescription`, `DrawerClose` — built on
+`vaul` for real drag-to-dismiss gesture behavior. `Drawer` defaults
+`shouldScaleBackground` to `true` (the page content behind it visibly
+scales down while open, vaul's signature effect). Bottom-anchored only in
+this wrap's default styling; `vaul`'s own `direction` prop
+(`top`/`bottom`/`left`/`right`) is available if a consumer needs another
+edge, but `sheet` is the better fit for a non-gestural edge panel.
+
+**Navigation Menu**: `NavigationMenu`, `NavigationMenuList`,
+`NavigationMenuItem`, `NavigationMenuTrigger`, `NavigationMenuContent`,
+`NavigationMenuLink`, `NavigationMenuIndicator`, `NavigationMenuViewport`
+(auto-rendered inside `NavigationMenu`, exported separately only for a
+custom placement), plus `navigationMenuTriggerStyle()` — a standalone CVA
+class string for styling a plain link as if it were a trigger (e.g. a
+top-level nav item with no flyout). Built on
+`@radix-ui/react-navigation-menu`.
+
+**Menubar**: `Menubar`, `MenubarMenu`, `MenubarTrigger`, `MenubarContent`,
+`MenubarItem`, `MenubarCheckboxItem`, `MenubarRadioItem`, `MenubarLabel`,
+`MenubarSeparator`, `MenubarShortcut`, `MenubarSub`, `MenubarSubTrigger`,
+`MenubarSubContent`, `MenubarGroup`, `MenubarRadioGroup` — a desktop-app-style
+top menu bar (File/Edit/View...) built on `@radix-ui/react-menubar`, same
+className conventions as `dropdown-menu`/`context-menu`.
+
+**Multi-select**: a single `MultiSelect` component (not compound), props
+`options: {value, label}[]`, `value?: string[]`, `onValueChange?:
+(value: string[]) => void`, `placeholder?`, `searchPlaceholder?`,
+`emptyText?`, `className?` — a composed pattern (`Popover` + `Command` +
+`Badge` + `Button`), selected values render as removable `Badge` chips
+inside the trigger.
+
+**Carousel**: `Carousel`, `CarouselContent`, `CarouselItem`, `CarouselPrevious`,
+`CarouselNext` — built on `embla-carousel-react` 8.x. `Carousel` takes
+`opts` (embla's own `EmblaOptionsType`), `plugins`, `orientation`
+(`horizontal` · `vertical`), and `setApi` (receives the underlying embla
+API instance for imperative control). `CarouselPrevious`/`CarouselNext`
+render via `Button` (`variant`/`size` overridable) and auto-disable at each
+end. Left/right arrow keys navigate when the carousel region has focus.
+
+**Resizable**: `ResizablePanelGroup`, `ResizablePanel`, `ResizableHandle`
+(`withHandle?` for a visible grip) — built on `react-resizable-panels`
+4.x. **Version-specific footgun**: 4.x renamed its entire public API from
+the `PanelGroup`/`Panel`/`PanelResizeHandle` shape most docs (and most
+models' training data) still reference — the library's own exports are now
+`Group`/`Panel`/`Separator`, and the old `direction` prop is now
+`orientation`. Importing `PanelGroup` or passing `direction=` against this
+installed version fails as a hard `TS2305`/type error, not a silent
+behavior change. This registry's `ResizablePanelGroup`/`ResizablePanel`/
+`ResizableHandle` wrapper names hide that rename — use those names, not the
+library's own `Group`/`Panel`/`Separator`, if editing the component
+in-place. Neither `Group` nor `Separator` emit a `data-orientation`
+attribute at runtime; `ResizableHandle`'s vertical styling keys off
+`aria-orientation` instead, the one signal the library does set on the
+separator element itself.
+
+**Input OTP**: `InputOTP` (thin wrap of the `input-otp` package's
+`OTPInput` — pass its own `maxLength`, `value`/`onChange`, `pattern`, etc.
+directly), `InputOTPGroup`, `InputOTPSlot` (`index` — required, reads
+`char`/`isActive`/`hasFakeCaret` off `OTPInputContext`), `InputOTPSeparator`
+(a plain divider dot, for grouping slots e.g. `123` · `456`).
+
+**Kbd**: a single `Kbd` component, a styled `<kbd>` wrap — no
+primitive-library dependency, no variants. Compose multiple for a chord
+(`<Kbd>⌘</Kbd> + <Kbd>K</Kbd>`).
+
+**File Upload**: a single `FileUpload` component (not compound), props
+`value: File[]`, `onValueChange: (files: File[]) => void` (both required —
+fully controlled), `progress?: Record<string, number>` (keyed by
+`File.name`; a missing key renders that file with no progress bar),
+`accept?`, `multiple?`, `maxSize?` (bytes — oversized files are dropped
+from the selection and reported via `onReject`, never silently accepted),
+`disabled?`, `onRemove?`, `onReject?`, `className?`. Presentational only —
+it never performs the actual upload; wire `progress` to whatever transport
+(fetch, tus, a signed-URL PUT) the consumer app already uses. Composed from
+`Button` + `Progress`, plain hand-rolled `onDragOver`/`onDrop` state (no
+`react-dropzone` dependency — the drag-state logic is under 40 lines).
+
+**Stepper**: a single `Stepper` component (not compound), props
+`steps: {label, description?}[]`, `currentStep` (0-indexed — steps before
+it render complete/checked, that index renders current, the rest render
+upcoming), `orientation?` (`horizontal` · `vertical`, default
+`horizontal`), `className?`. No primitive-library dependency.
+
+**Timeline**: a single `Timeline` component (not compound), props
+`items: {title, timestamp?, description?, icon?}[]`, `className?` — a
+vertical dot/icon-and-line layout, no primitive-library dependency. Pass
+`icon` per-item to replace the default plain dot marker.
+
+**Rating**: a single `Rating` component (not compound), props `value`
+(fractional in read-only mode, e.g. `3.5`), `onValueChange?` (supplying this
+switches it into controlled interactive mode), `max?` (default `5`),
+`readOnly?` (defaults to `!onValueChange`), `icon?` (a custom icon
+component, defaults to an inline SVG star), `size?` (`sm`/`md`/`lg`),
+`className?`. Read-only mode renders fractional fill via a clipped overlay
+(dim outline underneath, solid accent copy on top, width-clamped to the
+exact percentage) rather than rounding. Interactive mode uses
+`role="radiogroup"`/`role="radio"` per icon (a discrete 1-N choice, not a
+continuous range — `slider`'s contract implies arbitrary intermediate
+values, which a whole-number star rating never has), with hover-preview and
+arrow-key/Home/End keyboard support plus roving tabindex.
+
+**Color Picker**: a single `ColorPicker` component (not compound), props
+`value: string` (hex), `onValueChange: (value: string) => void`,
+`presets?: string[]` (defaults to a 10-color set), `className?` — composed
+from `Popover` + `Input` + `Button`. Opens a Popover containing a native
+`<input type="color">` (the real browser color-picker UI — no hand-rolled
+HSV wheel), a row of preset swatch buttons, and a hex text input. Fully
+controlled, no internal color state.
+
+**Avatar Group**: a single `AvatarGroup` component (not compound), props
+`avatars: {src?, alt?, fallback}[]`, `max?` (default `5`), `className?`,
+`avatarClassName?` — composed from `Avatar`. Overlapping stack via negative
+margins (`-space-x-3`) and a `ring-background` border per avatar; overflow
+beyond `max` collapses into one trailing "+N" avatar styled identically to
+the real ones.
+
+**Command Palette**: `CommandPaletteProvider` (owns open/closed state and a
+global ⌘K/Ctrl+K `keydown` listener, renders no UI itself), `useCommandPalette()`
+(reads/toggles that state — must be called under the provider), and
+`CommandPalette` (props `items: {id, label, onSelect, group?, shortcut?,
+icon?}[]`, `placeholder?`, `emptyText?`, `label?` — the actual dialog,
+reusing `command`'s own `CommandDialog` chrome, must also be rendered under
+the provider). Closes the gap `combobox`/`multi-select` don't: a generic,
+reusable "press ⌘K anywhere" story for a consuming project, distinct from
+this repo's own site-specific `component-jump-command.tsx`.
+
 **Everything else listed as "Yes" under Radix primitive** follows the
 standard Radix compound-component shape (`Root`/`Trigger`/`Content`, etc.) —
 read the actual `packages/registry/src/components/<name>/<name>.tsx` file
@@ -229,7 +418,7 @@ docs.
 `npx @dhruvchoudhary/dsgn add recipe:<name>` installs a whole composed
 pattern — the recipe file plus every component it depends on — in one shot.
 Prefer installing a matching recipe over hand-composing the same components
-from scratch. 8 recipes exist today, under `packages/registry/src/recipes/`:
+from scratch. 10 recipes exist today, under `packages/registry/src/recipes/`:
 
 | Recipe | Composed from |
 |---|---|
@@ -241,6 +430,8 @@ from scratch. 8 recipes exist today, under `packages/registry/src/recipes/`:
 | `team-members` | Table + Avatar + Badge + DropdownMenu + Button |
 | `notification-list` | Card + Avatar + Badge |
 | `onboarding-checklist` | Card + Progress + Checkbox |
+| `stat-tiles` | Card + Badge (KPI grid with colored trend badges) |
+| `testimonial-marquee` | Card + Avatar (hover-pausing CSS marquee, no JS dependency) |
 
 This list can drift as new recipes ship — run
 `npx @dhruvchoudhary/dsgn list --recipes` (or `--recipes --json`) for the

@@ -21,6 +21,13 @@ export const COMPONENTS_DATA: ComponentEntry[] = [
   },
   { slug: "badge", title: "Badge", description: "Badge with variant props via class-variance-authority." },
   { slug: "input", title: "Input", description: "Styled text input wrapping the native <input> element." },
+  { slug: "label", title: "Label", description: "Label built on Radix Label. Used standalone or as the labeling piece of Form." },
+  {
+    slug: "form",
+    title: "Form",
+    description:
+      "Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage — built on react-hook-form. Resolver-agnostic; zodResolver is the recommended pairing.",
+  },
   {
     slug: "command",
     title: "Command",
@@ -132,5 +139,91 @@ export const COMPONENTS_DATA: ComponentEntry[] = [
     slug: "context-menu",
     title: "Context Menu",
     description: "A right-click menu, built on Radix Context Menu — same compound shape as Dropdown Menu.",
+  },
+  {
+    slug: "calendar",
+    title: "Calendar",
+    description: "Built on react-day-picker v10, styled to dsgn's own border/radius/token conventions.",
+  },
+  {
+    slug: "date-picker",
+    title: "Date Picker",
+    description: "A single-date picker composed from Popover + Button + Calendar — no new primitive dependency.",
+  },
+  {
+    slug: "data-table",
+    title: "Data Table",
+    description: "A sortable, filterable, paginated table composed from Table + @tanstack/react-table.",
+  },
+  {
+    slug: "drawer",
+    title: "Drawer",
+    description: "A bottom-sheet with real drag-to-dismiss gesture behavior, built on vaul — distinct from Sheet.",
+  },
+  {
+    slug: "navigation-menu",
+    title: "Navigation Menu",
+    description: "A top-level site nav with flyout panels, built on Radix Navigation Menu.",
+  },
+  {
+    slug: "menubar",
+    title: "Menubar",
+    description: "A desktop-app-style top menu bar, built on Radix Menubar — same compound shape as Dropdown Menu.",
+  },
+  {
+    slug: "multi-select",
+    title: "Multi-select",
+    description: "A tags-input style multi-value select, composed from Popover + Command + Badge + Button.",
+  },
+  {
+    slug: "carousel",
+    title: "Carousel",
+    description: "Built on embla-carousel-react, with prev/next controls composed from Button and keyboard arrow-key navigation.",
+  },
+  {
+    slug: "resizable",
+    title: "Resizable",
+    description: "ResizablePanelGroup, ResizablePanel, ResizableHandle — built on react-resizable-panels.",
+  },
+  {
+    slug: "input-otp",
+    title: "Input OTP",
+    description: "A one-time-passcode input built on the input-otp package, styled slot-by-slot.",
+  },
+  { slug: "kbd", title: "Kbd", description: "A styled <kbd> wrapper for rendering a keyboard shortcut." },
+  {
+    slug: "file-upload",
+    title: "File Upload",
+    description: "A drag-and-drop + click-to-browse dropzone with a per-file list and optional progress bars.",
+  },
+  {
+    slug: "stepper",
+    title: "Stepper",
+    description: "A numbered/checked multi-step progress indicator, horizontal or vertical.",
+  },
+  {
+    slug: "timeline",
+    title: "Timeline",
+    description: "A vertical timeline with dot/icon markers connected by a line.",
+  },
+  {
+    slug: "rating",
+    title: "Rating",
+    description: "A star rating with a fractional-fill read-only display and a keyboard-accessible interactive input mode.",
+  },
+  {
+    slug: "color-picker",
+    title: "Color Picker",
+    description: "A swatch trigger opening a Popover with a native color input, presets, and a hex text field.",
+  },
+  {
+    slug: "avatar-group",
+    title: "Avatar Group",
+    description: "A row of overlapping Avatars with a max prop that collapses overflow into a trailing +N badge.",
+  },
+  {
+    slug: "command-palette",
+    title: "Command Palette",
+    description: "A reusable CommandPaletteProvider + useCommandPalette() + CommandPalette wiring a global ⌘K shortcut.",
   },
 ];

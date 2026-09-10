@@ -1,3 +1,6 @@
+"use client";
+
+import * as React from "react";
 import { Button } from "@/components/dsgn/button";
 import {
   Card,
@@ -94,6 +97,54 @@ import {
   ContextMenuLabel,
   ContextMenuSeparator,
 } from "@/components/dsgn/context-menu";
+import { Label } from "@/components/dsgn/label";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/dsgn/form";
+import { Calendar } from "@/components/dsgn/calendar";
+import { DatePicker } from "@/components/dsgn/date-picker";
+import { DataTable } from "@/components/dsgn/data-table";
+import { useForm } from "react-hook-form";
+import { type ColumnDef } from "@tanstack/react-table";
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
+} from "@/components/dsgn/drawer";
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+  navigationMenuTriggerStyle,
+} from "@/components/dsgn/navigation-menu";
+import {
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarSeparator,
+  MenubarShortcut,
+} from "@/components/dsgn/menubar";
+import { MultiSelect } from "@/components/dsgn/multi-select";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/dsgn/carousel";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/dsgn/resizable";
+import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/dsgn/input-otp";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { Kbd } from "@/components/dsgn/kbd";
+import { FileUpload } from "@/components/dsgn/file-upload";
+import { Stepper } from "@/components/dsgn/stepper";
+import { Timeline } from "@/components/dsgn/timeline";
+import { Rating } from "@/components/dsgn/rating";
+import { ColorPicker } from "@/components/dsgn/color-picker";
+import { AvatarGroup } from "@/components/dsgn/avatar-group";
+import { CommandPaletteProvider, CommandPalette } from "@/components/dsgn/command-palette";
 import { ComboboxDemo } from "@/components/combobox-demo";
 import { ToastDemo } from "@/components/toast-demo";
 import { Frame } from "@/components/brand/frame";
@@ -228,6 +279,57 @@ export const COMPONENT_DEMOS: Record<string, () => React.ReactNode> = {
       </div>
     </Frame>
   ),
+
+  label: () => (
+    <Frame>
+      <div className="max-w-sm space-y-2">
+        <Label htmlFor="demo-email">Email</Label>
+        <Input id="demo-email" placeholder="you@example.com" />
+      </div>
+    </Frame>
+  ),
+
+  form: () => {
+    function FormDemo() {
+      const form = useForm({ defaultValues: { email: "" } });
+      return (
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(() => {})}
+            className="max-w-sm space-y-4"
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              rules={{
+                required: "Email is required.",
+                pattern: { value: /^\S+@\S+\.\S+$/, message: "Enter a valid email." },
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="you@example.com" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Resolver-agnostic — pair with <code className="font-mono text-accent">zodResolver</code> in
+                    your own <code className="font-mono text-accent">useForm()</code> call for schema validation.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Submit</Button>
+          </form>
+        </Form>
+      );
+    }
+    return (
+      <Frame>
+        <FormDemo />
+      </Frame>
+    );
+  },
 
   command: () => (
     <div className="space-y-3">
@@ -746,4 +848,329 @@ export const COMPONENT_DEMOS: Record<string, () => React.ReactNode> = {
       </ContextMenu>
     </Frame>
   ),
+
+  calendar: () => {
+    function CalendarDemo() {
+      const [date, setDate] = React.useState<Date | undefined>(new Date());
+      return <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border border-border" />;
+    }
+    return (
+      <Frame>
+        <CalendarDemo />
+      </Frame>
+    );
+  },
+
+  "date-picker": () => {
+    function DatePickerDemo() {
+      const [date, setDate] = React.useState<Date | undefined>(undefined);
+      return <DatePicker value={date} onValueChange={setDate} />;
+    }
+    return (
+      <Frame>
+        <DatePickerDemo />
+      </Frame>
+    );
+  },
+
+  "data-table": () => {
+    interface Invoice {
+      id: string;
+      status: "paid" | "pending" | "overdue";
+      amount: number;
+      customer: string;
+    }
+    const invoices: Invoice[] = [
+      { id: "INV-001", status: "paid", amount: 250, customer: "Ada Lovelace" },
+      { id: "INV-002", status: "pending", amount: 150, customer: "Grace Hopper" },
+      { id: "INV-003", status: "overdue", amount: 350, customer: "Alan Turing" },
+      { id: "INV-004", status: "paid", amount: 450, customer: "Margaret Hamilton" },
+      { id: "INV-005", status: "pending", amount: 550, customer: "Katherine Johnson" },
+    ];
+    const columns: ColumnDef<Invoice>[] = [
+      { accessorKey: "id", header: "Invoice" },
+      { accessorKey: "customer", header: "Customer" },
+      { accessorKey: "status", header: "Status" },
+      {
+        accessorKey: "amount",
+        header: "Amount",
+        cell: ({ row }) => `$${row.original.amount.toFixed(2)}`,
+      },
+    ];
+    return (
+      <Frame>
+        <DataTable columns={columns} data={invoices} filterColumn="customer" filterPlaceholder="Filter customers..." />
+      </Frame>
+    );
+  },
+
+  drawer: () => (
+    <Frame>
+      <Drawer>
+        <DrawerTrigger asChild>
+          <Button variant="accent">Open drawer</Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Real drag-to-dismiss</DrawerTitle>
+            <DrawerDescription>
+              Built on <code className="font-mono text-accent">vaul</code> — try dragging the handle above down to
+              close it, not just clicking away.
+            </DrawerDescription>
+          </DrawerHeader>
+          <DrawerFooter>
+            <DrawerClose asChild>
+              <Button variant="outline">Close</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </Frame>
+  ),
+
+  "navigation-menu": () => (
+    <Frame>
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[300px] gap-2 p-4">
+                <li>
+                  <NavigationMenuLink className="block rounded-md p-2 text-sm hover:bg-muted">
+                    Button — 9 variants, 8 sizes.
+                  </NavigationMenuLink>
+                </li>
+                <li>
+                  <NavigationMenuLink className="block rounded-md p-2 text-sm hover:bg-muted">
+                    Data Table — sortable, filterable, paginated.
+                  </NavigationMenuLink>
+                </li>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>Philosophy</NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </Frame>
+  ),
+
+  menubar: () => (
+    <Frame>
+      <Menubar>
+        <MenubarMenu>
+          <MenubarTrigger>File</MenubarTrigger>
+          <MenubarContent>
+            <MenubarItem>
+              New <MenubarShortcut>⌘N</MenubarShortcut>
+            </MenubarItem>
+            <MenubarItem>
+              Save <MenubarShortcut>⌘S</MenubarShortcut>
+            </MenubarItem>
+            <MenubarSeparator />
+            <MenubarItem>Close</MenubarItem>
+          </MenubarContent>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger>Edit</MenubarTrigger>
+          <MenubarContent>
+            <MenubarItem>
+              Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+            </MenubarItem>
+            <MenubarItem>Redo</MenubarItem>
+          </MenubarContent>
+        </MenubarMenu>
+      </Menubar>
+    </Frame>
+  ),
+
+  "multi-select": () => {
+    function MultiSelectDemo() {
+      const [value, setValue] = React.useState<string[]>(["react"]);
+      const options = [
+        { value: "react", label: "React" },
+        { value: "vue", label: "Vue" },
+        { value: "svelte", label: "Svelte" },
+        { value: "solid", label: "SolidJS" },
+      ];
+      return <MultiSelect options={options} value={value} onValueChange={setValue} className="max-w-sm" />;
+    }
+    return (
+      <Frame>
+        <MultiSelectDemo />
+      </Frame>
+    );
+  },
+
+  carousel: () => (
+    <Frame>
+      <Carousel className="w-full max-w-xs">
+        <CarouselContent>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <CarouselItem key={index}>
+              <div className="flex aspect-square items-center justify-center rounded-lg border border-border bg-muted text-3xl font-semibold">
+                {index + 1}
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+    </Frame>
+  ),
+
+  resizable: () => (
+    <Frame>
+      <ResizablePanelGroup className="h-48 max-w-md rounded-lg border border-border">
+        <ResizablePanel defaultSize={50} className="flex items-center justify-center text-sm text-muted-foreground">
+          One
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={50} className="flex items-center justify-center text-sm text-muted-foreground">
+          Two
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </Frame>
+  ),
+
+  "input-otp": () => (
+    <Frame>
+      <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS}>
+        <InputOTPGroup>
+          <InputOTPSlot index={0} />
+          <InputOTPSlot index={1} />
+          <InputOTPSlot index={2} />
+        </InputOTPGroup>
+        <InputOTPSeparator />
+        <InputOTPGroup>
+          <InputOTPSlot index={3} />
+          <InputOTPSlot index={4} />
+          <InputOTPSlot index={5} />
+        </InputOTPGroup>
+      </InputOTP>
+    </Frame>
+  ),
+
+  kbd: () => (
+    <Frame>
+      <p className="flex items-center gap-2 text-sm text-muted-foreground">
+        Press <Kbd>⌘</Kbd> + <Kbd>K</Kbd> to open the command palette
+      </p>
+    </Frame>
+  ),
+
+  "file-upload": () => {
+    function FileUploadDemo() {
+      const [files, setFiles] = React.useState<File[]>([]);
+      return <FileUpload value={files} onValueChange={setFiles} className="max-w-sm" />;
+    }
+    return (
+      <Frame>
+        <FileUploadDemo />
+      </Frame>
+    );
+  },
+
+  stepper: () => (
+    <Frame>
+      <Stepper
+        currentStep={1}
+        className="max-w-lg"
+        steps={[
+          { label: "Account", description: "Create your login" },
+          { label: "Profile", description: "Tell us about you" },
+          { label: "Review", description: "Confirm and finish" },
+        ]}
+      />
+    </Frame>
+  ),
+
+  timeline: () => (
+    <Frame>
+      <Timeline
+        className="max-w-sm"
+        items={[
+          { title: "Order placed", timestamp: "9:41 AM", description: "Your order has been received." },
+          { title: "Payment confirmed", timestamp: "9:42 AM", description: "Card charged successfully." },
+          { title: "Shipped", timestamp: "2:15 PM", description: "Package handed to carrier." },
+        ]}
+      />
+    </Frame>
+  ),
+
+  rating: () => {
+    function RatingDemo() {
+      const [value, setValue] = React.useState(3);
+      return (
+        <div className="flex flex-col items-start gap-3">
+          <Rating value={3.5} readOnly aria-label="Average rating" />
+          <Rating value={value} onValueChange={setValue} aria-label="Rate this product" />
+        </div>
+      );
+    }
+    return (
+      <Frame>
+        <RatingDemo />
+      </Frame>
+    );
+  },
+
+  "color-picker": () => {
+    function ColorPickerDemo() {
+      const [value, setValue] = React.useState("#3b82f6");
+      return <ColorPicker value={value} onValueChange={setValue} />;
+    }
+    return (
+      <Frame>
+        <ColorPickerDemo />
+      </Frame>
+    );
+  },
+
+  "avatar-group": () => (
+    <Frame>
+      <AvatarGroup
+        max={3}
+        avatars={[
+          { src: "https://github.com/dhruvch1244.png", alt: "Dhruv Choudhary", fallback: "DC" },
+          { fallback: "JS" },
+          { fallback: "AK" },
+          { fallback: "MP" },
+          { fallback: "RL" },
+        ]}
+      />
+    </Frame>
+  ),
+
+  "command-palette": () => {
+    function CommandPaletteDemo() {
+      const [lastSelected, setLastSelected] = React.useState<string | null>(null);
+      return (
+        <CommandPaletteProvider>
+          <div className="flex flex-col items-start gap-2">
+            <p className="text-sm text-muted-foreground">
+              Press <Kbd>⌘</Kbd>+<Kbd>K</Kbd> (or Ctrl+K) to open the palette.
+              {lastSelected ? ` Last selected: ${lastSelected}.` : ""}
+            </p>
+          </div>
+          <CommandPalette
+            items={[
+              { id: "profile", label: "View profile", group: "Navigation", onSelect: () => setLastSelected("View profile") },
+              { id: "settings", label: "Open settings", group: "Navigation", onSelect: () => setLastSelected("Open settings") },
+              { id: "new-doc", label: "New document", group: "Actions", shortcut: "⌘N", onSelect: () => setLastSelected("New document") },
+              { id: "logout", label: "Log out", group: "Actions", onSelect: () => setLastSelected("Log out") },
+            ]}
+          />
+        </CommandPaletteProvider>
+      );
+    }
+    return (
+      <Frame>
+        <CommandPaletteDemo />
+      </Frame>
+    );
+  },
 };
