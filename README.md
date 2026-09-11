@@ -32,6 +32,7 @@ own `dsgn add` output, not a separate hand-maintained demo.
 philosophy/            The portable philosophy docs (read AGENTS.md first)
 packages/registry/      Source-of-truth components (React + Tailwind + CVA)
 packages/cli/            The dsgn CLI (npm: @dhruvchoudhary/dsgn) — copies registry components into a project
+packages/mcp/             MCP server (npm: @dhruvchoudhary/dsgn-mcp) — exposes the registry to AI clients over MCP
 apps/site/                Next.js site: renders philosophy/, showcases components,
                             and serves the registry as static JSON at /r/*.json
 skills/dsgn/               Claude Code Agent Skill — build/restyle UI in 7 voices
@@ -80,6 +81,22 @@ everywhere. See
 [`packages/cli/README.md`](packages/cli/README.md#agent-skill) for the full
 list and each tool's constraints (no Cursor global, Windsurf's 6,000-char
 global cap, etc).
+
+## Using the MCP server in an AI client
+
+`packages/mcp` (npm: `@dhruvchoudhary/dsgn-mcp`) exposes the same registry
+over the [Model Context Protocol](https://modelcontextprotocol.io), so an
+agent can list, search, fetch (single or batch, transitive dependencies
+resolved and deduplicated), and scaffold components/recipes directly,
+without shelling out to the CLI:
+
+```sh
+claude mcp add dsgn -- npx @dhruvchoudhary/dsgn-mcp
+```
+
+See [`packages/mcp/README.md`](packages/mcp/README.md) for the full tool
+list, other clients (Claude Desktop, Cursor), and the `DSGN_REGISTRY`
+override.
 
 ## Adding a new component to the registry
 

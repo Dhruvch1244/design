@@ -74,6 +74,41 @@ test("get_component: recipe: shorthand resolves to the recipe-<name> registry en
   assert.ok(data.item.files.length > 0);
 });
 
+test("get_component: batch fetch resolves and dedupes shared dependencies across requested items", async (t) => {
+  const { client, close } = await startServer();
+  t.after(close);
+
+  const result = await client.callTool({
+    name: "get_component",
+    arguments: { name: ["combobox", "date-picker"] },
+  });
+  const data = parseToolResult(result);
+
+  assert.deepEqual(data.requestedItems, ["combobox", "date-picker"]);
+  assert.equal(data.item, undefined);
+  assert.equal(data.items.length, 2);
+
+  // Both combobox and date-picker are expected to pull in the shared
+  // "button" dependency — it must appear only once in resolvedDependencies
+  // and its file must appear only once in files, not once per requester.
+  const buttonDepCount = data.resolvedDependencies.filter((n) => n === "button").length;
+  assert.equal(buttonDepCount, 1);
+  const buttonFileCount = data.files.filter((f) => f.from === "button").length;
+  assert.equal(buttonFileCount, 1);
+});
+
+test("get_component: single name still returns the singular `item` shape", async (t) => {
+  const { client, close } = await startServer();
+  t.after(close);
+
+  const result = await client.callTool({ name: "get_component", arguments: { name: "button" } });
+  const data = parseToolResult(result);
+
+  assert.equal(data.requested, "button");
+  assert.equal(data.items, undefined);
+  assert.equal(data.item.name, "button");
+});
+
 test("get_component: unknown name surfaces as a tool error, not a crash", async (t) => {
   const { client, close } = await startServer();
   t.after(close);

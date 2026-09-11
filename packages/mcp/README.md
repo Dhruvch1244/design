@@ -51,5 +51,5 @@ claude mcp add dsgn -- npx @dhruvchoudhary/dsgn-mcp
 
 - **`list_components`** — lists every component/recipe in the registry (name, type, description, dependency count); optional `{type: "ui"|"block"}` filter.
 - **`search_components`** — case-insensitive substring search over name + description; input `{query: string}`.
-- **`get_component`** — fetches a component or recipe by name (accepts the `recipe:<name>` shorthand), fully resolved with all transitive `registryDependencies`' files included, so a single call returns everything needed to install it.
+- **`get_component`** — fetches one or more components/recipes by name (each accepts the `recipe:<name>` shorthand; pass an array to fetch several at once), fully resolved with all transitive `registryDependencies`' files included and deduplicated across every requested item, so a single call returns everything needed to install them.
 - **`generate_component_scaffold`** — deterministically generates a *starting skeleton* (not a finished component, not written to disk) for a new registry component: a Radix-wrapper, composed-component, or plain-primitive skeleton depending on input, plus the `registry.json` entry to append. Does not call an LLM.
