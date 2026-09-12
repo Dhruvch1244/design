@@ -7,11 +7,14 @@
     "dsgn-mcp": "bin/dsgn-mcp.js"
   },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "build:philosophy": "node scripts/sync-philosophy.mjs",
+    "prepack": "node scripts/sync-philosophy.mjs"
   },
   "files": [
     "bin",
-    "src"
+    "src",
+    "philosophy"
   ],
   "engines": {
     "node": ">=18"

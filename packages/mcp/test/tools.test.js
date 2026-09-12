@@ -121,6 +121,61 @@ test("get_component: unknown name surfaces as a tool error, not a crash", async 
   assert.equal(result.isError, true);
 });
 
+test("get_philosophy: no slug lists every doc with a summary", async (t) => {
+  const { client, close } = await startServer();
+  t.after(close);
+
+  const result = await client.callTool({ name: "get_philosophy", arguments: {} });
+  const data = parseToolResult(result);
+
+  const slugs = data.docs.map((d) => d.slug);
+  assert.ok(slugs.includes("agents"));
+  assert.ok(slugs.includes("architecture"));
+  assert.ok(slugs.includes("anti-patterns"));
+  for (const doc of data.docs) {
+    assert.ok(doc.summary.length > 0, `${doc.slug} should have a non-empty summary`);
+  }
+});
+
+test("get_philosophy: a single slug returns its full Markdown content", async (t) => {
+  const { client, close } = await startServer();
+  t.after(close);
+
+  const result = await client.callTool({ name: "get_philosophy", arguments: { slug: "anti-patterns" } });
+  const data = parseToolResult(result);
+
+  assert.equal(data.slug, "anti-patterns");
+  assert.ok(data.content.length > 100);
+  assert.match(data.content, /^#/m);
+});
+
+test("get_philosophy: an array of slugs returns each doc's full content", async (t) => {
+  const { client, close } = await startServer();
+  t.after(close);
+
+  const result = await client.callTool({
+    name: "get_philosophy",
+    arguments: { slug: ["motion", "code-style"] },
+  });
+  const data = parseToolResult(result);
+
+  assert.equal(data.docs.length, 2);
+  assert.deepEqual(
+    data.docs.map((d) => d.slug),
+    ["motion", "code-style"],
+  );
+  assert.ok(data.docs.every((d) => d.content.length > 100));
+});
+
+test("get_philosophy: unknown slug surfaces as a tool error, not a crash", async (t) => {
+  const { client, close } = await startServer();
+  t.after(close);
+
+  const result = await client.callTool({ name: "get_philosophy", arguments: { slug: "not-a-real-doc" } });
+
+  assert.equal(result.isError, true);
+});
+
 test("generate_component_scaffold: composedFrom produces a composed skeleton", async (t) => {
   const { client, close } = await startServer();
   t.after(close);

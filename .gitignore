@@ -11,3 +11,8 @@ apps/site/public/r/
 # Synced from skills/dsgn (the real source) by scripts/sync-skill.mjs, also
 # run automatically via prepublishOnly — never edited directly.
 packages/cli/skill/
+
+# Synced from philosophy/ (the real source) by packages/mcp's
+# sync-philosophy.mjs, also run automatically via prepack — never edited
+# directly.
+packages/mcp/philosophy/

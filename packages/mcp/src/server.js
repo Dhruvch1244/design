@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { fetchIndex, resolveItems, resolveItemName, resolveRegistryBase } from "./registry.js";
 import { generateComponentScaffold } from "./generate.js";
+import { listPhilosophyDocs, readPhilosophyDoc, PHILOSOPHY_DOCS } from "./philosophy.js";
 
 function textResult(value) {
   return {
@@ -154,6 +155,36 @@ export function createServer() {
       try {
         const scaffold = generateComponentScaffold({ name, kind, description, composedFrom });
         return textResult(scaffold);
+      } catch (err) {
+        return errorResult(err);
+      }
+    },
+  );
+
+  server.registerTool(
+    "get_philosophy",
+    {
+      title: "Get the dsgn design philosophy",
+      description:
+        "Reads the dsgn design-philosophy docs (the same ones philosophy/AGENTS.md and its chapters render at design.dhruvchoudhary.com/philosophy) so an agent can ground component/recipe work in the actual rules, without cloning the repo. Called with no arguments, lists every doc (slug, title, one-paragraph summary). Called with `slug` (or an array of slugs), returns the full Markdown content of those doc(s).",
+      inputSchema: {
+        slug: z
+          .union([z.string().min(1), z.array(z.string().min(1)).min(1)])
+          .optional()
+          .describe(
+            `Doc slug, or array of slugs, to fetch in full. One of: ${PHILOSOPHY_DOCS.map((d) => d.slug).join(", ")}. Omit to list all docs with a summary instead.`,
+          ),
+      },
+    },
+    async ({ slug }) => {
+      try {
+        if (slug === undefined) {
+          const docs = await listPhilosophyDocs();
+          return textResult({ docs });
+        }
+        const slugs = Array.isArray(slug) ? slug : [slug];
+        const docs = await Promise.all(slugs.map(readPhilosophyDoc));
+        return textResult(docs.length === 1 ? docs[0] : { docs });
       } catch (err) {
         return errorResult(err);
       }

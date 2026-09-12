@@ -84,11 +84,12 @@ global cap, etc).
 
 ## Using the MCP server in an AI client
 
-`packages/mcp` (npm: `@dhruvchoudhary/dsgn-mcp`) exposes the same registry
-over the [Model Context Protocol](https://modelcontextprotocol.io), so an
-agent can list, search, fetch (single or batch, transitive dependencies
-resolved and deduplicated), and scaffold components/recipes directly,
-without shelling out to the CLI:
+`packages/mcp` (npm: `@dhruvchoudhary/dsgn-mcp`) exposes the registry *and*
+the design philosophy over the [Model Context Protocol](https://modelcontextprotocol.io),
+so an agent can list, search, fetch (single or batch, transitive
+dependencies resolved and deduplicated), and scaffold components/recipes,
+plus read the philosophy docs that ground those decisions — all directly,
+without shelling out to the CLI or cloning the repo:
 
 ```sh
 claude mcp add dsgn -- npx @dhruvchoudhary/dsgn-mcp
