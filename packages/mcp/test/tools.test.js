@@ -74,6 +74,41 @@ test("get_component: recipe: shorthand resolves to the recipe-<name> registry en
   assert.ok(data.item.files.length > 0);
 });
 
+test("get_component: batch fetch resolves and dedupes shared dependencies across requested items", async (t) => {
+  const { client, close } = await startServer();
+  t.after(close);
+
+  const result = await client.callTool({
+    name: "get_component",
+    arguments: { name: ["combobox", "date-picker"] },
+  });
+  const data = parseToolResult(result);
+
+  assert.deepEqual(data.requestedItems, ["combobox", "date-picker"]);
+  assert.equal(data.item, undefined);
+  assert.equal(data.items.length, 2);
+
+  // Both combobox and date-picker are expected to pull in the shared
+  // "button" dependency — it must appear only once in resolvedDependencies
+  // and its file must appear only once in files, not once per requester.
+  const buttonDepCount = data.resolvedDependencies.filter((n) => n === "button").length;
+  assert.equal(buttonDepCount, 1);
+  const buttonFileCount = data.files.filter((f) => f.from === "button").length;
+  assert.equal(buttonFileCount, 1);
+});
+
+test("get_component: single name still returns the singular `item` shape", async (t) => {
+  const { client, close } = await startServer();
+  t.after(close);
+
+  const result = await client.callTool({ name: "get_component", arguments: { name: "button" } });
+  const data = parseToolResult(result);
+
+  assert.equal(data.requested, "button");
+  assert.equal(data.items, undefined);
+  assert.equal(data.item.name, "button");
+});
+
 test("get_component: unknown name surfaces as a tool error, not a crash", async (t) => {
   const { client, close } = await startServer();
   t.after(close);
@@ -82,6 +117,61 @@ test("get_component: unknown name surfaces as a tool error, not a crash", async 
     name: "get_component",
     arguments: { name: "definitely-not-a-real-component" },
   });
+
+  assert.equal(result.isError, true);
+});
+
+test("get_philosophy: no slug lists every doc with a summary", async (t) => {
+  const { client, close } = await startServer();
+  t.after(close);
+
+  const result = await client.callTool({ name: "get_philosophy", arguments: {} });
+  const data = parseToolResult(result);
+
+  const slugs = data.docs.map((d) => d.slug);
+  assert.ok(slugs.includes("agents"));
+  assert.ok(slugs.includes("architecture"));
+  assert.ok(slugs.includes("anti-patterns"));
+  for (const doc of data.docs) {
+    assert.ok(doc.summary.length > 0, `${doc.slug} should have a non-empty summary`);
+  }
+});
+
+test("get_philosophy: a single slug returns its full Markdown content", async (t) => {
+  const { client, close } = await startServer();
+  t.after(close);
+
+  const result = await client.callTool({ name: "get_philosophy", arguments: { slug: "anti-patterns" } });
+  const data = parseToolResult(result);
+
+  assert.equal(data.slug, "anti-patterns");
+  assert.ok(data.content.length > 100);
+  assert.match(data.content, /^#/m);
+});
+
+test("get_philosophy: an array of slugs returns each doc's full content", async (t) => {
+  const { client, close } = await startServer();
+  t.after(close);
+
+  const result = await client.callTool({
+    name: "get_philosophy",
+    arguments: { slug: ["motion", "code-style"] },
+  });
+  const data = parseToolResult(result);
+
+  assert.equal(data.docs.length, 2);
+  assert.deepEqual(
+    data.docs.map((d) => d.slug),
+    ["motion", "code-style"],
+  );
+  assert.ok(data.docs.every((d) => d.content.length > 100));
+});
+
+test("get_philosophy: unknown slug surfaces as a tool error, not a crash", async (t) => {
+  const { client, close } = await startServer();
+  t.after(close);
+
+  const result = await client.callTool({ name: "get_philosophy", arguments: { slug: "not-a-real-doc" } });
 
   assert.equal(result.isError, true);
 });

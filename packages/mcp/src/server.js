@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { fetchIndex, resolveItems, resolveItemName, resolveRegistryBase } from "./registry.js";
 import { generateComponentScaffold } from "./generate.js";
+import { listPhilosophyDocs, readPhilosophyDoc, PHILOSOPHY_DOCS } from "./philosophy.js";
 
 function textResult(value) {
   return {
@@ -22,7 +23,7 @@ function errorResult(err) {
 export function createServer() {
   const server = new McpServer({
     name: "dsgn-mcp",
-    version: "0.1.0",
+    version: "0.2.0",
   });
 
   server.registerTool(
@@ -93,32 +94,39 @@ export function createServer() {
   server.registerTool(
     "get_component",
     {
-      title: "Get a dsgn component (fully resolved)",
+      title: "Get one or more dsgn components (fully resolved)",
       description:
-        "Fetches a component or recipe by name (accepts the \"recipe:<name>\" shorthand) INCLUDING its transitive registryDependencies, resolved in dependency-first order. The response contains every file, with its target install path and content, needed to actually install the item by writing files — no second round-trip required.",
+        "Fetches one or more components/recipes by name (each accepts the \"recipe:<name>\" shorthand) INCLUDING their transitive registryDependencies, resolved in dependency-first order and deduplicated across every requested item — a shared dependency like \"utils\" is only fetched and listed once even when multiple requested items need it. The response contains every file, with its target install path and content, needed to actually install everything requested by writing files — no second round-trip required, even when installing several components at once.",
       inputSchema: {
         name: z
-          .string()
-          .min(1)
-          .describe('Component or recipe name, e.g. "combobox" or "recipe:auth-form".'),
+          .union([z.string().min(1), z.array(z.string().min(1)).min(1)])
+          .describe(
+            'One component/recipe name, or an array of names to resolve together (e.g. ["combobox", "date-picker"]). Each accepts the "recipe:<name>" shorthand.',
+          ),
       },
     },
     async ({ name }) => {
       try {
         const base = await resolveRegistryBase();
-        const resolvedName = resolveItemName(name);
-        const items = await resolveItems(base, [resolvedName]);
-        const requested = items[items.length - 1];
-        const dependencies = items.slice(0, -1);
+        const requestedNames = (Array.isArray(name) ? name : [name]).map(resolveItemName);
+        const items = await resolveItems(base, requestedNames);
+        const requestedSet = new Set(requestedNames);
+        const requested = items.filter((item) => requestedSet.has(item.name));
+        const dependencies = items.filter((item) => !requestedSet.has(item.name));
         return textResult({
           registry: base,
-          requested: requested.name,
-          item: requested,
+          // Kept for backwards compatibility with a single-name request:
+          // the last (and only, in that case) requested item.
+          requested: requested[requested.length - 1]?.name,
+          requestedItems: requested.map((item) => item.name),
+          item: requested.length === 1 ? requested[0] : undefined,
+          items: requested.length > 1 ? requested : undefined,
           resolvedDependencies: dependencies.map((d) => d.name),
-          // Every file across the requested item and all its transitive
-          // registryDependencies, in install order, each labeled with which
-          // registry item it came from — this is what a calling agent needs
-          // to write to disk to actually install the component.
+          // Every file across every requested item and all their transitive
+          // registryDependencies, in install order and deduplicated, each
+          // labeled with which registry item it came from — this is what a
+          // calling agent needs to write to disk to actually install
+          // everything requested.
           files: items.flatMap((item) => (item.files ?? []).map((file) => ({ ...file, from: item.name }))),
         });
       } catch (err) {
@@ -147,6 +155,36 @@ export function createServer() {
       try {
         const scaffold = generateComponentScaffold({ name, kind, description, composedFrom });
         return textResult(scaffold);
+      } catch (err) {
+        return errorResult(err);
+      }
+    },
+  );
+
+  server.registerTool(
+    "get_philosophy",
+    {
+      title: "Get the dsgn design philosophy",
+      description:
+        "Reads the dsgn design-philosophy docs (the same ones philosophy/AGENTS.md and its chapters render at design.dhruvchoudhary.com/philosophy) so an agent can ground component/recipe work in the actual rules, without cloning the repo. Called with no arguments, lists every doc (slug, title, one-paragraph summary). Called with `slug` (or an array of slugs), returns the full Markdown content of those doc(s).",
+      inputSchema: {
+        slug: z
+          .union([z.string().min(1), z.array(z.string().min(1)).min(1)])
+          .optional()
+          .describe(
+            `Doc slug, or array of slugs, to fetch in full. One of: ${PHILOSOPHY_DOCS.map((d) => d.slug).join(", ")}. Omit to list all docs with a summary instead.`,
+          ),
+      },
+    },
+    async ({ slug }) => {
+      try {
+        if (slug === undefined) {
+          const docs = await listPhilosophyDocs();
+          return textResult({ docs });
+        }
+        const slugs = Array.isArray(slug) ? slug : [slug];
+        const docs = await Promise.all(slugs.map(readPhilosophyDoc));
+        return textResult(docs.length === 1 ? docs[0] : { docs });
       } catch (err) {
         return errorResult(err);
       }

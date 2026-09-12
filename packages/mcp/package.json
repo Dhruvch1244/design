@@ -1,17 +1,20 @@
 {
   "name": "@dhruvchoudhary/dsgn-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MCP (Model Context Protocol) server exposing the dsgn design-system registry to AI clients (Claude Code, Cursor, Claude Desktop, ...) -- list, search, and fetch components/recipes with resolved transitive dependencies, and generate on-house-style component scaffolds, without shelling out to the dsgn CLI.",
   "type": "module",
   "bin": {
     "dsgn-mcp": "bin/dsgn-mcp.js"
   },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "build:philosophy": "node scripts/sync-philosophy.mjs",
+    "prepack": "node scripts/sync-philosophy.mjs"
   },
   "files": [
     "bin",
-    "src"
+    "src",
+    "philosophy"
   ],
   "engines": {
     "node": ">=18"

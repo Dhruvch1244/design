@@ -1,0 +1,40 @@
+name: Create dsgn-mcp GitHub Release
+
+# Manual trigger only: wraps `gh release create` so a GitHub Release can be
+# cut from an existing tag (see packages/mcp/package.json's version and the
+# mcp-vX.Y.Z tag convention publish-cli.yml already uses for the CLI)
+# without needing a local `gh` login. No npm publish, no version bump, no
+# auto-tagging -- the tag must already exist; this only turns it into a
+# Release with the given title/notes.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing git tag to release (e.g. mcp-v0.2.0)"
+        required: true
+      title:
+        description: "Release title"
+        required: true
+      notes:
+        description: "Release notes (Markdown)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ inputs.tag }}
+          TITLE: ${{ inputs.title }}
+          NOTES: ${{ inputs.notes }}
+        run: |
+          gh release create "$TAG" --title "$TITLE" --notes "$NOTES"
