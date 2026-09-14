@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { MagnifyingGlass } from '@phosphor-icons/react'
+import { MagnifyingGlass, Star } from '@phosphor-icons/react'
 
 export type PaletteItem<T extends string> = {
   id: T
@@ -23,21 +23,47 @@ function score(item: PaletteItem<string>, query: string): number {
 /**
  * Global fuzzy launcher over every tool, opened with Ctrl/Cmd+K from anywhere in the app —
  * the thing that makes a 30+ tool sidebar navigable without scanning seven collapsed groups.
+ * With an empty query, favourites and recently-used tools surface first instead of the flat
+ * group order — the two things you're most likely to want are right there without typing.
  */
-export function CommandPalette<T extends string>({ items, onSelect }: { items: PaletteItem<T>[]; onSelect: (id: T) => void }) {
+export function CommandPalette<T extends string>({
+  items,
+  onSelect,
+  favourites = [],
+  recents = [],
+}: {
+  items: PaletteItem<T>[]
+  onSelect: (id: T) => void
+  favourites?: T[]
+  recents?: T[]
+}) {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const results = useMemo(() => {
-    if (!query.trim()) return items
+    if (!query.trim()) {
+      const byId = new Map(items.map((i) => [i.id, i]))
+      const ordered: PaletteItem<T>[] = []
+      const seen = new Set<T>()
+      for (const id of [...favourites, ...recents]) {
+        if (!seen.has(id) && byId.has(id)) {
+          ordered.push(byId.get(id)!)
+          seen.add(id)
+        }
+      }
+      for (const item of items) {
+        if (!seen.has(item.id)) ordered.push(item)
+      }
+      return ordered
+    }
     return items
       .map((item) => ({ item, s: score(item, query) }))
       .filter((r) => r.s > 0)
       .sort((a, b) => b.s - a.s)
       .map((r) => r.item)
-  }, [items, query])
+  }, [items, query, favourites, recents])
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -149,6 +175,7 @@ export function CommandPalette<T extends string>({ items, onSelect }: { items: P
                             {item.group} · {item.hint}
                           </div>
                         </div>
+                        {favourites.includes(item.id) && <Star size={12} weight="fill" className="shrink-0 text-warm" />}
                       </button>
                     )
                   })

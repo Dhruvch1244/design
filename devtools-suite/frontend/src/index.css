@@ -99,6 +99,51 @@ textarea, pre, code, .font-mono {
   background: var(--ink-faint);
 }
 
+.prose-note h1, .prose-note h2, .prose-note h3 {
+  color: var(--ink);
+  font-weight: 600;
+  margin: 0.8em 0 0.4em;
+  line-height: 1.3;
+}
+.prose-note h1 { font-size: 1.3rem; }
+.prose-note h2 { font-size: 1.1rem; }
+.prose-note h3 { font-size: 1rem; }
+.prose-note p { margin: 0.5em 0; }
+.prose-note ul, .prose-note ol { margin: 0.5em 0; padding-left: 1.4em; }
+.prose-note li { margin: 0.2em 0; }
+.prose-note a { color: var(--cyan); }
+.prose-note code {
+  background: rgba(255,255,255,0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 0.3em;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+.prose-note pre {
+  background: var(--void);
+  border: 1px solid var(--rule);
+  border-radius: 0.75em;
+  padding: 0.75em;
+  overflow-x: auto;
+}
+.prose-note pre code { background: none; padding: 0; }
+.prose-note blockquote {
+  border-left: 3px solid color-mix(in srgb, var(--cyan) 40%, transparent);
+  margin: 0.5em 0;
+  padding-left: 0.9em;
+  color: var(--ink-soft);
+}
+.prose-note table { border-collapse: collapse; width: 100%; margin: 0.5em 0; }
+.prose-note th, .prose-note td { border: 1px solid var(--rule); padding: 0.4em 0.6em; text-align: left; }
+.wiki-link {
+  color: var(--cyan);
+  background: rgba(47, 230, 242, 0.12);
+  padding: 0.05em 0.4em;
+  border-radius: 0.4em;
+  cursor: pointer;
+}
+.wiki-link:hover { background: rgba(47, 230, 242, 0.22); }
+
 @keyframes drift {
   0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
   50% { transform: translate3d(2%, -3%, 0) scale(1.05); }
