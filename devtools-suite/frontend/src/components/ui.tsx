@@ -100,3 +100,22 @@ export function SectionLabel({ children }: { children: ReactNode }) {
     </div>
   )
 }
+
+export function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
+  return (
+    <label className="flex cursor-pointer items-center gap-2.5 text-xs text-ink-soft">
+      <span
+        onClick={() => onChange(!checked)}
+        className={`relative h-4 w-7 shrink-0 rounded-full transition-colors ${checked ? 'bg-cyan' : 'bg-white/10'}`}
+      >
+        <motion.span
+          layout
+          transition={spring}
+          className="absolute top-0.5 h-3 w-3 rounded-full bg-void shadow"
+          style={{ left: checked ? '14px' : '2px' }}
+        />
+      </span>
+      {label}
+    </label>
+  )
+}

@@ -21,25 +21,25 @@ async function jsonFetch<T>(url: string, body: unknown): Promise<T> {
 }
 
 export type FileSearchMatch = { lineNumber: number; line: string }
+export type TermMatches = { term: string; matchCount: number; matches: FileSearchMatch[]; truncated: boolean }
 export type FileSearchResult = {
   fileName: string
   fileSizeBytes: number
   totalLines: number
-  matchCount: number
-  matches: FileSearchMatch[]
-  truncated: boolean
+  totalMatches: number
+  termResults: TermMatches[]
 }
 
 export async function searchFile(params: {
   file: File
-  term: string
+  terms: string
   regex: boolean
   caseSensitive: boolean
   maxSizeBytes?: number
 }): Promise<FileSearchResult> {
   const form = new FormData()
   form.append('file', params.file)
-  form.append('term', params.term)
+  form.append('terms', params.terms)
   form.append('regex', String(params.regex))
   form.append('caseSensitive', String(params.caseSensitive))
   if (params.maxSizeBytes) form.append('maxSizeBytes', String(params.maxSizeBytes))
@@ -50,6 +50,27 @@ export async function searchFile(params: {
     throw new Error(err.error ?? 'Request failed')
   }
   return res.json()
+}
+
+/**
+ * Search a file already on local disk by absolute path — read directly by the backend, no upload.
+ * This is the mode to use for large files (tens of GB): the browser-upload endpoint above copies
+ * the whole file into a Tomcat temp file first, which doesn't scale past a few hundred MB.
+ */
+export async function searchPath(params: {
+  path: string
+  terms: string
+  regex: boolean
+  caseSensitive: boolean
+  maxSizeBytes?: number
+}): Promise<FileSearchResult> {
+  return jsonFetch<FileSearchResult>('/api/file-search/path', {
+    path: params.path,
+    terms: params.terms.split('\n').map((t) => t.trim()).filter(Boolean),
+    regex: params.regex,
+    caseSensitive: params.caseSensitive,
+    maxSizeBytes: params.maxSizeBytes,
+  })
 }
 
 export type JsonFormatResult = {

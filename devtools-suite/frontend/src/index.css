@@ -137,6 +137,22 @@ textarea, pre, code, .font-mono {
   animation-delay: -12s;
 }
 
+.devtools-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--void) 70%, transparent);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--ink);
+  outline: none;
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.devtools-input:focus {
+  border-color: color-mix(in srgb, var(--cyan) 50%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cyan) 12%, transparent);
+}
+
 .noise-overlay {
   position: fixed;
   inset: 0;

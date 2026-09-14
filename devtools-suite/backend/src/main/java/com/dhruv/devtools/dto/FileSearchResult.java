@@ -6,7 +6,6 @@ public record FileSearchResult(
         String fileName,
         long fileSizeBytes,
         long totalLines,
-        long matchCount,
-        List<FileSearchMatch> matches,
-        boolean truncated
+        long totalMatches,
+        List<TermMatches> termResults
 ) {}

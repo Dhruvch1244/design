@@ -99,6 +99,50 @@ export const THEMES: Theme[] = [
       cyan: '#2aa198', emerald: '#859900', rose: '#dc322f', warm: '#b58900', violet: '#6c71c4',
     },
   },
+  {
+    id: 'monokai',
+    name: 'Monokai Pro',
+    swatch: ['#2d2a2e', '#78dce8', '#ab9df2'],
+    colors: {
+      void: '#221f22', surface: '#2d2a2e', panel: '#3a373b',
+      ink: '#fcfcfa', inkSoft: '#c1c0c0', inkFaint: '#727072',
+      rule: 'rgba(252,252,250,0.10)', ruleSoft: 'rgba(252,252,250,0.06)',
+      cyan: '#78dce8', emerald: '#a9dc76', rose: '#ff6188', warm: '#ffd866', violet: '#ab9df2',
+    },
+  },
+  {
+    id: 'one-dark',
+    name: 'One Dark',
+    swatch: ['#282c34', '#56b6c2', '#c678dd'],
+    colors: {
+      void: '#21252b', surface: '#282c34', panel: '#333842',
+      ink: '#abb2bf', inkSoft: '#8f96a3', inkFaint: '#5c6370',
+      rule: 'rgba(171,178,191,0.10)', ruleSoft: 'rgba(171,178,191,0.06)',
+      cyan: '#56b6c2', emerald: '#98c379', rose: '#e06c75', warm: '#e5c07b', violet: '#c678dd',
+    },
+  },
+  {
+    id: 'rose-pine',
+    name: 'Rosé Pine',
+    swatch: ['#191724', '#9ccfd8', '#c4a7e7'],
+    colors: {
+      void: '#141220', surface: '#191724', panel: '#26233a',
+      ink: '#e0def4', inkSoft: '#b9b6d3', inkFaint: '#6e6a86',
+      rule: 'rgba(224,222,244,0.10)', ruleSoft: 'rgba(224,222,244,0.06)',
+      cyan: '#9ccfd8', emerald: '#31748f', rose: '#eb6f92', warm: '#f6c177', violet: '#c4a7e7',
+    },
+  },
+  {
+    id: 'everforest',
+    name: 'Everforest',
+    swatch: ['#2d353b', '#83c092', '#e69875'],
+    colors: {
+      void: '#232a2e', surface: '#2d353b', panel: '#374247',
+      ink: '#d3c6aa', inkSoft: '#a8b39e', inkFaint: '#7a8478',
+      rule: 'rgba(211,198,170,0.10)', ruleSoft: 'rgba(211,198,170,0.06)',
+      cyan: '#7fbbb3', emerald: '#a7c080', rose: '#e67e80', warm: '#dbbc7f', violet: '#d699b6',
+    },
+  },
 ]
 
 const VAR_MAP: Record<keyof ThemeColors, string> = {
