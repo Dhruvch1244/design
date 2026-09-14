@@ -67,6 +67,7 @@ import { CsvProfilerPage } from './pages/CsvProfilerPage'
 import { PartMergePage } from './pages/PartMergePage'
 import { YarnInspectorPage } from './pages/YarnInspectorPage'
 import { SettingsPopover } from './components/SettingsPopover'
+import { CommandPalette, type PaletteItem } from './components/CommandPalette'
 import { applyTheme, getStoredTheme } from './lib/themes'
 import { applyFont, getStoredFont } from './lib/fonts'
 
@@ -184,59 +185,70 @@ function App() {
     applyFont(getStoredFont())
   }, [])
 
+  const paletteItems: PaletteItem<Tool>[] = GROUPS.flatMap((group) =>
+    group.tools.map((t) => ({ id: t.id, label: t.label, hint: t.hint, group: group.label, icon: t.icon }))
+  )
+
   return (
     <div className="relative flex h-screen w-screen overflow-hidden bg-void text-ink">
       <div className="bg-glow" />
       <div className="noise-overlay" />
 
-      <aside className="relative z-10 flex w-60 shrink-0 flex-col gap-1 overflow-y-auto border-r border-rule-soft bg-surface p-3">
-        <div className="mb-5 flex items-center gap-2 px-2 pt-2">
-          <CircleDashed size={18} weight="light" className="text-cyan" />
-          <div>
-            <div className="text-sm font-semibold tracking-tight">Dev Tools</div>
-            <div className="text-[10px] uppercase tracking-[0.16em] text-ink-faint">local · offline</div>
+      <aside className="relative z-10 flex w-60 shrink-0 flex-col border-r border-rule-soft bg-surface">
+        <div className="shrink-0 p-3 pb-0">
+          <div className="mb-4 flex items-center gap-2 px-2 pt-2">
+            <CircleDashed size={18} weight="light" className="text-cyan" />
+            <div>
+              <div className="text-sm font-semibold tracking-tight">Dev Tools</div>
+              <div className="text-[10px] uppercase tracking-[0.16em] text-ink-faint">local · offline</div>
+            </div>
           </div>
+          <CommandPalette items={paletteItems} onSelect={setTool} />
         </div>
 
-        {GROUPS.map((group, gi) => (
-          <nav key={group.label} className="flex flex-col gap-1 pb-2">
-            <div className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
-              {group.label}
-            </div>
-            {group.tools.map((t, i) => {
-              const active = tool === t.id
-              const Icon = t.icon
-              return (
-                <motion.button
-                  key={t.id}
-                  onClick={() => setTool(t.id)}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: (gi * 4 + i) * 0.03, type: 'spring', stiffness: 300, damping: 26 }}
-                  whileHover={{ x: active ? 0 : 2 }}
-                  className="relative rounded-2xl px-3 py-2.5 text-left"
-                >
-                  {active && (
-                    <motion.div
-                      layoutId="nav-active"
-                      transition={{ type: 'spring', stiffness: 400, damping: 32 }}
-                      className="absolute inset-0 rounded-2xl bg-white/[0.06] ring-1 ring-white/[0.08]"
-                    />
-                  )}
-                  <div className="relative flex items-center gap-2.5">
-                    <Icon size={16} weight="light" className={active ? 'text-cyan' : 'text-ink-faint'} />
-                    <div>
-                      <div className={`text-[13px] font-medium ${active ? 'text-ink' : 'text-ink-soft'}`}>{t.label}</div>
-                      <div className="text-[10.5px] text-ink-faint">{t.hint}</div>
+        <div className="flex-1 overflow-y-auto px-3 pb-2">
+          {GROUPS.map((group, gi) => (
+            <nav key={group.label} className="flex flex-col gap-1 pb-2">
+              <div className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
+                {group.label}
+              </div>
+              {group.tools.map((t, i) => {
+                const active = tool === t.id
+                const Icon = t.icon
+                return (
+                  <motion.button
+                    key={t.id}
+                    onClick={() => setTool(t.id)}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: (gi * 4 + i) * 0.03, type: 'spring', stiffness: 300, damping: 26 }}
+                    whileHover={{ x: active ? 0 : 2 }}
+                    className="relative rounded-2xl px-3 py-2.5 text-left"
+                  >
+                    {active && (
+                      <motion.div
+                        layoutId="nav-active"
+                        transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                        className="absolute inset-0 rounded-2xl bg-white/[0.06] ring-1 ring-white/[0.08]"
+                      />
+                    )}
+                    <div className="relative flex items-center gap-2.5">
+                      <Icon size={16} weight="light" className={active ? 'text-cyan' : 'text-ink-faint'} />
+                      <div>
+                        <div className={`text-[13px] font-medium ${active ? 'text-ink' : 'text-ink-soft'}`}>{t.label}</div>
+                        <div className="text-[10.5px] text-ink-faint">{t.hint}</div>
+                      </div>
                     </div>
-                  </div>
-                </motion.button>
-              )
-            })}
-          </nav>
-        ))}
+                  </motion.button>
+                )
+              })}
+            </nav>
+          ))}
+        </div>
 
-        <SettingsPopover />
+        <div className="shrink-0 border-t border-rule-soft p-3">
+          <SettingsPopover />
+        </div>
       </aside>
 
       <main className="relative z-10 flex-1 overflow-hidden p-5">
