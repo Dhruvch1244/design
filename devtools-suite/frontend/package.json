@@ -21,6 +21,7 @@
     "framer-motion": "^13.2.0",
     "js-yaml": "^5.4.2",
     "marked": "^18.0.13",
+    "mermaid": "^10.9.8",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwindcss": "^4.3.3"

@@ -182,3 +182,8 @@ export function applyTheme(id: string) {
 export function getStoredTheme(): string {
   return localStorage.getItem(STORAGE_KEY) ?? DEFAULT_THEME_ID
 }
+
+export function getCurrentScheme(): 'dark' | 'light' {
+  const theme = THEMES.find((t) => t.id === getStoredTheme())
+  return theme?.scheme === 'light' ? 'light' : 'dark'
+}

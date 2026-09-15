@@ -204,6 +204,11 @@ textarea, pre, code, .font-mono {
   outline: none;
   transition: box-shadow 0.15s, border-color 0.15s;
 }
+.mermaid-svg-host svg {
+  max-width: 100%;
+  height: auto;
+}
+
 .devtools-input:focus {
   border-color: color-mix(in srgb, var(--cyan) 50%, transparent);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--cyan) 12%, transparent);

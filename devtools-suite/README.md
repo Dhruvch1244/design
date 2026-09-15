@@ -9,6 +9,12 @@ internet required after download.
 
 ## Visualizers
 
+- **Diagram Studio** — a draw.io-style diagram tool with two modes: a **code** mode
+  where you write Mermaid syntax (flowcharts, sequence/class/state/ER diagrams,
+  gantt charts, pie charts) and it renders live, and a **canvas** mode — a freeform
+  whiteboard where you place rectangles/ellipses/diamonds/text, drag to move,
+  drag-resize, connect shapes with arrows, recolor, and export to SVG. Canvas
+  diagrams save by name locally for later.
 - **Spring Boot Visualizer** — point it at a local Spring Boot project's source root
   and it statically parses the `.java` files (JavaParser, no compilation) to find
   `@RestController`/`@Service`/`@Repository`/`@Component` classes, draws a

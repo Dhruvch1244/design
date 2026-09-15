@@ -22,6 +22,7 @@ import {
   FlowArrow,
   GitCommit,
   SquaresFour,
+  Shapes,
   Clock,
   MagicWand,
   NotePencil,
@@ -84,12 +85,14 @@ import { CronVisualizerPage } from './pages/CronVisualizerPage'
 import { RegexVisualizerPage } from './pages/RegexVisualizerPage'
 import { GitGraphPage } from './pages/GitGraphPage'
 import { DiskTreemapPage } from './pages/DiskTreemapPage'
+import { DiagramStudioPage } from './pages/DiagramStudioPage'
 import { SettingsPopover } from './components/SettingsPopover'
 import { CommandPalette, type PaletteItem } from './components/CommandPalette'
 import { applyTheme, getStoredTheme } from './lib/themes'
 import { applyFont, getStoredFont } from './lib/fonts'
 
 type Tool =
+  | 'diagram-studio'
   | 'spring-viz'
   | 'sql-er'
   | 'cron-viz'
@@ -137,6 +140,7 @@ const GROUPS: { label: string; tools: ToolDef[] }[] = [
   {
     label: 'Visualizers',
     tools: [
+      { id: 'diagram-studio', label: 'Diagram Studio', hint: 'mermaid code · freeform canvas', icon: Shapes },
       { id: 'spring-viz', label: 'Spring Boot Visualizer', hint: 'controllers · services · routes', icon: TreeStructure },
       { id: 'sql-er', label: 'DB Schema (ER Diagram)', hint: 'tables · foreign keys', icon: Table },
       { id: 'cron-viz', label: 'Cron Visualizer', hint: 'timeline · weekly heatmap', icon: Clock },
@@ -238,6 +242,7 @@ function loadFavourites(): Tool[] {
 
 function renderPage(tool: Tool) {
   switch (tool) {
+    case 'diagram-studio': return <DiagramStudioPage />
     case 'spring-viz': return <SpringVizPage />
     case 'sql-er': return <SqlErDiagramPage />
     case 'cron-viz': return <CronVisualizerPage />
