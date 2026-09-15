@@ -122,6 +122,36 @@ export const GIT_REFERENCE: GitCategory[] = [
       { cmd: 'git submodule foreach git pull', description: 'Pull latest changes in every submodule' },
     ],
   },
+  {
+    category: 'Worktrees',
+    commands: [
+      { cmd: 'git worktree add ../hotfix hotfix-branch', description: 'Check out another branch into a separate folder, no stashing needed' },
+      { cmd: 'git worktree list', description: 'List all worktrees for this repo' },
+      { cmd: 'git worktree remove ../hotfix', description: 'Remove a worktree once you\'re done with it' },
+      { cmd: 'git worktree prune', description: 'Clean up worktree metadata for folders you deleted manually' },
+    ],
+  },
+  {
+    category: 'Hooks & Config',
+    commands: [
+      { cmd: 'git config --global --edit', description: 'Open the global config file directly in your editor' },
+      { cmd: 'git config alias.co checkout', description: 'Create a shorthand alias (git co = git checkout)' },
+      { cmd: 'git commit --no-verify', description: 'Skip pre-commit/commit-msg hooks for this commit' },
+      { cmd: 'chmod +x .git/hooks/pre-commit', description: 'Enable a hook script (hooks must be executable)' },
+      { cmd: 'git config core.hooksPath .githooks', description: 'Use a repo-tracked hooks directory instead of .git/hooks (so hooks are shareable)' },
+    ],
+  },
+  {
+    category: 'Maintenance & Recovery',
+    commands: [
+      { cmd: 'git reflog', description: 'Show every place HEAD has pointed recently — the safety net for "I lost a commit"' },
+      { cmd: 'git fsck --lost-found', description: 'Find dangling/unreachable commits and blobs' },
+      { cmd: 'git gc', description: 'Clean up and compress the repo (runs automatically most of the time)' },
+      { cmd: 'git archive -o out.zip HEAD', description: 'Export the current tree as a zip, no .git history included' },
+      { cmd: 'git sparse-checkout set dir1 dir2', description: 'Check out only specific directories from a large repo' },
+      { cmd: 'git lfs track "*.psd"', description: 'Track large binary files with Git LFS instead of storing them in normal history' },
+    ],
+  },
 ]
 
 export type GitRecipe = { question: string; command: string; note?: string }
@@ -147,6 +177,24 @@ export const GIT_RECIPES: GitRecipe[] = [
   { question: 'Temporarily set aside changes to pull latest', command: 'git stash && git pull && git stash pop' },
   { question: 'Remove a file from git but keep it on disk', command: 'git rm --cached <file>' },
   { question: 'Undo a git add (unstage a file)', command: 'git restore --staged <file>' },
+  { question: 'Work on an urgent hotfix without stashing current work', command: 'git worktree add ../hotfix main', note: 'Gives you a second working directory sharing the same .git history.' },
+  { question: 'Find which commit introduced a bug (bisect)', command: 'git bisect start && git bisect bad && git bisect good <known-good-sha>', note: 'Git checks out a midpoint commit each time — mark it good/bad until it narrows to one commit, then git bisect reset.' },
+  { question: 'Apply only some commits from another branch, in a range', command: 'git cherry-pick <start>..<end>' },
+  { question: 'Rebase a branch onto a different base than it was forked from', command: 'git rebase --onto main old-base feature' },
+  { question: 'See the diff between your working tree and an old commit', command: 'git diff <commit> -- .' },
+  { question: 'Find the exact line that introduced a specific string', command: 'git log -S "text" -p -- <file>' },
+  { question: 'Combine commits from another branch without merging its history', command: 'git cherry-pick <commit1> <commit2>' },
+  { question: 'Permanently rewrite committed history to remove a secret/large file', command: 'git filter-repo --path path/to/file --invert-paths', note: 'Requires git-filter-repo (not built in). Rewrites all SHAs — coordinate with everyone before force-pushing.' },
+  { question: 'Sign a commit with GPG', command: 'git commit -S -m "message"', note: 'Requires a GPG key set up via git config user.signingkey.' },
+  { question: 'Check out only part of a large monorepo', command: 'git sparse-checkout init --cone && git sparse-checkout set path/to/dir' },
+  { question: 'See exactly what a merge will bring in before doing it', command: 'git log HEAD..other-branch --oneline' },
+  { question: 'Abort a merge that has conflicts', command: 'git merge --abort' },
+  { question: 'Continue a merge after resolving conflicts', command: 'git add <resolved-files> && git commit' },
+  { question: 'Find dangling commits after a hard reset (recover lost work)', command: 'git fsck --lost-found', note: 'Also check git reflog first — usually faster.' },
+  { question: 'Rename the default branch from master to main', command: 'git branch -m master main && git push -u origin main', note: 'Then update the default branch in your remote host\'s settings and delete the old one.' },
+  { question: 'Ignore changes to a file that\'s already tracked', command: 'git update-index --assume-unchanged <file>', note: 'Local-only — doesn\'t add to .gitignore or affect other clones.' },
+  { question: 'Show the last commit that touched a specific line range', command: 'git log -L 10,20:<file>' },
+  { question: 'Create a shallow clone for CI (faster, no full history)', command: 'git clone --depth 1 <url>' },
 ]
 
 const GIT_FLAGS: Record<string, GitCommand[]> = {
@@ -208,6 +256,29 @@ const GIT_FLAGS: Record<string, GitCommand[]> = {
     { cmd: 'apply', description: 'Reapply but keep the stash in the list' },
     { cmd: 'list', description: 'Show all stashes' },
     { cmd: 'drop', description: 'Delete the most recent stash' },
+  ],
+  merge: [
+    { cmd: '--no-ff', description: 'Always create a merge commit, even if a fast-forward is possible' },
+    { cmd: '--squash', description: 'Combine all the other branch\'s commits into one set of staged changes, no merge commit' },
+    { cmd: '--abort', description: 'Cancel a merge in progress, e.g. after conflicts' },
+    { cmd: '-X ours|theirs', description: 'Auto-resolve conflicts by preferring one side' },
+  ],
+  'cherry-pick': [
+    { cmd: '-n', description: 'Apply the changes but don\'t commit yet (--no-commit)' },
+    { cmd: '-x', description: 'Append "(cherry picked from commit ...)" to the message' },
+    { cmd: '--abort', description: 'Cancel a cherry-pick in progress' },
+    { cmd: '--continue', description: 'Resume after resolving a conflict' },
+  ],
+  tag: [
+    { cmd: '-a <name>', description: 'Create an annotated tag (stores tagger, date, message — recommended for releases)' },
+    { cmd: '-m "msg"', description: 'Tag message (used with -a)' },
+    { cmd: '-d <name>', description: 'Delete a local tag' },
+    { cmd: '-l "pattern"', description: 'List tags matching a glob pattern' },
+  ],
+  clone: [
+    { cmd: '--depth N', description: 'Shallow clone — only the last N commits, much faster for CI' },
+    { cmd: '--branch <name>', description: 'Clone a specific branch instead of the default' },
+    { cmd: '--recurse-submodules', description: 'Also clone and check out submodules' },
   ],
 }
 
