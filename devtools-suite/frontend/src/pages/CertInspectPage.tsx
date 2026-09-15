@@ -32,7 +32,7 @@ export function CertInspectPage() {
             onChange={(e) => setPem(e.target.value)}
             spellCheck={false}
             placeholder="-----BEGIN CERTIFICATE-----&#10;...&#10;-----END CERTIFICATE-----"
-            className="flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[11.5px] text-ink outline-none focus:border-cyan/50"
+            className="flex-1 resize-none rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[11.5px] text-ink outline-none focus:border-cyan/50"
           />
           <Button variant="primary" onClick={run} disabled={!pem.trim() || loading}>
             {loading ? 'Decoding…' : 'Decode'}
@@ -49,7 +49,7 @@ export function CertInspectPage() {
           {certs && (
             <div className="flex flex-col gap-4">
               {certs.map((c, i) => (
-                <div key={i} className={`rounded-2xl border p-4 ${c.expired ? 'border-rose/30 bg-rose/[0.06]' : c.daysUntilExpiry < 30 ? 'border-warm/30 bg-warm/[0.06]' : 'border-rule bg-void/70'}`}>
+                <div key={i} className={`rounded-2xl border p-4 ${c.expired ? 'border-rose/30 bg-rose/[0.06]' : c.daysUntilExpiry < 30 ? 'border-warm/30 bg-warm/[0.06]' : 'border-rule bg-panel'}`}>
                   <div className="mb-2 flex items-center justify-between">
                     <div className="font-mono text-xs text-ink-soft">{c.subject}</div>
                     <div className={`text-xs font-medium ${c.expired ? 'text-rose' : c.daysUntilExpiry < 30 ? 'text-warm' : 'text-emerald'}`}>

@@ -25,7 +25,7 @@ export function StackTracePage() {
               spellCheck={false}
               rows={14}
               placeholder={'java.lang.NullPointerException: ...\n\tat com.dhruv.app.Service.doThing(Service.java:42)\n\t...'}
-              className="resize-none rounded-2xl border border-rule bg-void/70 p-3 font-mono text-[12px] leading-relaxed text-ink outline-none focus:border-cyan/50"
+              className="resize-none rounded-2xl border border-rule bg-panel p-3 font-mono text-[12px] leading-relaxed text-ink outline-none focus:border-cyan/50"
             />
           </div>
         </Panel>
@@ -48,7 +48,7 @@ export function StackTracePage() {
                 const shown = block.frames.filter((f) => !collapseFramework || f.isAppCode || !isFrameworkNoise(f.className))
                 const hiddenCount = block.frames.length - shown.length
                 return (
-                  <div key={bi} className="rounded-2xl border border-rule bg-void/70">
+                  <div key={bi} className="rounded-2xl border border-rule bg-panel">
                     <div className="flex items-center justify-between border-b border-rule-soft px-3.5 py-2.5">
                       <div className={`font-mono text-[13px] ${block.causedByIndex != null ? 'text-warm' : 'text-rose'}`}>{block.header}</div>
                       <CopyButton text={block.header + '\n' + block.frames.map((f) => f.raw).join('\n')} />

@@ -96,7 +96,7 @@ export function DataGeneratorPage() {
             <SectionLabel>Output</SectionLabel>
             <CopyButton text={output} />
           </div>
-          <textarea readOnly value={output} spellCheck={false} className="flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[13px] text-ink outline-none" />
+          <textarea readOnly value={output} spellCheck={false} className="flex-1 resize-none rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[13px] text-ink outline-none" />
         </div>
       </Panel>
     </div>

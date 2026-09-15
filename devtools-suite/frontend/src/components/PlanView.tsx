@@ -5,7 +5,7 @@ export function PlanView({ plan }: { plan: ParsedPlan }) {
 
   if (plan.kind === 'tree') {
     return (
-      <div className="flex flex-col gap-1.5 rounded-2xl border border-rule bg-void/70 p-3.5">
+      <div className="flex flex-col gap-1.5 rounded-2xl border border-rule bg-panel p-3.5">
         {plan.roots.map((n, i) => (
           <PlanNodeView key={i} node={n} />
         ))}
@@ -14,7 +14,7 @@ export function PlanView({ plan }: { plan: ParsedPlan }) {
   }
 
   return (
-    <div className="flex flex-col gap-2 overflow-x-auto rounded-2xl border border-rule bg-void/70 p-3.5">
+    <div className="flex flex-col gap-2 overflow-x-auto rounded-2xl border border-rule bg-panel p-3.5">
       <div className="flex gap-2">
         {plan.rows.map((row, i) => (
           <div key={i} className="flex min-w-[10rem] shrink-0 flex-col gap-1 rounded-xl border border-rule-soft bg-white/[0.02] p-2.5">

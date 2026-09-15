@@ -228,11 +228,11 @@ export function NotesPage() {
                 }}
                 spellCheck={false}
                 placeholder={'Markdown supported. Link another note with [[Note Title]].'}
-                className="resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-cyan/50"
+                className="resize-none rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-cyan/50"
               />
               {preview && (
                 <div
-                  className="prose-note overflow-auto rounded-2xl border border-rule bg-void/70 p-3.5 text-[13.5px] text-ink-soft"
+                  className="prose-note overflow-auto rounded-2xl border border-rule bg-panel p-3.5 text-[13.5px] text-ink-soft"
                   onClick={(e) => {
                     const target = e.target as HTMLElement
                     const wikiTitle = target.dataset.wikiLink

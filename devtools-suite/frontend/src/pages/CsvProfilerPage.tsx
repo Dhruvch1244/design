@@ -37,7 +37,7 @@ export function CsvProfilerPage() {
       <ResizablePanel storageKey="csv-profiler" className="flex flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-3 p-4">
-            <div className="flex gap-1 rounded-xl border border-rule bg-void/70 p-1">
+            <div className="flex gap-1 rounded-xl border border-rule bg-panel p-1">
               <button onClick={() => setMode('upload')} className={`flex-1 rounded-lg py-1.5 text-[11px] font-medium ${mode === 'upload' ? 'bg-white/[0.08] text-ink' : 'text-ink-faint'}`}>Upload</button>
               <button onClick={() => setMode('path')} className={`flex-1 rounded-lg py-1.5 text-[11px] font-medium ${mode === 'path' ? 'bg-white/[0.08] text-ink' : 'text-ink-faint'}`}>Local path</button>
             </div>
@@ -49,7 +49,7 @@ export function CsvProfilerPage() {
                 <input type="file" accept=".csv,.tsv,.txt" className="hidden" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
               </label>
             ) : (
-              <div className="flex items-center gap-2 rounded-xl border border-rule bg-void/70 px-3 py-2.5">
+              <div className="flex items-center gap-2 rounded-xl border border-rule bg-panel px-3 py-2.5">
                 <HardDrives size={14} weight="light" className="shrink-0 text-ink-faint" />
                 <input value={path} onChange={(e) => setPath(e.target.value)} placeholder="C:\data\huge.csv" className="w-full bg-transparent font-mono text-xs text-ink outline-none" />
               </div>
@@ -84,7 +84,7 @@ export function CsvProfilerPage() {
               </div>
               <div className="grid grid-cols-2 gap-3 xl:grid-cols-3">
                 {result.columns.map((c) => (
-                  <div key={c.name} className="rounded-xl border border-rule bg-void/70 p-3">
+                  <div key={c.name} className="rounded-xl border border-rule bg-panel p-3">
                     <div className="mb-1 flex items-center justify-between">
                       <span className="font-mono text-sm text-cyan">{c.name}</span>
                       <span className="rounded bg-white/[0.06] px-1.5 py-0.5 text-[10px] uppercase text-ink-faint">{c.inferredType}</span>

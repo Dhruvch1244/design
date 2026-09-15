@@ -74,7 +74,7 @@ export function JarInspectPage() {
               )}
 
               {result.jars.map((jar) => (
-                <div key={jar.fileName} className="rounded-2xl border border-rule bg-void/70 p-4">
+                <div key={jar.fileName} className="rounded-2xl border border-rule bg-panel p-4">
                   <div className="mb-2 flex items-center justify-between">
                     <div className="font-mono text-sm text-ink">{jar.fileName}</div>
                     <div className="text-xs text-ink-faint">{jar.entryCount} entries · {(jar.totalUncompressedSize / 1024).toFixed(1)} KB</div>

@@ -30,7 +30,7 @@ export function ResultChart({ data }: { data: ChartData }) {
         <div className="text-[11px] text-ink-faint">
           Auto-charted from {data.series.map((s) => s.key).join(', ')}
         </div>
-        <div className="flex gap-1 rounded-lg border border-rule bg-void/70 p-0.5">
+        <div className="flex gap-1 rounded-lg border border-rule bg-panel p-0.5">
           {(['bar', 'line'] as const).map((m) => (
             <button
               key={m}
@@ -45,7 +45,7 @@ export function ResultChart({ data }: { data: ChartData }) {
         </div>
       </div>
 
-      <svg viewBox={`0 0 ${width} ${height}`} className="w-full rounded-2xl border border-rule bg-void/70">
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full rounded-2xl border border-rule bg-panel">
         <line x1={padL} y1={y(0)} x2={width - padR} y2={y(0)} stroke="var(--rule)" strokeWidth={1} />
         <line x1={padL} y1={padT} x2={padL} y2={height - padB} stroke="var(--rule)" strokeWidth={1} />
         <text x={4} y={y(max) + 4} fontSize={10} fill="var(--ink-faint)">{fmt(max)}</text>

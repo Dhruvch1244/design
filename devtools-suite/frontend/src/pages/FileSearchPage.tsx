@@ -69,7 +69,7 @@ export function FileSearchPage() {
         <Panel>
           <div className="p-4">
             <SectionLabel>File</SectionLabel>
-            <div className="mb-3 flex gap-1 rounded-xl border border-rule bg-void/70 p-1">
+            <div className="mb-3 flex gap-1 rounded-xl border border-rule bg-panel p-1">
               <button
                 onClick={() => setMode('upload')}
                 className={`flex-1 rounded-lg py-1.5 text-[11px] font-medium transition-colors ${
@@ -108,7 +108,7 @@ export function FileSearchPage() {
               </>
             ) : (
               <>
-                <div className="mb-3 flex items-center gap-2 rounded-xl border border-rule bg-void/70 px-3 py-2.5">
+                <div className="mb-3 flex items-center gap-2 rounded-xl border border-rule bg-panel px-3 py-2.5">
                   <HardDrives size={14} weight="light" className="shrink-0 text-ink-faint" />
                   <input
                     value={path}
@@ -134,7 +134,7 @@ export function FileSearchPage() {
               placeholder={'apple\nbanana\ncherry'}
               rows={6}
               spellCheck={false}
-              className="mb-3 w-full resize-none rounded-xl border border-rule bg-void/70 p-2.5 font-mono text-sm text-ink outline-none transition-shadow focus:border-cyan/50 focus:shadow-[0_0_0_3px_rgba(47,230,242,0.12)]"
+              className="mb-3 w-full resize-none rounded-xl border border-rule bg-panel p-2.5 font-mono text-sm text-ink outline-none transition-shadow focus:border-cyan/50 focus:shadow-[0_0_0_3px_rgba(47,230,242,0.12)]"
             />
 
             <div className="mb-4 flex flex-col gap-2">
@@ -150,7 +150,7 @@ export function FileSearchPage() {
                   min={1}
                   value={maxSizeMb}
                   onChange={(e) => setMaxSizeMb(Number(e.target.value) || DEFAULT_MAX_MB)}
-                  className="mb-4 w-full rounded-xl border border-rule bg-void/70 px-3 py-2 font-mono text-sm text-ink outline-none focus:border-cyan/50"
+                  className="mb-4 w-full rounded-xl border border-rule bg-panel px-3 py-2 font-mono text-sm text-ink outline-none focus:border-cyan/50"
                 />
               </>
             ) : (
@@ -161,7 +161,7 @@ export function FileSearchPage() {
                   min={1}
                   value={maxSizeGb}
                   onChange={(e) => setMaxSizeGb(Number(e.target.value) || DEFAULT_MAX_PATH_GB)}
-                  className="mb-4 w-full rounded-xl border border-rule bg-void/70 px-3 py-2 font-mono text-sm text-ink outline-none focus:border-cyan/50"
+                  className="mb-4 w-full rounded-xl border border-rule bg-panel px-3 py-2 font-mono text-sm text-ink outline-none focus:border-cyan/50"
                 />
               </>
             )}
@@ -219,7 +219,7 @@ export function FileSearchPage() {
                       <CopyButton text={tr.matches.map((m) => m.line).join('\n')} label="Copy" />
                     )}
                   </div>
-                  <div className="overflow-hidden rounded-2xl border border-rule bg-void/70 font-mono text-[13px] shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
+                  <div className="overflow-hidden rounded-2xl border border-rule bg-panel font-mono text-[13px] shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
                     {tr.matches.length === 0 ? (
                       <div className="p-3 text-ink-faint">No matches.</div>
                     ) : (

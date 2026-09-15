@@ -114,7 +114,7 @@ export function CommandPalette<T extends string>({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="mb-3 flex items-center gap-2 rounded-xl border border-rule bg-void/70 px-3 py-2 text-xs text-ink-faint transition-colors hover:border-cyan/40 hover:text-ink-soft"
+        className="mb-3 flex items-center gap-2 rounded-xl border border-rule bg-panel px-3 py-2 text-xs text-ink-faint transition-colors hover:border-cyan/40 hover:text-ink-soft"
       >
         <MagnifyingGlass size={13} weight="light" />
         <span className="flex-1 text-left">Search tools…</span>

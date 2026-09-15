@@ -69,7 +69,7 @@ export function ArnToolPage() {
             <input className="devtools-input" value={parts.resourceId} onChange={(e) => setParts({ ...parts, resourceId: e.target.value })} />
           </Field>
 
-          <div className="flex items-center justify-between rounded-xl border border-rule bg-void/70 px-3.5 py-2.5">
+          <div className="flex items-center justify-between rounded-xl border border-rule bg-panel px-3.5 py-2.5">
             <span className="font-mono text-sm text-ink">{built}</span>
             <CopyButton text={built} />
           </div>

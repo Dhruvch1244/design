@@ -35,7 +35,7 @@ export function SpringConfigPage() {
 
   return (
     <div className="flex h-full flex-col gap-4">
-      <div className="flex gap-1 rounded-2xl border border-rule bg-void/70 p-1">
+      <div className="flex gap-1 rounded-2xl border border-rule bg-panel p-1">
         {(['yaml', 'properties'] as Format[]).map((f) => (
           <button
             key={f}
@@ -57,7 +57,7 @@ export function SpringConfigPage() {
               value={textA}
               onChange={(e) => setTextA(e.target.value)}
               spellCheck={false}
-              className="flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[13px] text-ink outline-none focus:border-cyan/50"
+              className="flex-1 resize-none rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[13px] text-ink outline-none focus:border-cyan/50"
             />
             {a.error && <ErrorBanner message={a.error} />}
           </div>
@@ -69,7 +69,7 @@ export function SpringConfigPage() {
               value={textB}
               onChange={(e) => setTextB(e.target.value)}
               spellCheck={false}
-              className="flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[13px] text-ink outline-none focus:border-cyan/50"
+              className="flex-1 resize-none rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[13px] text-ink outline-none focus:border-cyan/50"
             />
             {b.error && <ErrorBanner message={b.error} />}
           </div>

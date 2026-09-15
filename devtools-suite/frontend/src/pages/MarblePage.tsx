@@ -102,7 +102,7 @@ function Timeline({
           placeholder="-a-b-c-|  (letters=values, -=nothing, |=complete, #=error)"
         />
       )}
-      <div className="relative flex h-10 items-center rounded-xl border border-rule bg-void/70 px-3">
+      <div className="relative flex h-10 items-center rounded-xl border border-rule bg-panel px-3">
         <div className="absolute left-3 right-3 h-px bg-rule" />
         {Array.from({ length: LENGTH }).map((_, frame) => {
           const event = events.find((e) => e.frame === frame)

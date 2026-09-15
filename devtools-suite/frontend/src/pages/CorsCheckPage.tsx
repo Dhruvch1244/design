@@ -81,13 +81,13 @@ export function CorsCheckPage() {
               </div>
 
               {result.verdict.preflightRequired && (
-                <div className="rounded-2xl border border-rule bg-void/70 p-4">
+                <div className="rounded-2xl border border-rule bg-panel p-4">
                   <div className="mb-2 text-xs font-medium text-ink-soft">Preflight (OPTIONS) — status {result.preflightStatus || 'no response'}</div>
                   <HeaderList headers={result.preflightHeaders} />
                 </div>
               )}
 
-              <div className="rounded-2xl border border-rule bg-void/70 p-4">
+              <div className="rounded-2xl border border-rule bg-panel p-4">
                 <div className="mb-2 text-xs font-medium text-ink-soft">Actual request — status {result.actualStatus}</div>
                 <HeaderList headers={result.actualHeaders} />
               </div>

@@ -81,7 +81,7 @@ function Node({ label, value, depth }: { label: string | null; value: unknown; d
 
 export function JsonTree({ data }: { data: unknown }) {
   return (
-    <div className="overflow-auto rounded-2xl border border-rule bg-void/70 p-4 font-mono text-[13px] leading-relaxed shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
+    <div className="overflow-auto rounded-2xl border border-rule bg-panel p-4 font-mono text-[13px] leading-relaxed shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
       <Node label={null} value={data} depth={0} />
     </div>
   )

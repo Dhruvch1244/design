@@ -50,7 +50,7 @@ export function ImageToolsPage() {
       <ResizablePanel storageKey="image-tools" className="flex flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-3 p-4">
-            <div className="mb-1 flex gap-1 rounded-xl border border-rule bg-void/70 p-1">
+            <div className="mb-1 flex gap-1 rounded-xl border border-rule bg-panel p-1">
               {(['convert', 'enhance'] as const).map((t) => (
                 <button
                   key={t}
@@ -129,13 +129,13 @@ export function ImageToolsPage() {
             <div className="grid h-full grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <SectionLabel>Original</SectionLabel>
-                <div className="flex flex-1 items-center justify-center overflow-hidden rounded-2xl border border-rule bg-void/70 p-2">
+                <div className="flex flex-1 items-center justify-center overflow-hidden rounded-2xl border border-rule bg-panel p-2">
                   {sourceUrl && <img src={sourceUrl} alt="original" className="max-h-full max-w-full object-contain" />}
                 </div>
               </div>
               <div className="flex flex-col gap-2">
                 <SectionLabel>Result</SectionLabel>
-                <div className="flex flex-1 items-center justify-center overflow-hidden rounded-2xl border border-rule bg-void/70 p-2">
+                <div className="flex flex-1 items-center justify-center overflow-hidden rounded-2xl border border-rule bg-panel p-2">
                   {resultUrl ? (
                     <img src={resultUrl} alt="result" className="max-h-full max-w-full object-contain" />
                   ) : (

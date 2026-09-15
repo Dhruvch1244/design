@@ -48,7 +48,7 @@ export function TextArea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <textarea
       spellCheck={false}
-      className="w-full flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-4 font-mono text-[13px] leading-relaxed text-ink shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] outline-none transition-shadow focus:border-cyan/50 focus:shadow-[0_0_0_3px_rgba(47,230,242,0.12)]"
+      className="w-full flex-1 resize-none rounded-2xl border border-rule bg-panel p-4 font-mono text-[13px] leading-relaxed text-ink shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] outline-none transition-shadow focus:border-cyan/50 focus:shadow-[0_0_0_3px_rgba(47,230,242,0.12)]"
       {...props}
     />
   )

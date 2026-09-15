@@ -19,7 +19,7 @@
   --ink: #f2f4f8;
   --ink-soft: #9ba1b0;
   --ink-faint: #5c6274;
-  --rule: rgba(255, 255, 255, 0.08);
+  --rule: rgba(255, 255, 255, 0.18);
   --rule-soft: rgba(255, 255, 255, 0.05);
 
   --cyan: #2fe6f2;
@@ -57,6 +57,16 @@
 
 * {
   box-sizing: border-box;
+}
+
+/* Flex/grid items default to min-height/min-width: auto per spec, which stops them from
+   shrinking below their content size. Inside this app's nested flex-1 panel chains that
+   means an overflowing child gets clipped by an ancestor's overflow-hidden instead of
+   scrolling — the "I can't see everything" bug. Force shrinkability by default; anything
+   that genuinely needs its intrinsic size can override with min-h-0/min-w-0 removed. */
+.flex-1, .flex-auto, .flex-initial, .grid {
+  min-height: 0;
+  min-width: 0;
 }
 
 html, body, #root {
@@ -186,7 +196,7 @@ textarea, pre, code, .font-mono {
   width: 100%;
   border-radius: 0.75rem;
   border: 1px solid var(--rule);
-  background: color-mix(in srgb, var(--void) 70%, transparent);
+  background: var(--panel);
   padding: 0.625rem 0.875rem;
   font-size: 0.875rem;
   line-height: 1.4;

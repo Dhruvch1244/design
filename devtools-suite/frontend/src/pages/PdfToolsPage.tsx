@@ -61,7 +61,7 @@ export function PdfToolsPage() {
       <ResizablePanel storageKey="pdf-tools" className="flex flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-3 p-4">
-            <div className="mb-1 flex gap-1 rounded-xl border border-rule bg-void/70 p-1">
+            <div className="mb-1 flex gap-1 rounded-xl border border-rule bg-panel p-1">
               <button
                 onClick={() => { setTab('to-pdf'); clearResult(); setError(null) }}
                 className={`flex-1 rounded-lg py-1.5 text-[11px] font-medium transition-colors ${tab === 'to-pdf' ? 'bg-glass-strong text-ink' : 'text-ink-faint hover:text-ink-soft'}`}
@@ -165,7 +165,7 @@ export function PdfToolsPage() {
               {tab === 'to-pdf' ? (
                 <iframe src={resultUrl} title="PDF preview" className="w-full flex-1 rounded-2xl border border-rule bg-white" />
               ) : (
-                <div className="flex flex-1 items-center justify-center rounded-2xl border border-rule bg-void/70 text-sm text-ink-soft">
+                <div className="flex flex-1 items-center justify-center rounded-2xl border border-rule bg-panel text-sm text-ink-soft">
                   Pages rendered — download the zip below.
                 </div>
               )}

@@ -40,7 +40,7 @@ export function TopAnalyzerPage() {
               value={before}
               onChange={(e) => setBefore(e.target.value)}
               spellCheck={false}
-              className="flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[11.5px] leading-relaxed text-ink outline-none focus:border-cyan/50"
+              className="flex-1 resize-none rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[11.5px] leading-relaxed text-ink outline-none focus:border-cyan/50"
             />
           </div>
         </Panel>
@@ -52,7 +52,7 @@ export function TopAnalyzerPage() {
                 value={after}
                 onChange={(e) => setAfter(e.target.value)}
                 spellCheck={false}
-                className="flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[11.5px] leading-relaxed text-ink outline-none focus:border-cyan/50"
+                className="flex-1 resize-none rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[11.5px] leading-relaxed text-ink outline-none focus:border-cyan/50"
               />
             </div>
           </Panel>

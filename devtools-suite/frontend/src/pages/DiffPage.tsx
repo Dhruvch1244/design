@@ -21,7 +21,7 @@ export function DiffPage() {
               onChange={(e) => setBefore(e.target.value)}
               spellCheck={false}
               placeholder="Paste the original text…"
-              className="flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-cyan/50"
+              className="flex-1 resize-none rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-cyan/50"
             />
           </div>
         </Panel>
@@ -33,7 +33,7 @@ export function DiffPage() {
               onChange={(e) => setAfter(e.target.value)}
               spellCheck={false}
               placeholder="Paste the changed text…"
-              className="flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-cyan/50"
+              className="flex-1 resize-none rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-cyan/50"
             />
           </div>
         </Panel>
@@ -47,7 +47,7 @@ export function DiffPage() {
             </div>
             <CopyButton text={ops.map((o) => (o.type === 'add' ? '+ ' : o.type === 'remove' ? '- ' : '  ') + o.line).join('\n')} />
           </div>
-          <div className="max-h-72 overflow-auto rounded-2xl border border-rule bg-void/70 font-mono text-[12.5px]">
+          <div className="max-h-72 overflow-auto rounded-2xl border border-rule bg-panel font-mono text-[12.5px]">
             {before === '' && after === '' ? (
               <div className="p-3 text-ink-faint">Paste text in both panes to see the diff.</div>
             ) : (

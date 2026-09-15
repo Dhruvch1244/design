@@ -203,7 +203,7 @@ export function ConnectionDialog({
               </Field>
             </div>
 
-            <div className="flex items-center justify-between rounded-xl border border-rule bg-void/70 px-3.5 py-2.5">
+            <div className="flex items-center justify-between rounded-xl border border-rule bg-panel px-3.5 py-2.5">
               <Toggle checked={form.readOnly} onChange={(v) => setForm({ ...form, readOnly: v })} label="Read-only (blocks INSERT/UPDATE/DELETE/DDL)" />
               <input
                 type="color"

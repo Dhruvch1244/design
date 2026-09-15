@@ -16,6 +16,7 @@ import {
   ListMagnifyingGlass,
   ListNumbers,
   CircleDashed,
+  SidebarSimple,
   Clock,
   MagicWand,
   NotePencil,
@@ -249,6 +250,7 @@ function renderPage(tool: Tool) {
 const SESSION_KEY = 'devtools.session'
 const RECENTS_KEY = 'devtools.recent-tools'
 const MAX_RECENTS = 8
+const SIDEBAR_KEY = 'devtools.sidebar-open'
 
 function loadSession(): { openTabs: Tool[]; activeTab: Tool } {
   try {
@@ -279,6 +281,7 @@ function App() {
   const [activeTab, setActiveTab] = useState<Tool>(initialSession.activeTab)
   const [favourites, setFavourites] = useState<Tool[]>(loadFavourites)
   const [recents, setRecents] = useState<Tool[]>(loadRecents)
+  const [sidebarOpen, setSidebarOpen] = useState(() => localStorage.getItem(SIDEBAR_KEY) !== '0')
 
   useEffect(() => {
     applyTheme(getStoredTheme())
@@ -297,6 +300,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem(RECENTS_KEY, JSON.stringify(recents))
   }, [recents])
+
+  useEffect(() => {
+    localStorage.setItem(SIDEBAR_KEY, sidebarOpen ? '1' : '0')
+  }, [sidebarOpen])
 
   function openTool(id: Tool) {
     setOpenTabs((tabs) => (tabs.includes(id) ? tabs : [...tabs, id]))
@@ -328,6 +335,9 @@ function App() {
       if (e.key.toLowerCase() === 'w') {
         e.preventDefault()
         closeTab(activeTab)
+      } else if (e.key.toLowerCase() === 'b') {
+        e.preventDefault()
+        setSidebarOpen((v) => !v)
       } else if (e.key === ']' || e.key === '[') {
         e.preventDefault()
         const idx = openTabs.indexOf(activeTab)
@@ -350,7 +360,11 @@ function App() {
       <div className="bg-glow" />
       <div className="noise-overlay" />
 
-      <aside className="relative z-10 flex w-60 shrink-0 flex-col border-r border-rule-soft bg-surface">
+      <aside
+        className="relative z-10 flex shrink-0 flex-col overflow-hidden border-r border-rule-soft bg-surface transition-[width] duration-200 ease-out"
+        style={{ width: sidebarOpen ? 240 : 0 }}
+      >
+        <div className="flex w-60 shrink-0 flex-col overflow-hidden">
         <div className="shrink-0 p-3 pb-0">
           <div className="mb-4 flex items-center gap-2 px-2 pt-2">
             <CircleDashed size={18} weight="light" className="text-cyan" />
@@ -397,11 +411,20 @@ function App() {
         <div className="shrink-0 border-t border-rule-soft p-3">
           <SettingsPopover />
         </div>
+        </div>
       </aside>
 
       <main className="relative z-10 flex flex-1 flex-col overflow-hidden p-5">
-        {openTabs.length > 1 && (
-          <div className="mb-3 flex shrink-0 items-center gap-1">
+        <div className="mb-3 flex shrink-0 items-center gap-1">
+          <button
+            onClick={() => setSidebarOpen((v) => !v)}
+            title={`${sidebarOpen ? 'Hide' : 'Show'} sidebar (Alt+B)`}
+            className="shrink-0 rounded-xl p-1.5 text-ink-faint transition-colors hover:bg-glass hover:text-ink"
+          >
+            <SidebarSimple size={16} weight="light" />
+          </button>
+          {openTabs.length > 1 && (
+            <>
             <div className="flex flex-1 items-center gap-1 overflow-x-auto">
               {openTabs.map((id) => {
                 const t = TOOL_DEFS[id]
@@ -448,8 +471,9 @@ function App() {
             >
               Close others
             </button>
-          </div>
-        )}
+            </>
+          )}
+        </div>
 
         <div className="relative flex-1 overflow-hidden">
           {openTabs.map((id) => (

@@ -44,7 +44,7 @@ export function ScratchpadPage() {
 
   return (
     <div className="flex h-full flex-col gap-3">
-      <div className="flex items-center gap-1 overflow-x-auto rounded-2xl border border-rule bg-void/70 p-1.5">
+      <div className="flex items-center gap-1 overflow-x-auto rounded-2xl border border-rule bg-panel p-1.5">
         {tabs.map((t) => (
           <button
             key={t.id}
@@ -86,7 +86,7 @@ export function ScratchpadPage() {
               value={active.content}
               onChange={(e) => update(active.id, { content: e.target.value })}
               spellCheck={false}
-              className="flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-cyan/50"
+              className="flex-1 resize-none rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-cyan/50"
             />
           </div>
         </Panel>

@@ -220,7 +220,7 @@ export function SqlPage() {
               </select>
               <button
                 onClick={() => setConnDialogOpen(true)}
-                className="shrink-0 rounded-xl border border-rule bg-void/70 p-2 text-ink-faint hover:text-cyan"
+                className="shrink-0 rounded-xl border border-rule bg-panel p-2 text-ink-faint hover:text-cyan"
                 title="Manage connections"
               >
                 <Gear size={16} weight="light" />
@@ -237,7 +237,7 @@ export function SqlPage() {
 
         <Panel className="flex flex-1 flex-col overflow-hidden">
           <div className="flex flex-col p-3 pb-0">
-            <div className="mb-2 flex gap-1 rounded-xl border border-rule bg-void/70 p-1">
+            <div className="mb-2 flex gap-1 rounded-xl border border-rule bg-panel p-1">
               {(
                 [
                   ['queries', BookOpen, 'Saved'],
@@ -358,7 +358,7 @@ export function SqlPage() {
             spellCheck={false}
             rows={7}
             placeholder="SELECT * FROM orders WHERE status = :status"
-            className="w-full resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[13px] leading-relaxed text-ink outline-none transition-shadow focus:border-cyan/50 focus:shadow-[0_0_0_3px_rgba(47,230,242,0.12)]"
+            className="w-full resize-none rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[13px] leading-relaxed text-ink outline-none transition-shadow focus:border-cyan/50 focus:shadow-[0_0_0_3px_rgba(47,230,242,0.12)]"
           />
 
           {lintIssues.length > 0 && (
@@ -427,7 +427,7 @@ export function SqlPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   {chartData && (
-                    <div className="mr-1 flex gap-1 rounded-lg border border-rule bg-void/70 p-0.5">
+                    <div className="mr-1 flex gap-1 rounded-lg border border-rule bg-panel p-0.5">
                       {(['table', 'chart'] as const).map((v) => (
                         <button
                           key={v}
@@ -461,7 +461,7 @@ export function SqlPage() {
                   <ResultChart data={chartData} />
                 </div>
               ) : (
-                <div className="flex-1 overflow-auto rounded-2xl border border-rule bg-void/70">
+                <div className="flex-1 overflow-auto rounded-2xl border border-rule bg-panel">
                   <table className="w-full text-left text-[12.5px]">
                     <thead className="sticky top-0 bg-panel">
                       <tr>
@@ -511,7 +511,7 @@ export function SqlPage() {
                 Close
               </Button>
             </div>
-            <div className="flex-1 overflow-auto rounded-2xl border border-rule bg-void/70">
+            <div className="flex-1 overflow-auto rounded-2xl border border-rule bg-panel">
               <table className="w-full text-left text-[12.5px]">
                 <thead className="sticky top-0 bg-panel">
                   <tr>

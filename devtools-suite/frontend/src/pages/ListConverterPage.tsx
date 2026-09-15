@@ -68,7 +68,7 @@ export function ListConverterPage() {
                     <SectionLabel>Quoted — ('a','b','c')</SectionLabel>
                     <CopyButton text={result.quoted} />
                   </div>
-                  <pre className="whitespace-pre-wrap rounded-2xl border border-rule bg-void/70 p-4 font-mono text-[13px] text-ink shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
+                  <pre className="whitespace-pre-wrap rounded-2xl border border-rule bg-panel p-4 font-mono text-[13px] text-ink shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
                     {result.quoted}
                   </pre>
                 </div>
@@ -77,7 +77,7 @@ export function ListConverterPage() {
                     <SectionLabel>Plain — (a,b,c)</SectionLabel>
                     <CopyButton text={result.unquoted} />
                   </div>
-                  <pre className="whitespace-pre-wrap rounded-2xl border border-rule bg-void/70 p-4 font-mono text-[13px] text-ink shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
+                  <pre className="whitespace-pre-wrap rounded-2xl border border-rule bg-panel p-4 font-mono text-[13px] text-ink shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
                     {result.unquoted}
                   </pre>
                 </div>

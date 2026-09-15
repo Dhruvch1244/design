@@ -41,7 +41,7 @@ export function JsonToTsPage() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             spellCheck={false}
-            className="flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[13px] text-ink outline-none focus:border-cyan/50"
+            className="flex-1 resize-none rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[13px] text-ink outline-none focus:border-cyan/50"
           />
         </div>
       </Panel>
@@ -55,7 +55,7 @@ export function JsonToTsPage() {
           {error ? (
             <ErrorBanner message={error} />
           ) : (
-            <pre className="flex-1 overflow-auto rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[13px] leading-relaxed text-ink">
+            <pre className="flex-1 overflow-auto rounded-2xl border border-rule bg-panel p-3.5 font-mono text-[13px] leading-relaxed text-ink">
               {output}
             </pre>
           )}

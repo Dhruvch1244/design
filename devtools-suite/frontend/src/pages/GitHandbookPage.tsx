@@ -24,7 +24,7 @@ export function GitHandbookPage() {
   return (
     <div className="flex h-full flex-col gap-4">
       <div className="flex items-center gap-3">
-        <div className="flex gap-1 rounded-2xl border border-rule bg-void/70 p-1">
+        <div className="flex gap-1 rounded-2xl border border-rule bg-panel p-1">
           {(['reference', 'recipes', 'explain'] as Tab[]).map((t) => (
             <button
               key={t}
@@ -78,7 +78,7 @@ export function GitHandbookPage() {
               {filteredRecipes.map((r, i) => (
                 <div key={i} className="rounded-xl border border-rule-soft bg-white/[0.02] p-3">
                   <div className="mb-1 text-[13px] text-ink-soft">{r.question}</div>
-                  <div className="flex items-center justify-between gap-2 rounded-lg bg-void/70 px-2.5 py-1.5">
+                  <div className="flex items-center justify-between gap-2 rounded-lg bg-panel px-2.5 py-1.5">
                     <span className="font-mono text-[12.5px] text-cyan">{r.command}</span>
                     <CopyButton text={r.command} label="" />
                   </div>
