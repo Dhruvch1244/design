@@ -13,7 +13,7 @@ async function jsonFetch<T>(url: string, method: string, body?: unknown): Promis
   return text ? JSON.parse(text) : (undefined as T)
 }
 
-export type Driver = 'postgresql' | 'mysql' | 'sqlite' | 'h2' | 'sqlserver'
+export type Driver = 'postgresql' | 'mysql' | 'sqlite' | 'h2' | 'sqlserver' | 'oracle'
 
 export const DRIVER_LABELS: Record<Driver, string> = {
   postgresql: 'PostgreSQL',
@@ -21,6 +21,16 @@ export const DRIVER_LABELS: Record<Driver, string> = {
   sqlite: 'SQLite',
   h2: 'H2',
   sqlserver: 'SQL Server',
+  oracle: 'Oracle',
+}
+
+export const DRIVER_URL_EXAMPLES: Record<Driver, string> = {
+  postgresql: 'jdbc:postgresql://host:5432/dbname',
+  mysql: 'jdbc:mysql://host:3306/dbname',
+  sqlite: 'jdbc:sqlite:C:/path/to/file.db',
+  h2: 'jdbc:h2:file:C:/path/to/db',
+  sqlserver: 'jdbc:sqlserver://host:1433;databaseName=dbname',
+  oracle: 'jdbc:oracle:thin:@host:1521:sid  (or @//host:1521/service_name)',
 }
 
 export type DbConnection = {

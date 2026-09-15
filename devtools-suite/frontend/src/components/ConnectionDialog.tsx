@@ -5,6 +5,7 @@ import {
   createConnection,
   deleteConnection,
   DRIVER_LABELS,
+  DRIVER_URL_EXAMPLES,
   listConnections,
   testConnection,
   updateConnection,
@@ -14,7 +15,7 @@ import {
 } from '../lib/sqlApi'
 import { Button, ErrorBanner, Toggle } from './ui'
 
-const DRIVERS: Driver[] = ['postgresql', 'mysql', 'sqlite', 'h2', 'sqlserver']
+const DRIVERS: Driver[] = ['postgresql', 'mysql', 'sqlite', 'h2', 'sqlserver', 'oracle']
 
 const EMPTY: ConnectionRequest = {
   name: '',
@@ -182,10 +183,11 @@ export function ConnectionDialog({
             <Field label="JDBC URL">
               <input
                 className="devtools-input font-mono"
-                placeholder="jdbc:postgresql://localhost:5432/mydb"
+                placeholder={DRIVER_URL_EXAMPLES[form.driver]}
                 value={form.jdbcUrl}
                 onChange={(e) => setForm({ ...form, jdbcUrl: e.target.value })}
               />
+              <div className="mt-1 text-[10.5px] text-ink-faint">e.g. {DRIVER_URL_EXAMPLES[form.driver]}</div>
             </Field>
 
             <div className="grid grid-cols-2 gap-3">

@@ -23,7 +23,8 @@ public class ConnectionService {
             "mysql", "com.mysql.cj.jdbc.Driver",
             "sqlite", "org.sqlite.JDBC",
             "h2", "org.h2.Driver",
-            "sqlserver", "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+            "sqlserver", "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+            "oracle", "oracle.jdbc.OracleDriver"
     );
 
     private final DbConnectionRepository repository;
