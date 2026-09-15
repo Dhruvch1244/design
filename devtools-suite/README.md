@@ -59,7 +59,10 @@ download.
   `(a, b, c)`.
 - **Notes** — nested folder tree, `[[Wiki-link]]` backlinks, markdown editor
   with sanitized live preview, created/last-edited timestamps, export to
-  standalone `.md` or `.html`.
+  standalone `.md` or `.html`. Type `/` for a Notion-style command menu
+  (table, checklist, headings, quote, code block, divider, image upload,
+  link-a-task — inserts a live-status `[[task:ID]]` reference back to Task
+  List), or just paste/drag an image straight into the editor.
 - **Reference Handbook** — Linux command builder, Makefile explainer, and Git
   handbook (categorized commands, "how do I…" recipes) in one tabbed tool.
 - **20 more tools** reachable via the sidebar filter or the Ctrl+K command
