@@ -71,6 +71,14 @@
       <artifactId>pdfbox</artifactId>
       <version>3.0.3</version>
     </dependency>
+
+    <!-- Spring Boot Visualizer: static AST parsing of a local repo's .java sources to find
+         controllers/services/repositories and their dependency edges. No compilation needed. -->
+    <dependency>
+      <groupId>com.github.javaparser</groupId>
+      <artifactId>javaparser-core</artifactId>
+      <version>3.26.2</version>
+    </dependency>
   </dependencies>
 
   <build>

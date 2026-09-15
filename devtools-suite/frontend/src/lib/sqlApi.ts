@@ -53,7 +53,8 @@ export const deleteConnection = (id: number) => jsonFetch<void>(`/api/sql/connec
 export const testConnection = (id: number) => jsonFetch<{ message: string }>(`/api/sql/connections/${id}/test`, 'POST')
 
 export type ColumnInfo = { name: string; type: string; nullable: boolean; primaryKey: boolean }
-export type TableNode = { name: string; type: string; columns: ColumnInfo[] }
+export type ForeignKey = { column: string; referencedTable: string; referencedColumn: string }
+export type TableNode = { name: string; type: string; columns: ColumnInfo[]; foreignKeys: ForeignKey[] }
 export type SchemaNode = { name: string; tables: TableNode[] }
 export const getSchema = (connectionId: number) =>
   jsonFetch<{ schemas: SchemaNode[] }>(`/api/sql/connections/${connectionId}/schema`, 'GET')

@@ -17,6 +17,11 @@ import {
   ListNumbers,
   CircleDashed,
   SidebarSimple,
+  TreeStructure,
+  Table,
+  FlowArrow,
+  GitCommit,
+  SquaresFour,
   Clock,
   MagicWand,
   NotePencil,
@@ -73,12 +78,24 @@ import { PartMergePage } from './pages/PartMergePage'
 import { ImageToolsPage } from './pages/ImageToolsPage'
 import { PdfToolsPage } from './pages/PdfToolsPage'
 import { TaskListPage } from './pages/TaskListPage'
+import { SpringVizPage } from './pages/SpringVizPage'
+import { SqlErDiagramPage } from './pages/SqlErDiagramPage'
+import { CronVisualizerPage } from './pages/CronVisualizerPage'
+import { RegexVisualizerPage } from './pages/RegexVisualizerPage'
+import { GitGraphPage } from './pages/GitGraphPage'
+import { DiskTreemapPage } from './pages/DiskTreemapPage'
 import { SettingsPopover } from './components/SettingsPopover'
 import { CommandPalette, type PaletteItem } from './components/CommandPalette'
 import { applyTheme, getStoredTheme } from './lib/themes'
 import { applyFont, getStoredFont } from './lib/fonts'
 
 type Tool =
+  | 'spring-viz'
+  | 'sql-er'
+  | 'cron-viz'
+  | 'regex-viz'
+  | 'git-graph'
+  | 'disk-treemap'
   | 'image-tools'
   | 'pdf-tools'
   | 'task-list'
@@ -117,6 +134,17 @@ type Tool =
 type ToolDef = { id: Tool; label: string; hint: string; icon: React.ElementType }
 
 const GROUPS: { label: string; tools: ToolDef[] }[] = [
+  {
+    label: 'Visualizers',
+    tools: [
+      { id: 'spring-viz', label: 'Spring Boot Visualizer', hint: 'controllers · services · routes', icon: TreeStructure },
+      { id: 'sql-er', label: 'DB Schema (ER Diagram)', hint: 'tables · foreign keys', icon: Table },
+      { id: 'cron-viz', label: 'Cron Visualizer', hint: 'timeline · weekly heatmap', icon: Clock },
+      { id: 'regex-viz', label: 'Regex Diagram', hint: 'railroad-style breakdown', icon: FlowArrow },
+      { id: 'git-graph', label: 'Git Commit Graph', hint: 'branch & merge visualizer', icon: GitCommit },
+      { id: 'disk-treemap', label: 'Disk Usage Treemap', hint: 'where the space went', icon: SquaresFour },
+    ],
+  },
   {
     label: 'Everyday Tools',
     tools: [
@@ -210,6 +238,12 @@ function loadFavourites(): Tool[] {
 
 function renderPage(tool: Tool) {
   switch (tool) {
+    case 'spring-viz': return <SpringVizPage />
+    case 'sql-er': return <SqlErDiagramPage />
+    case 'cron-viz': return <CronVisualizerPage />
+    case 'regex-viz': return <RegexVisualizerPage />
+    case 'git-graph': return <GitGraphPage />
+    case 'disk-treemap': return <DiskTreemapPage />
     case 'image-tools': return <ImageToolsPage />
     case 'pdf-tools': return <PdfToolsPage />
     case 'task-list': return <TaskListPage />

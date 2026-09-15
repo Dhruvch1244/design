@@ -1,6 +1,7 @@
 package com.dhruv.devtools.sql;
 
 import com.dhruv.devtools.sql.dto.SchemaDto.ColumnInfo;
+import com.dhruv.devtools.sql.dto.SchemaDto.ForeignKey;
 import com.dhruv.devtools.sql.dto.SchemaDto.SchemaNode;
 import com.dhruv.devtools.sql.dto.SchemaDto.SchemaResponse;
 import com.dhruv.devtools.sql.dto.SchemaDto.TableNode;
@@ -53,8 +54,20 @@ public class SchemaIntrospectionService {
                         }
                     }
 
+                    List<ForeignKey> foreignKeys = new ArrayList<>();
+                    try (ResultSet fks = meta.getImportedKeys(null, schema, tableName)) {
+                        while (fks.next()) {
+                            foreignKeys.add(new ForeignKey(
+                                    fks.getString("FKCOLUMN_NAME"),
+                                    fks.getString("PKTABLE_NAME"),
+                                    fks.getString("PKCOLUMN_NAME")));
+                        }
+                    } catch (SQLException ignored) {
+                        // Some drivers/schemas don't expose FK metadata cleanly; skip relationship lines for this table.
+                    }
+
                     tablesBySchema.computeIfAbsent(schema, k -> new ArrayList<>())
-                            .add(new TableNode(tableName, tableType, columns));
+                            .add(new TableNode(tableName, tableType, columns, foreignKeys));
                 }
             }
 

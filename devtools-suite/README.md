@@ -1,10 +1,34 @@
 # Dev Tools Suite
 
-A local, offline dev tools app: everyday Image/PDF tools, 40GB-scale file search,
-SQL Workspace with charting and a plan visualizer, a Task List, Notes with nested
-folders and backlinks, a Git Handbook, and 25+ other tools behind a Ctrl+K command
-palette. Runs entirely on your machine as a single Java process — no external
-services, no telemetry, no internet required after download.
+A local, offline dev tools app: a Spring Boot repo visualizer, DB/regex/cron/git/disk
+visual tools, everyday Image/PDF tools, 40GB-scale file search, SQL Workspace with
+charting and a plan visualizer, a Task List, Notes with nested folders and backlinks,
+a Git Handbook, and 25+ other tools behind a Ctrl+K command palette. Runs entirely on
+your machine as a single Java process — no external services, no telemetry, no
+internet required after download.
+
+## Visualizers
+
+- **Spring Boot Visualizer** — point it at a local Spring Boot project's source root
+  and it statically parses the `.java` files (JavaParser, no compilation) to find
+  `@RestController`/`@Service`/`@Repository`/`@Component` classes, draws a
+  Controller → Service → Repository dependency graph from field/constructor
+  injection, and lists every `@GetMapping`/`@PostMapping`/etc. endpoint as a real URL
+  (reading `server.port` / `server.servlet.context-path` from
+  `application.properties`/`.yml`). Remembers recently analyzed projects.
+- **DB Schema (ER Diagram)** — reuses SQL Workspace's connections; renders every
+  table as a box with its columns (PK/FK marked) and draws foreign-key relationship
+  lines between them.
+- **Cron Visualizer** — paste a 5-field cron expression, get a plain-English
+  description, a weekly hour × day-of-week heatmap of when it fires, and the next 12
+  actual run times.
+- **Regex Diagram** — breaks a pattern into groups, alternation, character classes,
+  and quantifiers and lays it out as a railroad-style flow diagram instead of a wall
+  of escape characters.
+- **Git Commit Graph** — paste the output of one `git log` command and see a real
+  branch/merge graph with lane-colored commit lines, not just a flat list.
+- **Disk Usage Treemap** — scans a local folder and renders a proportional treemap of
+  what's taking up space, click any box to drill into that subfolder.
 
 ## Tools
 
