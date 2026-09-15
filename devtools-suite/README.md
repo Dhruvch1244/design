@@ -82,6 +82,12 @@ run.bat
 This starts `backend/target/devtools-suite.jar` and opens your browser to
 `http://localhost:8383`. Close the "Dev Tools Suite" console window to stop it.
 
+Notes/Tasks/SQL connections & saved queries/history live in an H2 database at
+`%USERPROFILE%\.devtools-suite\` — not next to the jar — so downloading a new
+release (a new extracted folder) never loses your data. If you have an older
+release with `devtools-history.mv.db` sitting next to `run.bat`, the first run
+of a new version copies it into the new location automatically.
+
 ## Building from source
 
 Requires Node.js and Maven in addition to Java 17+.

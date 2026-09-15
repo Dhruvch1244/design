@@ -424,7 +424,7 @@ function App() {
         className="relative z-10 flex shrink-0 flex-col overflow-hidden border-r border-rule-soft bg-surface transition-[width] duration-200 ease-out"
         style={{ width: sidebarOpen ? 240 : 0 }}
       >
-        <div className="flex w-60 shrink-0 flex-col overflow-hidden">
+        <div className="flex h-full w-60 shrink-0 flex-col overflow-hidden">
         <div className="shrink-0 p-3 pb-0">
           <div className="mb-4 flex items-center gap-2 px-2 pt-2">
             <CircleDashed size={18} weight="light" className="text-cyan" />
