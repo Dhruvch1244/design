@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { UploadSimple, DownloadSimple, FilePdf, X } from '@phosphor-icons/react'
 import { imagesToPdf, pdfToImages, triggerDownload } from '../lib/mediaApi'
 import { Button, Panel, SectionLabel, ErrorBanner } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 type Tab = 'to-pdf' | 'from-pdf'
 
@@ -57,7 +58,7 @@ export function PdfToolsPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-96 shrink-0 flex-col gap-3">
+      <ResizablePanel storageKey="pdf-tools" className="flex flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-3 p-4">
             <div className="mb-1 flex gap-1 rounded-xl border border-rule bg-void/70 p-1">
@@ -144,7 +145,7 @@ export function PdfToolsPage() {
             )}
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
       <Panel className="flex flex-1 flex-col overflow-hidden">
         <div className="flex flex-1 flex-col gap-3 p-4">

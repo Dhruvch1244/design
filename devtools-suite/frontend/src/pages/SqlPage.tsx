@@ -42,6 +42,7 @@ import {
 } from '../lib/sqlApi'
 import { Button, CopyButton, ErrorBanner, Panel, SectionLabel } from '../components/ui'
 import { ConnectionDialog } from '../components/ConnectionDialog'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 type Tab = 'queries' | 'schema' | 'runs' | 'samples'
 
@@ -200,7 +201,7 @@ export function SqlPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-96 shrink-0 flex-col gap-4">
+      <ResizablePanel storageKey="sql" className="flex flex-col gap-4">
         <Panel>
           <div className="p-4">
             <SectionLabel>Connection</SectionLabel>
@@ -347,7 +348,7 @@ export function SqlPage() {
             )}
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
       <Panel className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col gap-3 p-4">

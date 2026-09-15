@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { HardDrives, UploadSimple } from '@phosphor-icons/react'
 import { profileCsvPath, profileCsvUpload, type CsvProfileResult } from '../lib/bigdataApi'
 import { Panel, Button, Toggle, ErrorBanner } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 type Mode = 'upload' | 'path'
 
@@ -33,7 +34,7 @@ export function CsvProfilerPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-96 shrink-0 flex-col gap-3">
+      <ResizablePanel storageKey="csv-profiler" className="flex flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-3 p-4">
             <div className="flex gap-1 rounded-xl border border-rule bg-void/70 p-1">
@@ -65,7 +66,7 @@ export function CsvProfilerPage() {
             </Button>
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
       <Panel className="flex flex-1 flex-col overflow-hidden">
         <div className="flex-1 overflow-auto p-4">

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Panel, SectionLabel, Button, ErrorBanner } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 type CorsResult = {
   preflightStatus: number
@@ -39,7 +40,7 @@ export function CorsCheckPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-96 shrink-0 flex-col gap-3">
+      <ResizablePanel storageKey="cors-check" className="flex flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-2 p-4">
             <SectionLabel>Target URL</SectionLabel>
@@ -59,7 +60,7 @@ export function CorsCheckPage() {
             </Button>
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
       <Panel className="flex flex-1 flex-col overflow-hidden">
         <div className="flex-1 overflow-auto p-4">

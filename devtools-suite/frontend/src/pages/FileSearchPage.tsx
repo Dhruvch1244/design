@@ -4,6 +4,7 @@ import { UploadSimple, Copy, FileText, HardDrives } from '@phosphor-icons/react'
 import { searchFile, searchPath, type FileSearchResult } from '../api'
 import { Button, CopyButton, ErrorBanner, Panel, SectionLabel, Toggle } from '../components/ui'
 import { HistoryPanel } from '../components/HistoryPanel'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 const DEFAULT_MAX_MB = 200
 const DEFAULT_MAX_PATH_GB = 40
@@ -64,7 +65,7 @@ export function FileSearchPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-96 shrink-0 flex-col gap-4">
+      <ResizablePanel storageKey="file-search" className="flex flex-col gap-4">
         <Panel>
           <div className="p-4">
             <SectionLabel>File</SectionLabel>
@@ -176,7 +177,7 @@ export function FileSearchPage() {
             <HistoryPanel tool="file-search" refreshKey={refreshKey} onReuse={(input) => setTerms(input)} />
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
       <Panel className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col p-4">

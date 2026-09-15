@@ -17,6 +17,7 @@ import { buildFolderTree } from '../lib/folderTree'
 import { exportNoteAsHtml, exportNoteAsMarkdown, markdownToSafeHtml } from '../lib/export'
 import { FolderTree } from '../components/FolderTree'
 import { Button, Panel, SectionLabel } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 export function NotesPage() {
   const [folders, setFolders] = useState<Folder[]>([])
@@ -114,7 +115,7 @@ export function NotesPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-64 shrink-0 flex-col gap-3">
+      <ResizablePanel storageKey="notes-folders" defaultWidth={256} className="flex flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-2 p-3">
             <div className="flex items-center justify-between px-1">
@@ -132,9 +133,9 @@ export function NotesPage() {
             <FolderTree nodes={tree} selectedId={selectedFolderId} onSelect={setSelectedFolderId} onAddChild={addSubfolder} onDelete={removeFolder} />
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
-      <Panel className="flex w-72 shrink-0 flex-col overflow-hidden">
+      <ResizablePanel storageKey="notes-list" defaultWidth={288}><Panel className="flex h-full flex-col overflow-hidden">
         <div className="flex flex-1 flex-col p-3">
           <div className="mb-2 flex items-center justify-between px-1">
             <SectionLabel>Notes</SectionLabel>
@@ -167,7 +168,7 @@ export function NotesPage() {
             )}
           </div>
         </div>
-      </Panel>
+      </Panel></ResizablePanel>
 
       <Panel className="flex flex-1 flex-col overflow-hidden">
         {!activeNote ? (

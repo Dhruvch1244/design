@@ -12,6 +12,7 @@ import {
 import { Button, CopyButton, ErrorBanner, Panel, SectionLabel, TextArea } from '../components/ui'
 import { JsonTree } from '../components/JsonTree'
 import { HistoryPanel } from '../components/HistoryPanel'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 type Mode = 'json' | 'xml' | 'json-string'
 
@@ -66,7 +67,7 @@ export function JsonXmlPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-96 shrink-0 flex-col gap-4">
+      <ResizablePanel storageKey="json-xml" className="flex flex-col gap-4">
         <Panel>
           <div className="p-4">
             <SectionLabel>Mode</SectionLabel>
@@ -130,7 +131,7 @@ export function JsonXmlPage() {
             <HistoryPanel tool={historyTool} refreshKey={refreshKey} onReuse={setInput} />
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
       <Panel className="flex flex-1 flex-col">
         <div className="flex h-full flex-col gap-3 p-4">

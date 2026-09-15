@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { UploadSimple, DownloadSimple, Image as ImageIcon } from '@phosphor-icons/react'
 import { convertImage, enhanceImage, type ImageFormat } from '../lib/mediaApi'
 import { Button, Panel, SectionLabel, ErrorBanner } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 type Tab = 'convert' | 'enhance'
 
@@ -46,7 +47,7 @@ export function ImageToolsPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-96 shrink-0 flex-col gap-3">
+      <ResizablePanel storageKey="image-tools" className="flex flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-3 p-4">
             <div className="mb-1 flex gap-1 rounded-xl border border-rule bg-void/70 p-1">
@@ -109,7 +110,7 @@ export function ImageToolsPage() {
             </Button>
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
       <Panel className="flex flex-1 flex-col overflow-hidden">
         <div className="flex-1 overflow-auto p-4">

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { UploadSimple } from '@phosphor-icons/react'
 import { inspectJars, type JarInspectResponse } from '../lib/javaApi'
 import { Panel, SectionLabel, Button, ErrorBanner } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 export function JarInspectPage() {
   const [files, setFiles] = useState<File[]>([])
@@ -24,7 +25,7 @@ export function JarInspectPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-96 shrink-0 flex-col gap-3">
+      <ResizablePanel storageKey="jar-inspect" className="flex flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-3 p-4">
             <SectionLabel>JAR files</SectionLabel>
@@ -49,7 +50,7 @@ export function JarInspectPage() {
             </Button>
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
       <Panel className="flex flex-1 flex-col overflow-hidden">
         <div className="flex-1 overflow-auto p-4">

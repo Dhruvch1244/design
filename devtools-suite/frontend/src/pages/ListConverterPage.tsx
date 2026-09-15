@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { convertList, type ListConvertResult } from '../api'
 import { Button, CopyButton, ErrorBanner, Panel, SectionLabel, TextArea } from '../components/ui'
 import { HistoryPanel } from '../components/HistoryPanel'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 export function ListConverterPage() {
   const [input, setInput] = useState('')
@@ -22,7 +23,7 @@ export function ListConverterPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-96 shrink-0 flex-col gap-4">
+      <ResizablePanel storageKey="list-convert" className="flex flex-col gap-4">
         <Panel>
           <div className="p-4">
             <p className="mb-3 text-xs leading-relaxed text-ink-soft">
@@ -38,7 +39,7 @@ export function ListConverterPage() {
             <HistoryPanel tool="list-convert" refreshKey={refreshKey} onReuse={setInput} />
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
       <Panel className="flex flex-1 flex-col">
         <div className="flex h-full flex-col gap-4 p-4">

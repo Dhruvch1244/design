@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Panel, SectionLabel, Button, Toggle, ErrorBanner } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 type MergeResult = { outputPath: string; filesMerged: number; totalBytesWritten: number; mergedFileNames: string[] }
 
@@ -34,7 +35,7 @@ export function PartMergePage() {
 
   return (
     <div className="flex h-full gap-4">
-      <Panel className="w-96 shrink-0">
+      <ResizablePanel storageKey="part-merge"><Panel className="h-full">
         <div className="flex flex-col gap-3 p-4">
           <SectionLabel>Merge Hadoop/Spark part-files into one</SectionLabel>
           <label className="flex flex-col gap-1.5 text-xs text-ink-soft">
@@ -55,7 +56,7 @@ export function PartMergePage() {
             {loading ? 'Merging…' : 'Merge'}
           </Button>
         </div>
-      </Panel>
+      </Panel></ResizablePanel>
 
       <Panel className="flex flex-1 flex-col overflow-hidden">
         <div className="flex-1 overflow-auto p-4">

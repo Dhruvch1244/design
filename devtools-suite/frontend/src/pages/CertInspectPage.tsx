@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { inspectCert, type CertInfo } from '../lib/certApi'
 import { Panel, SectionLabel, Button, ErrorBanner } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 export function CertInspectPage() {
   const [pem, setPem] = useState('')
@@ -23,7 +24,7 @@ export function CertInspectPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <Panel className="flex w-96 shrink-0 flex-col overflow-hidden">
+      <ResizablePanel storageKey="cert-inspect"><Panel className="flex h-full flex-col overflow-hidden">
         <div className="flex flex-1 flex-col gap-3 p-4">
           <SectionLabel>Paste a PEM certificate (or chain)</SectionLabel>
           <textarea
@@ -37,7 +38,7 @@ export function CertInspectPage() {
             {loading ? 'Decoding…' : 'Decode'}
           </Button>
         </div>
-      </Panel>
+      </Panel></ResizablePanel>
 
       <Panel className="flex flex-1 flex-col overflow-hidden">
         <div className="flex-1 overflow-auto p-4">

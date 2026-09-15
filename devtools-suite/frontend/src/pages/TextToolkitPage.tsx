@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Panel, SectionLabel, Button, CopyButton } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 function toCamel(s: string) {
   return s.replace(/[_\s-]+(.)?/g, (_, c) => (c ? c.toUpperCase() : '')).replace(/^(.)/, (c) => c.toLowerCase())
@@ -65,7 +66,7 @@ export function TextToolkitPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-96 shrink-0 flex-col gap-3 overflow-auto">
+      <ResizablePanel storageKey="text-toolkit" className="flex flex-col gap-3 overflow-auto">
         <Panel>
           <div className="flex flex-col gap-2 p-4">
             <SectionLabel>Case</SectionLabel>
@@ -123,7 +124,7 @@ export function TextToolkitPage() {
             <div>{stats.chars} chars ({stats.charsNoSpace} no whitespace)</div>
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
       <Panel className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col p-4">

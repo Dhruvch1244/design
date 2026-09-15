@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { findPathsTo, parseDependencyTree, type DepNode } from '../lib/depTree'
 import { Panel, SectionLabel, ErrorBanner } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 export function DependencyTreePage() {
   const [text, setText] = useState('')
@@ -25,7 +26,7 @@ export function DependencyTreePage() {
 
   return (
     <div className="flex h-full gap-4">
-      <Panel className="flex w-96 shrink-0 flex-col overflow-hidden">
+      <ResizablePanel storageKey="dep-tree"><Panel className="flex h-full flex-col overflow-hidden">
         <div className="flex flex-1 flex-col p-4">
           <SectionLabel>Paste `mvn dependency:tree` or `gradlew dependencies` output</SectionLabel>
           <textarea
@@ -35,7 +36,7 @@ export function DependencyTreePage() {
             className="flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[12px] leading-relaxed text-ink outline-none focus:border-cyan/50"
           />
         </div>
-      </Panel>
+      </Panel></ResizablePanel>
 
       <div className="flex flex-1 flex-col gap-3 overflow-hidden">
         <Panel>

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { isFrameworkNoise, parseStackTrace } from '../lib/stackTrace'
 import { Panel, SectionLabel, Toggle, CopyButton } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 export function StackTracePage() {
   const [text, setText] = useState('')
@@ -14,7 +15,7 @@ export function StackTracePage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-96 shrink-0 flex-col gap-3">
+      <ResizablePanel storageKey="stack-trace" className="flex flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-2 p-4">
             <SectionLabel>Paste stack trace</SectionLabel>
@@ -35,7 +36,7 @@ export function StackTracePage() {
             <Toggle checked={collapseFramework} onChange={setCollapseFramework} label="Collapse framework frames" />
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
       <Panel className="flex flex-1 flex-col overflow-hidden">
         <div className="flex-1 overflow-auto p-4">

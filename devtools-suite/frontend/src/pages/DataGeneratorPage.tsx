@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { fakePerson, nanoid, ulid } from '../lib/generators'
 import { Panel, SectionLabel, Button, CopyButton } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 type Kind = 'uuid' | 'ulid' | 'nanoid' | 'person'
 
@@ -41,7 +42,7 @@ export function DataGeneratorPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-96 shrink-0 flex-col gap-3">
+      <ResizablePanel storageKey="data-gen" className="flex flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-2 p-4">
             <SectionLabel>Type</SectionLabel>
@@ -87,7 +88,7 @@ export function DataGeneratorPage() {
             </Button>
           </div>
         </Panel>
-      </div>
+      </ResizablePanel>
 
       <Panel className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col p-4">

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { buildOrder, parseMakefile, resolveVariable } from '../lib/makefile'
 import { Panel, SectionLabel, ErrorBanner } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 const SAMPLE = `CC = gcc
 CFLAGS := -Wall -O2
@@ -36,7 +37,7 @@ export function MakefilePage() {
 
   return (
     <div className="flex h-full gap-4">
-      <Panel className="flex w-96 shrink-0 flex-col overflow-hidden">
+      <ResizablePanel storageKey="makefile"><Panel className="flex h-full flex-col overflow-hidden">
         <div className="flex flex-1 flex-col p-4">
           <SectionLabel>Paste a Makefile (tabs required for recipe lines)</SectionLabel>
           <textarea
@@ -46,7 +47,7 @@ export function MakefilePage() {
             className="flex-1 resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[12px] leading-relaxed text-ink outline-none focus:border-cyan/50"
           />
         </div>
-      </Panel>
+      </Panel></ResizablePanel>
 
       <div className="flex flex-1 flex-col gap-4 overflow-hidden">
         <Panel>
