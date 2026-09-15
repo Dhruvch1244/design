@@ -2,10 +2,11 @@
 
 A local, offline dev tools app: a Spring Boot repo visualizer, DB/regex/cron/git/disk
 visual tools, everyday Image/PDF tools, 40GB-scale file search, SQL Workspace with
-charting and a plan visualizer, a Task List, Notes with nested folders and backlinks,
-a Git Handbook, and 25+ other tools behind a Ctrl+K command palette. Runs entirely on
-your machine as a single Java process — no external services, no telemetry, no
-internet required after download.
+charting/ER-diagram/plan-visualizer tabs, a Task List, Notes with nested folders and
+backlinks, and 20+ other tools — 33 total, organized into 4 sidebar groups, reachable
+via a sidebar filter or the Ctrl+K command palette. Runs entirely on your machine as a
+single Java process — no external services, no telemetry, no internet required after
+download.
 
 ## Visualizers
 
@@ -59,11 +60,11 @@ internet required after download.
 - **Notes** — nested folder tree, `[[Wiki-link]]` backlinks, markdown editor
   with sanitized live preview, created/last-edited timestamps, export to
   standalone `.md` or `.html`.
-- **Git Handbook** — categorized command reference, "how do I…" recipes, and
-  a flag explainer for common subcommands.
-- **25 more tools** reachable via the sidebar or the Ctrl+K command palette,
-  with favourites (star to pin) and real multi-tab switching that keeps each
-  tool's state alive while you work in another.
+- **Reference Handbook** — Linux command builder, Makefile explainer, and Git
+  handbook (categorized commands, "how do I…" recipes) in one tabbed tool.
+- **20 more tools** reachable via the sidebar filter or the Ctrl+K command
+  palette, with favourites (star to pin) and real multi-tab switching that
+  keeps each tool's state alive while you work in another.
 - **History** — every run is saved locally (embedded H2 file database) per
   tool; click any entry to reload it back into the input.
 - **Appearance** — pick a coding font with real ligatures (JetBrains Mono,

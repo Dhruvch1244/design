@@ -1,6 +1,17 @@
 import { useMemo, useState } from 'react'
-import { describeCron, nextRuns } from '../lib/cron'
+import { describeCron, nextRuns, parseCron } from '../lib/cron'
 import { Panel, SectionLabel, Button, ErrorBanner, CopyButton } from '../components/ui'
+
+const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const CRON_PRESETS = [
+  { label: 'Every minute', expr: '* * * * *' },
+  { label: 'Every 15 min', expr: '*/15 * * * *' },
+  { label: 'Hourly', expr: '0 * * * *' },
+  { label: 'Daily at 2am', expr: '0 2 * * *' },
+  { label: 'Weekdays at 9am', expr: '0 9 * * 1-5' },
+  { label: 'Weekly (Sun midnight)', expr: '0 0 * * 0' },
+  { label: 'Monthly (1st, midnight)', expr: '0 0 1 * *' },
+]
 
 const TIMEZONES = [
   'UTC', 'America/New_York', 'America/Los_Angeles', 'America/Chicago', 'Europe/London',
@@ -44,11 +55,24 @@ export function TimeToolkitPage() {
     return Number.isNaN(a) || Number.isNaN(b) ? null : b - a
   }, [durFrom, durTo])
 
-  const cronRuns = useMemo(() => {
+  const cron = useMemo(() => {
     try {
-      return { runs: nextRuns(cronExpr, 5), error: null as string | null }
+      const spec = parseCron(cronExpr)
+      const grid: boolean[][] = Array.from({ length: 7 }, () => Array(24).fill(false))
+      for (let d = 0; d < 7; d++) {
+        if (!spec.dow.match(d)) continue
+        for (let h = 0; h < 24; h++) {
+          if (!spec.hour.match(h)) continue
+          let active = false
+          for (let m = 0; m < 60 && !active; m++) {
+            if (spec.minute.match(m)) active = true
+          }
+          grid[d][h] = active
+        }
+      }
+      return { description: describeCron(cronExpr), runs: nextRuns(cronExpr, 12), heatmap: grid, error: null as string | null }
     } catch (e) {
-      return { runs: [], error: e instanceof Error ? e.message : 'Invalid cron' }
+      return { description: '', runs: [], heatmap: null, error: e instanceof Error ? e.message : 'Invalid cron expression' }
     }
   }, [cronExpr])
 
@@ -101,31 +125,85 @@ export function TimeToolkitPage() {
         </div>
       </Panel>
 
-      <Panel>
+      <Panel className="col-span-2">
         <div className="flex flex-col gap-3 p-4">
           <SectionLabel>Cron explainer</SectionLabel>
-          <input
-            className="devtools-input font-mono"
-            value={cronExpr}
-            onChange={(e) => setCronExpr(e.target.value)}
-            placeholder="*/15 * * * *"
-          />
-          {cronRuns.error ? (
-            <ErrorBanner message={cronRuns.error} />
+          <div className="flex items-center gap-2">
+            <input
+              className="devtools-input flex-1 font-mono"
+              value={cronExpr}
+              onChange={(e) => setCronExpr(e.target.value)}
+              placeholder="0 9 * * 1-5"
+              spellCheck={false}
+            />
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {CRON_PRESETS.map((p) => (
+              <button
+                key={p.expr}
+                onClick={() => setCronExpr(p.expr)}
+                className={`rounded-full px-2.5 py-1 text-[11px] transition-colors ${
+                  cronExpr === p.expr ? 'bg-glass-strong text-ink' : 'bg-glass text-ink-faint hover:text-ink-soft'
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+
+          {cron.error ? (
+            <ErrorBanner message={cron.error} />
           ) : (
             <>
-              <div className="text-sm text-ink-soft">{describeCron(cronExpr)}</div>
-              <div>
-                <div className="mb-1 flex items-center justify-between text-[10px] uppercase tracking-wide text-ink-faint">
-                  Next 5 runs
-                  <CopyButton text={cronRuns.runs.map((r) => r.toLocaleString()).join('\n')} />
-                </div>
-                <div className="flex flex-col gap-1">
-                  {cronRuns.runs.map((r, i) => (
-                    <div key={i} className="rounded-lg border border-rule-soft bg-white/[0.02] px-2.5 py-1.5 font-mono text-xs text-ink">
-                      {r.toLocaleString()}
+              <div className="text-sm text-ink-soft">{cron.description}</div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <SectionLabel>Weekly pattern (ignoring day-of-month/month)</SectionLabel>
+                  <div className="overflow-x-auto rounded-2xl border border-rule bg-panel p-3">
+                    <div className="flex gap-1">
+                      <div className="flex w-10 shrink-0 flex-col justify-end gap-[3px] pt-[18px]">
+                        {DAY_LABELS.map((d) => (
+                          <div key={d} className="flex h-[14px] items-center text-[9px] text-ink-faint">{d}</div>
+                        ))}
+                      </div>
+                      <div className="flex flex-col gap-[3px]">
+                        <div className="flex gap-[3px]">
+                          {Array.from({ length: 24 }, (_, h) => (
+                            <div key={h} className="w-[14px] shrink-0 text-center text-[8px] text-ink-faint">{h % 3 === 0 ? h : ''}</div>
+                          ))}
+                        </div>
+                        {cron.heatmap!.map((row, d) => (
+                          <div key={d} className="flex gap-[3px]">
+                            {row.map((active, h) => (
+                              <div
+                                key={h}
+                                title={`${DAY_LABELS[d]} ${h}:00`}
+                                className="h-[14px] w-[14px] shrink-0 rounded-sm"
+                                style={{ background: active ? 'var(--cyan)' : 'var(--glass)' }}
+                              />
+                            ))}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="mb-1 flex items-center justify-between">
+                    <SectionLabel>Next 12 runs</SectionLabel>
+                    <CopyButton text={cron.runs.map((r) => r.toLocaleString()).join('\n')} />
+                  </div>
+                  <div className="max-h-48 overflow-auto">
+                    {cron.runs.map((r, i) => (
+                      <div key={i} className="flex items-center gap-3 border-l-2 border-rule-soft py-1.5 pl-3 text-xs">
+                        <span className="-ml-[19px] h-2 w-2 shrink-0 rounded-full bg-cyan" />
+                        <span className="text-ink">{r.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</span>
+                        <span className="font-mono text-ink-soft">{r.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}</span>
+                        {i > 0 && <span className="text-ink-faint">+{Math.round((r.getTime() - cron.runs[i - 1].getTime()) / 60000)}m</span>}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </>

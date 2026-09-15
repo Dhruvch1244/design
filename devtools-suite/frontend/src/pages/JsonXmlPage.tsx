@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { TreeStructure, TextAlignLeft } from '@phosphor-icons/react'
 import {
@@ -9,17 +9,19 @@ import {
   type JsonFormatResult,
   type XmlFormatResult,
 } from '../api'
+import { jsonToTypeScript } from '../lib/jsonToTs'
 import { Button, CopyButton, ErrorBanner, Panel, SectionLabel, TextArea } from '../components/ui'
 import { JsonTree } from '../components/JsonTree'
 import { HistoryPanel } from '../components/HistoryPanel'
 import { ResizablePanel } from '../components/ResizablePanel'
 
-type Mode = 'json' | 'xml' | 'json-string'
+type Mode = 'json' | 'xml' | 'json-string' | 'ts'
 
 const MODE_LABEL: Record<Mode, string> = {
   json: 'JSON formatter',
   xml: 'XML / SOAP formatter',
   'json-string': 'JSON ↔ string',
+  ts: 'JSON → TypeScript',
 }
 
 export function JsonXmlPage() {
@@ -31,8 +33,19 @@ export function JsonXmlPage() {
   const [view, setView] = useState<'tree' | 'text'>('tree')
   const [error, setError] = useState<string | null>(null)
   const [refreshKey, setRefreshKey] = useState(0)
+  const [tsRootName, setTsRootName] = useState('Root')
 
-  const historyTool = mode === 'json' ? 'json-format' : mode === 'xml' ? 'xml-format' : 'json-to-string'
+  const historyTool = mode === 'json' ? 'json-format' : mode === 'xml' ? 'xml-format' : mode === 'json-string' ? 'json-to-string' : 'json-to-ts'
+
+  const tsResult = useMemo(() => {
+    if (mode !== 'ts') return { output: '', error: null as string | null }
+    try {
+      const parsed = JSON.parse(input)
+      return { output: jsonToTypeScript(parsed, tsRootName), error: null as string | null }
+    } catch (e) {
+      return { output: '', error: e instanceof Error ? e.message : 'Invalid JSON' }
+    }
+  }, [mode, input, tsRootName])
 
   async function run() {
     setError(null)
@@ -72,7 +85,7 @@ export function JsonXmlPage() {
           <div className="p-4">
             <SectionLabel>Mode</SectionLabel>
             <div className="relative mb-4 flex flex-col gap-1">
-              {(['json', 'xml', 'json-string'] as Mode[]).map((m) => (
+              {(['json', 'xml', 'json-string', 'ts'] as Mode[]).map((m) => (
                 <button
                   key={m}
                   onClick={() => setMode(m)}
@@ -101,6 +114,16 @@ export function JsonXmlPage() {
                   JSON string → text
                 </Button>
               </div>
+            ) : mode === 'ts' ? (
+              <label className="flex flex-col gap-1.5 text-xs text-ink-soft">
+                Root interface name
+                <input
+                  className="devtools-input"
+                  value={tsRootName}
+                  onChange={(e) => setTsRootName(e.target.value || 'Root')}
+                  placeholder="Root"
+                />
+              </label>
             ) : (
               <Button variant="primary" className="w-full" onClick={run} disabled={!input}>
                 Format
@@ -139,7 +162,7 @@ export function JsonXmlPage() {
           <TextArea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={mode === 'xml' ? '<soap:Envelope>...</soap:Envelope>' : '{"hello":"world"}'}
+            placeholder={mode === 'xml' ? '<soap:Envelope>...</soap:Envelope>' : mode === 'ts' ? '{"id":1,"name":"Ada Lovelace","tags":["math"]}' : '{"hello":"world"}'}
             className="!flex-none h-36"
           />
 
@@ -152,6 +175,7 @@ export function JsonXmlPage() {
               <CopyButton text={(xmlResult?.pretty ?? xmlResult?.fallbackFormatted)!} />
             )}
             {mode === 'json-string' && stringResult?.output && <CopyButton text={stringResult.output} />}
+            {mode === 'ts' && tsResult.output && <CopyButton text={tsResult.output} />}
           </div>
 
           <div className="flex-1 overflow-auto">
@@ -201,6 +225,18 @@ export function JsonXmlPage() {
                   ) : (
                     <pre className="whitespace-pre-wrap rounded-2xl border border-rule bg-panel p-4 font-mono text-[13px] text-ink shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
                       {stringResult.output}
+                    </pre>
+                  )}
+                </motion.div>
+              )}
+
+              {mode === 'ts' && (
+                <motion.div key="ts" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  {tsResult.error ? (
+                    <ErrorBanner message={tsResult.error} />
+                  ) : (
+                    <pre className="whitespace-pre-wrap rounded-2xl border border-rule bg-panel p-4 font-mono text-[13px] leading-relaxed text-ink shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
+                      {tsResult.output}
                     </pre>
                   )}
                 </motion.div>

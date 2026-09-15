@@ -11,11 +11,13 @@ import {
   FloppyDisk,
   Gear,
   Play,
+  ShareNetwork,
   Star,
   Table as TableIcon,
   Trash,
   Warning,
 } from '@phosphor-icons/react'
+import { ErDiagram } from '../components/ErDiagram'
 import { ResultChart } from '../components/ResultChart'
 import { PlanView } from '../components/PlanView'
 import { buildChartData } from '../lib/resultChart'
@@ -48,7 +50,7 @@ import { Button, CopyButton, ErrorBanner, Panel, SectionLabel } from '../compone
 import { ConnectionDialog } from '../components/ConnectionDialog'
 import { ResizablePanel } from '../components/ResizablePanel'
 
-type Tab = 'queries' | 'schema' | 'runs' | 'samples'
+type Tab = 'queries' | 'schema' | 'er-diagram' | 'runs' | 'samples'
 
 export function SqlPage() {
   const [connections, setConnections] = useState<DbConnection[]>([])
@@ -69,6 +71,7 @@ export function SqlPage() {
 
   const [tab, setTab] = useState<Tab>('queries')
   const [schema, setSchema] = useState<SchemaNode[]>([])
+  const [erSchemaName, setErSchemaName] = useState<string | null>(null)
   const [runs, setRuns] = useState<QueryRun[]>([])
   const [samples, setSamples] = useState<SampleOutput[]>([])
   const [sampleView, setSampleView] = useState<{ label: string; columns: string[]; rows: unknown[][] } | null>(null)
@@ -103,10 +106,18 @@ export function SqlPage() {
   }, [])
 
   useEffect(() => {
-    if (tab === 'schema' && connectionId != null) {
-      getSchema(connectionId).then((r) => setSchema(r.schemas)).catch((e) => setError(String(e)))
+    if ((tab === 'schema' || tab === 'er-diagram') && connectionId != null) {
+      getSchema(connectionId)
+        .then((r) => {
+          setSchema(r.schemas)
+          setErSchemaName((prev) => (prev && r.schemas.some((s) => s.name === prev) ? prev : r.schemas[0]?.name ?? null))
+        })
+        .catch((e) => setError(String(e)))
     }
   }, [tab, connectionId])
+
+  const erActiveSchema = useMemo(() => schema.find((s) => s.name === erSchemaName) ?? null, [schema, erSchemaName])
+  const erFkCount = useMemo(() => erActiveSchema?.tables.reduce((n, t) => n + t.foreignKeys.length, 0) ?? 0, [erActiveSchema])
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -248,6 +259,7 @@ export function SqlPage() {
                 [
                   ['queries', BookOpen, 'Saved'],
                   ['schema', Database, 'Schema'],
+                  ['er-diagram', ShareNetwork, 'ER Diagram'],
                   ['runs', Clock, 'History'],
                   ['samples', TableIcon, 'Samples'],
                 ] as const
@@ -308,6 +320,27 @@ export function SqlPage() {
               </div>
             )}
 
+            {tab === 'er-diagram' && (
+              <div className="flex flex-col gap-3 text-xs">
+                {schema.length > 1 && (
+                  <div className="flex flex-col gap-1.5">
+                    <SectionLabel>Schema</SectionLabel>
+                    <select className="devtools-input" value={erSchemaName ?? ''} onChange={(e) => setErSchemaName(e.target.value)}>
+                      {schema.map((s) => (
+                        <option key={s.name} value={s.name}>{s.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                {erActiveSchema && (
+                  <div className="text-[11px] text-ink-faint">
+                    {erActiveSchema.tables.length} tables · {erFkCount} foreign key relationship{erFkCount === 1 ? '' : 's'}
+                  </div>
+                )}
+                {schema.length === 0 && <div className="p-2 text-ink-faint">Pick a connection to see its ER diagram.</div>}
+              </div>
+            )}
+
             {tab === 'runs' && (
               <div className="flex flex-col gap-1.5">
                 {runs.length === 0 && <div className="p-2 text-xs text-ink-faint">No runs yet.</div>}
@@ -346,6 +379,22 @@ export function SqlPage() {
         </Panel>
       </ResizablePanel>
 
+      {tab === 'er-diagram' ? (
+        <Panel className="flex flex-1 flex-col overflow-hidden">
+          {erActiveSchema ? (
+            <div className="flex-1 overflow-hidden">
+              <ErDiagram tables={erActiveSchema.tables} />
+            </div>
+          ) : (
+            <div className="flex h-full items-center justify-center text-sm text-ink-faint">
+              <div className="flex flex-col items-center gap-2">
+                <ShareNetwork size={28} weight="light" />
+                Pick a connection to see its ER diagram.
+              </div>
+            </div>
+          )}
+        </Panel>
+      ) : (
       <Panel className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col gap-3 p-4">
           <textarea
@@ -507,6 +556,7 @@ export function SqlPage() {
           )}
         </div>
       </Panel>
+      )}
 
       <ConnectionDialog open={connDialogOpen} onClose={() => setConnDialogOpen(false)} onChanged={refreshConnections} />
 

@@ -11,7 +11,6 @@ import {
   FileZip,
   GitDiff,
   Globe,
-  Hammer,
   Hash,
   ListMagnifyingGlass,
   ListNumbers,
@@ -20,8 +19,6 @@ import {
   MagnifyingGlass,
   CaretDown,
   TreeStructure,
-  Table,
-  FlowArrow,
   GitCommit,
   SquaresFour,
   Shapes,
@@ -29,14 +26,11 @@ import {
   MagicWand,
   NotePencil,
   Gauge,
-  GitBranch,
   Notebook,
   GitMerge,
   Image,
   FilePdf,
   ListChecks,
-  LinkSimple,
-  SealCheck,
   ShieldCheck,
   Stack,
   Star,
@@ -62,29 +56,21 @@ import { StackTracePage } from './pages/StackTracePage'
 import { DependencyTreePage } from './pages/DependencyTreePage'
 import { SpringConfigPage } from './pages/SpringConfigPage'
 import { JarInspectPage } from './pages/JarInspectPage'
-import { JsonToTsPage } from './pages/JsonToTsPage'
 import { MarblePage } from './pages/MarblePage'
 import { HarAnalyzerPage } from './pages/HarAnalyzerPage'
 import { BundleStatsPage } from './pages/BundleStatsPage'
 import { CorsCheckPage } from './pages/CorsCheckPage'
 import { TopAnalyzerPage } from './pages/TopAnalyzerPage'
-import { LinuxCommandsPage } from './pages/LinuxCommandsPage'
-import { MakefilePage } from './pages/MakefilePage'
+import { ReferenceHandbookPage } from './pages/ReferenceHandbookPage'
 import { NotesPage } from './pages/NotesPage'
-import { GitHandbookPage } from './pages/GitHandbookPage'
 import { AvroSchemaPage } from './pages/AvroSchemaPage'
-import { ArnToolPage } from './pages/ArnToolPage'
-import { IamPolicyPage } from './pages/IamPolicyPage'
-import { CertInspectPage } from './pages/CertInspectPage'
+import { AwsHelpersPage } from './pages/AwsHelpersPage'
 import { CsvProfilerPage } from './pages/CsvProfilerPage'
 import { PartMergePage } from './pages/PartMergePage'
 import { ImageToolsPage } from './pages/ImageToolsPage'
 import { PdfToolsPage } from './pages/PdfToolsPage'
 import { TaskListPage } from './pages/TaskListPage'
 import { SpringVizPage } from './pages/SpringVizPage'
-import { SqlErDiagramPage } from './pages/SqlErDiagramPage'
-import { CronVisualizerPage } from './pages/CronVisualizerPage'
-import { RegexVisualizerPage } from './pages/RegexVisualizerPage'
 import { GitGraphPage } from './pages/GitGraphPage'
 import { DiskTreemapPage } from './pages/DiskTreemapPage'
 import { DiagramStudioPage } from './pages/DiagramStudioPage'
@@ -96,9 +82,6 @@ import { applyFont, getStoredFont } from './lib/fonts'
 type Tool =
   | 'diagram-studio'
   | 'spring-viz'
-  | 'sql-er'
-  | 'cron-viz'
-  | 'regex-viz'
   | 'git-graph'
   | 'disk-treemap'
   | 'image-tools'
@@ -109,6 +92,9 @@ type Tool =
   | 'sql'
   | 'list-convert'
   | 'notes'
+  | 'avro-schema'
+  | 'csv-profiler'
+  | 'part-merge'
   | 'diff'
   | 'encode'
   | 'time'
@@ -120,21 +106,13 @@ type Tool =
   | 'dep-tree'
   | 'spring-config'
   | 'jar-inspect'
-  | 'json-to-ts'
+  | 'top-analyzer'
+  | 'reference-handbook'
   | 'marbles'
   | 'har'
   | 'bundle-stats'
   | 'cors-check'
-  | 'top-analyzer'
-  | 'linux-commands'
-  | 'makefile'
-  | 'git-handbook'
-  | 'avro-schema'
-  | 'arn-tool'
-  | 'iam-policy'
-  | 'cert-inspect'
-  | 'csv-profiler'
-  | 'part-merge'
+  | 'aws-helpers'
 
 type ToolDef = { id: Tool; label: string; hint: string; icon: React.ElementType }
 
@@ -144,85 +122,52 @@ const GROUPS: { label: string; tools: ToolDef[] }[] = [
     tools: [
       { id: 'diagram-studio', label: 'Diagram Studio', hint: 'mermaid code · freeform canvas', icon: Shapes },
       { id: 'spring-viz', label: 'Spring Boot Visualizer', hint: 'controllers · services · routes', icon: TreeStructure },
-      { id: 'sql-er', label: 'DB Schema (ER Diagram)', hint: 'tables · foreign keys', icon: Table },
-      { id: 'cron-viz', label: 'Cron Visualizer', hint: 'timeline · weekly heatmap', icon: Clock },
-      { id: 'regex-viz', label: 'Regex Diagram', hint: 'railroad-style breakdown', icon: FlowArrow },
       { id: 'git-graph', label: 'Git Commit Graph', hint: 'branch & merge visualizer', icon: GitCommit },
       { id: 'disk-treemap', label: 'Disk Usage Treemap', hint: 'where the space went', icon: SquaresFour },
     ],
   },
   {
-    label: 'Everyday Tools',
+    label: 'Everyday & Data Tools',
     tools: [
       { id: 'image-tools', label: 'Image Tools', hint: 'convert · enhance', icon: Image },
       { id: 'pdf-tools', label: 'PDF Converter', hint: 'images ↔ pdf', icon: FilePdf },
       { id: 'task-list', label: 'Task List', hint: 'to-dos with timings', icon: ListChecks },
-    ],
-  },
-  {
-    label: 'Data & Files',
-    tools: [
       { id: 'file-search', label: 'File Search', hint: 'grep any file', icon: ListMagnifyingGlass },
-      { id: 'json-xml', label: 'JSON / XML', hint: 'format & convert', icon: BracketsCurly },
-      { id: 'sql', label: 'SQL Workspace', hint: 'connect · query · save', icon: Database },
+      { id: 'json-xml', label: 'JSON / XML', hint: 'format · convert · → TypeScript', icon: BracketsCurly },
+      { id: 'sql', label: 'SQL Workspace', hint: 'connect · query · ER diagram', icon: Database },
       { id: 'notes', label: 'Notes', hint: 'folders · links · export', icon: Notebook },
       { id: 'list-convert', label: 'List Converter', hint: "a,b,c → ('a','b','c')", icon: ListNumbers },
+      { id: 'avro-schema', label: 'Avro Schema Tool', hint: 'compat check · hive ddl', icon: FileCode },
+      { id: 'csv-profiler', label: 'Delimited File Profiler', hint: 'streams huge CSV/TSV', icon: ChartPieSlice },
+      { id: 'part-merge', label: 'Part-File Merger', hint: 'merge part-* output', icon: GitMerge },
     ],
   },
   {
-    label: 'Text & Data Tools',
+    label: 'Text & Dev Utilities',
     tools: [
       { id: 'diff', label: 'Diff', hint: 'compare two texts', icon: GitDiff },
       { id: 'encode', label: 'Encode / Decode', hint: 'base64 · jwt · hash', icon: Hash },
       { id: 'time', label: 'Time Toolkit', hint: 'epoch · tz · cron', icon: Clock },
-      { id: 'regex', label: 'Regex Lab', hint: 'test & explore', icon: MagicWand },
+      { id: 'regex', label: 'Regex Lab', hint: 'test · diagram', icon: MagicWand },
       { id: 'text', label: 'Text Toolkit', hint: 'case · sort · wrap', icon: TextAa },
       { id: 'data-gen', label: 'Data Generator', hint: 'uuid · ulid · fake data', icon: Fingerprint },
       { id: 'scratchpad', label: 'Scratchpad', hint: 'persistent notes', icon: NotePencil },
     ],
   },
   {
-    label: 'Java & Spring',
+    label: 'Backend, Web & Ops',
     tools: [
       { id: 'stack-trace', label: 'Stack Trace Analyzer', hint: 'collapse the noise', icon: Warning },
       { id: 'dep-tree', label: 'Dependency Tree', hint: 'maven / gradle', icon: Stack },
       { id: 'spring-config', label: 'Spring Config', hint: 'yaml/properties diff', icon: Wrench },
       { id: 'jar-inspect', label: 'JAR Inspector', hint: 'manifest · classes · dupes', icon: FileZip },
-    ],
-  },
-  {
-    label: 'Angular & Frontend',
-    tools: [
-      { id: 'json-to-ts', label: 'JSON → TypeScript', hint: 'generate interfaces', icon: FileCode },
+      { id: 'top-analyzer', label: 'top / ps Analyzer', hint: 'sort · diff snapshots', icon: Gauge },
+      { id: 'reference-handbook', label: 'Reference Handbook', hint: 'linux · makefile · git', icon: Terminal },
       { id: 'marbles', label: 'RxJS Marbles', hint: 'visualize operators', icon: Waveform },
       { id: 'har', label: 'HAR Analyzer', hint: 'waterfall · slow requests', icon: FileText },
       { id: 'bundle-stats', label: 'Bundle Stats', hint: "what's inflating it", icon: ChartBar },
       { id: 'cors-check', label: 'CORS Checker', hint: 'why the preflight failed', icon: Globe },
-    ],
-  },
-  {
-    label: 'Linux & Build',
-    tools: [
-      { id: 'top-analyzer', label: 'top / ps Analyzer', hint: 'sort · diff snapshots', icon: Gauge },
-      { id: 'linux-commands', label: 'Command Builder', hint: 'chmod · flags · explain', icon: Terminal },
-      { id: 'makefile', label: 'Makefile Explainer', hint: 'targets & build order', icon: Hammer },
-      { id: 'git-handbook', label: 'Git Handbook', hint: 'reference · recipes · explain', icon: GitBranch },
-    ],
-  },
-  {
-    label: 'Data Formats',
-    tools: [
-      { id: 'avro-schema', label: 'Avro Schema Tool', hint: 'compat check · hive ddl', icon: Database },
-      { id: 'csv-profiler', label: 'Delimited File Profiler', hint: 'streams huge CSV/TSV', icon: ChartPieSlice },
-      { id: 'part-merge', label: 'Part-File Merger', hint: 'merge part-* output', icon: GitMerge },
-    ],
-  },
-  {
-    label: 'AWS Helpers (offline)',
-    tools: [
-      { id: 'arn-tool', label: 'ARN Parser / Builder', hint: 'no connection needed', icon: LinkSimple },
-      { id: 'iam-policy', label: 'IAM Policy Tool', hint: 'explain · simulate · audit', icon: ShieldCheck },
-      { id: 'cert-inspect', label: 'Cert & Key Inspector', hint: 'PEM/DER · expiry', icon: SealCheck },
+      { id: 'aws-helpers', label: 'AWS Helpers', hint: 'ARN · IAM · certs', icon: ShieldCheck },
     ],
   },
 ]
@@ -246,9 +191,6 @@ function renderPage(tool: Tool) {
   switch (tool) {
     case 'diagram-studio': return <DiagramStudioPage />
     case 'spring-viz': return <SpringVizPage />
-    case 'sql-er': return <SqlErDiagramPage />
-    case 'cron-viz': return <CronVisualizerPage />
-    case 'regex-viz': return <RegexVisualizerPage />
     case 'git-graph': return <GitGraphPage />
     case 'disk-treemap': return <DiskTreemapPage />
     case 'image-tools': return <ImageToolsPage />
@@ -259,6 +201,9 @@ function renderPage(tool: Tool) {
     case 'sql': return <SqlPage />
     case 'list-convert': return <ListConverterPage />
     case 'notes': return <NotesPage />
+    case 'avro-schema': return <AvroSchemaPage />
+    case 'csv-profiler': return <CsvProfilerPage />
+    case 'part-merge': return <PartMergePage />
     case 'diff': return <DiffPage />
     case 'encode': return <EncodeDecodePage />
     case 'time': return <TimeToolkitPage />
@@ -270,21 +215,13 @@ function renderPage(tool: Tool) {
     case 'dep-tree': return <DependencyTreePage />
     case 'spring-config': return <SpringConfigPage />
     case 'jar-inspect': return <JarInspectPage />
-    case 'json-to-ts': return <JsonToTsPage />
+    case 'top-analyzer': return <TopAnalyzerPage />
+    case 'reference-handbook': return <ReferenceHandbookPage />
     case 'marbles': return <MarblePage />
     case 'har': return <HarAnalyzerPage />
     case 'bundle-stats': return <BundleStatsPage />
     case 'cors-check': return <CorsCheckPage />
-    case 'top-analyzer': return <TopAnalyzerPage />
-    case 'linux-commands': return <LinuxCommandsPage />
-    case 'makefile': return <MakefilePage />
-    case 'git-handbook': return <GitHandbookPage />
-    case 'avro-schema': return <AvroSchemaPage />
-    case 'arn-tool': return <ArnToolPage />
-    case 'iam-policy': return <IamPolicyPage />
-    case 'cert-inspect': return <CertInspectPage />
-    case 'csv-profiler': return <CsvProfilerPage />
-    case 'part-merge': return <PartMergePage />
+    case 'aws-helpers': return <AwsHelpersPage />
   }
 }
 
