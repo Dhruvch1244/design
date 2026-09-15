@@ -1,18 +1,25 @@
 # Dev Tools Suite
 
-A local, offline dev tools app: 40GB-scale file search, SQL Workspace, JSON/XML/SOAP
-formatting with a live tree visualizer, a list-to-tuple converter, Notes with nested
-folders and backlinks, a Git Handbook, and 26+ other tools behind a Ctrl+K command
+A local, offline dev tools app: everyday Image/PDF tools, 40GB-scale file search,
+SQL Workspace with charting and a plan visualizer, a Task List, Notes with nested
+folders and backlinks, a Git Handbook, and 25+ other tools behind a Ctrl+K command
 palette. Runs entirely on your machine as a single Java process — no external
 services, no telemetry, no internet required after download.
 
 ## Tools
 
+- **Image Tools** — convert between PNG/JPG/BMP/GIF, or enhance (brightness,
+  contrast, sharpen, resize/upscale). Runs server-side, offline.
+- **PDF Converter** — assemble images into a PDF, or render a PDF's pages back
+  to a zip of images at a chosen DPI.
+- **Task List** — a to-do list that actually times you: records when a task
+  was created, started, and completed, with elapsed duration shown per task.
 - **File Search** — search across files up to 40GB, plain term or regex,
   case-sensitive toggle. Streams line-by-line so large files don't get loaded
   into memory. Copy any single matched line or all matches at once.
-- **SQL Workspace** — run queries against local data with results in a
-  browsable grid.
+- **SQL Workspace** — connect, query, and save results, with an inline linter
+  (missing WHERE, SELECT *, unbounded queries), an auto-generated chart for
+  numeric results, and a visual tree/step view for EXPLAIN plans.
 - **JSON / XML formatter** — pretty-prints valid JSON into a collapsible,
   color-coded tree or raw text. Invalid JSON still gets broken onto readable
   lines with the parse error shown. Same idea for XML/SOAP (XXE-safe DOM parse).
@@ -20,17 +27,19 @@ services, no telemetry, no internet required after download.
 - **List Converter** — paste one item per line, get back `('a', 'b', 'c')` and
   `(a, b, c)`.
 - **Notes** — nested folder tree, `[[Wiki-link]]` backlinks, markdown editor
-  with sanitized live preview, export to standalone `.md` or `.html`.
+  with sanitized live preview, created/last-edited timestamps, export to
+  standalone `.md` or `.html`.
 - **Git Handbook** — categorized command reference, "how do I…" recipes, and
   a flag explainer for common subcommands.
-- **26 more tools** reachable via the sidebar or the Ctrl+K command palette,
+- **25 more tools** reachable via the sidebar or the Ctrl+K command palette,
   with favourites (star to pin) and real multi-tab switching that keeps each
   tool's state alive while you work in another.
 - **History** — every run is saved locally (embedded H2 file database) per
   tool; click any entry to reload it back into the input.
 - **Appearance** — pick a coding font with real ligatures (JetBrains Mono,
-  Fira Code, Victor Mono) and a color theme (Void, Dracula, Nord, Tokyo Night,
-  Gruvbox, Catppuccin, Solarized). Both persist across restarts.
+  Fira Code, Victor Mono) and a color theme, including a Light theme, on top
+  of the existing dark palettes (Void, Dracula, Nord, Tokyo Night, Gruvbox,
+  Catppuccin, Solarized, and more). Both persist across restarts.
 
 ## Running it
 

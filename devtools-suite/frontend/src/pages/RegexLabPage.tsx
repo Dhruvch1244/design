@@ -75,7 +75,7 @@ export function RegexLabPage() {
           <Panel className="flex flex-col overflow-hidden">
             <div className="p-4">
               <SectionLabel>Highlighted ({matches.length} match{matches.length === 1 ? '' : 'es'})</SectionLabel>
-              <div className="max-h-40 overflow-auto whitespace-pre-wrap break-all rounded-2xl border border-rule bg-void/70 p-3 font-mono text-[13px] text-ink">
+              <div className="max-h-64 overflow-auto whitespace-pre-wrap break-all rounded-2xl border border-rule bg-void/70 p-3 font-mono text-[13px] text-ink">
                 {segments.map((s, i) => (
                   <span key={i} className={s.matched ? 'rounded bg-cyan/20 text-cyan' : ''}>
                     {s.text}

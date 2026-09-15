@@ -64,7 +64,7 @@ export function FileSearchPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-72 shrink-0 flex-col gap-4">
+      <div className="flex w-96 shrink-0 flex-col gap-4">
         <Panel>
           <div className="p-4">
             <SectionLabel>File</SectionLabel>
@@ -131,7 +131,7 @@ export function FileSearchPage() {
               value={terms}
               onChange={(e) => setTerms(e.target.value)}
               placeholder={'apple\nbanana\ncherry'}
-              rows={4}
+              rows={6}
               spellCheck={false}
               className="mb-3 w-full resize-none rounded-xl border border-rule bg-void/70 p-2.5 font-mono text-sm text-ink outline-none transition-shadow focus:border-cyan/50 focus:shadow-[0_0_0_3px_rgba(47,230,242,0.12)]"
             />

@@ -65,7 +65,7 @@ export function TextToolkitPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-64 shrink-0 flex-col gap-3 overflow-auto">
+      <div className="flex w-96 shrink-0 flex-col gap-3 overflow-auto">
         <Panel>
           <div className="flex flex-col gap-2 p-4">
             <SectionLabel>Case</SectionLabel>

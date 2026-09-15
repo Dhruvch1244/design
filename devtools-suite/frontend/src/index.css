@@ -14,8 +14,8 @@
   --void: #050506;
   --surface: #0b0c11;
   --panel: #101218;
-  --glass: rgba(255, 255, 255, 0.035);
-  --glass-strong: rgba(255, 255, 255, 0.06);
+  --glass: color-mix(in srgb, var(--ink) 3.5%, transparent);
+  --glass-strong: color-mix(in srgb, var(--ink) 6.5%, transparent);
   --ink: #f2f4f8;
   --ink-soft: #9ba1b0;
   --ink-faint: #5c6274;
@@ -187,8 +187,9 @@ textarea, pre, code, .font-mono {
   border-radius: 0.75rem;
   border: 1px solid var(--rule);
   background: color-mix(in srgb, var(--void) 70%, transparent);
-  padding: 0.5rem 0.75rem;
-  font-size: 0.8125rem;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
   color: var(--ink);
   outline: none;
   transition: box-shadow 0.15s, border-color 0.15s;

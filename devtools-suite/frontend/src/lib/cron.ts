@@ -9,7 +9,7 @@ type FieldSpec = { match: (value: number) => boolean }
 
 function parseField(field: string, min: number, max: number): FieldSpec {
   const matchers = field.split(',').map((part) => {
-    if (part === '*') return (v: number) => true
+    if (part === '*') return () => true
     const [range, stepStr] = part.split('/')
     const step = stepStr ? parseInt(stepStr, 10) : 1
     let lo = min, hi = max

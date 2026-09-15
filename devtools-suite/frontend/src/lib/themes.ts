@@ -18,10 +18,23 @@ export type Theme = {
   id: string
   name: string
   swatch: [string, string, string]
+  scheme?: 'light' | 'dark'
   colors: ThemeColors
 }
 
 export const THEMES: Theme[] = [
+  {
+    id: 'light',
+    name: 'Light',
+    swatch: ['#ffffff', '#0891b2', '#7c3aed'],
+    scheme: 'light',
+    colors: {
+      void: '#eef0f4', surface: '#ffffff', panel: '#f5f6f9',
+      ink: '#1a1d29', inkSoft: '#4b5163', inkFaint: '#8b90a0',
+      rule: 'rgba(20,22,30,0.12)', ruleSoft: 'rgba(20,22,30,0.06)',
+      cyan: '#0891b2', emerald: '#059669', rose: '#e11d48', warm: '#b45309', violet: '#7c3aed',
+    },
+  },
   {
     id: 'void',
     name: 'Void',
@@ -154,15 +167,18 @@ const VAR_MAP: Record<keyof ThemeColors, string> = {
 
 const STORAGE_KEY = 'devtools.theme'
 
+const DEFAULT_THEME_ID = 'void'
+
 export function applyTheme(id: string) {
-  const theme = THEMES.find((t) => t.id === id) ?? THEMES[0]
+  const theme = THEMES.find((t) => t.id === id) ?? THEMES.find((t) => t.id === DEFAULT_THEME_ID) ?? THEMES[0]
   const root = document.documentElement.style
   for (const key of Object.keys(theme.colors) as (keyof ThemeColors)[]) {
     root.setProperty(VAR_MAP[key], theme.colors[key])
   }
+  root.setProperty('color-scheme', theme.scheme ?? 'dark')
   localStorage.setItem(STORAGE_KEY, theme.id)
 }
 
 export function getStoredTheme(): string {
-  return localStorage.getItem(STORAGE_KEY) ?? THEMES[0].id
+  return localStorage.getItem(STORAGE_KEY) ?? DEFAULT_THEME_ID
 }

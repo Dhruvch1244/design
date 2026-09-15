@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   BookOpen,
+  ChartBar,
   Clock,
   Database,
   FloppyDisk,
@@ -10,7 +11,13 @@ import {
   Star,
   Table as TableIcon,
   Trash,
+  Warning,
 } from '@phosphor-icons/react'
+import { ResultChart } from '../components/ResultChart'
+import { PlanView } from '../components/PlanView'
+import { buildChartData } from '../lib/resultChart'
+import { parseExplainPlan } from '../lib/sqlPlan'
+import { lintSql, type LintIssue } from '../lib/sqlLint'
 import {
   createSavedQuery,
   deleteSavedQuery,
@@ -33,7 +40,7 @@ import {
   type SampleOutput,
   type SchemaNode,
 } from '../lib/sqlApi'
-import { Button, CopyButton, ErrorBanner, Panel, SectionLabel, Toggle } from '../components/ui'
+import { Button, CopyButton, ErrorBanner, Panel, SectionLabel } from '../components/ui'
 import { ConnectionDialog } from '../components/ConnectionDialog'
 
 type Tab = 'queries' | 'schema' | 'runs' | 'samples'
@@ -60,8 +67,21 @@ export function SqlPage() {
   const [runs, setRuns] = useState<QueryRun[]>([])
   const [samples, setSamples] = useState<SampleOutput[]>([])
   const [sampleView, setSampleView] = useState<{ label: string; columns: string[]; rows: unknown[][] } | null>(null)
+  const [resultView, setResultView] = useState<'table' | 'chart'>('table')
 
   const activeConnection = useMemo(() => connections.find((c) => c.id === connectionId) ?? null, [connections, connectionId])
+
+  const lintIssues: LintIssue[] = useMemo(
+    () => lintSql(sql, { readOnlyConnection: activeConnection?.readOnly }),
+    [sql, activeConnection?.readOnly]
+  )
+
+  const chartData = useMemo(
+    () => (result && result.statementType !== 'EXPLAIN' ? buildChartData(result.columns, result.rows) : null),
+    [result]
+  )
+
+  const plan = useMemo(() => (result ? parseExplainPlan(result) : null), [result])
 
   function refreshConnections() {
     listConnections().then((list) => {
@@ -180,7 +200,7 @@ export function SqlPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-72 shrink-0 flex-col gap-4">
+      <div className="flex w-96 shrink-0 flex-col gap-4">
         <Panel>
           <div className="p-4">
             <SectionLabel>Connection</SectionLabel>
@@ -340,6 +360,24 @@ export function SqlPage() {
             className="w-full resize-none rounded-2xl border border-rule bg-void/70 p-3.5 font-mono text-[13px] leading-relaxed text-ink outline-none transition-shadow focus:border-cyan/50 focus:shadow-[0_0_0_3px_rgba(47,230,242,0.12)]"
           />
 
+          {lintIssues.length > 0 && (
+            <div className="flex flex-col gap-1">
+              {lintIssues.map((issue, i) => (
+                <div
+                  key={i}
+                  className={`flex items-start gap-1.5 rounded-lg px-2.5 py-1.5 text-[11.5px] ${
+                    issue.severity === 'error' ? 'bg-rose/[0.08] text-rose' : 'bg-warm/[0.08] text-warm'
+                  }`}
+                >
+                  <Warning size={13} weight="fill" className="mt-0.5 shrink-0" />
+                  <span>
+                    <span className="font-mono opacity-70">L{issue.line}</span> {issue.message}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+
           {paramNames.length > 0 && (
             <div className="flex flex-wrap items-center gap-2">
               {paramNames.map((name) => (
@@ -386,7 +424,23 @@ export function SqlPage() {
                   <span className="font-semibold text-ink">{result.rowCount}</span> rows
                   {result.truncated && ' (truncated)'} · {result.durationMs}ms · {result.statementType}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
+                  {chartData && (
+                    <div className="mr-1 flex gap-1 rounded-lg border border-rule bg-void/70 p-0.5">
+                      {(['table', 'chart'] as const).map((v) => (
+                        <button
+                          key={v}
+                          onClick={() => setResultView(v)}
+                          className={`flex items-center gap-1 rounded-md px-2 py-0.5 text-[10.5px] capitalize transition-colors ${
+                            resultView === v ? 'bg-glass-strong text-ink' : 'text-ink-faint hover:text-ink-soft'
+                          }`}
+                        >
+                          {v === 'chart' && <ChartBar size={11} weight="light" />}
+                          {v}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                   <Button variant="ghost" onClick={() => saveResultAsSample('first100')}>
                     Save first 100
                   </Button>
@@ -397,30 +451,40 @@ export function SqlPage() {
                 </div>
               </div>
 
-              <div className="flex-1 overflow-auto rounded-2xl border border-rule bg-void/70">
-                <table className="w-full text-left text-[12.5px]">
-                  <thead className="sticky top-0 bg-panel">
-                    <tr>
-                      {result.columns.map((c) => (
-                        <th key={c} className="border-b border-rule px-3 py-2 font-medium text-ink-faint">
-                          {c}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {result.rows.map((row, i) => (
-                      <tr key={i} className="border-b border-rule-soft hover:bg-white/[0.02]">
-                        {row.map((cell, j) => (
-                          <td key={j} className="whitespace-pre-wrap break-all px-3 py-1.5 font-mono text-ink">
-                            {cell === null ? <span className="italic text-ink-faint">NULL</span> : String(cell)}
-                          </td>
+              {plan ? (
+                <div className="flex-1 overflow-auto">
+                  <PlanView plan={plan} />
+                </div>
+              ) : chartData && resultView === 'chart' ? (
+                <div className="flex-1 overflow-auto">
+                  <ResultChart data={chartData} />
+                </div>
+              ) : (
+                <div className="flex-1 overflow-auto rounded-2xl border border-rule bg-void/70">
+                  <table className="w-full text-left text-[12.5px]">
+                    <thead className="sticky top-0 bg-panel">
+                      <tr>
+                        {result.columns.map((c) => (
+                          <th key={c} className="border-b border-rule px-3 py-2 font-medium text-ink-faint">
+                            {c}
+                          </th>
                         ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {result.rows.map((row, i) => (
+                        <tr key={i} className="border-b border-rule-soft hover:bg-white/[0.02]">
+                          {row.map((cell, j) => (
+                            <td key={j} className="whitespace-pre-wrap break-all px-3 py-1.5 font-mono text-ink">
+                              {cell === null ? <span className="italic text-ink-faint">NULL</span> : String(cell)}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </motion.div>
           )}
 

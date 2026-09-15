@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { UploadSimple } from '@phosphor-icons/react'
 import { extractAssets } from '../lib/bundleStats'
-import { Panel, SectionLabel, ErrorBanner } from '../components/ui'
+import { Panel, ErrorBanner } from '../components/ui'
 
 function formatBytes(n: number): string {
   if (n > 1024 * 1024) return `${(n / 1024 / 1024).toFixed(2)} MB`

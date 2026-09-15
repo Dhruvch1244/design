@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { UploadSimple } from '@phosphor-icons/react'
 import { harSummary, parseHar, type HarRequest } from '../lib/har'
-import { Panel, SectionLabel, ErrorBanner } from '../components/ui'
+import { Panel, ErrorBanner } from '../components/ui'
 
 export function HarAnalyzerPage() {
   const [text, setText] = useState('')

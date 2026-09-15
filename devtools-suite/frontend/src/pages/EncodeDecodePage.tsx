@@ -178,7 +178,7 @@ function JwtDecoder() {
         <Panel className="flex flex-col overflow-hidden">
           <div className="p-4">
             <SectionLabel>Header</SectionLabel>
-            <pre className="max-h-32 overflow-auto rounded-2xl border border-rule bg-void/70 p-3 font-mono text-[12.5px] text-ink">
+            <pre className="max-h-48 overflow-auto rounded-2xl border border-rule bg-void/70 p-3 font-mono text-[12.5px] text-ink">
               {header ? JSON.stringify(header, null, 2) : '—'}
             </pre>
           </div>

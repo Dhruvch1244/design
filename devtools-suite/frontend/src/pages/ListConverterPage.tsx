@@ -22,7 +22,7 @@ export function ListConverterPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-64 shrink-0 flex-col gap-4">
+      <div className="flex w-96 shrink-0 flex-col gap-4">
         <Panel>
           <div className="p-4">
             <p className="mb-3 text-xs leading-relaxed text-ink-soft">

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { HardDrives, UploadSimple } from '@phosphor-icons/react'
 import { profileCsvPath, profileCsvUpload, type CsvProfileResult } from '../lib/bigdataApi'
-import { Panel, SectionLabel, Button, Toggle, ErrorBanner } from '../components/ui'
+import { Panel, Button, Toggle, ErrorBanner } from '../components/ui'
 
 type Mode = 'upload' | 'path'
 
@@ -33,7 +33,7 @@ export function CsvProfilerPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-72 shrink-0 flex-col gap-3">
+      <div className="flex w-96 shrink-0 flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-3 p-4">
             <div className="flex gap-1 rounded-xl border border-rule bg-void/70 p-1">

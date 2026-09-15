@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { DownloadSimple, FileCode as FileCodeIcon, Note as NoteIcon, Plus, Star, Trash } from '@phosphor-icons/react'
 import {
   createFolder,
@@ -29,6 +29,8 @@ export function NotesPage() {
   const [backlinks, setBacklinks] = useState<Note[]>([])
   const [preview, setPreview] = useState(true)
   const [saveTimer, setSaveTimer] = useState<ReturnType<typeof setTimeout> | null>(null)
+  const [justCreatedId, setJustCreatedId] = useState<number | null>(null)
+  const titleInputRef = useRef<HTMLInputElement>(null)
 
   const refreshFolders = () => listFolders().then(setFolders)
   const refreshNotes = () => listNotes(selectedFolderId ?? undefined).then(setNotes)
@@ -49,6 +51,13 @@ export function NotesPage() {
       setDraftBody(activeNote.body)
       setDraftTags(activeNote.tags ?? '')
       getBacklinks(activeNote.id).then(setBacklinks)
+      if (activeNote.id === justCreatedId) {
+        requestAnimationFrame(() => {
+          titleInputRef.current?.focus()
+          titleInputRef.current?.select()
+        })
+        setJustCreatedId(null)
+      }
     } else {
       setBacklinks([])
     }
@@ -56,10 +65,12 @@ export function NotesPage() {
 
   function scheduleSave(title: string, body: string, tags: string) {
     if (!activeNote) return
+    // Optimistic: reflect the rename in the sidebar immediately instead of waiting on the debounced save.
+    setNotes((prev) => prev.map((n) => (n.id === activeNote.id ? { ...n, title, body, tags } : n)))
     if (saveTimer) clearTimeout(saveTimer)
     const t = setTimeout(async () => {
-      await updateNote(activeNote.id, { folderId: activeNote.folderId, title, body, tags, favourite: activeNote.favourite })
-      refreshNotes()
+      const saved = await updateNote(activeNote.id, { folderId: activeNote.folderId, title, body, tags, favourite: activeNote.favourite })
+      setNotes((prev) => prev.map((n) => (n.id === saved.id ? saved : n)))
     }, 500)
     setSaveTimer(t)
   }
@@ -67,6 +78,7 @@ export function NotesPage() {
   async function newNote() {
     const note = await createNote({ folderId: selectedFolderId, title: 'Untitled', body: '', tags: '', favourite: false })
     await refreshNotes()
+    setJustCreatedId(note.id)
     setActiveNoteId(note.id)
   }
 
@@ -102,7 +114,7 @@ export function NotesPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-56 shrink-0 flex-col gap-3">
+      <div className="flex w-64 shrink-0 flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-2 p-3">
             <div className="flex items-center justify-between px-1">
@@ -122,7 +134,7 @@ export function NotesPage() {
         </Panel>
       </div>
 
-      <Panel className="flex w-64 shrink-0 flex-col overflow-hidden">
+      <Panel className="flex w-72 shrink-0 flex-col overflow-hidden">
         <div className="flex flex-1 flex-col p-3">
           <div className="mb-2 flex items-center justify-between px-1">
             <SectionLabel>Notes</SectionLabel>
@@ -167,8 +179,9 @@ export function NotesPage() {
           </div>
         ) : (
           <div className="flex h-full flex-col p-4">
-            <div className="mb-2 flex items-center gap-2">
+            <div className="mb-1 flex items-center gap-2">
               <input
+                ref={titleInputRef}
                 value={draftTitle}
                 onChange={(e) => {
                   setDraftTitle(e.target.value)
@@ -189,6 +202,10 @@ export function NotesPage() {
               <Button variant="ghost" onClick={() => exportNoteAsHtml(activeNote)}>
                 <DownloadSimple size={13} weight="light" /> .html
               </Button>
+            </div>
+
+            <div className="mb-2 text-[10.5px] text-ink-faint">
+              Started {formatTimestamp(activeNote.createdAt)} · Last edited {formatTimestamp(activeNote.updatedAt)}
             </div>
 
             <input
@@ -246,6 +263,14 @@ export function NotesPage() {
       </Panel>
     </div>
   )
+}
+
+function formatTimestamp(iso: string): string {
+  const d = new Date(iso)
+  const now = new Date()
+  const sameDay = d.toDateString() === now.toDateString()
+  const time = d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })
+  return sameDay ? `today at ${time}` : `${d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} at ${time}`
 }
 
 /** Renders markdown, then turns [[Title]] into a clickable pill (handled via the container's onClick + data attribute). */

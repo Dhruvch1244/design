@@ -24,7 +24,7 @@ export function JarInspectPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <div className="flex w-72 shrink-0 flex-col gap-3">
+      <div className="flex w-96 shrink-0 flex-col gap-3">
         <Panel>
           <div className="flex flex-col gap-3 p-4">
             <SectionLabel>JAR files</SectionLabel>

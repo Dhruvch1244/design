@@ -3,9 +3,7 @@ import { motion } from 'framer-motion'
 import {
   BracketsCurly,
   ChartBar,
-  ChartLineUp,
   ChartPieSlice,
-  Cloud,
   Database,
   Fingerprint,
   FileCode,
@@ -25,12 +23,14 @@ import {
   GitBranch,
   Notebook,
   GitMerge,
+  Image,
+  FilePdf,
+  ListChecks,
   LinkSimple,
   SealCheck,
   ShieldCheck,
   Stack,
   Star,
-  Table,
   Terminal,
   TextAa,
   Warning,
@@ -63,21 +63,24 @@ import { LinuxCommandsPage } from './pages/LinuxCommandsPage'
 import { MakefilePage } from './pages/MakefilePage'
 import { NotesPage } from './pages/NotesPage'
 import { GitHandbookPage } from './pages/GitHandbookPage'
-import { SparkPlanPage } from './pages/SparkPlanPage'
 import { AvroSchemaPage } from './pages/AvroSchemaPage'
-import { HiveDdlDiffPage } from './pages/HiveDdlDiffPage'
 import { ArnToolPage } from './pages/ArnToolPage'
 import { IamPolicyPage } from './pages/IamPolicyPage'
 import { CertInspectPage } from './pages/CertInspectPage'
 import { CsvProfilerPage } from './pages/CsvProfilerPage'
 import { PartMergePage } from './pages/PartMergePage'
-import { YarnInspectorPage } from './pages/YarnInspectorPage'
+import { ImageToolsPage } from './pages/ImageToolsPage'
+import { PdfToolsPage } from './pages/PdfToolsPage'
+import { TaskListPage } from './pages/TaskListPage'
 import { SettingsPopover } from './components/SettingsPopover'
 import { CommandPalette, type PaletteItem } from './components/CommandPalette'
 import { applyTheme, getStoredTheme } from './lib/themes'
 import { applyFont, getStoredFont } from './lib/fonts'
 
 type Tool =
+  | 'image-tools'
+  | 'pdf-tools'
+  | 'task-list'
   | 'file-search'
   | 'json-xml'
   | 'sql'
@@ -103,19 +106,24 @@ type Tool =
   | 'linux-commands'
   | 'makefile'
   | 'git-handbook'
-  | 'spark-plan'
   | 'avro-schema'
-  | 'hive-ddl-diff'
   | 'arn-tool'
   | 'iam-policy'
   | 'cert-inspect'
   | 'csv-profiler'
   | 'part-merge'
-  | 'yarn-inspector'
 
 type ToolDef = { id: Tool; label: string; hint: string; icon: React.ElementType }
 
 const GROUPS: { label: string; tools: ToolDef[] }[] = [
+  {
+    label: 'Everyday Tools',
+    tools: [
+      { id: 'image-tools', label: 'Image Tools', hint: 'convert · enhance', icon: Image },
+      { id: 'pdf-tools', label: 'PDF Converter', hint: 'images ↔ pdf', icon: FilePdf },
+      { id: 'task-list', label: 'Task List', hint: 'to-dos with timings', icon: ListChecks },
+    ],
+  },
   {
     label: 'Data & Files',
     tools: [
@@ -167,14 +175,11 @@ const GROUPS: { label: string; tools: ToolDef[] }[] = [
     ],
   },
   {
-    label: 'Big Data',
+    label: 'Data Formats',
     tools: [
-      { id: 'spark-plan', label: 'Spark Plan Explainer', hint: 'shuffles · broadcasts', icon: ChartLineUp },
       { id: 'avro-schema', label: 'Avro Schema Tool', hint: 'compat check · hive ddl', icon: Database },
-      { id: 'hive-ddl-diff', label: 'Hive DDL Diff', hint: 'compare two CREATE TABLEs', icon: Table },
       { id: 'csv-profiler', label: 'Delimited File Profiler', hint: 'streams huge CSV/TSV', icon: ChartPieSlice },
       { id: 'part-merge', label: 'Part-File Merger', hint: 'merge part-* output', icon: GitMerge },
-      { id: 'yarn-inspector', label: 'YARN Inspector', hint: 'offline or live RM', icon: Cloud },
     ],
   },
   {
@@ -204,6 +209,9 @@ function loadFavourites(): Tool[] {
 
 function renderPage(tool: Tool) {
   switch (tool) {
+    case 'image-tools': return <ImageToolsPage />
+    case 'pdf-tools': return <PdfToolsPage />
+    case 'task-list': return <TaskListPage />
     case 'file-search': return <FileSearchPage />
     case 'json-xml': return <JsonXmlPage />
     case 'sql': return <SqlPage />
@@ -229,15 +237,12 @@ function renderPage(tool: Tool) {
     case 'linux-commands': return <LinuxCommandsPage />
     case 'makefile': return <MakefilePage />
     case 'git-handbook': return <GitHandbookPage />
-    case 'spark-plan': return <SparkPlanPage />
     case 'avro-schema': return <AvroSchemaPage />
-    case 'hive-ddl-diff': return <HiveDdlDiffPage />
     case 'arn-tool': return <ArnToolPage />
     case 'iam-policy': return <IamPolicyPage />
     case 'cert-inspect': return <CertInspectPage />
     case 'csv-profiler': return <CsvProfilerPage />
     case 'part-merge': return <PartMergePage />
-    case 'yarn-inspector': return <YarnInspectorPage />
   }
 }
 
@@ -409,7 +414,7 @@ function App() {
                     onClick={() => setActiveTab(id)}
                     title="Alt+] / Alt+[ to cycle tabs, Alt+W to close"
                     className={`group flex shrink-0 items-center gap-2 rounded-xl px-3 py-1.5 text-xs transition-colors ${
-                      active ? 'bg-white/[0.08] text-ink' : 'text-ink-faint hover:bg-white/[0.04] hover:text-ink-soft'
+                      active ? 'bg-glass-strong text-ink' : 'text-ink-faint hover:bg-glass hover:text-ink-soft'
                     }`}
                   >
                     <Icon size={13} weight="light" className={active ? 'text-cyan' : ''} />
@@ -438,7 +443,7 @@ function App() {
             </div>
             <button
               onClick={() => setOpenTabs([activeTab])}
-              className="shrink-0 whitespace-nowrap rounded-xl px-2.5 py-1.5 text-[11px] text-ink-faint transition-colors hover:bg-white/[0.04] hover:text-ink-soft"
+              className="shrink-0 whitespace-nowrap rounded-xl px-2.5 py-1.5 text-[11px] text-ink-faint transition-colors hover:bg-glass hover:text-ink-soft"
               title="Close all other tabs"
             >
               Close others
@@ -484,7 +489,7 @@ function NavRow({
         <motion.div
           layoutId="nav-active"
           transition={{ type: 'spring', stiffness: 400, damping: 32 }}
-          className="absolute inset-0 rounded-2xl bg-white/[0.06] ring-1 ring-white/[0.08]"
+          className="absolute inset-0 rounded-2xl bg-glass-strong ring-1 ring-glass-strong"
         />
       )}
       <button onClick={() => onOpen(tool.id)} className="relative flex w-full items-center gap-2.5 px-3 py-2.5 text-left">
