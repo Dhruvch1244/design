@@ -42,7 +42,8 @@ export function TaskListPage() {
     refresh()
   }
 
-  async function remove(id: number) {
+  async function remove(id: number, title: string) {
+    if (!window.confirm(`Delete task "${title}"? This can't be undone.`)) return
     await deleteTask(id)
     refresh()
   }
@@ -79,7 +80,7 @@ export function TaskListPage() {
               <div key={status} className="flex flex-col gap-1.5">
                 <SectionLabel>{label} ({items.length})</SectionLabel>
                 {items.map((t) => (
-                  <div key={t.id} className="group flex items-start gap-2.5 rounded-xl border border-rule-soft bg-white/[0.02] px-3 py-2.5">
+                  <div key={t.id} className="group flex items-start gap-2.5 rounded-xl border border-rule-soft bg-glass px-3 py-2.5">
                     <button onClick={() => cycleStatus(t)} className="mt-0.5 shrink-0 text-ink-faint hover:text-cyan">
                       <StatusIcon status={t.status} />
                     </button>
@@ -105,7 +106,7 @@ export function TaskListPage() {
                       <div className="text-[10.5px] text-ink-faint">{timingLine(t)}</div>
                     </div>
 
-                    <button onClick={() => remove(t.id)} className="shrink-0 text-ink-faint opacity-0 transition-opacity hover:text-rose group-hover:opacity-100">
+                    <button onClick={() => remove(t.id, t.title)} className="shrink-0 text-ink-faint opacity-0 transition-opacity hover:text-rose group-hover:opacity-100">
                       <Trash size={13} weight="light" />
                     </button>
                   </div>

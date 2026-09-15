@@ -1,6 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { ArrowCounterClockwise } from '@phosphor-icons/react'
 import { Panel, SectionLabel, Button, CopyButton } from '../components/ui'
 import { ResizablePanel } from '../components/ResizablePanel'
+
+const HISTORY_LIMIT = 20
 
 function toCamel(s: string) {
   return s.replace(/[_\s-]+(.)?/g, (_, c) => (c ? c.toUpperCase() : '')).replace(/^(.)/, (c) => c.toLowerCase())
@@ -17,9 +20,34 @@ function toTitle(s: string) {
 
 export function TextToolkitPage() {
   const [text, setText] = useState('')
+  const [history, setHistory] = useState<string[]>([])
   const [delimiter, setDelimiter] = useState(',')
   const [columnIndex, setColumnIndex] = useState(0)
   const [wrapWidth, setWrapWidth] = useState(80)
+
+  function pushHistory(current: string) {
+    setHistory((h) => [...h.slice(-(HISTORY_LIMIT - 1)), current])
+  }
+
+  function undo() {
+    setHistory((h) => {
+      if (h.length === 0) return h
+      setText(h[h.length - 1])
+      return h.slice(0, -1)
+    })
+  }
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      const inTextEditor = (document.activeElement as HTMLElement | null)?.tagName === 'TEXTAREA'
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !inTextEditor) {
+        e.preventDefault()
+        undo()
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  })
 
   const lines = text.split('\n')
   const stats = useMemo(
@@ -33,13 +61,16 @@ export function TextToolkitPage() {
   )
 
   function apply(fn: (s: string) => string) {
+    pushHistory(text)
     setText(fn(text))
   }
   function applyLines(fn: (lines: string[]) => string[]) {
+    pushHistory(text)
     setText(fn(text.split('\n')).join('\n'))
   }
 
   function extractColumn() {
+    pushHistory(text)
     const rows = text.split('\n').map((line) => line.split(delimiter)[columnIndex] ?? '')
     setText(rows.join('\n'))
   }
@@ -130,7 +161,12 @@ export function TextToolkitPage() {
         <div className="flex flex-1 flex-col p-4">
           <div className="mb-2 flex items-center justify-between">
             <SectionLabel>Text</SectionLabel>
-            <CopyButton text={text} />
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" onClick={undo} disabled={history.length === 0} title="Undo last transform (Ctrl+Z)">
+                <ArrowCounterClockwise size={14} weight="light" /> Undo
+              </Button>
+              <CopyButton text={text} />
+            </div>
           </div>
           <textarea
             value={text}

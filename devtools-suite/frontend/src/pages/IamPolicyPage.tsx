@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { explainStatement, findOverBroadStatements, simulate, type IamPolicy } from '../lib/iamPolicy'
 import { Panel, SectionLabel, ErrorBanner, Button } from '../components/ui'
+import { ResizablePanel } from '../components/ResizablePanel'
 
 const SAMPLE = `{
   "Version": "2012-10-17",
@@ -34,7 +35,7 @@ export function IamPolicyPage() {
 
   return (
     <div className="flex h-full gap-4">
-      <Panel className="flex w-[28rem] shrink-0 flex-col overflow-hidden">
+      <ResizablePanel storageKey="iam-policy" defaultWidth={448}><Panel className="flex h-full flex-col overflow-hidden">
         <div className="flex flex-1 flex-col p-4">
           <SectionLabel>Policy document</SectionLabel>
           <textarea
@@ -45,7 +46,7 @@ export function IamPolicyPage() {
           />
           {error && <ErrorBanner message={error} />}
         </div>
-      </Panel>
+      </Panel></ResizablePanel>
 
       <div className="flex flex-1 flex-col gap-4 overflow-hidden">
         <Panel className="flex flex-col overflow-hidden">

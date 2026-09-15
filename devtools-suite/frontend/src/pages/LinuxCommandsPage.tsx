@@ -48,7 +48,7 @@ export function LinuxCommandsPage() {
           </div>
           {octalError && <ErrorBanner message={octalError} />}
           {symbolicError && <ErrorBanner message={symbolicError} />}
-          <div className="rounded-xl border border-rule-soft bg-white/[0.02] p-3 font-mono text-sm text-ink">
+          <div className="rounded-xl border border-rule-soft bg-glass p-3 font-mono text-sm text-ink">
             chmod {octal} file  ⇔  -rw{symbolic.slice(1)} file
           </div>
         </div>
@@ -63,7 +63,7 @@ export function LinuxCommandsPage() {
           ) : (
             <div className="flex flex-col gap-1.5">
               {explained.map((d) => (
-                <div key={d.flag} className="rounded-lg border border-rule-soft bg-white/[0.02] px-2.5 py-1.5 text-xs">
+                <div key={d.flag} className="rounded-lg border border-rule-soft bg-glass px-2.5 py-1.5 text-xs">
                   <span className="font-mono text-cyan">{d.flag}</span> — <span className="text-ink-soft">{d.description}</span>
                 </div>
               ))}

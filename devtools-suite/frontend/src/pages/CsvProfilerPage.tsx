@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { HardDrives, UploadSimple } from '@phosphor-icons/react'
 import { profileCsvPath, profileCsvUpload, type CsvProfileResult } from '../lib/bigdataApi'
 import { Panel, Button, Toggle, ErrorBanner } from '../components/ui'
@@ -6,15 +6,40 @@ import { ResizablePanel } from '../components/ResizablePanel'
 
 type Mode = 'upload' | 'path'
 
+const SETTINGS_KEY = 'devtools.csv-profiler-settings'
+
+const SAMPLE_CSV = `id,name,city,signup_date,plan\n1,Alice Chen,Toronto,2023-04-12,pro\n2,Bilal Rana,Karachi,2023-05-02,free\n3,Carla Diaz,Bogota,2023-05-30,pro\n4,,Toronto,2023-06-01,free\n5,Erin Walsh,Dublin,2023-07-19,enterprise\n`
+
+function loadSettings(): { mode: Mode; path: string; delimiter: string; hasHeader: boolean } {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY)
+    if (raw) return JSON.parse(raw)
+  } catch {
+    /* corrupt storage — start fresh */
+  }
+  return { mode: 'upload', path: '', delimiter: ',', hasHeader: true }
+}
+
 export function CsvProfilerPage() {
-  const [mode, setMode] = useState<Mode>('upload')
+  const initial = loadSettings()
+  const [mode, setMode] = useState<Mode>(initial.mode)
   const [file, setFile] = useState<File | null>(null)
-  const [path, setPath] = useState('')
-  const [delimiter, setDelimiter] = useState(',')
-  const [hasHeader, setHasHeader] = useState(true)
+  const [path, setPath] = useState(initial.path)
+  const [delimiter, setDelimiter] = useState(initial.delimiter)
+  const [hasHeader, setHasHeader] = useState(initial.hasHeader)
   const [result, setResult] = useState<CsvProfileResult | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const t = setTimeout(() => localStorage.setItem(SETTINGS_KEY, JSON.stringify({ mode, path, delimiter, hasHeader })), 400)
+    return () => clearTimeout(t)
+  }, [mode, path, delimiter, hasHeader])
+
+  function loadSample() {
+    setMode('upload')
+    setFile(new File([SAMPLE_CSV], 'sample.csv', { type: 'text/csv' }))
+  }
 
   async function run() {
     setLoading(true)
@@ -38,8 +63,8 @@ export function CsvProfilerPage() {
         <Panel>
           <div className="flex flex-col gap-3 p-4">
             <div className="flex gap-1 rounded-xl border border-rule bg-panel p-1">
-              <button onClick={() => setMode('upload')} className={`flex-1 rounded-lg py-1.5 text-[11px] font-medium ${mode === 'upload' ? 'bg-white/[0.08] text-ink' : 'text-ink-faint'}`}>Upload</button>
-              <button onClick={() => setMode('path')} className={`flex-1 rounded-lg py-1.5 text-[11px] font-medium ${mode === 'path' ? 'bg-white/[0.08] text-ink' : 'text-ink-faint'}`}>Local path</button>
+              <button onClick={() => setMode('upload')} className={`flex-1 rounded-lg py-1.5 text-[11px] font-medium ${mode === 'upload' ? 'bg-glass-strong text-ink' : 'text-ink-faint'}`}>Upload</button>
+              <button onClick={() => setMode('path')} className={`flex-1 rounded-lg py-1.5 text-[11px] font-medium ${mode === 'path' ? 'bg-glass-strong text-ink' : 'text-ink-faint'}`}>Local path</button>
             </div>
 
             {mode === 'upload' ? (
@@ -64,6 +89,7 @@ export function CsvProfilerPage() {
             <Button variant="primary" onClick={run} disabled={!canRun || loading}>
               {loading ? 'Profiling…' : 'Profile'}
             </Button>
+            <Button variant="ghost" onClick={loadSample}>Try a sample CSV</Button>
           </div>
         </Panel>
       </ResizablePanel>
@@ -87,7 +113,7 @@ export function CsvProfilerPage() {
                   <div key={c.name} className="rounded-xl border border-rule bg-panel p-3">
                     <div className="mb-1 flex items-center justify-between">
                       <span className="font-mono text-sm text-cyan">{c.name}</span>
-                      <span className="rounded bg-white/[0.06] px-1.5 py-0.5 text-[10px] uppercase text-ink-faint">{c.inferredType}</span>
+                      <span className="rounded bg-glass-strong px-1.5 py-0.5 text-[10px] uppercase text-ink-faint">{c.inferredType}</span>
                     </div>
                     <div className="flex flex-col gap-0.5 text-[11px] text-ink-soft">
                       <div>{c.nonNullCount} non-null, {c.nullCount} null</div>

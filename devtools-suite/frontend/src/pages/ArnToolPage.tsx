@@ -24,7 +24,7 @@ export function ArnToolPage() {
           ) : (
             <div className="flex flex-col gap-1.5 text-sm">
               {Object.entries(parsed).map(([k, v]) => (
-                <div key={k} className="flex justify-between rounded-lg bg-white/[0.02] px-3 py-1.5">
+                <div key={k} className="flex justify-between rounded-lg bg-glass px-3 py-1.5">
                   <span className="text-ink-faint">{k}</span>
                   <span className="font-mono text-ink">{v === '' || v === null ? '—' : String(v)}</span>
                 </div>

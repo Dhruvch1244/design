@@ -1,12 +1,34 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { UploadSimple } from '@phosphor-icons/react'
 import { harSummary, parseHar, type HarRequest } from '../lib/har'
-import { Panel, ErrorBanner } from '../components/ui'
+import { Panel, ErrorBanner, Button } from '../components/ui'
+
+const DRAFT_KEY = 'devtools.har-analyzer-draft'
+
+const SAMPLE = JSON.stringify(
+  {
+    log: {
+      entries: [
+        { startedDateTime: '2024-01-01T00:00:00.000Z', time: 42, request: { method: 'GET', url: 'https://api.example.com/orders' }, response: { status: 200, content: { size: 4200, mimeType: 'application/json' } } },
+        { startedDateTime: '2024-01-01T00:00:00.050Z', time: 180, request: { method: 'GET', url: 'https://api.example.com/orders/42/items' }, response: { status: 200, content: { size: 1800, mimeType: 'application/json' } } },
+        { startedDateTime: '2024-01-01T00:00:00.230Z', time: 12, request: { method: 'GET', url: 'https://cdn.example.com/logo.png' }, response: { status: 304, content: { size: 0, mimeType: 'image/png' } } },
+        { startedDateTime: '2024-01-01T00:00:00.400Z', time: 95, request: { method: 'POST', url: 'https://api.example.com/orders' }, response: { status: 500, content: { size: 90, mimeType: 'application/json' } } },
+      ],
+    },
+  },
+  null,
+  2
+)
 
 export function HarAnalyzerPage() {
-  const [text, setText] = useState('')
+  const [text, setText] = useState(() => localStorage.getItem(DRAFT_KEY) ?? '')
   const [error, setError] = useState<string | null>(null)
   const [sortBy, setSortBy] = useState<'time' | 'size' | 'offset'>('offset')
+
+  useEffect(() => {
+    const t = setTimeout(() => localStorage.setItem(DRAFT_KEY, text), 400)
+    return () => clearTimeout(t)
+  }, [text])
 
   const requests = useMemo<HarRequest[]>(() => {
     if (!text.trim()) return []
@@ -43,6 +65,7 @@ export function HarAnalyzerPage() {
             Load a .har file
             <input type="file" accept=".har,application/json" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
           </label>
+          <Button variant="ghost" onClick={() => setText(SAMPLE)}>Try a sample</Button>
           {requests.length > 0 && (
             <div className="flex flex-1 items-center justify-end gap-4 text-xs text-ink-soft">
               <span>{summary.count} requests</span>

@@ -84,7 +84,7 @@ export function EncodeDecodePage() {
             key={m.id}
             onClick={() => setMode(m.id)}
             className={`flex-1 rounded-xl py-2 text-xs font-medium transition-colors ${
-              mode === m.id ? 'bg-white/[0.08] text-ink' : 'text-ink-faint hover:text-ink-soft'
+              mode === m.id ? 'bg-glass-strong text-ink' : 'text-ink-faint hover:text-ink-soft'
             }`}
           >
             {m.label}
@@ -248,7 +248,7 @@ function HashPanel() {
           ) : (
             <div className="flex flex-col gap-2">
               {Object.entries(results).map(([label, value]) => (
-                <div key={label} className="rounded-xl border border-rule-soft bg-white/[0.02] p-2.5">
+                <div key={label} className="rounded-xl border border-rule-soft bg-glass p-2.5">
                   <div className="mb-1 flex items-center justify-between text-[10px] uppercase tracking-wide text-ink-faint">
                     {label}
                     <CopyButton text={value} />

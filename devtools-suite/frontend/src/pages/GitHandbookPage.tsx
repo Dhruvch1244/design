@@ -30,7 +30,7 @@ export function GitHandbookPage() {
               key={t}
               onClick={() => setTab(t)}
               className={`rounded-xl px-4 py-2 text-xs font-medium capitalize transition-colors ${
-                tab === t ? 'bg-white/[0.08] text-ink' : 'text-ink-faint hover:text-ink-soft'
+                tab === t ? 'bg-glass-strong text-ink' : 'text-ink-faint hover:text-ink-soft'
               }`}
             >
               {t === 'recipes' ? 'How do I…' : t}
@@ -56,7 +56,7 @@ export function GitHandbookPage() {
                   <SectionLabel>{cat.category}</SectionLabel>
                   <div className="flex flex-col gap-1.5">
                     {cat.commands.map((c) => (
-                      <div key={c.cmd} className="group rounded-lg border border-rule-soft bg-white/[0.02] px-2.5 py-1.5">
+                      <div key={c.cmd} className="group rounded-lg border border-rule-soft bg-glass px-2.5 py-1.5">
                         <div className="flex items-center justify-between gap-2">
                           <span className="truncate font-mono text-[11.5px] text-cyan">{c.cmd}</span>
                           <span className="shrink-0 opacity-0 transition-opacity group-hover:opacity-100">
@@ -76,7 +76,7 @@ export function GitHandbookPage() {
           {tab === 'recipes' && (
             <div className="flex flex-col gap-2">
               {filteredRecipes.map((r, i) => (
-                <div key={i} className="rounded-xl border border-rule-soft bg-white/[0.02] p-3">
+                <div key={i} className="rounded-xl border border-rule-soft bg-glass p-3">
                   <div className="mb-1 text-[13px] text-ink-soft">{r.question}</div>
                   <div className="flex items-center justify-between gap-2 rounded-lg bg-panel px-2.5 py-1.5">
                     <span className="font-mono text-[12.5px] text-cyan">{r.command}</span>
@@ -104,7 +104,7 @@ export function GitHandbookPage() {
               ) : (
                 <div className="flex flex-col gap-1.5">
                   {explained.map((d) => (
-                    <div key={d.cmd} className="rounded-lg border border-rule-soft bg-white/[0.02] px-2.5 py-1.5 text-xs">
+                    <div key={d.cmd} className="rounded-lg border border-rule-soft bg-glass px-2.5 py-1.5 text-xs">
                       <span className="font-mono text-cyan">{d.cmd}</span> — <span className="text-ink-soft">{d.description}</span>
                     </div>
                   ))}

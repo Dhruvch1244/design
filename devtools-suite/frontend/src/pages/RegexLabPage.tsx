@@ -93,7 +93,7 @@ export function RegexLabPage() {
               ) : (
                 <div className="flex flex-col gap-2">
                   {matches.map((m, i) => (
-                    <div key={i} className="rounded-xl border border-rule-soft bg-white/[0.02] p-2.5 text-xs">
+                    <div key={i} className="rounded-xl border border-rule-soft bg-glass p-2.5 text-xs">
                       <div className="mb-1 font-mono text-cyan">{m[0]}</div>
                       {m.length > 1 && (
                         <div className="flex flex-col gap-0.5 text-ink-faint">

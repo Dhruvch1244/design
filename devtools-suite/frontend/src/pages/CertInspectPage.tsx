@@ -1,13 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { inspectCert, type CertInfo } from '../lib/certApi'
 import { Panel, SectionLabel, Button, ErrorBanner } from '../components/ui'
 import { ResizablePanel } from '../components/ResizablePanel'
 
+const DRAFT_KEY = 'devtools.cert-inspect-draft'
+
 export function CertInspectPage() {
-  const [pem, setPem] = useState('')
+  const [pem, setPem] = useState(() => localStorage.getItem(DRAFT_KEY) ?? '')
   const [certs, setCerts] = useState<CertInfo[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const t = setTimeout(() => localStorage.setItem(DRAFT_KEY, pem), 400)
+    return () => clearTimeout(t)
+  }, [pem])
 
   async function run() {
     setLoading(true)

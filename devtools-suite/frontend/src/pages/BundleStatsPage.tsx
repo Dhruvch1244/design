@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { UploadSimple } from '@phosphor-icons/react'
 import { extractAssets } from '../lib/bundleStats'
-import { Panel, ErrorBanner } from '../components/ui'
+import { Panel, ErrorBanner, Button } from '../components/ui'
 
 function formatBytes(n: number): string {
   if (n > 1024 * 1024) return `${(n / 1024 / 1024).toFixed(2)} MB`
@@ -9,9 +9,30 @@ function formatBytes(n: number): string {
   return `${n} B`
 }
 
+const DRAFT_KEY = 'devtools.bundle-stats-draft'
+
+const SAMPLE = JSON.stringify(
+  {
+    assets: [
+      { name: 'vendor.js', size: 842_000 },
+      { name: 'main.js', size: 214_000 },
+      { name: 'polyfills.js', size: 118_000 },
+      { name: 'styles.css', size: 46_500 },
+      { name: 'runtime.js', size: 3_200 },
+    ],
+  },
+  null,
+  2
+)
+
 export function BundleStatsPage() {
-  const [text, setText] = useState('')
+  const [text, setText] = useState(() => localStorage.getItem(DRAFT_KEY) ?? '')
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const t = setTimeout(() => localStorage.setItem(DRAFT_KEY, text), 400)
+    return () => clearTimeout(t)
+  }, [text])
 
   const assets = useMemo(() => {
     if (!text.trim()) return []
@@ -39,6 +60,7 @@ export function BundleStatsPage() {
             Load a stats.json (webpack --json, rollup-plugin-visualizer, vite build --json)
             <input type="file" accept="application/json" className="hidden" onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
           </label>
+          <Button variant="ghost" onClick={() => setText(SAMPLE)}>Try a sample</Button>
           {assets.length > 0 && <div className="text-xs text-ink-soft">{assets.length} assets · {formatBytes(total)} total</div>}
         </div>
       </Panel>

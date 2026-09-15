@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   BracketsCurly,
@@ -17,6 +17,8 @@ import {
   ListNumbers,
   CircleDashed,
   SidebarSimple,
+  MagnifyingGlass,
+  CaretDown,
   TreeStructure,
   Table,
   FlowArrow,
@@ -321,6 +323,10 @@ function App() {
   const [favourites, setFavourites] = useState<Tool[]>(loadFavourites)
   const [recents, setRecents] = useState<Tool[]>(loadRecents)
   const [sidebarOpen, setSidebarOpen] = useState(() => localStorage.getItem(SIDEBAR_KEY) !== '0')
+  const [navFilter, setNavFilter] = useState('')
+  const [tabOverflowOpen, setTabOverflowOpen] = useState(false)
+  const [hasHiddenTabs, setHasHiddenTabs] = useState(false)
+  const tabRowRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     applyTheme(getStoredTheme())
@@ -394,6 +400,21 @@ function App() {
     []
   )
 
+  const navQuery = navFilter.trim().toLowerCase()
+  const matchesFilter = (t: ToolDef) => !navQuery || t.label.toLowerCase().includes(navQuery) || t.hint.toLowerCase().includes(navQuery)
+  const filteredFavourites = favourites.map((id) => TOOL_DEFS[id]).filter(Boolean).filter(matchesFilter)
+  const filteredGroups = GROUPS.map((group) => ({ ...group, tools: group.tools.filter(matchesFilter) })).filter((group) => group.tools.length > 0)
+
+  useEffect(() => {
+    const el = tabRowRef.current
+    if (!el) return
+    const check = () => setHasHiddenTabs(el.scrollWidth > el.clientWidth + 1)
+    check()
+    const ro = new ResizeObserver(check)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [openTabs])
+
   return (
     <div className="relative flex h-screen w-screen overflow-hidden bg-void text-ink">
       <div className="bg-glow" />
@@ -413,22 +434,32 @@ function App() {
             </div>
           </div>
           <CommandPalette items={paletteItems} onSelect={openTool} favourites={favourites} recents={recents} />
+          <div className="relative mt-2">
+            <MagnifyingGlass size={13} weight="light" className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-faint" />
+            <input
+              value={navFilter}
+              onChange={(e) => setNavFilter(e.target.value)}
+              placeholder="Filter tools…"
+              className="w-full rounded-xl border border-rule bg-panel py-1.5 pl-7 pr-2 text-xs text-ink outline-none transition-shadow focus:border-cyan/50 focus:shadow-[0_0_0_3px_rgba(47,230,242,0.12)]"
+            />
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto px-3 pb-2">
-          {favourites.length > 0 && (
+          {filteredFavourites.length > 0 && (
             <nav className="flex flex-col gap-1 pb-2">
               <div className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-warm">Favourites</div>
-              {favourites
-                .map((id) => TOOL_DEFS[id])
-                .filter(Boolean)
-                .map((t) => (
-                  <NavRow key={t.id} tool={t} active={activeTab === t.id} isFavourite onOpen={openTool} onToggleFavourite={toggleFavourite} />
-                ))}
+              {filteredFavourites.map((t) => (
+                <NavRow key={t.id} tool={t} active={activeTab === t.id} isFavourite onOpen={openTool} onToggleFavourite={toggleFavourite} />
+              ))}
             </nav>
           )}
 
-          {GROUPS.map((group) => (
+          {navQuery && filteredGroups.length === 0 && (
+            <div className="px-3 py-6 text-center text-xs text-ink-faint">No tools match "{navFilter.trim()}"</div>
+          )}
+
+          {filteredGroups.map((group) => (
             <nav key={group.label} className="flex flex-col gap-1 pb-2">
               <div className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
                 {group.label}
@@ -464,7 +495,7 @@ function App() {
           </button>
           {openTabs.length > 1 && (
             <>
-            <div className="flex flex-1 items-center gap-1 overflow-x-auto">
+            <div ref={tabRowRef} className="flex flex-1 items-center gap-1 overflow-x-auto">
               {openTabs.map((id) => {
                 const t = TOOL_DEFS[id]
                 const Icon = t.icon
@@ -503,6 +534,43 @@ function App() {
                 )
               })}
             </div>
+            {hasHiddenTabs && (
+              <div className="relative shrink-0">
+                <button
+                  onClick={() => setTabOverflowOpen((v) => !v)}
+                  className="flex items-center gap-0.5 rounded-xl px-2 py-1.5 text-[11px] text-ink-faint transition-colors hover:bg-glass hover:text-ink-soft"
+                  title="More open tabs"
+                >
+                  <CaretDown size={11} weight="bold" />
+                </button>
+                {tabOverflowOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setTabOverflowOpen(false)} />
+                    <div className="absolute right-0 top-full z-50 mt-1 flex max-h-72 w-56 flex-col gap-0.5 overflow-auto rounded-xl border border-rule bg-surface p-1.5 shadow-2xl">
+                      {openTabs.map((id) => {
+                        const t = TOOL_DEFS[id]
+                        const Icon = t.icon
+                        return (
+                          <button
+                            key={id}
+                            onClick={() => {
+                              setActiveTab(id)
+                              setTabOverflowOpen(false)
+                            }}
+                            className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-xs transition-colors ${
+                              id === activeTab ? 'bg-glass-strong text-ink' : 'text-ink-soft hover:bg-glass'
+                            }`}
+                          >
+                            <Icon size={13} weight="light" className={id === activeTab ? 'text-cyan' : 'text-ink-faint'} />
+                            <span className="truncate">{t.label}</span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
             <button
               onClick={() => setOpenTabs([activeTab])}
               className="shrink-0 whitespace-nowrap rounded-xl px-2.5 py-1.5 text-[11px] text-ink-faint transition-colors hover:bg-glass hover:text-ink-soft"

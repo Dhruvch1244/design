@@ -2,8 +2,11 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   BookOpen,
+  CaretDown,
+  CaretRight,
   ChartBar,
   Clock,
+  Copy,
   Database,
   FloppyDisk,
   Gear,
@@ -39,6 +42,7 @@ import {
   type SavedQuery,
   type SampleOutput,
   type SchemaNode,
+  type TableNode,
 } from '../lib/sqlApi'
 import { Button, CopyButton, ErrorBanner, Panel, SectionLabel } from '../components/ui'
 import { ConnectionDialog } from '../components/ConnectionDialog'
@@ -167,7 +171,8 @@ export function SqlPage() {
     listSavedQueries().then(setSavedQueries)
   }
 
-  async function removeSavedQuery(id: number) {
+  async function removeSavedQuery(id: number, name: string) {
+    if (!window.confirm(`Delete saved query "${name}"? This can't be undone.`)) return
     await deleteSavedQuery(id)
     if (activeSavedQueryId === id) setActiveSavedQueryId(null)
     listSavedQueries().then(setSavedQueries)
@@ -194,7 +199,8 @@ export function SqlPage() {
     setSampleView({ label: s.label, columns: detail.columns, rows: detail.rows })
   }
 
-  async function removeSample(id: number) {
+  async function removeSample(id: number, label: string) {
+    if (!window.confirm(`Delete sample "${label}"? This can't be undone.`)) return
     await deleteSample(id)
     recentSamples().then(setSamples)
   }
@@ -250,7 +256,7 @@ export function SqlPage() {
                   key={id}
                   onClick={() => setTab(id)}
                   className={`flex flex-1 items-center justify-center gap-1 rounded-lg py-1.5 text-[10.5px] font-medium transition-colors ${
-                    tab === id ? 'bg-white/[0.08] text-ink' : 'text-ink-faint hover:text-ink-soft'
+                    tab === id ? 'bg-glass-strong text-ink' : 'text-ink-faint hover:text-ink-soft'
                   }`}
                 >
                   <Icon size={12} weight="light" />
@@ -268,7 +274,7 @@ export function SqlPage() {
                   <div
                     key={q.id}
                     className={`group flex items-center gap-1.5 rounded-xl border px-2.5 py-2 text-xs transition-colors ${
-                      activeSavedQueryId === q.id ? 'border-cyan/40 bg-cyan/[0.06]' : 'border-rule-soft bg-white/[0.02] hover:border-rule'
+                      activeSavedQueryId === q.id ? 'border-cyan/40 bg-cyan/[0.06]' : 'border-rule-soft bg-glass hover:border-rule'
                     }`}
                   >
                     <button onClick={() => toggleFavourite(q)} className="shrink-0 text-ink-faint hover:text-warm">
@@ -278,7 +284,7 @@ export function SqlPage() {
                       {q.name}
                     </button>
                     <button
-                      onClick={() => removeSavedQuery(q.id)}
+                      onClick={() => removeSavedQuery(q.id, q.name)}
                       className="shrink-0 text-ink-faint opacity-0 transition-opacity hover:text-rose group-hover:opacity-100"
                     >
                       <Trash size={11} weight="light" />
@@ -295,17 +301,7 @@ export function SqlPage() {
                   <div key={s.name}>
                     <div className="mb-1 px-1 text-[10px] font-semibold uppercase tracking-wide text-ink-faint">{s.name}</div>
                     {s.tables.map((t) => (
-                      <details key={t.name} className="mb-1 rounded-lg border border-rule-soft bg-white/[0.02] px-2 py-1.5">
-                        <summary className="cursor-pointer select-none text-ink-soft">{t.name}</summary>
-                        <div className="mt-1 flex flex-col gap-0.5 pl-2">
-                          {t.columns.map((c) => (
-                            <div key={c.name} className="flex items-center justify-between text-ink-faint">
-                              <span className={c.primaryKey ? 'font-semibold text-cyan' : ''}>{c.name}</span>
-                              <span>{c.type}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </details>
+                      <SchemaTableRow key={t.name} table={t} />
                     ))}
                   </div>
                 ))}
@@ -319,7 +315,7 @@ export function SqlPage() {
                   <button
                     key={r.id}
                     onClick={() => setSql(r.sqlText)}
-                    className="flex flex-col gap-0.5 rounded-xl border border-rule-soft bg-white/[0.02] px-2.5 py-2 text-left text-xs hover:border-rule"
+                    className="flex flex-col gap-0.5 rounded-xl border border-rule-soft bg-glass px-2.5 py-2 text-left text-xs hover:border-rule"
                   >
                     <span className="truncate font-mono text-ink-soft">{r.sqlText}</span>
                     <span className={`text-[10px] ${r.status === 'ERROR' ? 'text-rose' : 'text-ink-faint'}`}>
@@ -334,12 +330,12 @@ export function SqlPage() {
               <div className="flex flex-col gap-1.5">
                 {samples.length === 0 && <div className="p-2 text-xs text-ink-faint">No saved samples yet.</div>}
                 {samples.map((s) => (
-                  <div key={s.id} className="group flex items-center gap-1.5 rounded-xl border border-rule-soft bg-white/[0.02] px-2.5 py-2 text-xs">
+                  <div key={s.id} className="group flex items-center gap-1.5 rounded-xl border border-rule-soft bg-glass px-2.5 py-2 text-xs">
                     <button onClick={() => viewSample(s)} className="flex-1 truncate text-left text-ink-soft hover:text-ink">
                       {s.label}
                     </button>
                     <span className="shrink-0 text-[10px] text-ink-faint">{s.rowCount} rows</span>
-                    <button onClick={() => removeSample(s.id)} className="shrink-0 text-ink-faint opacity-0 transition-opacity hover:text-rose group-hover:opacity-100">
+                    <button onClick={() => removeSample(s.id, s.label)} className="shrink-0 text-ink-faint opacity-0 transition-opacity hover:text-rose group-hover:opacity-100">
                       <Trash size={11} weight="light" />
                     </button>
                   </div>
@@ -470,16 +466,31 @@ export function SqlPage() {
                             {c}
                           </th>
                         ))}
+                        <th className="border-b border-rule px-2 py-2" />
                       </tr>
                     </thead>
                     <tbody>
                       {result.rows.map((row, i) => (
-                        <tr key={i} className="border-b border-rule-soft hover:bg-white/[0.02]">
+                        <tr key={i} className="group border-b border-rule-soft hover:bg-glass">
                           {row.map((cell, j) => (
-                            <td key={j} className="whitespace-pre-wrap break-all px-3 py-1.5 font-mono text-ink">
+                            <td
+                              key={j}
+                              onClick={() => navigator.clipboard.writeText(cell === null ? '' : String(cell))}
+                              title="Click to copy this cell"
+                              className="cursor-pointer whitespace-pre-wrap break-all px-3 py-1.5 font-mono text-ink hover:bg-cyan/[0.06]"
+                            >
                               {cell === null ? <span className="italic text-ink-faint">NULL</span> : String(cell)}
                             </td>
                           ))}
+                          <td className="px-2 py-1.5">
+                            <button
+                              onClick={() => navigator.clipboard.writeText(row.map((c) => (c === null ? '' : String(c))).join('\t'))}
+                              title="Copy row"
+                              className="text-ink-faint opacity-0 transition-opacity hover:text-cyan group-hover:opacity-100"
+                            >
+                              <Copy size={12} weight="light" />
+                            </button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -546,4 +557,26 @@ function toTsv(columns: string[], rows: unknown[][]): string {
   const lines = [columns.join('\t')]
   for (const row of rows) lines.push(row.map((c) => (c === null ? '' : String(c))).join('\t'))
   return lines.join('\n')
+}
+
+function SchemaTableRow({ table }: { table: TableNode }) {
+  const [expanded, setExpanded] = useState(false)
+  return (
+    <div className="mb-1 rounded-lg border border-rule-soft bg-glass px-2 py-1.5">
+      <button onClick={() => setExpanded((e) => !e)} className="flex w-full items-center gap-1.5 text-left text-ink-soft">
+        {expanded ? <CaretDown size={10} weight="bold" /> : <CaretRight size={10} weight="bold" />}
+        {table.name}
+      </button>
+      {expanded && (
+        <div className="mt-1 flex flex-col gap-0.5 pl-2">
+          {table.columns.map((c) => (
+            <div key={c.name} className="flex items-center justify-between text-ink-faint">
+              <span className={c.primaryKey ? 'font-semibold text-cyan' : ''}>{c.name}</span>
+              <span>{c.type}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }

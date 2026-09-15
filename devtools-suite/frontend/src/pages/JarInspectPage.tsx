@@ -69,6 +69,11 @@ export function JarInspectPage() {
                         {d.className} — <span className="text-ink-faint">{d.foundInJars.join(', ')}</span>
                       </div>
                     ))}
+                    {result.duplicateClasses.length > 200 && (
+                      <div className="mt-1 text-[11px] italic text-ink-faint">
+                        …{result.duplicateClasses.length - 200} more duplicate class(es) not shown
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

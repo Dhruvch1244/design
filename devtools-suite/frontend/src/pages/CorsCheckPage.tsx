@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Panel, SectionLabel, Button, ErrorBanner } from '../components/ui'
 import { ResizablePanel } from '../components/ResizablePanel'
 
@@ -10,11 +10,29 @@ type CorsResult = {
   verdict: { preflightRequired: boolean; wouldBeAllowed: boolean; reasons: string[] }
 }
 
+const DRAFT_KEY = 'devtools.cors-check-draft'
+
+function loadDraft(): { url: string; method: string; origin: string; requestHeaders: string } {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY)
+    if (raw) return JSON.parse(raw)
+  } catch {
+    /* corrupt storage — start fresh */
+  }
+  return { url: '', method: 'GET', origin: 'https://myapp.local', requestHeaders: '' }
+}
+
 export function CorsCheckPage() {
-  const [url, setUrl] = useState('')
-  const [method, setMethod] = useState('GET')
-  const [origin, setOrigin] = useState('https://myapp.local')
-  const [requestHeaders, setRequestHeaders] = useState('')
+  const initial = loadDraft()
+  const [url, setUrl] = useState(initial.url)
+  const [method, setMethod] = useState(initial.method)
+  const [origin, setOrigin] = useState(initial.origin)
+  const [requestHeaders, setRequestHeaders] = useState(initial.requestHeaders)
+
+  useEffect(() => {
+    const t = setTimeout(() => localStorage.setItem(DRAFT_KEY, JSON.stringify({ url, method, origin, requestHeaders })), 400)
+    return () => clearTimeout(t)
+  }, [url, method, origin, requestHeaders])
   const [result, setResult] = useState<CorsResult | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)

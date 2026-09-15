@@ -58,7 +58,7 @@ export function DataGeneratorPage() {
                 key={id}
                 onClick={() => setKind(id)}
                 className={`rounded-xl px-3 py-2 text-left text-xs transition-colors ${
-                  kind === id ? 'bg-white/[0.08] text-ink' : 'text-ink-soft hover:bg-white/[0.04]'
+                  kind === id ? 'bg-glass-strong text-ink' : 'text-ink-soft hover:bg-glass'
                 }`}
               >
                 {label}

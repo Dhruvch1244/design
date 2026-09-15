@@ -83,7 +83,8 @@ export function NotesPage() {
     setActiveNoteId(note.id)
   }
 
-  async function removeNote(id: number) {
+  async function removeNote(id: number, title: string) {
+    if (!window.confirm(`Delete note "${title || 'Untitled'}"? This can't be undone.`)) return
     await deleteNote(id)
     if (activeNoteId === id) setActiveNoteId(null)
     refreshNotes()
@@ -126,7 +127,7 @@ export function NotesPage() {
             </div>
             <button
               onClick={() => setSelectedFolderId(null)}
-              className={`rounded-lg px-2 py-1 text-left text-xs ${selectedFolderId === null ? 'bg-white/[0.08] text-ink' : 'text-ink-soft hover:bg-white/[0.04]'}`}
+              className={`rounded-lg px-2 py-1 text-left text-xs ${selectedFolderId === null ? 'bg-glass-strong text-ink' : 'text-ink-soft hover:bg-glass'}`}
             >
               All notes
             </button>
@@ -151,7 +152,7 @@ export function NotesPage() {
                 <div
                   key={n.id}
                   className={`group flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-xs ${
-                    activeNoteId === n.id ? 'bg-white/[0.08] text-ink' : 'text-ink-soft hover:bg-white/[0.04]'
+                    activeNoteId === n.id ? 'bg-glass-strong text-ink' : 'text-ink-soft hover:bg-glass'
                   }`}
                 >
                   <button onClick={() => toggleFavourite(n)} className="shrink-0 text-ink-faint hover:text-warm">
@@ -160,7 +161,7 @@ export function NotesPage() {
                   <button onClick={() => setActiveNoteId(n.id)} className="flex-1 truncate text-left">
                     {n.title || 'Untitled'}
                   </button>
-                  <button onClick={() => removeNote(n.id)} className="shrink-0 opacity-0 transition-opacity hover:text-rose group-hover:opacity-100">
+                  <button onClick={() => removeNote(n.id, n.title)} className="shrink-0 opacity-0 transition-opacity hover:text-rose group-hover:opacity-100">
                     <Trash size={11} weight="light" />
                   </button>
                 </div>
@@ -193,7 +194,7 @@ export function NotesPage() {
               />
               <button
                 onClick={() => setPreview((p) => !p)}
-                className={`rounded-lg px-2.5 py-1.5 text-xs ${preview ? 'bg-white/[0.08] text-ink' : 'text-ink-faint hover:text-ink-soft'}`}
+                className={`rounded-lg px-2.5 py-1.5 text-xs ${preview ? 'bg-glass-strong text-ink' : 'text-ink-faint hover:text-ink-soft'}`}
               >
                 Preview
               </button>
@@ -251,7 +252,7 @@ export function NotesPage() {
                     <button
                       key={b.id}
                       onClick={() => setActiveNoteId(b.id)}
-                      className="rounded-full bg-white/[0.06] px-2.5 py-1 text-[11px] text-cyan hover:bg-white/[0.1]"
+                      className="rounded-full bg-glass-strong px-2.5 py-1 text-[11px] text-cyan hover:bg-glass-strong"
                     >
                       {b.title}
                     </button>

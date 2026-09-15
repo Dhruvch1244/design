@@ -63,6 +63,7 @@ export function DiagramStudioPage() {
   }
 
   function removeCanvas(name: string) {
+    if (!window.confirm(`Delete diagram "${name}"? This can't be undone.`)) return
     deleteSavedDiagram(name)
     setSavedCanvases(listSavedDiagrams())
     if (activeCanvasName === name) setActiveCanvasName(null)
@@ -146,7 +147,7 @@ export function DiagramStudioPage() {
 
       {mode === 'code' ? (
         <>
-          <Panel className="flex w-[26rem] shrink-0 flex-col overflow-hidden">
+          <ResizablePanel storageKey="diagram-studio-code" defaultWidth={416}><Panel className="flex h-full flex-col overflow-hidden">
             <div className="flex flex-1 flex-col gap-2 p-4">
               <div className="flex items-center justify-between">
                 <SectionLabel>Diagram code</SectionLabel>
@@ -162,7 +163,7 @@ export function DiagramStudioPage() {
               />
               <CopyButton text={code} label="Copy code" />
             </div>
-          </Panel>
+          </Panel></ResizablePanel>
 
           <Panel className="flex flex-1 flex-col overflow-hidden">
             <div className="flex-1 overflow-auto p-6">

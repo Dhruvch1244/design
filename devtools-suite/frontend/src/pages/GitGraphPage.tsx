@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react'
-import { GitCommit as GitCommitIcon } from '@phosphor-icons/react'
+import { useEffect, useMemo, useState } from 'react'
+import { GitCommit as GitCommitIcon, Copy } from '@phosphor-icons/react'
 import { parseGitLog, layoutCommits, type PositionedCommit } from '../lib/gitGraph'
-import { Panel, SectionLabel, ErrorBanner, CopyButton } from '../components/ui'
+import { Panel, SectionLabel, ErrorBanner, CopyButton, Button } from '../components/ui'
 import { ResizablePanel } from '../components/ResizablePanel'
 
 const LANE_COLORS = ['var(--cyan)', 'var(--violet)', 'var(--emerald)', 'var(--warm)', 'var(--rose)']
@@ -10,9 +10,24 @@ const LANE_W = 22
 const DOT_R = 5
 
 const LOG_COMMAND = 'git log --all --format="%H|%P|%s|%an|%ad" --date=short'
+const DRAFT_KEY = 'devtools.git-graph-draft'
+
+const SAMPLE = `a1b2c3d|d4e5f6a f6a7b8c|Merge branch 'feature/login' into main|Alice|2024-02-10
+d4e5f6a|9c8d7e6|Polish error messages|Alice|2024-02-09
+f6a7b8c|5e4d3c2|Add remember-me checkbox|Bilal|2024-02-08
+9c8d7e6|1b2a3c4|Bump dependencies|Alice|2024-02-07
+5e4d3c2|1b2a3c4|Scaffold login form|Bilal|2024-02-05
+1b2a3c4|0f1e2d3|Add README|Alice|2024-02-01
+0f1e2d3||Initial commit|Alice|2024-01-30
+`
 
 export function GitGraphPage() {
-  const [text, setText] = useState('')
+  const [text, setText] = useState(() => localStorage.getItem(DRAFT_KEY) ?? '')
+
+  useEffect(() => {
+    const t = setTimeout(() => localStorage.setItem(DRAFT_KEY, text), 400)
+    return () => clearTimeout(t)
+  }, [text])
 
   const { positioned, laneCount, error } = useMemo(() => {
     if (!text.trim()) return { positioned: [] as PositionedCommit[], laneCount: 0, error: null as string | null }
@@ -48,6 +63,7 @@ export function GitGraphPage() {
               placeholder="Run the command above in your repo and paste its output here."
               className="w-full resize-none rounded-2xl border border-rule bg-panel p-3 font-mono text-[11px] leading-relaxed text-ink outline-none focus:border-cyan/50"
             />
+            <Button variant="ghost" onClick={() => setText(SAMPLE)}>Try a sample</Button>
             {error && <ErrorBanner message={error} />}
           </div>
         </Panel>
@@ -104,8 +120,15 @@ export function GitGraphPage() {
             <div className="flex-1 overflow-hidden">
               <div style={{ height: 20 }} />
               {positioned.map((c) => (
-                <div key={c.hash} className="flex items-center gap-3 pr-4 text-xs" style={{ height: ROW_H }}>
-                  <span className="shrink-0 font-mono text-[10.5px] text-ink-faint">{c.hash.slice(0, 7)}</span>
+                <div key={c.hash} className="group flex items-center gap-3 pr-4 text-xs" style={{ height: ROW_H }}>
+                  <button
+                    onClick={() => navigator.clipboard.writeText(c.hash)}
+                    title={`Copy full hash (${c.hash})`}
+                    className="flex shrink-0 items-center gap-1 font-mono text-[10.5px] text-ink-faint hover:text-cyan"
+                  >
+                    {c.hash.slice(0, 7)}
+                    <Copy size={10} weight="light" className="opacity-0 transition-opacity group-hover:opacity-100" />
+                  </button>
                   <span className="truncate text-ink">{c.subject}</span>
                   <span className="ml-auto shrink-0 text-[10.5px] text-ink-faint">{c.author}</span>
                   <span className="shrink-0 text-[10.5px] text-ink-faint">{c.date}</span>

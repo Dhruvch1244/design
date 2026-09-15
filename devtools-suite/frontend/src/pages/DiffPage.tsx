@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { diffLines } from '../lib/diff'
+import { diffLines, diffWords, groupDiffRows } from '../lib/diff'
 import { Panel, SectionLabel, CopyButton } from '../components/ui'
 
 export function DiffPage() {
@@ -7,6 +7,7 @@ export function DiffPage() {
   const [after, setAfter] = useState('')
 
   const ops = useMemo(() => diffLines(before, after), [before, after])
+  const rows = useMemo(() => groupDiffRows(ops), [ops])
   const added = ops.filter((o) => o.type === 'add').length
   const removed = ops.filter((o) => o.type === 'remove').length
 
@@ -51,17 +52,46 @@ export function DiffPage() {
             {before === '' && after === '' ? (
               <div className="p-3 text-ink-faint">Paste text in both panes to see the diff.</div>
             ) : (
-              ops.map((op, i) => (
-                <div
-                  key={i}
-                  className={`whitespace-pre-wrap break-all px-3 py-0.5 ${
-                    op.type === 'add' ? 'bg-emerald/[0.08] text-emerald' : op.type === 'remove' ? 'bg-rose/[0.08] text-rose' : 'text-ink-soft'
-                  }`}
-                >
-                  {op.type === 'add' ? '+ ' : op.type === 'remove' ? '- ' : '  '}
-                  {op.line}
-                </div>
-              ))
+              rows.map((row, i) => {
+                if (row.kind === 'change') {
+                  const wordOps = diffWords(row.before, row.after)
+                  return (
+                    <div key={i}>
+                      <div className="whitespace-pre-wrap break-all bg-rose/[0.08] px-3 py-0.5 text-rose">
+                        {'- '}
+                        {wordOps
+                          .filter((w) => w.type !== 'add')
+                          .map((w, wi) => (
+                            <span key={wi} className={w.type === 'remove' ? 'rounded bg-rose/25 text-rose' : undefined}>
+                              {w.text}
+                            </span>
+                          ))}
+                      </div>
+                      <div className="whitespace-pre-wrap break-all bg-emerald/[0.08] px-3 py-0.5 text-emerald">
+                        {'+ '}
+                        {wordOps
+                          .filter((w) => w.type !== 'remove')
+                          .map((w, wi) => (
+                            <span key={wi} className={w.type === 'add' ? 'rounded bg-emerald/25 text-emerald' : undefined}>
+                              {w.text}
+                            </span>
+                          ))}
+                      </div>
+                    </div>
+                  )
+                }
+                return (
+                  <div
+                    key={i}
+                    className={`whitespace-pre-wrap break-all px-3 py-0.5 ${
+                      row.kind === 'add' ? 'bg-emerald/[0.08] text-emerald' : row.kind === 'remove' ? 'bg-rose/[0.08] text-rose' : 'text-ink-soft'
+                    }`}
+                  >
+                    {row.kind === 'add' ? '+ ' : row.kind === 'remove' ? '- ' : '  '}
+                    {row.line}
+                  </div>
+                )
+              })
             )}
           </div>
         </div>

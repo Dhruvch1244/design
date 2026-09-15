@@ -1,12 +1,42 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { isFrameworkNoise, parseStackTrace } from '../lib/stackTrace'
-import { Panel, SectionLabel, Toggle, CopyButton } from '../components/ui'
+import { Panel, SectionLabel, Toggle, CopyButton, Button } from '../components/ui'
 import { ResizablePanel } from '../components/ResizablePanel'
 
+const DRAFT_KEY = 'devtools.stack-trace-draft'
+
+const SAMPLE = `java.lang.NullPointerException: Cannot invoke "com.example.orders.Order.getTotal()" because "order" is null
+\tat com.dhruv.orders.OrderService.calculateTotal(OrderService.java:42)
+\tat com.dhruv.orders.OrderController.checkout(OrderController.java:28)
+\tat org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+\tat org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+Caused by: java.lang.IllegalStateException: Order not found in session
+\tat com.dhruv.orders.OrderRepository.findActive(OrderRepository.java:19)
+\tat com.dhruv.orders.OrderService.calculateTotal(OrderService.java:39)
+\t... 4 more
+`
+
+function loadDraft(): { text: string; appPrefix: string; collapseFramework: boolean } {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY)
+    if (raw) return JSON.parse(raw)
+  } catch {
+    /* corrupt storage — start fresh */
+  }
+  return { text: '', appPrefix: 'com.dhruv', collapseFramework: true }
+}
+
 export function StackTracePage() {
-  const [text, setText] = useState('')
-  const [appPrefix, setAppPrefix] = useState('com.dhruv')
-  const [collapseFramework, setCollapseFramework] = useState(true)
+  const initial = loadDraft()
+  const [text, setText] = useState(initial.text)
+  const [appPrefix, setAppPrefix] = useState(initial.appPrefix)
+  const [collapseFramework, setCollapseFramework] = useState(initial.collapseFramework)
+
+  useEffect(() => {
+    const t = setTimeout(() => localStorage.setItem(DRAFT_KEY, JSON.stringify({ text, appPrefix, collapseFramework })), 400)
+    return () => clearTimeout(t)
+  }, [text, appPrefix, collapseFramework])
 
   const blocks = useMemo(
     () => parseStackTrace(text, appPrefix.split(',').map((s) => s.trim()).filter(Boolean)),
@@ -27,6 +57,7 @@ export function StackTracePage() {
               placeholder={'java.lang.NullPointerException: ...\n\tat com.dhruv.app.Service.doThing(Service.java:42)\n\t...'}
               className="resize-none rounded-2xl border border-rule bg-panel p-3 font-mono text-[12px] leading-relaxed text-ink outline-none focus:border-cyan/50"
             />
+            <Button variant="ghost" onClick={() => setText(SAMPLE)}>Try a sample</Button>
           </div>
         </Panel>
         <Panel>

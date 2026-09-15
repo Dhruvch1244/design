@@ -1,11 +1,27 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { findPathsTo, parseDependencyTree, type DepNode } from '../lib/depTree'
 import { Panel, SectionLabel, ErrorBanner } from '../components/ui'
 import { ResizablePanel } from '../components/ResizablePanel'
 
+const DRAFT_KEY = 'devtools.dep-tree-draft'
+
+const SAMPLE = `com.example:orders-service:jar:1.0.0
++- org.springframework.boot:spring-boot-starter-web:jar:3.2.1:compile
+|  +- com.fasterxml.jackson.core:jackson-databind:jar:2.15.2:compile
+|  \\- org.springframework:spring-webmvc:jar:6.1.2:compile
++- com.fasterxml.jackson.core:jackson-databind:jar:2.16.0:compile
++- org.projectlombok:lombok:jar:1.18.30:provided
+\\- org.postgresql:postgresql:jar:42.7.1:runtime
+`
+
 export function DependencyTreePage() {
-  const [text, setText] = useState('')
+  const [text, setText] = useState(() => localStorage.getItem(DRAFT_KEY) ?? '')
   const [filter, setFilter] = useState('')
+
+  useEffect(() => {
+    const t = setTimeout(() => localStorage.setItem(DRAFT_KEY, text), 400)
+    return () => clearTimeout(t)
+  }, [text])
 
   const roots = useMemo(() => {
     try {
@@ -27,8 +43,11 @@ export function DependencyTreePage() {
   return (
     <div className="flex h-full gap-4">
       <ResizablePanel storageKey="dep-tree"><Panel className="flex h-full flex-col overflow-hidden">
-        <div className="flex flex-1 flex-col p-4">
-          <SectionLabel>Paste `mvn dependency:tree` or `gradlew dependencies` output</SectionLabel>
+        <div className="flex flex-1 flex-col gap-2 p-4">
+          <div className="flex items-center justify-between">
+            <SectionLabel>Paste `mvn dependency:tree` or `gradlew dependencies` output</SectionLabel>
+            <button onClick={() => setText(SAMPLE)} className="shrink-0 text-[11px] text-ink-faint hover:text-cyan">Try a sample</button>
+          </div>
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
