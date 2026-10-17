@@ -1174,3 +1174,12 @@ export const COMPONENT_DEMOS: Record<string, () => React.ReactNode> = {
     );
   },
 };
+
+// The page that renders these is a server component, and this module is
+// "use client" — so on the server COMPONENT_DEMOS is a client-reference
+// proxy, not the real object, and indexing it by slug is always undefined.
+// Do the lookup here, on the client side of the boundary, instead.
+export function ComponentDemo({ slug }: { slug: string }) {
+  const Demo = COMPONENT_DEMOS[slug];
+  return Demo ? <Demo /> : null;
+}
