@@ -5,7 +5,7 @@ import { Eyebrow } from "@/components/brand/eyebrow";
 import { Reveal } from "@/components/motion/reveal";
 import { CopyButton } from "@/components/copy-button";
 import { COMPONENTS_DATA } from "@/lib/components-data";
-import { COMPONENT_DEMOS } from "@/components/component-demos";
+import { ComponentDemo } from "@/components/component-demos";
 
 export function generateStaticParams() {
   return COMPONENTS_DATA.map((c) => ({ slug: c.slug }));
@@ -39,8 +39,7 @@ export default async function ComponentDetailPage({
 }: PageProps<"/components/[slug]">) {
   const { slug } = await params;
   const entry = COMPONENTS_DATA.find((c) => c.slug === slug);
-  const Demo = COMPONENT_DEMOS[slug];
-  if (!entry || !Demo) notFound();
+  if (!entry) notFound();
 
   const index = COMPONENTS_DATA.findIndex((c) => c.slug === slug);
   const prev = index > 0 ? COMPONENTS_DATA[index - 1] : null;
@@ -63,7 +62,7 @@ export default async function ComponentDetailPage({
       </Reveal>
 
       <Reveal delay={80}>
-        <Demo />
+        <ComponentDemo slug={slug} />
       </Reveal>
 
       <nav className="flex items-center justify-between border-t border-border pt-6 text-sm">
