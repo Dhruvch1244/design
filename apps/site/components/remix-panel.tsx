@@ -38,7 +38,7 @@ function getRadiusServerSnapshot(): string {
  * compact theme+accent+voice control) — this is the bigger, more prominent
  * "remix the whole site live" demo: same accent picker (delegated to
  * PalettePicker) and voice picker (delegated to VoicePicker — see
- * globals.css's [data-voice="..."] blocks for what each of the 7 style
+ * globals.css's [data-voice="..."] blocks for what each of the 7 style agents and 5 worlds
  * agents actually overrides), plus a --radius-scale toggle that reshapes
  * every rounded-{sm,md,lg,xl,2xl,3xl} element at once via the @theme inline
  * re-read in globals.css. rounded-full pills (buttons, badges, avatars) are

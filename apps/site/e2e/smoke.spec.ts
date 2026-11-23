@@ -9,6 +9,7 @@ const ROUTES = [
   "/",
   "/philosophy/",
   "/philosophy/architecture/",
+  "/philosophy/worlds/",
   "/case-studies/",
   "/case-studies/lyric-viewer/",
   "/components/",

@@ -265,7 +265,7 @@ test("skill: --copilot installs copilot-instructions.md + 5 instructions/dsgn-*.
 
   const instructionsDir = path.join(dir, ".github", "instructions");
   const installed = await readdir(instructionsDir);
-  assert.equal(installed.length, 7);
+  assert.equal(installed.length, 12);
 });
 
 test("skill: --copilot merges into an existing .github/instructions dir without touching unrelated files", async (t) => {

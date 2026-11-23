@@ -64,7 +64,7 @@ real registry, tokens, and motion primitives — not generic advice.
 
 ## 3. Theming Specialist
 
-- Confirm which of the seven style agents is active, then set the *values*
+- Confirm which style agent or world is active, then set the *values*
   in `reference/tokens.md`'s raw-value layer to match that agent's palette —
   never introduce a new CSS variable name at the semantic or Tailwind-token
   layer to do it. The whole point of the two-layer indirection is that
@@ -97,7 +97,7 @@ real registry, tokens, and motion primitives — not generic advice.
   hardcoded white `ring-offset-color` unless one is set explicitly — this
   repo's own `badge`, `button`, `input`, `select`, `slider`, `tabs`, and
   `textarea` components shipped with exactly this gap: a bright white halo
-  around every focused control on any dark voice (six of the seven), fully
+  around every focused control on any dark voice or world, fully
   invisible if you only checked focus states in light mode. Always pair
   `ring-offset-2` with an explicit `ring-offset-background` (or whichever
   semantic background token the surface actually sits on) — never the bare

@@ -53,12 +53,18 @@ const AGENT_FILES = [
   "neon-cyberpunk.md",
   "corporate.md",
   "startup.md",
+  "terminal-phosphor.md",
+  "arcade-synth.md",
+  "iron-poster.md",
+  "pit-lane.md",
+  "night-shift.md",
 ];
 const REFERENCE_FILES = [
   "philosophy-summary.md",
   "component-registry.md",
   "tokens.md",
   "workflow-checklist.md",
+  "worlds.md",
 ];
 // Reference docs have no frontmatter of their own (unlike agents/*.md, which
 // each already carry a real `description`) — these one-liners are the same
@@ -66,11 +72,13 @@ const REFERENCE_FILES = [
 // here rather than inventing new summaries.
 const REFERENCE_DESCRIPTIONS = {
   "philosophy-summary.md":
-    "Condensed from philosophy/AGENTS.md — nine rules extracted from decisions that actually shipped in three real apps, not aspirational values.",
+    "Condensed from philosophy/AGENTS.md — ten rules extracted from decisions that actually shipped in four real apps, not aspirational values.",
   "component-registry.md":
     "The real 36 UI components plus utils, sourced from packages/registry/registry.json and each component's actual source — real prop names, real variants.",
   "tokens.md":
     "The site's real CSS custom properties from apps/site/app/globals.css, and the raw-value to semantic-alias to Tailwind-token indirection every style agent reskins through.",
+  "worlds.md":
+    "Building one content model in several worlds — the metaphor map, the copy dictionary keyed by the same ids, derived visuals, and the pre-paint/URL/portal mechanics.",
   "workflow-checklist.md":
     "What each of the five workflow facets (build/compose/theme/a11y-review/motion) concretely means, grounded in this repo's real motion primitives and performance guardrails.",
 };

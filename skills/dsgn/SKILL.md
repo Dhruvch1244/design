@@ -1,6 +1,6 @@
 ---
 name: dsgn
-description: Build UI with the real @dhruvchoudhary/dsgn component registry and the dhruvch1244/design philosophy, in one of seven distinct visual voices, routed automatically by project context or explicit request.
+description: Build UI with the real @dhruvchoudhary/dsgn component registry and the dhruvch1244/design philosophy, in one of seven distinct visual voices or five worlds (voice + presentation metaphor + copy over one content model), routed automatically by project context or explicit request.
 ---
 
 # dsgn — design-philosophy-driven UI builder
@@ -9,8 +9,8 @@ This skill teaches Claude to build interfaces using two real, checkable things
 from the `dhruvch1244/design` repo, not invented conventions:
 
 1. **A design philosophy** (`reference/philosophy-summary.md`, sourced from
-   `philosophy/AGENTS.md`) — nine rules extracted from decisions that actually
-   shipped in three real apps, not aspirational values. Applies to *any*
+   `philosophy/AGENTS.md`) — ten rules extracted from decisions that actually
+   shipped in four real apps, not aspirational values. Applies to *any*
    code you write while this skill is active, not just UI code.
 2. **A real, installable component registry** (`reference/component-registry.md`,
    sourced from `packages/registry/registry.json`) — 56 components + a utils
@@ -24,7 +24,9 @@ from the `dhruvch1244/design` repo, not invented conventions:
 Use it whenever the task is building or restyling UI — a page, a component
 library, a design system, a "make this look premium" request — especially
 when the project is a fresh scaffold with no established visual language yet,
-or when the user explicitly asks for one of the seven voices below by name.
+or when the user explicitly asks for one of the seven voices or five worlds
+below by name — or asks for "themes," "modes" or "skins" that should feel
+genuinely different rather than recolored (that's a world; see below).
 
 Don't use it to override an established, working design system already in
 place in the target project unless the user asks for a restyle. This skill
@@ -53,12 +55,36 @@ differ in what the UI *looks and moves like*.
 | `agents/corporate.md` | Near-white/near-black neutral, one restrained desaturated accent, 1px borders over shadows, near-invisible motion, system-native sans type | Enterprise SaaS, developer platforms, anything the user calls "corporate," "enterprise," or references Apple/Google/Next.js |
 | `agents/startup.md` | Dark saturated background, two-hue gradient accent used boldly, oversized confident type, spring/overshoot motion | Product launches, marketing sites, anything the user calls "startup," "bold," or wants to feel fast-moving |
 
+## The five worlds
+
+A world goes one level deeper than a voice: it is a voice **plus** a
+presentation metaphor (how lists, profiles, timelines, metrics and calls to
+action are *shaped*) **plus** a copy dictionary — all over one content
+model that no world is allowed to fork or invent facts in. Read
+`reference/worlds.md` before building any of them; each agent file has a
+filled-in metaphor map.
+
+| Agent | World | Pick it when |
+|---|---|---|
+| `agents/terminal-phosphor.md` | Green phosphor; the page is a shell session with a working prompt | Developer portfolios, CLIs, dev tools that want to *feel* like a terminal |
+| `agents/arcade-synth.md` | Synthwave purple, pixel type; title screen, level select, hi-scores | Games, playful portfolios, hackathons and events |
+| `agents/iron-poster.md` | Warm paper, heavy grotesk, gym orange; program sheet and session cards | Fitness, coaching, "progressive overload" personal stories |
+| `agents/pit-lane.md` | Asphalt, italic condensed type; timing tower, onboard camera, team radio | Products or portfolios that sell speed and performance |
+| `agents/night-shift.md` | Lavender night, rounded type; night journal and polaroid wall | Personal sites, indie products, warm creative portfolios |
+
+A product can offer several worlds side by side (the reference site,
+dhruvchoudhary.com, ships six including a conventional default). Build the
+content model once, then one presenter per world.
+
 ## Router logic
 
 Apply these signals in order — the first one that matches decides:
 
 1. **Explicit request wins.** If the user names a style directly ("make it
-   brutalist," "give me the neon one," "like your own site"), use that agent.
+   brutalist," "give me the neon one," "like your own site," "make it a
+   terminal"), use that agent. A request for multiple themes that should
+   feel different — not just recolored — routes to worlds and
+   `reference/worlds.md`.
    Don't second-guess an explicit ask with a vibe inference.
 2. **Existing brand cues win next.** If the target project already has a
    color palette, font choice, or component library that clearly leans one
@@ -96,7 +122,8 @@ specified is friction with no benefit, not rigor.
      or flow), named, not "some UI."
    - **Scope** — what's explicitly in and out (e.g. "the settings page, not
      the whole account flow").
-   - **Voice** — which of the seven style agents per Router logic above, and
+   - **Voice** — which of the seven style agents or five worlds per Router
+     logic above (for a world, also its metaphor map), and
      the one-line reason (the actual signal that pointed at it — explicit
      request, existing brand cue, or project-type default). This is the
      recommendation, not a placeholder to fill in later.
@@ -133,6 +160,10 @@ differs.
 
 ## Building, once a style is chosen
 
+0. **If a world was chosen**, read `reference/worlds.md` first and fill the
+   metaphor map for every content type the product has before writing CSS;
+   put every fact in the content model and every line of voice in a copy
+   dictionary keyed by the same ids.
 1. Read `reference/component-registry.md` for the real component list, real
    variant names, and real dependencies — never invent a prop or variant
    that isn't listed there.
@@ -196,7 +227,7 @@ Everything in `reference/` is derived from real files in this repo at the
 time this skill was written:
 
 - `philosophy/AGENTS.md` (and its siblings `architecture.md`,
-  `ui-interaction.md`, `code-style.md`, `anti-patterns.md`)
+  `ui-interaction.md`, `code-style.md`, `anti-patterns.md`, `worlds.md`)
 - `packages/registry/registry.json` and the component sources under
   `packages/registry/src/components/`
 - `apps/site/app/globals.css` (the token system)

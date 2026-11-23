@@ -7,7 +7,8 @@ else in this repo gets loaded, this file alone should still change how an agent
 writes code.
 
 Longer treatments of each pillar live in the sibling files in this directory
-(`architecture.md`, `ui-interaction.md`, `code-style.md`, `anti-patterns.md`).
+(`architecture.md`, `ui-interaction.md`, `code-style.md`, `anti-patterns.md`,
+`worlds.md`).
 Read this file first; it stands on its own.
 
 ## Why this file exists
@@ -18,13 +19,15 @@ shipped, in a real app, usually after the naive version broke something. Where
 useful, the rule names the app it came from so it stays falsifiable — you can go
 look at the commit, not just take the principle on faith.
 
-The three source projects, referenced by short name throughout:
+The source projects, referenced by short name throughout:
 
 - **lyric-viewer** — a Tauri 2 + Rust desktop app that detects whatever's playing
   system-wide and renders synced lyrics with an audio-reactive visual backdrop.
 - **file-viewer** — a .NET/WPF desktop app for opening and editing multi-GB
   Bloomberg data files without loading them fully into memory.
 - **review-grader** — an Angular 17 signals-based web app.
+- **dhruvchoudhary.com** — the author's React + Vite portfolio, which presents
+  one content model in six switchable "worlds" (pillar #10).
 
 ## How to use this file (for AI agents specifically)
 
@@ -294,6 +297,61 @@ annotation is purely a style nit to fix "when we get to it," when in the
 runtime you're actually targeting it's a silent, user-visible freeze waiting
 for someone to hit the slow path in production.
 
+### 10. One content model, many presentations — a voice is a metaphor, not a palette
+
+When an interface offers more than one look, a "theme" that only swaps
+colors and fonts is the shallow version. The deep version lets a voice
+change **how content is presented** — its structure, its metaphor, its
+copy — while every *fact* still comes from one content model that no voice
+is allowed to restate or invent.
+
+- **dhruvchoudhary.com** (the author's portfolio, `src/worlds/`): six
+  "worlds" render the same projects, experience and contact data. The
+  Terminal world is a shell session with a working prompt (`open selecta`
+  navigates to the real case study); Arcade turns the project list into a
+  level select; Iron into a training program; Pit Lane into a race
+  classification where picking a car swaps the onboard screenshot; Night
+  Shift into a night journal and a polaroid wall. Projects carry `year`,
+  `kind` and one headline `stat` in `data/content.ts`; every world's stat
+  bar, plate count or tyre compound is *derived* from those fields
+  (one barbell plate per technology in the real stack), never typed in as a
+  decorative number. Per-world copy lives in one dictionary
+  (`src/worlds/copy.ts`) keyed by project slug — the same fact, said in
+  each world's voice.
+- **Selecta** (Tauri + React, built on this registry): ships the registry
+  in its own "Studio" voice (FL-Studio-inspired, documented in its own
+  `DESIGN.md`), with dark and light as one token swap — evidence the
+  token layer holds up in a product, not just on this site.
+
+Rules this produces:
+
+1. **Facts live once.** A content model (typed data) is the only place a
+   number, date, name or claim exists. Worlds read it; they never copy it.
+2. **Voice lives in a dictionary, keyed by the same ids.** Every entity
+   gets a line per world, so adding a world is "write its column," and a
+   missing line is a type/lookup error, not a silent gap.
+3. **Every content type gets a mapped metaphor.** Before building a world,
+   fill the map: what is a *list of entities* here (level select, timing
+   tower), a *profile* (player card, athlete card), a *timeline* (hi-scores,
+   training history), a *metric* (PR, fastest lap), a *call to action*
+   (CONTINUE?, "box, box")? A world that only re-skins the list and leaves
+   the rest generic reads as a costume, not a world.
+4. **Derived visuals must encode real data.** A bar, a meter, a count of
+   plates is a chart — it has to be computed from a field, or it's a lie
+   with good typography.
+5. **Interaction belongs to the metaphor but resolves to real navigation.**
+   A terminal prompt or a pickable timing tower is welcome; what it does
+   must be the same route/link the default presentation would use.
+6. **The default stays conventional; worlds are opt-in, persistent and
+   shareable.** Pre-paint the stored choice (no flash), accept it from the
+   URL (`?world=arcade`) so a world can be sent as a link, and keep one
+   plain presentation for people who just want the facts.
+
+**Anti-pattern this rules out**: a "theme switcher" that forks the content
+— a second copy of the project list with tweaked wording and made-up
+numbers — so the moment one fact changes, the themes disagree with each
+other and nobody can tell which one is true.
+
 ## What these pillars produce together
 
 No single pillar here makes an app feel "next level." Together, they produce
@@ -312,6 +370,8 @@ a specific, recognizable quality:
 - **Its own documentation is trustworthy**, because it was written to capture
   decisions that would otherwise be silently re-broken (#8), including
   admitting where reality has drifted from an earlier plan.
+- **It can wear more than one voice without lying**, because presentation
+  is free to change shape while facts stay in one model (#10).
 
 That combination — fast, honest with the user's data, resilient to churn,
 honestly documented — is the actual definition of "design philosophy" this
@@ -329,6 +389,9 @@ to read.
   (#6, #7, #8) as line-level conventions.
 - `anti-patterns.md` — every anti-pattern named above, collected in one place
   with the failure mode spelled out, for quick lookup.
+- `worlds.md` — pillar #10 expanded: the metaphor map, the copy dictionary,
+  and the mechanics (pre-paint, URL, persistence, overlays) of a site that
+  presents one content model in several worlds.
 - `motion.md` — animation/interaction-motion guidance, sourced from this
   project's own site rather than the three apps above (it's the one place
   this project has a real, git-checkable animation decision of its own).

@@ -10,6 +10,7 @@ export const PHILOSOPHY_DOCS = [
   { slug: "code-style", title: "Code Style", file: "code-style.md" },
   { slug: "anti-patterns", title: "Anti-Patterns", file: "anti-patterns.md" },
   { slug: "motion", title: "Motion & Animation", file: "motion.md" },
+  { slug: "worlds", title: "Worlds", file: "worlds.md" },
 ] as const;
 
 export function findDocBySlug(slug: string) {

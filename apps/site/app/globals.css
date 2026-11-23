@@ -360,6 +360,94 @@
 }
 
 /*
+ * The five worlds (skills/dsgn/agents/{terminal-phosphor,arcade-synth,
+ * iron-poster,pit-lane,night-shift}.md). On this site a world is previewed
+ * the same way a voice is -- token values only, accent still owned by the
+ * palette picker -- because the site's own pages have one presentation.
+ * The part of a world that changes *structure and copy* lives in the
+ * product that uses it (see philosophy/worlds.md); this is just its skin,
+ * so a registry component can be checked in each world's surfaces.
+ * Each world's palette is part of its declared identity, so -- like
+ * neon-cyberpunk -- they hold under [data-theme="light"] (four dark) or
+ * under the dark default (iron-poster, light).
+ */
+[data-voice="terminal-phosphor"],
+[data-voice="terminal-phosphor"][data-theme="light"] {
+  --void: #070b09;
+  --surface: #0c1310;
+  --ink: #d5f7e1;
+  --ink-soft: #94c2a5;
+  --ink-faint: #5d8169;
+  --rule: #183224;
+  --glass: #070b09e6;
+  --glass-strong: #0c1310f2;
+  --radius-scale: 0.2;
+  --shadow-ambient-raw: none;
+  --glow-accent: 0 0 24px -4px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+[data-voice="arcade-synth"],
+[data-voice="arcade-synth"][data-theme="light"] {
+  --void: #170a35;
+  --surface: #221050;
+  --ink: #ffffff;
+  --ink-soft: #e3d3ff;
+  --ink-faint: #a891db;
+  --rule: #3d2575;
+  --glass: #170a35e6;
+  --glass-strong: #221050f2;
+  --radius-scale: 0.3;
+  --shadow-ambient-raw: 4px 4px 0 #ff4fd8;
+  --glow-accent: 0 0 0 2px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+[data-voice="iron-poster"],
+[data-voice="iron-poster"][data-theme="light"] {
+  --void: #f6efe3;
+  --surface: #fffaf2;
+  --ink: #2d3142;
+  --ink-soft: #4f5d75;
+  --ink-faint: #7f8596;
+  --rule: #2d3142;
+  --glass: #f6efe3f2;
+  --glass-strong: #fffaf2;
+  --star-color: #c9bfae;
+  --radius-scale: 1.4;
+  --shadow-ambient-raw: 6px 6px 0 #2d3142;
+  --glow-accent: none;
+}
+
+[data-voice="pit-lane"],
+[data-voice="pit-lane"][data-theme="light"] {
+  --void: #0f1012;
+  --surface: #17181c;
+  --ink: #ffffff;
+  --ink-soft: #babdc5;
+  --ink-faint: #737781;
+  --rule: #272a31;
+  --glass: #0f1012e6;
+  --glass-strong: #17181cf2;
+  --radius-scale: 0.1;
+  --shadow-ambient-raw: none;
+  --glow-accent: -6px 0 0 -2px #ffd60a;
+}
+
+[data-voice="night-shift"],
+[data-voice="night-shift"][data-theme="light"] {
+  --void: #261f4a;
+  --surface: #30285e;
+  --ink: #ffffff;
+  --ink-soft: #e2dafa;
+  --ink-faint: #a59bd0;
+  --rule: #463c80;
+  --glass: #261f4ab3;
+  --glass-strong: #30285ef0;
+  --radius-scale: 1.8;
+  --shadow-ambient-raw: 0 18px 34px -12px color-mix(in srgb, black 55%, transparent);
+  --glow-accent: 0 0 40px -10px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+/*
  * /design-analytics (Halyard) — a standalone showcase, not a voice a visitor
  * picks from the nav. Scoped under its own attribute rather than reusing
  * [data-voice="corporate"] so its exact brand values (its own blue, its own

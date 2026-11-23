@@ -1,9 +1,9 @@
 # Motion & animation — earn the frame, respect the override
 
-A companion to the nine pillars in `AGENTS.md`, not a tenth pillar itself —
-those nine are extracted from three external shipped apps (lyric-viewer,
-file-viewer, review-grader), evidenced by a commit in a repo this project
-doesn't own. This one is different on purpose: every claim below is sourced
+A companion to the pillars in `AGENTS.md`, not a pillar itself — pillars
+1-9 are extracted from three external shipped apps (lyric-viewer,
+file-viewer, review-grader) and #10 from a fourth (dhruvchoudhary.com),
+each evidenced by a commit in a repo this project doesn't own. This one is different on purpose: every claim below is sourced
 from **this site** (`apps/site` in this repo) instead, because it's the one
 place this project has a real, git-checkable animation decision to point at.
 Same discipline as the rest of this philosophy — no invented "best

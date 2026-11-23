@@ -5,6 +5,34 @@ documented here, in [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format. The registry and site aren't independently versioned — they're
 covered under **Registry** below, dated by when they actually shipped.
 
+## [Unreleased]
+
+### Added
+
+- **Worlds** — pillar #10, "one content model, many presentations — a voice
+  is a metaphor, not a palette," sourced from a fourth shipped app
+  (dhruvchoudhary.com). A world is a voice **plus** a presentation metaphor
+  (how lists, profiles, timelines, metrics and calls to action are shaped)
+  **plus** a copy dictionary, over one content model nobody forks.
+  `philosophy/worlds.md` expands it: the metaphor map, derived visuals
+  that must encode real fields, interactions that resolve to real
+  navigation, pre-paint/URL/persistence, and the iOS Safari lesson that
+  overlays belong in a portal (a `backdrop-filter` nav trapped a
+  "fullscreen" picker in the mobile top bar; Chromium didn't reproduce it).
+- `dsgn skill` now ships five world agents alongside the seven voices —
+  `terminal-phosphor`, `arcade-synth`, `iron-poster`, `pit-lane`,
+  `night-shift` — each with a filled-in metaphor map and copy voice, plus a
+  new `reference/worlds.md` build guide. The router sends "themes that
+  should feel different, not just recolored" to worlds. Every install
+  target (Claude Code, Cursor, Windsurf, Copilot, Gemini, AGENTS.md) picks
+  them up; Copilot now installs 12 voice files.
+
+### Registry
+
+- The site's voice picker previews the five worlds' token skins
+  (`[data-voice="terminal-phosphor"]` etc.), `/philosophy/worlds` is a new
+  page, and `/skill` embeds the new agents verbatim.
+
 ## [0.9.3] — 2026-09-05
 
 ### Fixed
