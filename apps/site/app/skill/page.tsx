@@ -11,7 +11,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 export const metadata: Metadata = {
   title: "Skill — Dhruv Choudhary",
   description:
-    "A Claude Code Agent Skill: install it and Claude builds UI using this project's real design philosophy and component registry, in one of seven visual voices.",
+    "A Claude Code Agent Skill: install it and Claude builds UI using this project's real design philosophy and component registry, in one of seven visual voices or five worlds.",
 };
 
 const DEGIT_COMMAND = "npx degit dhruvch1244/design/skills/dsgn ~/.claude/skills/dsgn";
@@ -28,7 +28,7 @@ interface OtherTool {
   note?: string;
 }
 
-// Same router + 7 personas + reference docs as the Claude Code skill, built
+// Same router + 7 personas + 5 worlds + reference docs as the Claude Code skill, built
 // per-tool by scripts/sync-skill.mjs into the real structure each format
 // actually supports — not one flattened file everywhere. Cursor gets real
 // sibling .mdc files Cursor auto-attaches by description; Gemini gets real
@@ -39,13 +39,13 @@ const OTHER_TOOLS: OtherTool[] = [
   {
     flag: "--cursor",
     tool: "Cursor",
-    target: "./.cursor/rules/dsgn/ (router + 7 agents + 4 reference docs)",
+    target: "./.cursor/rules/dsgn/ (router + 12 agents + 5 reference docs)",
     note: "Cursor reads each file's description and auto-attaches the relevant one. No file-based global — Cursor's only global mechanism is its Settings UI.",
   },
   {
     flag: "--windsurf",
     tool: "Windsurf (this project)",
-    target: "./.windsurf/rules/dsgn-*.md (12 files)",
+    target: "./.windsurf/rules/dsgn-*.md (18 files)",
   },
   {
     flag: "--windsurf-global",
@@ -56,8 +56,8 @@ const OTHER_TOOLS: OtherTool[] = [
   {
     flag: "--copilot",
     tool: "GitHub Copilot",
-    target: "./.github/copilot-instructions.md + .github/instructions/dsgn-*.instructions.md (7 files)",
-    note: "Copilot has no description-based routing — all 7 voices apply together; delete the ones you don't want.",
+    target: "./.github/copilot-instructions.md + .github/instructions/dsgn-*.instructions.md (12 files)",
+    note: "Copilot has no description-based routing — all 12 voices and worlds apply together; delete the ones you don't want.",
   },
   {
     flag: "--gemini",
@@ -98,7 +98,7 @@ const WORKED_EXAMPLE_CODE = `<Card className="border-0 shadow-[0_8px_40px_-12px_
 // actually needs to read first.
 const SKILL_MD_PREVIEW = `---
 name: dsgn
-description: Build UI with the real @dhruvchoudhary/dsgn component registry and the dhruvch1244/design philosophy, in one of seven distinct visual voices, routed automatically by project context or explicit request.
+description: Build UI with the real @dhruvchoudhary/dsgn component registry and the dhruvch1244/design philosophy, in one of seven distinct visual voices or five worlds (voice + presentation metaphor + copy over one content model), routed automatically by project context or explicit request.
 ---
 
 ## When to use this skill
@@ -106,7 +106,9 @@ description: Build UI with the real @dhruvchoudhary/dsgn component registry and 
 Use it whenever the task is building or restyling UI — a page, a component
 library, a design system, a "make this look premium" request — especially
 when the project is a fresh scaffold with no established visual language yet,
-or when the user explicitly asks for one of the seven voices below by name.
+or when the user explicitly asks for one of the seven voices or five worlds
+below by name — or asks for "themes," "modes" or "skins" that should feel
+genuinely different rather than recolored (that's a world; see below).
 
 Don't use it to override an established, working design system already in
 place in the target project unless the user asks for a restyle. This skill
@@ -117,11 +119,14 @@ is additive, not a replacement for a project's existing conventions.
 Apply these signals in order — the first one that matches decides:
 
 1. Explicit request wins. If the user names a style directly ("make it
-   brutalist," "give me the neon one," "like your own site"), use that agent.
+   brutalist," "give me the neon one," "like your own site," "make it a
+   terminal"), use that agent. A request for multiple themes that should
+   feel different — not just recolored — routes to worlds and
+   reference/worlds.md.
 2. Existing brand cues win next. Match a project's existing palette/type
    direction rather than introducing a new voice on top of an established one.
 3. Project type is the fallback default — a SaaS dashboard, a portfolio, a
-   dev tool, a wellness app, a game each map to one of the seven voices below.
+   dev tool, a wellness app, a game each map to one of the seven voices or five worlds below.
 4. When genuinely unsure — two candidates, or no strong signal at all —
    stop and ask, don't silently pick. Lead with your actual recommendation
    and why, offer 1-2 alternatives, and use a structured choice tool
@@ -939,13 +944,521 @@ flat neutral line.
       punchy and close
 `,
   },
+  {
+    slug: "terminal-phosphor",
+    name: "World · Terminal / Phosphor",
+    description:
+      "World — green phosphor on near-black, monospace everything, faint scanlines; content presented as a live shell session with a working prompt. For developer portfolios, CLIs, dev tools and changelogs that want to feel like a terminal, not just look like one.",
+    content: `---
+name: dsgn-terminal-phosphor
+description: World — green phosphor on near-black, monospace everything, faint scanlines; content presented as a live shell session with a working prompt. For developer portfolios, CLIs, dev tools and changelogs that want to feel like a terminal, not just look like one.
+---
+
+# Terminal / Phosphor (world)
+
+## 1. Identity
+
+A world, not just a voice: the page *is* a shell session. Content arrives as
+the output of commands (\`whoami\`, \`cat about.txt\`, \`ls -la\`), and a real
+prompt at the bottom accepts commands that drive the real site. The visual
+layer is restrained — green on black, one amber secondary — because the
+metaphor carries the personality. Read \`reference/worlds.md\` first.
+
+## 2. Color logic
+
+- Background: near-black with a green cast (\`#070b09\`), surface one step up
+  (\`#0c1310\`). Never pure black — phosphor screens glow.
+- Accent: phosphor green (\`#3ddc84\`) for prompts, links and the cursor;
+  amber (\`#e0b341\`) as the single secondary (hashes, flags, timestamps).
+- Text: pale green-white (\`#d5f7e1\`), secondary and faint steps tinted
+  green, not grey.
+- Map onto the existing raw tokens (\`--void\`, \`--surface\`, \`--ink*\`,
+  \`--rule\`) — no new names.
+
+## 3. Typography
+
+- \`--font-display\`, \`--font-sans\` and \`--font-mono\` all point at one
+  monospace (JetBrains Mono in the reference site). Headings are bold mono,
+  sentence case, tight tracking — not uppercase display type.
+- Load the world's font only when the world is active.
+
+## 4. Spacing & density
+
+Dense, line-based rhythm. Blocks are separated by one blank line's worth of
+space, like real terminal output. Column alignment matters — use CSS grid
+with \`ch\` units for \`ls\`-style rows rather than padding strings with spaces.
+
+## 5. Motion character
+
+Almost none, and mechanical when present: a \`steps(1)\` blinking cursor, an
+optional slow "code rain" backdrop that speeds up with scroll. No easing
+curves on content. Everything blinking stops under \`prefers-reduced-motion\`.
+
+## 6. Borders & shadows
+
+The page sits in one window chrome (title bar with three dots). Inside it:
+no cards, no shadows — structure comes from prompts and indentation. A very
+faint scanline overlay (multiply, ~18% black every 3px) is the only texture.
+
+## 7. Workflow facets in this voice
+
+- **Component Builder**: buttons become \`-> open <name>\` links or \`[ ]\`
+  checkboxes; registry components are used sparingly inside the window
+  (Kbd, Tooltip, Command).
+- **Page Composer**: one long session per page; each section is
+  \`<prompt> <command>\` followed by its output.
+- **Theming Specialist**: one token block; radius near \`0.2\`; shadows off
+  inside the window.
+- **Accessibility Reviewer**: the prompt \`<input>\` needs a real
+  \`aria-label\` ("Terminal command (type help)"); tables of \`ls\` output need
+  \`role="table"\`/\`row\`/\`cell\`; green-on-black contrast must still pass AA
+  for the faint step.
+- **Motion specialist**: only the cursor and backdrop move.
+
+## 8. Presentation metaphor
+
+| Content type | Presented as |
+|---|---|
+| Entity list | \`ls -la ~/projects --sort=time\` — perms, year, kind, link, \`# stat\` |
+| Entity detail | \`cat <slug>/README.md\`, screenshot as a green-tinted \`imgcat\` that clears on hover |
+| Entity headline | its defining commit message |
+| Profile | \`whoami\` + \`cat about.txt\` |
+| Timeline | \`cat experience.log\` with \`[period]\` prefixes |
+| Skills | \`cat stack.json\` |
+| Call to action | \`contact --list\`, easter egg \`sudo hire-me\` |
+| Interaction | a working prompt: \`help\`, \`ls\`, \`open <entity>\`, \`cd <page>\`, \`world <name>\`, \`clear\`; ↑/↓ history |
+
+## 9. Copy voice
+
+Commit messages and shell output: lowercase, conventional-commit prefixes
+(\`feat(planner):\`, \`perf(search):\`), arrows as \`->\`. Errors are honest
+(\`open: foo: no such project (try ls)\`).
+
+## 10. Do / Don't
+
+- Do: make the prompt actually navigate — \`open x\` must reach the same page
+  the default card links to.
+- Do: derive every \`# stat\` comment from the content model.
+- Don't: fake a terminal that only accepts the demo commands.
+- Don't: use uppercase display type or soft shadows — that's a costume.
+
+## 11. Pre-output checklist
+
+- [ ] Every section is a prompt + output pair
+- [ ] The prompt handles \`help\` and unknown commands
+- [ ] \`ls\` rows align on a grid, and collapse sensibly at ~390px
+- [ ] Cursor/backdrop stop under reduced motion
+- [ ] Faint text still meets contrast on the green-black background
+`,
+  },
+  {
+    slug: "arcade-synth",
+    name: "World · Arcade / Synth",
+    description:
+      "World — synthwave purple, pixel display type, chunky offset shadows; content presented as an arcade cabinet (title screen, level select, hi-scores, CONTINUE?). For games, playful portfolios, hackathon and event sites.",
+    content: `---
+name: dsgn-arcade-synth
+description: World — synthwave purple, pixel display type, chunky offset shadows; content presented as an arcade cabinet (title screen, level select, hi-scores, CONTINUE?). For games, playful portfolios, hackathon and event sites.
+---
+
+# Arcade / Synth (world)
+
+## 1. Identity
+
+The site is a cabinet you just walked up to: a title screen with PRESS
+START, a PLAYER 1 card, a level select where every entity is a cartridge,
+a HI-SCORES table, and a CONTINUE? countdown as the call to action. Loud,
+but organized — every element is still a real link to a real page. Read
+\`reference/worlds.md\` first.
+
+## 2. Color logic
+
+- Background: deep synth purple (\`#170a35\`), surfaces a step lighter
+  (\`#221050\`), with a vertical gradient toward magenta at the bottom.
+- Accents: arcade yellow (\`#ffe14f\`) as primary, magenta (\`#ff4fd8\`) for
+  shadows/outlines, cyan (\`#7af7ff\`) as secondary. Three accents is the
+  ceiling.
+- Text: white, with a lavender soft step (\`#e3d3ff\`).
+
+## 3. Typography
+
+- \`--font-display\`: a pixel face (Press Start 2P) — headings, buttons,
+  labels only, never paragraphs.
+- \`--font-mono\`: a readable bitmap-style mono (VT323) at a larger size for
+  stats and meta.
+- \`--font-sans\` stays a clean sans for body copy — pixel fonts at paragraph
+  length are unreadable.
+
+## 4. Spacing & density
+
+Grid-first. Cartridges in a two-up grid for featured items, auto-fill for
+the full list. Generous gaps (20px+) so the offset shadows don't collide.
+
+## 5. Motion character
+
+Snappy and discrete: \`steps()\` blinks on PRESS START and CONTINUE, a hard
+2-4px press-down on buttons (shadow shrinks as the button moves). Backdrop:
+pixel starfield + rolling perspective grid floor + striped sun, speeding up
+with scroll. All of it off under reduced motion.
+
+## 6. Borders & shadows
+
+3px solid borders; hard offset shadows with zero blur in magenta
+(\`4px 4px 0\`); square corners on buttons, slightly rounded "cartridge"
+shells (14px top, 6px bottom). Screens inside cartridges get scanlines.
+
+## 7. Workflow facets in this voice
+
+- **Component Builder**: Button gets a pixel-font, square, offset-shadow
+  treatment; Progress becomes a segmented cell bar.
+- **Page Composer**: title screen → player card → level select → scores →
+  continue. Each section opens with a \`★ HEADING\`.
+- **Theming Specialist**: radius scale low (~0.3); shadows are hard
+  offsets; \`--glow-accent\` can carry a neon edge.
+- **Accessibility Reviewer**: segmented bars need an \`aria-label\` with the
+  real value ("TECH 6 of 8"); blinking text must stop under reduced motion;
+  pixel fonts only above ~11px.
+- **Motion specialist**: discrete steps, not easing.
+
+## 8. Presentation metaphor
+
+| Content type | Presented as |
+|---|---|
+| Entity list | LEVEL SELECT — cartridges labelled \`WORLD 1-1…\` |
+| Entity headline | STAGE name + BOSS (the problem it beat) |
+| Metric | \`★\` win line (the headline stat) + segmented stat bars derived from real fields |
+| Profile | PLAYER 1 card: CLASS (role), GUILD (employer · city), lore (summary) |
+| Timeline | HI-SCORES table |
+| Call to action | CONTINUE? \`9\` → YES · EMAIL, plus secondary buttons |
+| Interaction | ▶ PRESS START scrolls to the level select |
+
+## 9. Copy voice
+
+UPPERCASE for labels and headings, short game nouns (STAGE, BOSS, CLASS,
+GUILD). Bosses are the real problem the entity solved ("a 116MB installer",
+"the frozen spreadsheet").
+
+## 10. Do / Don't
+
+- Do: compute every bar from a field (stack size, recency).
+- Do: keep body copy in a normal sans.
+- Don't: invent scores, levels or XP that mean nothing.
+- Don't: let three accents become five.
+
+## 11. Pre-output checklist
+
+- [ ] Title, player card, level select, scores and continue all exist
+- [ ] Stat bars are derived and labelled for screen readers
+- [ ] Pixel type never sets paragraphs
+- [ ] Hard offset shadows, no blur
+- [ ] Blinks and backdrop stop under reduced motion
+`,
+  },
+  {
+    slug: "iron-poster",
+    name: "World · Iron / Poster",
+    description:
+      "World — warm paper, heavy grotesk display type, gym-poster orange, ink-black hard shadows; content presented as a training log (program sheet, session cards, PRs, training history). For fitness products, coaching, and personal sites with a \"progressive overload\" story.",
+    content: `---
+name: dsgn-iron-poster
+description: World — warm paper, heavy grotesk display type, gym-poster orange, ink-black hard shadows; content presented as a training log (program sheet, session cards, PRs, training history). For fitness products, coaching, and personal sites with a "progressive overload" story.
+---
+
+# Iron / Poster (world)
+
+## 1. Identity
+
+A training log pinned to a gym wall: the project list is a program sheet,
+each entity a session card with its sets ticked off, the headline result a
+PR, the career a training history. The only light world of the five —
+paper and ink, one hot orange. Read \`reference/worlds.md\` first.
+
+## 2. Color logic
+
+- Background: warm paper (\`#f6efe3\`), surfaces cream (\`#fffaf2\`).
+- Ink: deep navy-black (\`#2d3142\`) used for text *and* borders and shadows.
+- Accent: poster orange (\`#e36d3c\`), secondary chalk yellow (\`#ffd166\`).
+- Because it's light, re-check every dark-tuned default (opacity-based
+  heatmaps, glows) — they wash out on cream.
+
+## 3. Typography
+
+- \`--font-display\`: a heavy grotesk (Archivo Black), uppercase, tight
+  tracking (\`-0.025em\`), line-height ~0.95.
+- \`--font-sans\`: its text cut (Archivo) for body.
+- \`--font-mono\`: for set numbers, splits and labels.
+
+## 4. Spacing & density
+
+Card grid (auto-fill ~300px). Inside cards, a dense list of sets with
+dashed separators. Section headings are big and close to their content.
+
+## 5. Motion character
+
+Physical and brief: cards lift on hover by translating up-left while the
+ink shadow grows. Backdrop: graph paper with slowly rising, spinning weight
+plates labelled \`O(1)\`, \`O(n)\`, \`20 kg\` that speed up with scroll.
+
+## 6. Borders & shadows
+
+2px ink borders, \`6px 6px 0\` ink shadows (orange on hover), 14px radius on
+cards, pills for buttons. Photos inside cards get a hairline border and a
+"form check" tag.
+
+## 7. Workflow facets in this voice
+
+- **Component Builder**: Card gets the ink border + offset shadow; Badge
+  becomes a day chip (\`MON\`); Table becomes the program sheet.
+- **Page Composer**: header + athlete card → this week's sessions →
+  training history → book a session.
+- **Theming Specialist**: light-only token block; \`--shadow-ambient-raw\`
+  as a hard ink offset.
+- **Accessibility Reviewer**: the barbell visual needs an \`aria-label\`
+  ("6 technologies"); orange on cream must pass for text (use the darker
+  accent step for small text).
+- **Motion specialist**: one short lift on hover; nothing loops on content.
+
+## 8. Presentation metaphor
+
+| Content type | Presented as |
+|---|---|
+| Entity list | THE PROGRAM sheet: #, lift, split, sets, PR |
+| Entity card | session card: day chip, lift name, screenshot ("form check"), barbell, one set per technology, PR, coach's note |
+| Category | split, from the entity's \`kind\` (desktop app = Legs · heavy, dev tool = Pull, …) |
+| Metric | PR = the headline stat |
+| Profile | athlete card: role, club (employer), based, split |
+| Timeline | training history, first achievement shown as the PR |
+| Call to action | book a session |
+
+## 9. Copy voice
+
+Coach-like and dry: lift names ("Deadlift", "Cut phase"), short coach's
+notes that restate a real fact in gym terms ("2 GB on the bar, 79 ms
+reps").
+
+## 10. Do / Don't
+
+- Do: load the barbell with one plate per real technology.
+- Do: keep the ink color doing triple duty (text, border, shadow).
+- Don't: invent weights, reps or timings that aren't derived.
+- Don't: reuse dark-world opacity values on this light palette.
+
+## 11. Pre-output checklist
+
+- [ ] Program sheet + session cards + history + CTA present
+- [ ] Sets and plates come from the real stack
+- [ ] Text contrast passes on cream (small orange text especially)
+- [ ] Hover lift is the only content motion
+- [ ] Table collapses to name + PR at ~390px
+`,
+  },
+  {
+    slug: "pit-lane",
+    name: "World · Pit Lane",
+    description:
+      "World — asphalt black, italic condensed display type, yellow and red, checkered strip; content presented as a race weekend (timing tower, onboard camera, team radio, race control). For motorsport-adjacent products, performance-focused dev tools, and portfolios that sell speed.",
+    content: `---
+name: dsgn-pit-lane
+description: World — asphalt black, italic condensed display type, yellow and red, checkered strip; content presented as a race weekend (timing tower, onboard camera, team radio, race control). For motorsport-adjacent products, performance-focused dev tools, and portfolios that sell speed.
+---
+
+# Pit Lane (world)
+
+## 1. Identity
+
+A race weekend broadcast: a timing tower down the side, an onboard camera
+for whichever car you pick, team radio quotes, race control messages and a
+driver card. Fast, slanted, high-contrast. Read \`reference/worlds.md\`
+first. Keep it generic motorsport — no real team, series or driver names,
+numbers or liveries.
+
+## 2. Color logic
+
+- Background: asphalt (\`#0f1012\`), surfaces \`#17181c\`, tower rows a step
+  darker (\`#0a0a0c\`).
+- Accents: signal yellow (\`#ffd60a\`) primary, racing red (\`#ff2a3c\`)
+  secondary. White for the checkered strip.
+- Tyre compounds use their own fixed colors (red/yellow/white/green/blue)
+  as data, not decoration.
+
+## 3. Typography
+
+- \`--font-display\`: an italic condensed heavy face (Barlow Condensed 800
+  italic), uppercase.
+- \`--font-sans\`: its text family (Barlow).
+- \`--font-mono\`: gaps, lap counters, labels.
+
+## 4. Spacing & density
+
+Broadcast density: a sticky timing tower (~360px) beside a wide content
+column. On phones the tower stacks above, and picking a car scrolls the
+onboard view into place.
+
+## 5. Motion character
+
+Directional: horizontal speed streaks in the backdrop that rush when you
+scroll; a brief blur-in when the onboard camera switches; skewed buttons
+that nudge right on hover. Off under reduced motion.
+
+## 6. Borders & shadows
+
+Hard edges, almost no radius. A 4px colored rule down the tower's left
+edge, \`inset 4px 0 0\` highlight on the active row, a checkered strip across
+the top. Buttons \`skewX(-10deg)\`.
+
+## 7. Workflow facets in this voice
+
+- **Component Builder**: Table becomes the timing tower (buttons for rows
+  when pickable); Badge becomes a tyre compound chip; Button is skewed.
+- **Page Composer**: driver card → tower + race control/team radio →
+  career → "box, box" CTA. Projects page: classification + onboard.
+- **Theming Specialist**: radius near \`0.1\`; no ambient shadows.
+- **Accessibility Reviewer**: pickable rows are \`<button aria-pressed>\`;
+  the onboard region is \`aria-live="polite"\`; tyre chips have a \`title\`
+  with the compound name.
+- **Motion specialist**: motion reads as speed — horizontal, short.
+
+## 8. Presentation metaphor
+
+| Content type | Presented as |
+|---|---|
+| Entity list | timing tower / classification: POS, NO, DRIVER, TYRE, GAP |
+| Entity detail | onboard camera (screenshot) + team radio + setup (stack) + fastest lap (stat) |
+| Category | tyre compound from \`kind\` |
+| Entity headline | team radio line |
+| Recent activity | race control messages (\`LAP 42 · CAR 04 (SELECTA): …\`) |
+| Profile | driver card with a large outlined number |
+| Timeline | career by season |
+| Call to action | "Box, box" |
+
+## 9. Copy voice
+
+Radio-clipped and calm under pressure: "Copy, building the set now. Drop in
+32 bars." Race control messages in uppercase. Gaps and lap numbers are
+labels, never presented as a measurement of the work.
+
+## 10. Do / Don't
+
+- Do: make the tower pickable on the classification page.
+- Do: derive tyre compounds from a real field.
+- Don't: use real driver numbers, team names, liveries or series branding.
+- Don't: put a real-looking time next to a claim it doesn't measure.
+
+## 11. Pre-output checklist
+
+- [ ] Tower + onboard + radio + race control + career + CTA present
+- [ ] Row pick updates the onboard and scrolls to it on phones
+- [ ] No real-world motorsport trademarks or numbers
+- [ ] Skewed buttons stay legible; focus ring visible on dark asphalt
+- [ ] Streaks and camera blur stop under reduced motion
+`,
+  },
+  {
+    slug: "night-shift",
+    name: "World · Night Shift",
+    description:
+      "World — lavender night sky, rounded friendly type, soft large radii, a moon and a peeking cat; content presented as a night journal and a polaroid wall. For personal sites, indie products and creative portfolios that should feel warm and human rather than corporate.",
+    content: `---
+name: dsgn-night-shift
+description: World — lavender night sky, rounded friendly type, soft large radii, a moon and a peeking cat; content presented as a night journal and a polaroid wall. For personal sites, indie products and creative portfolios that should feel warm and human rather than corporate.
+---
+
+# Night Shift (world)
+
+## 1. Identity
+
+Late-night and personal: the home page is a journal with timestamped
+entries, the project list is a wall of taped polaroids with a note on each,
+and a small character (a cat) gives a verdict. Whimsy is allowed exactly
+where it's obviously whimsy; facts stay facts. Read \`reference/worlds.md\`
+first.
+
+## 2. Color logic
+
+- Background: a vertical gradient from deep indigo (\`#211a42\`) to dusk
+  violet (\`#6a4f8f\`), fixed so it doesn't scroll away.
+- Accents: mint (\`#a8f0d1\`) primary, moon yellow (\`#ffd84f\`) secondary,
+  blush (\`#f2a7c3\`) tertiary.
+- Polaroid paper is warm off-white (\`#fbf7ee\`) with indigo caption text.
+
+## 3. Typography
+
+- \`--font-display\`: a rounded geometric (Fredoka), sentence case, not
+  uppercase.
+- \`--font-sans\`: a friendly humanist (Nunito) at a slightly larger body
+  size.
+- Timestamps in the display face, in the moon yellow.
+
+## 4. Spacing & density
+
+Airy and single-column for the journal (~780px measure); a loose
+auto-fill grid for the polaroid wall with room for tilt and tape.
+
+## 5. Motion character
+
+Slow and ambient: twinkling stars, the occasional shooting star, a moon
+that drifts with scroll; polaroids straighten and lift slightly on hover;
+the cat blinks and its eyes follow the cursor. All ambient motion stops
+under reduced motion.
+
+## 6. Borders & shadows
+
+Large radii (20px+) on journal cards, pill buttons, soft long shadows under
+polaroids, translucent surfaces over the sky. No hard edges anywhere.
+
+## 7. Workflow facets in this voice
+
+- **Component Builder**: Card becomes a journal entry or polaroid; Avatar
+  gets a moon-yellow ring.
+- **Page Composer**: "hi, I'm…" note → recent entries → where I am by day
+  → leave a note.
+- **Theming Specialist**: radius scale high (~1.8); soft ambient shadows.
+- **Accessibility Reviewer**: the decorative cat is a real \`<button>\` with
+  an \`aria-label\` if it's interactive; emoji ratings get an \`aria-label\`
+  ("4 of 5 paws"); mint on indigo must pass for links.
+- **Motion specialist**: ambient, slow, never on the text itself.
+
+## 8. Presentation metaphor
+
+| Content type | Presented as |
+|---|---|
+| Entity list | polaroid wall: photo (screenshot), caption, note on the back |
+| Entity headline | journal entry with a timestamp |
+| Metric | the fact inside the entry ("search went from 1.8 seconds to 79 milliseconds") + paws derived from a real field |
+| Profile | "hi, I'm…" with a short day/night line |
+| Timeline | "where I am by day" |
+| Call to action | "leave a note" |
+
+## 9. Copy voice
+
+Lowercase, first person, a little tired and fond. The cat's verdict is the
+one place jokes go ("knocked the router off the desk to test it"). Never
+turn a joke into a claim about the work.
+
+## 10. Do / Don't
+
+- Do: keep every number in an entry true to the content model.
+- Do: give imageless entities a designed blank (stat on a dusk gradient).
+- Don't: let whimsy invent metrics or users.
+- Don't: use uppercase display type or hard edges.
+
+## 11. Pre-output checklist
+
+- [ ] Journal, polaroid wall, day job and CTA present
+- [ ] Polaroid photos crop to a consistent ratio (\`height: auto\` with an
+      \`aspect-ratio\`, or the \`height\` attribute wins)
+- [ ] Ratings and the cat are labelled for screen readers
+- [ ] Ambient motion stops under reduced motion
+- [ ] Contrast passes for mint and blush text on the sky
+`,
+  },
 ];
 
 const REFERENCE_DOCS = [
   {
     file: "reference/philosophy-summary.md",
     title: "Philosophy summary",
-    body: "Condensed from philosophy/AGENTS.md — nine rules extracted from decisions that actually shipped in three real apps, not aspirational values.",
+    body: "Condensed from philosophy/AGENTS.md — ten rules extracted from decisions that actually shipped in four real apps, not aspirational values.",
   },
   {
     file: "reference/component-registry.md",
@@ -956,6 +1469,11 @@ const REFERENCE_DOCS = [
     file: "reference/tokens.md",
     title: "Design tokens",
     body: "The site's real CSS custom properties from apps/site/app/globals.css, and the raw-value → semantic-alias → Tailwind-token indirection every style agent reskins through.",
+  },
+  {
+    file: "reference/worlds.md",
+    title: "Worlds",
+    body: "Building one content model in several worlds — the metaphor map, the copy dictionary keyed by the same ids, derived visuals, and the pre-paint/URL/portal mechanics.",
   },
   {
     file: "reference/workflow-checklist.md",

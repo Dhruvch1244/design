@@ -5,14 +5,16 @@ Condensed from `philosophy/AGENTS.md`, the portable root file of the
 extracted from a decision that actually shipped, in a real app, usually after
 the naive version broke something — not an aspirational value list. Three
 source projects are referenced throughout: **lyric-viewer** (Tauri 2 + Rust),
-**file-viewer** (.NET/WPF), **review-grader** (Angular 17, signals).
+**file-viewer** (.NET/WPF), **review-grader** (Angular 17, signals), plus
+**dhruvchoudhary.com** (React + Vite) for rule #10.
 
 This governs code structure and correctness for *any* code written while the
-`dsgn` skill is active — it applies regardless of which of the five visual
-style agents is chosen. The style agents only differ in what the UI looks and
-moves like; they don't get to violate any of the nine rules below.
+`dsgn` skill is active — it applies regardless of which style agent or world is
+chosen. The style agents only differ in what the UI looks and moves like (and
+worlds in how content is presented); they don't get to violate any of the ten
+rules below.
 
-## The nine pillars
+## The ten pillars
 
 1. **Separation of concerns is physical, not just logical.** The thing that
    must never depend on your UI framework goes in a package that *cannot*
@@ -68,6 +70,13 @@ moves like; they don't get to violate any of the nine rules below.
    what a new operation actually does — network call, non-trivial I/O, a
    spawned process — before assuming a synchronous path is fine.
 
+10. **One content model, many presentations — a voice is a metaphor, not a
+    palette.** Facts live once, in typed data; per-world copy lives in a
+    dictionary keyed by the same ids; every content type (list, profile,
+    timeline, metric, call to action) gets a mapped metaphor; derived visuals
+    (bars, counts, meters) are computed from real fields, never invented.
+    See `reference/worlds.md`.
+
 ## What these produce together
 
 Fast under real load (measured, not assumed), never surprises the user by
@@ -82,5 +91,7 @@ admits where reality has drifted from an earlier plan.
 - `philosophy/ui-interaction.md` — pillars #3, #5, expanded into concrete
   interaction patterns.
 - `philosophy/code-style.md` — pillars #6–8 as line-level conventions.
+- `philosophy/worlds.md` — pillar #10, with the metaphor map and the
+  overlay-portal lesson.
 - `philosophy/anti-patterns.md` — every anti-pattern named above, collected
   for quick lookup with its failure mode spelled out.

@@ -4,8 +4,9 @@ This is a real [Claude Code Agent Skill](https://docs.claude.com/en/docs/claude-
 the same format as `SKILL.md` packages loaded via `~/.claude/skills/` or a
 project's own `.claude/skills/`. It teaches Claude to build UI using the real
 `@dhruvchoudhary/dsgn` component registry and the `dhruvch1244/design`
-philosophy, in one of seven distinct visual voices, with a router that picks
-the right one automatically.
+philosophy, in one of seven distinct visual voices or five worlds (a voice
+plus a presentation metaphor and copy, over one shared content model), with
+a router that picks the right one automatically.
 
 A sibling skill, `skills/dsgn-adopt/`, covers the opposite situation —
 extracting an *existing* codebase's own real conventions (before this skill
@@ -17,7 +18,7 @@ of introducing a competing style. See `skills/dsgn-adopt/README.md`.
 ```
 skills/dsgn/
   SKILL.md                    # entry point — router logic, how to use the rest
-  agents/                     # 7 self-contained style personas
+  agents/                     # 7 style personas + 5 worlds
     glass-dark-cyan.md          # this site's own real look (default)
     editorial-warm.md
     brutalist-mono.md
@@ -25,11 +26,17 @@ skills/dsgn/
     neon-cyberpunk.md
     corporate.md
     startup.md
+    terminal-phosphor.md        # world: the page is a shell session
+    arcade-synth.md             # world: title screen + level select
+    iron-poster.md              # world: training log
+    pit-lane.md                 # world: timing tower + onboard camera
+    night-shift.md              # world: night journal + polaroid wall
   reference/                  # real, fact-checked data pulled from this repo
     philosophy-summary.md       # condensed from philosophy/AGENTS.md
     component-registry.md       # real components + variants from packages/registry
     tokens.md                   # the real CSS token system from apps/site/app/globals.css
     workflow-checklist.md       # 5 workflow facets every style agent applies
+    worlds.md                   # building one content model in several worlds
 ```
 
 Every file under `reference/` is derived from real source in this repo at

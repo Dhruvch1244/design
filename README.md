@@ -35,7 +35,7 @@ packages/cli/            The dsgn CLI (npm: @dhruvchoudhary/dsgn) — copies reg
 packages/mcp/             MCP server (npm: @dhruvchoudhary/dsgn-mcp) — exposes the registry to AI clients over MCP
 apps/site/                Next.js site: renders philosophy/, showcases components,
                             and serves the registry as static JSON at /r/*.json
-skills/dsgn/               Claude Code Agent Skill — build/restyle UI in 7 voices
+skills/dsgn/               Claude Code Agent Skill — build/restyle UI in 7 voices + 5 worlds
 skills/dsgn-adopt/         Sibling skill — extract an existing repo's own real conventions
 scripts/sync-registry.mjs  Builds the registry and copies it into apps/site/public/r
 ```
@@ -142,7 +142,9 @@ situations:
 
 - **`skills/dsgn/`** — build or restyle UI using this repo's own philosophy,
   registry, and one of 7 style voices (glass-dark-cyan, editorial-warm,
-  brutalist-mono, soft-minimal, neon-cyberpunk, corporate, startup). Install
+  brutalist-mono, soft-minimal, neon-cyberpunk, corporate, startup) or 5
+  worlds that also change how content is presented (terminal-phosphor,
+  arcade-synth, iron-poster, pit-lane, night-shift). Install
   via `npx @dhruvchoudhary/dsgn skill --project` (or `--global`,
   `--cursor`, `--windsurf`, `--copilot`, `--gemini`, `--agents-md` — see
   `packages/cli/README.md`). Best for a fresh scaffold, or a restyle the

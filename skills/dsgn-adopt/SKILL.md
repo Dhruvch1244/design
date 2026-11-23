@@ -9,7 +9,7 @@ description: Before building new UI in an existing, already-designed codebase �
 
 `skills/dsgn/` (the sibling skill this one lives next to) is for building UI
 from scratch, or restyling a project that doesn't have a strong opinion of
-its own yet — it hands you a philosophy, a registry, and 7 style voices to
+its own yet — it hands you a philosophy, a registry, and 7 style voices (plus 5 worlds) to
 apply. This skill is for the opposite situation: a codebase that **already
 has real, shipped UI conventions**, and the job is to keep working in them,
 not replace them.

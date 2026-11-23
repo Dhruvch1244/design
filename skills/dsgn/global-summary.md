@@ -2,11 +2,11 @@
 
 Global summary of the `dhruvch1244/design` philosophy + component registry,
 loaded into every Windsurf workspace. This is a condensed excerpt — for the
-full router, seven style-persona voices, and reference docs, run
+full router, seven style-persona voices, five worlds, and reference docs, run
 `npx @dhruvchoudhary/dsgn skill --windsurf` in a specific project to install
 the complete `.windsurf/rules/dsgn-*.md` set.
 
-## The philosophy — nine pillars, condensed from philosophy/AGENTS.md
+## The philosophy — ten pillars, condensed from philosophy/AGENTS.md
 
 1. Separation of concerns is physical — code that must never depend on the
    UI framework goes in a package that cannot import it.
@@ -26,6 +26,8 @@ the complete `.windsurf/rules/dsgn-*.md` set.
    code is a liability.
 9. Async is a correctness property in UI runtimes, not a performance
    nice-to-have.
+10. One content model, many presentations — facts live once; a world may
+    change structure, metaphor and copy, never the facts.
 
 ## The component registry
 
@@ -50,6 +52,11 @@ list`.
   near-invisible shadows. For enterprise SaaS and developer platforms.
 - **startup** — dark saturated background, gradient accent, oversized
   confident type, overshoot motion. For launches and marketing sites.
+
+Five **worlds** go further than a voice — each also changes how content is
+presented (structure, metaphor, copy) over one shared content model:
+**terminal-phosphor**, **arcade-synth**, **iron-poster**, **pit-lane**,
+**night-shift**.
 
 Pick order: explicit user request, then existing project brand cues, then
 project type, then ask if genuinely unsure — a wrong visual direction is

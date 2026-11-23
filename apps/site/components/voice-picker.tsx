@@ -11,6 +11,13 @@ export const VOICES = [
   { id: "neon-cyberpunk", label: "Neon / Cyberpunk" },
   { id: "corporate", label: "Corporate" },
   { id: "startup", label: "Startup" },
+  // Worlds (skills/dsgn/agents/*.md): a voice + a presentation metaphor +
+  // copy. Only the skin is previewable here; see philosophy/worlds.md.
+  { id: "terminal-phosphor", label: "World · Terminal" },
+  { id: "arcade-synth", label: "World · Arcade" },
+  { id: "iron-poster", label: "World · Iron" },
+  { id: "pit-lane", label: "World · Pit Lane" },
+  { id: "night-shift", label: "World · Night Shift" },
 ] as const;
 
 // Same pattern as palette-picker.tsx: data-voice (seeded pre-paint by the
